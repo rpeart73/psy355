@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PSY355: Psychology of Learning, Mindset and Resilience</title>
+<meta name="description" content="A learning companion for PSY355 Psychology of Learning: Mindset and Resilience at Seneca Polytechnic. Weekly concepts, readings, and study tools. A companion to Blackboard.">
+<link rel="stylesheet" href="./fonts/fonts.css">
+<style>
+:root{
+  --paper:#F7F8FA; --surface:#FFFFFF; --surface-alt:#FBFCFD; --raised:#EEF1F5; --soft:#EEF1F5;
+  --ink:#15171C; --ink-soft:#474C57; --ink-faint:#6B7280;
+  --hair:#DEE3EA; --hair-hover:#C9D1DC; --navy:#1B2A4A; --red:#DA291C; --red-dark:#961A13;
+  --red-soft:#F6E3E1; --amber:#F2A900; --focus:#1552D8;
+  --listening:#5B7A8C; --listening-fill:#E8EEF1; --inquiring:#50694C; --inquiring-fill:#E9EFE7;
+  --rooting:#8F5E0F; --rooting-fill:#F3ECE0; --weaving:#6f5d86; --weaving-fill:#ECE7F1;
+  --sans:'IBM Plex Sans',ui-sans-serif,system-ui,'Segoe UI',Arial,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+  --maxw:1080px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;text-align:left;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{line-height:1.25;font-weight:600;margin:0 0 .4em}
+h1{font-size:1.75rem} h2{font-size:1.375rem} h3{font-size:1.125rem}
+p{margin:0 0 1em}
+a{color:#0b4fc0}
+.mono{font-family:var(--mono)}
+.eyebrow{font-family:var(--mono);font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 .5em}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;z-index:200;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+button{font:inherit;cursor:pointer}
+.btn{display:inline-flex;align-items:center;gap:.5em;border:1px solid var(--hair);background:var(--surface);color:var(--ink);padding:10px 16px;border-radius:8px;font-weight:600;min-height:44px;text-decoration:none}
+.btn:hover{border-color:#cfc9bb}
+.btn-primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn-primary:hover{background:#961A13}
+.btn-quiet{background:none;border-color:transparent}
+.tag{display:inline-flex;align-items:center;gap:.4em;font-family:var(--mono);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:4px 9px;border-radius:999px;border:1px solid var(--hair)}
+.dot{width:9px;height:9px;border-radius:999px;display:inline-block}
+/* layout */
+.shell{display:grid;grid-template-columns:248px 1fr;min-height:100%}
+.side{background:var(--surface);border-right:1px solid var(--hair);padding:20px 14px;position:sticky;top:56px;height:calc(100vh - 56px);overflow:auto}
+.brand{display:block;text-decoration:none;color:var(--ink);margin:4px 6px 18px}
+.brand b{display:block;font-size:1.05rem}
+.brand span{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft)}
+.nav a{display:flex;align-items:center;gap:.6em;padding:10px 12px;border-radius:8px;text-decoration:none;color:var(--ink);font-weight:600;margin-bottom:2px}
+.nav a:hover{background:var(--raised)}
+.nav a[aria-current=page]{background:var(--red-soft);color:#8f1b12}
+.nav .navsec{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin:16px 12px 6px}
+.main{padding:32px clamp(16px,4vw,48px);max-width:calc(var(--maxw) + 96px)}
+.topbar{display:none}
+.topbar2{position:sticky;top:0;z-index:60;height:56px;background:var(--navy);display:flex;align-items:center;gap:14px;padding:0 22px;color:#fff}
+.topbar2 .lg{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--red);color:#fff;flex:none}
+.topbar2 b{font-weight:600;font-size:1.0625rem;letter-spacing:-.01em}
+.topbar2 .sub{font-size:.9375rem;color:rgba(255,255,255,.82)}
+.topbar2 .vr{width:1px;height:24px;background:rgba(255,255,255,.18);flex:none}
+.topbar2 .term{margin-left:auto;font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);padding:5px 10px;border-radius:8px;flex:none}
+@media (max-width:560px){.topbar2 .sub,.topbar2 .vr{display:none}}
+/* cards */
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 2px rgba(26,26,26,.04)}
+.grid{display:grid;gap:16px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.phase-band{border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1px solid var(--hair)}
+.weekrow{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--hair);border-radius:10px;padding:12px 14px;margin-bottom:8px;color:var(--ink)}
+.weekrow:hover{border-color:#cfc9bb;background:#fffdf9}
+.weeknum{font-family:var(--mono);font-weight:600;font-size:.8rem;min-width:42px}
+.weekrow b{font-weight:600}
+.lede{font-size:1.05rem;color:var(--ink-soft)}
+.section-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.section-tabs button{border:1px solid var(--hair);background:var(--surface);border-radius:999px;padding:8px 16px;font-weight:600;min-height:40px}
+.section-tabs button[aria-selected=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.reading{padding:12px 14px;border:1px solid var(--hair);border-radius:10px;margin-bottom:10px;background:var(--surface)}
+.reading p{margin:0}
+.aspect{position:relative;width:100%;aspect-ratio:16/9;background:var(--raised);border:1px solid var(--hair);border-radius:12px;overflow:hidden}
+.aspect iframe,.aspect video,.aspect img{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:contain;background:#000}
+.playbtn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#eef1f3,#e3e8ec);color:var(--ink);border:0;width:100%;height:100%}
+.playbtn .circ{width:64px;height:64px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(26,26,26,.16);font-size:1.4rem;color:var(--red)}
+.placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:var(--ink-soft);text-align:center;padding:24px}
+/* slideshow */
+.slidewrap{position:relative}
+.slidebar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+.slidebar .count{font-family:var(--mono);font-size:.85rem;color:var(--ink-soft)}
+/* flashcards */
+.flip{perspective:1200px;height:200px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .4s;transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--hair);border-radius:12px;background:var(--surface);padding:20px;display:flex;flex-direction:column;justify-content:center}
+.flip-back{transform:rotateY(180deg);background:var(--raised)}
+/* modal */
+.backdrop{position:fixed;inset:0;background:rgba(26,26,26,.34);display:flex;align-items:center;justify-content:center;padding:18px;z-index:100}
+.modal{background:var(--surface);border-radius:14px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:24px;border-top:4px solid var(--red)}
+input,textarea,select{font:inherit;width:100%;padding:10px 12px;border:1px solid var(--hair);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:84px}
+label{font-weight:600;display:block;margin:12px 0 6px}
+.muted{color:var(--ink-soft)}
+.notebar{background:var(--listening-fill);border:1px solid var(--hair);border-left:4px solid var(--listening);border-radius:8px;padding:12px 14px;margin:14px 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:10px;z-index:150}
+@media (max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .side .brand{margin:0 12px 0 4px}
+  .nav{display:block}
+  .main{padding:20px 16px}
+}
+@media (max-width:640px){ .grid-2,.grid-3{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar2">
+  <span class="lg" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5H6.5A2.5 2.5 0 0 0 4 21z"></path><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"></path></svg></span>
+  <b>PSY355</b>
+  <span class="vr"></span>
+  <span class="sub">Learning companion &middot; 14 weeks</span>
+  <span class="term">FALL 2026</span>
+</header>
+<div class="shell">
+  <nav class="side" aria-label="Primary">
+    <a class="brand" href="#/home"><b>Mindset and Resilience</b><span>A companion to Blackboard</span></a>
+    <div class="nav" id="nav"></div>
+  </nav>
+  <main class="main" id="main" tabindex="-1"></main>
+</div>
+<div id="overlay" aria-live="polite"></div>
+<script src="./data/course-data.js?v=1"></script>
+<script src="./app.js?v=1"></script>
+</body>
+</html>
