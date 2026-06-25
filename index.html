@@ -31,7 +31,7 @@ a{color:#0b4fc0}
 .skip:focus{left:0}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
 button{font:inherit;cursor:pointer}
-.btn{display:inline-flex;align-items:center;gap:.5em;border:1px solid var(--hair);background:var(--surface);color:var(--ink);padding:10px 16px;border-radius:8px;font-weight:600;min-height:44px;text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:.5em;border:1px solid var(--hair);background:var(--surface);color:var(--ink);padding:10px 16px;border-radius:3px;font-weight:600;min-height:44px;text-decoration:none}
 .btn:hover{border-color:#cfc9bb}
 .btn-primary{background:var(--red);border-color:var(--red);color:#fff}
 .btn-primary:hover{background:#961A13}
@@ -40,7 +40,7 @@ button{font:inherit;cursor:pointer}
 .dot{width:9px;height:9px;border-radius:999px;display:inline-block}
 /* layout */
 .shell{display:grid;grid-template-columns:248px 1fr;min-height:100%}
-.side{background:var(--surface);border-right:1px solid var(--hair);padding:20px 14px;position:sticky;top:56px;height:calc(100vh - 56px);overflow:auto}
+.side{background:var(--surface);border-right:1px solid var(--hair);padding:20px 14px;position:sticky;top:62px;height:calc(100vh - 62px);overflow:auto}
 .brand{display:block;text-decoration:none;color:var(--ink);margin:4px 6px 18px}
 .brand b{display:block;font-size:1.05rem}
 .brand span{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft)}
@@ -50,12 +50,13 @@ button{font:inherit;cursor:pointer}
 .nav .navsec{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin:16px 12px 6px}
 .main{padding:32px clamp(16px,4vw,48px);max-width:calc(var(--maxw) + 96px)}
 .topbar{display:none}
-.topbar2{position:sticky;top:0;z-index:60;height:56px;background:var(--navy);display:flex;align-items:center;gap:14px;padding:0 22px;color:#fff}
-.topbar2 .lg{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--red);color:#fff;flex:none}
-.topbar2 b{font-weight:600;font-size:1.0625rem;letter-spacing:-.01em}
-.topbar2 .sub{font-size:.9375rem;color:rgba(255,255,255,.82)}
-.topbar2 .vr{width:1px;height:24px;background:rgba(255,255,255,.18);flex:none}
-.topbar2 .term{margin-left:auto;font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);padding:5px 10px;border-radius:8px;flex:none}
+.topbar2{position:sticky;top:0;z-index:60;height:62px;background:#fff;border-bottom:2px solid var(--red);display:flex;align-items:center;gap:14px;padding:0 22px;color:var(--ink)}
+.topbar2 .lg{display:inline-flex;align-items:center;flex:none}
+.topbar2 .lg img{height:34px;width:auto;display:block}
+.topbar2 b{font-weight:600;font-size:1.0625rem;letter-spacing:-.01em;color:var(--ink)}
+.topbar2 .sub{font-size:.9375rem;color:var(--ink-soft)}
+.topbar2 .vr{width:1px;height:26px;background:var(--hair);flex:none}
+.topbar2 .term{margin-left:auto;font-family:var(--mono);font-size:.75rem;font-weight:600;color:var(--red);background:var(--red-soft);padding:5px 10px;border-radius:6px;flex:none}
 @media (max-width:560px){.topbar2 .sub,.topbar2 .vr{display:none}}
 /* cards */
 .card{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 2px rgba(26,26,26,.04)}
@@ -111,7 +112,7 @@ label{font-weight:600;display:block;margin:12px 0 6px}
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 <header class="topbar2">
-  <span class="lg" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5H6.5A2.5 2.5 0 0 0 4 21z"></path><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"></path></svg></span>
+  <span class="lg"><img src="./seneca-logo.png" alt="Seneca Polytechnic"></span>
   <b>PSY355</b>
   <span class="vr"></span>
   <span class="sub">Learning companion &middot; 14 weeks</span>

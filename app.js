@@ -205,13 +205,13 @@ function home(){
   var c=D.course||{},inst=D.instructor||{};
   var conceptCount=0; (D.weeks||[]).forEach(function(w){ conceptCount+=(w.concepts||[]).length; });
   var stats=[['Weeks',(D.weeks||[]).length],['Key ideas',conceptCount],['Tools',ROUTES.length-1]];
-  var hero='<section style="background:#1B2A4A;border-radius:16px;padding:28px 30px;color:#fff;margin-bottom:22px;position:relative;overflow:hidden">'+contourSVG()+
-    '<div style="position:relative;display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;justify-content:space-between">'+
-    '<div style="flex:1;min-width:280px"><div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--amber);margin-bottom:10px">'+esc(c.code||'BFS218')+' &middot; '+esc(c.institution||'Seneca Polytechnic')+'</div>'+
-    '<h1 style="font-size:2.05rem;line-height:1.14;font-weight:600;margin:0 0 10px;color:#fff">'+esc(c.title||'')+'</h1>'+
-    '<p style="font-size:1rem;line-height:1.6;color:rgba(255,255,255,.8);margin:0;max-width:60ch">'+esc(c.subtitle||'')+'. Read, watch, and work through the course week by week, with tools that help the ideas take hold.</p>'+
+  var hero='<section style="background:var(--surface);border:1px solid var(--hair);border-top:4px solid var(--red);border-radius:14px;padding:30px 32px;margin-bottom:22px;box-shadow:0 1px 2px rgba(21,23,28,.04)">'+
+    '<div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;justify-content:space-between">'+
+    '<div style="flex:1;min-width:280px"><div class="eyebrow" style="color:var(--red)">'+esc(c.code||'BFS218')+' &middot; '+esc(c.institution||'Seneca Polytechnic')+'</div>'+
+    '<h1 style="font-size:2.05rem;line-height:1.14;margin:0 0 10px;color:var(--ink)">'+esc(c.title||'')+'</h1>'+
+    '<p class="lede" style="margin:0;max-width:60ch">'+esc(c.subtitle||'')+'. Read, watch, and work through the course week by week, with tools that help the ideas take hold.</p>'+
     '</div>'+
-    '<div style="display:flex;gap:10px;flex:none">'+stats.map(function(st){return '<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;text-align:center;min-width:78px"><div class="mono" style="font-size:1.7rem;font-weight:600;line-height:1">'+st[1]+'</div><div style="font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);margin-top:5px">'+st[0]+'</div></div>';}).join('')+'</div>'+
+    '<div style="display:flex;gap:10px;flex:none">'+stats.map(function(st){return '<div style="background:var(--raised);border:1px solid var(--hair);border-radius:12px;padding:12px 16px;text-align:center;min-width:78px"><div class="mono" style="font-size:1.7rem;font-weight:600;line-height:1;color:var(--red)">'+st[1]+'</div><div style="font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-top:5px">'+st[0]+'</div></div>';}).join('')+'</div>'+
     '</div></section>';
   var layoutDefs=[['phase','By phase','layers'],['tiles','Tiles','grid'],['index','Index','list']];
   var chips=layoutDefs.map(function(d){ var on=HL===d[0]; return '<button data-action="home-layout" data-layout="'+d[0]+'" aria-pressed="'+on+'" style="display:flex;align-items:center;gap:6px;border:none;border-radius:7px;padding:6px 12px;font-size:.8125rem;font-weight:'+(on?'600':'500')+';background:'+(on?'#fff':'transparent')+';color:'+(on?'#15171C':'#474C57')+';box-shadow:'+(on?'0 1px 2px rgba(21,23,28,.12)':'none')+'">'+ic(d[2],15)+'<span>'+d[1]+'</span></button>'; }).join('');
