@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Reading a case in three layers</text>
+  <text x="40" y="74" font-size="16" fill="#666">Where supports and barriers actually sit for a learner</text>
+
+  <!-- Layer 1: Person -->
+  <rect x="40" y="120" width="180" height="240" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="130" y="156" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Person</text>
+  <text x="130" y="196" text-anchor="middle" font-size="14" fill="#15171C">What the learner</text>
+  <text x="130" y="216" text-anchor="middle" font-size="14" fill="#15171C">brings: skills,</text>
+  <text x="130" y="236" text-anchor="middle" font-size="14" fill="#15171C">effort, coping</text>
+  <text x="130" y="290" text-anchor="middle" font-size="13" fill="#474C57">Support or</text>
+  <text x="130" y="310" text-anchor="middle" font-size="13" fill="#474C57">barrier here?</text>
+
+  <!-- arrow 1 -> 2 -->
+  <line x1="224" y1="240" x2="246" y2="240" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="246,232 260,240 246,248" fill="#8a909c"/>
+
+  <!-- Layer 2: Relationships -->
+  <rect x="264" y="120" width="180" height="240" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="354" y="156" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Relationships</text>
+  <text x="354" y="196" text-anchor="middle" font-size="14" fill="#15171C">Family, friends,</text>
+  <text x="354" y="216" text-anchor="middle" font-size="14" fill="#15171C">classmates,</text>
+  <text x="354" y="236" text-anchor="middle" font-size="14" fill="#15171C">mentors</text>
+  <text x="354" y="290" text-anchor="middle" font-size="13" fill="#474C57">Support or</text>
+  <text x="354" y="310" text-anchor="middle" font-size="13" fill="#474C57">barrier here?</text>
+
+  <!-- arrow 2 -> 3 -->
+  <line x1="448" y1="240" x2="470" y2="240" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="470,232 484,240 470,248" fill="#8a909c"/>
+
+  <!-- Layer 3: Institution -->
+  <rect x="488" y="120" width="180" height="240" rx="12" fill="#DA291C"/>
+  <text x="578" y="156" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Institution</text>
+  <text x="578" y="196" text-anchor="middle" font-size="14" fill="#ffffff">School, policy,</text>
+  <text x="578" y="216" text-anchor="middle" font-size="14" fill="#ffffff">services,</text>
+  <text x="578" y="236" text-anchor="middle" font-size="14" fill="#ffffff">access rules</text>
+  <text x="578" y="290" text-anchor="middle" font-size="13" fill="#ffffff">Support or</text>
+  <text x="578" y="310" text-anchor="middle" font-size="13" fill="#ffffff">barrier here?</text>
+
+  <text x="40" y="404" font-size="14" fill="#474C57">A support must fit the person's actual environment, not an imagined one.</text>
+  <text x="40" y="428" font-size="13" fill="#666">PSY355 Week 6. Person, relationships, institution.</text>
+</svg>

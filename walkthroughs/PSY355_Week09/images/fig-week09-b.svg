@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Perseverance plus flexibility</text>
+  <text x="40" y="74" font-size="16" fill="#666">Keep moving without confusing persistence with pushing past every limit</text>
+
+  <!-- Box 1: goal -->
+  <rect x="20" y="170" width="150" height="110" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="95" y="218" text-anchor="middle" font-size="17" font-weight="600" fill="#15171C">Hold the</text>
+  <text x="95" y="242" text-anchor="middle" font-size="17" font-weight="600" fill="#15171C">goal steady</text>
+  <line x1="174" y1="225" x2="188" y2="225" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="188,218 200,225 188,232" fill="#8a909c"/>
+
+  <!-- Box 2: barrier -->
+  <rect x="206" y="170" width="150" height="110" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="281" y="218" text-anchor="middle" font-size="17" font-weight="600" fill="#15171C">Name the</text>
+  <text x="281" y="242" text-anchor="middle" font-size="17" font-weight="600" fill="#15171C">barrier</text>
+  <line x1="360" y1="225" x2="374" y2="225" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="374,218 386,225 374,232" fill="#8a909c"/>
+
+  <!-- Box 3: keep -->
+  <rect x="392" y="120" width="150" height="90" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="467" y="158" text-anchor="middle" font-size="16" font-weight="600" fill="#15171C">Strategy</text>
+  <text x="467" y="180" text-anchor="middle" font-size="16" font-weight="600" fill="#15171C">to keep</text>
+
+  <!-- Box 4: change -->
+  <rect x="392" y="240" width="150" height="90" rx="12" fill="#DA291C"/>
+  <text x="467" y="278" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">Strategy</text>
+  <text x="467" y="300" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">to change</text>
+
+  <!-- connectors to keep/change -->
+  <line x1="356" y1="210" x2="392" y2="165" stroke="#8a909c" stroke-width="3"/>
+  <line x1="356" y1="240" x2="392" y2="285" stroke="#8a909c" stroke-width="3"/>
+
+  <!-- next action -->
+  <rect x="562" y="180" width="98" height="90" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="611" y="218" text-anchor="middle" font-size="15" font-weight="600" fill="#15171C">Next</text>
+  <text x="611" y="240" text-anchor="middle" font-size="15" font-weight="600" fill="#15171C">action</text>
+  <line x1="542" y1="165" x2="562" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <line x1="542" y1="285" x2="562" y2="240" stroke="#8a909c" stroke-width="3"/>
+
+  <text x="40" y="372" font-size="15" fill="#474C57">A flexible persistence plan: goal, barrier, strategy to keep, strategy to change.</text>
+  <text x="40" y="408" font-size="14" fill="#666">PSY355 Week 9: when changing the method is the responsible way to keep going.</text>
+</svg>

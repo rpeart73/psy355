@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Reading a pressure</text>
+  <text x="40" y="74" font-size="16" fill="#666">Separate the stressor, the response, and the support</text>
+
+  <!-- Stressor box -->
+  <rect x="40" y="150" width="180" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="130" y="192" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Stressor</text>
+  <text x="130" y="220" text-anchor="middle" font-size="15" fill="#15171C">What is happening?</text>
+  <text x="130" y="242" text-anchor="middle" font-size="15" fill="#15171C">Name the demand.</text>
+
+  <!-- arrow 1 -> 2 -->
+  <line x1="224" y1="210" x2="248" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="248,202 262,210 248,218" fill="#8a909c"/>
+
+  <!-- Response box -->
+  <rect x="266" y="150" width="180" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="356" y="192" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Response</text>
+  <text x="356" y="220" text-anchor="middle" font-size="15" fill="#15171C">How are you</text>
+  <text x="356" y="242" text-anchor="middle" font-size="15" fill="#15171C">reacting to it?</text>
+
+  <!-- arrow 2 -> 3 -->
+  <line x1="450" y1="210" x2="474" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="474,202 488,210 474,218" fill="#8a909c"/>
+
+  <!-- Support box -->
+  <rect x="492" y="150" width="180" height="120" rx="12" fill="#DA291C"/>
+  <text x="582" y="192" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Support</text>
+  <text x="582" y="220" text-anchor="middle" font-size="15" fill="#ffffff">What support</text>
+  <text x="582" y="242" text-anchor="middle" font-size="15" fill="#ffffff">exists around you?</text>
+
+  <!-- next adjustment band -->
+  <rect x="40" y="312" width="632" height="56" rx="10" fill="#fbeceb" stroke="#DA291C" stroke-width="1.5"/>
+  <text x="356" y="338" text-anchor="middle" font-size="15" font-weight="600" fill="#15171C">Next adjustment: one concrete action that fits,</text>
+  <text x="356" y="358" text-anchor="middle" font-size="15" fill="#474C57">without pretending the barrier is simple</text>
+
+  <text x="40" y="406" font-size="13" fill="#666">PSY355 Week 7. The private midcourse check: pressure, response, support, next adjustment.</text>
+</svg>

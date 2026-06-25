@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Fixed mindset and growth mindset</text>
+  <text x="40" y="74" font-size="16" fill="#666">Two beliefs about whether ability can change</text>
+
+  <!-- Fixed mindset panel -->
+  <rect x="40" y="120" width="280" height="240" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="180" y="158" text-anchor="middle" font-size="19" font-weight="700" fill="#15171C">Fixed mindset</text>
+  <text x="180" y="190" text-anchor="middle" font-size="14" fill="#474C57">Ability is treated as set,</text>
+  <text x="180" y="210" text-anchor="middle" font-size="14" fill="#474C57">something you have or do not.</text>
+  <line x1="70" y1="232" x2="290" y2="232" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="180" y="262" text-anchor="middle" font-size="14" fill="#15171C">A setback can read as</text>
+  <text x="180" y="282" text-anchor="middle" font-size="14" fill="#15171C">a verdict on the person.</text>
+  <text x="180" y="320" text-anchor="middle" font-size="14" fill="#15171C">Effort can feel like</text>
+  <text x="180" y="340" text-anchor="middle" font-size="14" fill="#15171C">proof you lack the talent.</text>
+
+  <!-- Growth mindset panel -->
+  <rect x="360" y="120" width="280" height="240" rx="12" fill="#DA291C"/>
+  <text x="500" y="158" text-anchor="middle" font-size="19" font-weight="700" fill="#ffffff">Growth mindset</text>
+  <text x="500" y="190" text-anchor="middle" font-size="14" fill="#ffffff">Ability is treated as something</text>
+  <text x="500" y="210" text-anchor="middle" font-size="14" fill="#ffffff">that can develop over time.</text>
+  <line x1="390" y1="232" x2="610" y2="232" stroke="#ffffff" stroke-width="1.5" opacity="0.5"/>
+  <text x="500" y="262" text-anchor="middle" font-size="14" fill="#ffffff">A setback can read as</text>
+  <text x="500" y="282" text-anchor="middle" font-size="14" fill="#ffffff">information, not a verdict.</text>
+  <text x="500" y="320" text-anchor="middle" font-size="14" fill="#ffffff">Effort is part of how</text>
+  <text x="500" y="340" text-anchor="middle" font-size="14" fill="#ffffff">learning happens.</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 3. A belief about ability, not a personality label.</text>
+</svg>

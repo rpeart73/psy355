@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">When should a strategy change?</text>
+  <text x="40" y="74" font-size="16" fill="#666">A strategy shift is not quitting; it is keeping the goal by a different route</text>
+
+  <!-- central question -->
+  <rect x="200" y="110" width="280" height="64" rx="12" fill="#DA291C"/>
+  <text x="340" y="142" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">Is this method still working?</text>
+  <text x="340" y="162" text-anchor="middle" font-size="13" fill="#ffffff">toward the same goal</text>
+
+  <!-- No branch -->
+  <line x1="280" y1="174" x2="170" y2="230" stroke="#8a909c" stroke-width="3"/>
+  <text x="218" y="206" text-anchor="middle" font-size="14" font-weight="700" fill="#15171C">No</text>
+  <rect x="40" y="230" width="250" height="130" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="165" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#15171C">Shift the strategy</text>
+  <text x="165" y="292" text-anchor="middle" font-size="14" fill="#474C57">Change the method,</text>
+  <text x="165" y="312" text-anchor="middle" font-size="14" fill="#474C57">not the goal. This can</text>
+  <text x="165" y="332" text-anchor="middle" font-size="14" fill="#474C57">be the most responsible</text>
+  <text x="165" y="352" text-anchor="middle" font-size="14" fill="#474C57">way to keep going.</text>
+
+  <!-- Yes branch -->
+  <line x1="400" y1="174" x2="510" y2="230" stroke="#8a909c" stroke-width="3"/>
+  <text x="462" y="206" text-anchor="middle" font-size="14" font-weight="700" fill="#15171C">Yes</text>
+  <rect x="390" y="230" width="250" height="130" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="515" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#15171C">Persevere</text>
+  <text x="515" y="292" text-anchor="middle" font-size="14" fill="#474C57">Keep the strategy and</text>
+  <text x="515" y="312" text-anchor="middle" font-size="14" fill="#474C57">continue, without</text>
+  <text x="515" y="332" text-anchor="middle" font-size="14" fill="#474C57">pretending the barrier</text>
+  <text x="515" y="352" text-anchor="middle" font-size="14" fill="#474C57">is simple.</text>
+
+  <text x="40" y="408" font-size="14" fill="#666">PSY355 Week 9: persistence and a strategy shift are both ways of staying with the goal.</text>
+</svg>

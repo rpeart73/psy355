@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">A two practice plan</text>
+  <text x="40" y="74" font-size="16" fill="#666">One practice for pressure, one for recovery</text>
+
+  <!-- Pressure box -->
+  <rect x="40" y="140" width="260" height="150" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="170" y="184" text-anchor="middle" font-size="20" font-weight="700" fill="#DA291C">For pressure</text>
+  <text x="170" y="216" text-anchor="middle" font-size="15" fill="#15171C">A practice you reach for</text>
+  <text x="170" y="238" text-anchor="middle" font-size="15" fill="#15171C">when demands are high</text>
+  <text x="170" y="266" text-anchor="middle" font-size="14" fill="#474C57">Tested for: is it sustainable?</text>
+
+  <!-- Recovery box -->
+  <rect x="380" y="140" width="260" height="150" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="510" y="184" text-anchor="middle" font-size="20" font-weight="700" fill="#DA291C">For recovery</text>
+  <text x="510" y="216" text-anchor="middle" font-size="15" fill="#15171C">A practice that helps you</text>
+  <text x="510" y="238" text-anchor="middle" font-size="15" fill="#15171C">restore after the strain</text>
+  <text x="510" y="266" text-anchor="middle" font-size="14" fill="#474C57">Tested for: is it sustainable?</text>
+
+  <!-- bridge -->
+  <rect x="220" y="330" width="240" height="64" rx="12" fill="#DA291C"/>
+  <text x="340" y="360" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">Two practices that</text>
+  <text x="340" y="382" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">can travel beyond the course</text>
+
+  <!-- connectors -->
+  <line x1="170" y1="290" x2="290" y2="330" stroke="#8a909c" stroke-width="2.5"/>
+  <polygon points="284,320 296,332 280,330" fill="#8a909c"/>
+  <line x1="510" y1="290" x2="390" y2="330" stroke="#8a909c" stroke-width="2.5"/>
+  <polygon points="396,320 384,332 400,330" fill="#8a909c"/>
+</svg>

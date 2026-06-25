@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Where the evidence is strong, where it needs context</text>
+  <text x="40" y="74" font-size="16" fill="#666">Reading the studies without turning the idea into a slogan</text>
+
+  <!-- Strong support box -->
+  <rect x="40" y="120" width="280" height="200" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="180" y="156" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Where support is strong</text>
+  <text x="180" y="190" text-anchor="middle" font-size="14" fill="#15171C">A national experiment found</text>
+  <text x="180" y="210" text-anchor="middle" font-size="14" fill="#15171C">a growth mindset improved</text>
+  <text x="180" y="230" text-anchor="middle" font-size="14" fill="#15171C">achievement in some places</text>
+  <text x="180" y="250" text-anchor="middle" font-size="14" fill="#15171C">and for some students.</text>
+  <text x="180" y="288" text-anchor="middle" font-size="13" fill="#474C57">Yeager and colleagues (2019),</text>
+  <text x="180" y="306" text-anchor="middle" font-size="13" fill="#474C57">a national experiment.</text>
+
+  <!-- Needs context box -->
+  <rect x="360" y="120" width="280" height="200" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="500" y="156" text-anchor="middle" font-size="18" font-weight="700" fill="#15171C">Where it needs context</text>
+  <text x="500" y="190" text-anchor="middle" font-size="14" fill="#15171C">The effect was not the same</text>
+  <text x="500" y="210" text-anchor="middle" font-size="14" fill="#15171C">everywhere. Belief alone does</text>
+  <text x="500" y="230" text-anchor="middle" font-size="14" fill="#15171C">not remove a structural barrier</text>
+  <text x="500" y="250" text-anchor="middle" font-size="14" fill="#15171C">a student did not create.</text>
+  <text x="500" y="288" text-anchor="middle" font-size="13" fill="#474C57">Claro and colleagues (2016),</text>
+  <text x="500" y="306" text-anchor="middle" font-size="13" fill="#474C57">poverty and achievement.</text>
+
+  <text x="40" y="362" font-size="14" fill="#15171C">The honest claim names where mindset helps and where context is doing the work.</text>
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 3. Same idea, different settings, different results.</text>
+</svg>

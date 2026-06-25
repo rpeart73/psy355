@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">From slogan to a careful claim</text>
+  <text x="40" y="74" font-size="16" fill="#666">Rewriting a motivational line so it includes a limit</text>
+
+  <!-- Slogan box -->
+  <rect x="40" y="130" width="230" height="150" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="155" y="166" text-anchor="middle" font-size="17" font-weight="700" fill="#15171C">The slogan</text>
+  <text x="155" y="202" text-anchor="middle" font-size="14" fill="#474C57">Just believe in</text>
+  <text x="155" y="222" text-anchor="middle" font-size="14" fill="#474C57">yourself and you</text>
+  <text x="155" y="242" text-anchor="middle" font-size="14" fill="#474C57">can do anything.</text>
+
+  <!-- arrow -->
+  <line x1="276" y1="205" x2="318" y2="205" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="318,197 332,205 318,213" fill="#8a909c"/>
+  <text x="304" y="240" text-anchor="middle" font-size="12" fill="#666">add a limit</text>
+
+  <!-- Careful claim box -->
+  <rect x="340" y="130" width="300" height="150" rx="12" fill="#DA291C"/>
+  <text x="490" y="166" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">The careful claim</text>
+  <text x="490" y="200" text-anchor="middle" font-size="14" fill="#ffffff">Effort and good strategies can</text>
+  <text x="490" y="220" text-anchor="middle" font-size="14" fill="#ffffff">help me improve, and I also</text>
+  <text x="490" y="240" text-anchor="middle" font-size="14" fill="#ffffff">need support for barriers</text>
+  <text x="490" y="260" text-anchor="middle" font-size="14" fill="#ffffff">I did not create.</text>
+
+  <text x="40" y="332" font-size="14" fill="#15171C">A careful claim keeps the useful part of the idea and names what belief alone cannot fix.</text>
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 3. Useful psychology without blaming the student.</text>
+</svg>

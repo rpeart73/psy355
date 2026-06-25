@@ -143,7 +143,7 @@ function ic(name,size,w){ var p=ICON[name]||ICON.grid,s=size||20,out='<svg width
 /* ---------- navigation ---------- */
 var ROUTES=[
   {id:'home',label:'Home',hash:'#/home',icon:'grid'},
-  {id:'walkthrough',label:'Weekly Walkthrough',url:'https://rpeart73.github.io/seneca-walkthroughs/PSY355.html',icon:'layers',external:true},
+  {id:'walkthrough',label:'Weekly Walkthrough',url:'https://rpeart73.github.io/psy355-companion/walkthroughs/',icon:'layers',external:true},
   {id:'glossary',label:'Glossary & Thinkers',hash:'#/glossary',icon:'book'},
   {id:'cards',label:'Self-check',hash:'#/cards',icon:'clipboard'},
   {id:'compare',label:'Compare ideas',hash:'#/compare',icon:'columns'}

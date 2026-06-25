@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">A process, not a personality</text>
+  <text x="40" y="74" font-size="16" fill="#666">Resilience as adaptive patterns that can be supported over time</text>
+
+  <!-- Trait view box -->
+  <rect x="40" y="120" width="280" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="180" y="160" text-anchor="middle" font-size="18" font-weight="700" fill="#15171C">Resilience as a trait</text>
+  <text x="180" y="190" text-anchor="middle" font-size="15" fill="#474C57">A fixed amount of toughness</text>
+  <text x="180" y="212" text-anchor="middle" font-size="15" fill="#474C57">you either have or do not</text>
+
+  <!-- Process view box -->
+  <rect x="360" y="120" width="280" height="120" rx="12" fill="#DA291C"/>
+  <text x="500" y="160" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Resilience as a process</text>
+  <text x="500" y="190" text-anchor="middle" font-size="15" fill="#ffffff">Adaptive patterns that can be</text>
+  <text x="500" y="212" text-anchor="middle" font-size="15" fill="#ffffff">supported across a situation</text>
+
+  <!-- timeline arc -->
+  <text x="40" y="290" font-size="15" font-weight="600" fill="#15171C">What the process view adds</text>
+  <line x1="44" y1="320" x2="636" y2="320" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="636,312 650,320 636,328" fill="#8a909c"/>
+
+  <circle cx="120" cy="320" r="7" fill="#DA291C"/>
+  <text x="120" y="352" text-anchor="middle" font-size="14" fill="#474C57">Disruption</text>
+
+  <circle cx="300" cy="320" r="7" fill="#DA291C"/>
+  <text x="300" y="352" text-anchor="middle" font-size="14" fill="#474C57">Response</text>
+
+  <circle cx="450" cy="320" r="7" fill="#DA291C"/>
+  <text x="450" y="352" text-anchor="middle" font-size="14" fill="#474C57">Support</text>
+
+  <circle cx="600" cy="320" r="7" fill="#DA291C"/>
+  <text x="600" y="352" text-anchor="middle" font-size="14" fill="#474C57">Reintegration</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 5. Resilience as a process, not a personality.</text>
+</svg>

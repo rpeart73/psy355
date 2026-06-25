@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">A clear support request</text>
+  <text x="40" y="74" font-size="16" fill="#666">Three parts that make a request easy to answer</text>
+
+  <!-- Part 1: Issue -->
+  <rect x="40" y="130" width="600" height="80" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <circle cx="80" cy="170" r="18" fill="#DA291C"/>
+  <text x="80" y="176" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">1</text>
+  <text x="120" y="164" font-size="17" font-weight="700" fill="#15171C">Name the issue</text>
+  <text x="120" y="190" font-size="15" fill="#474C57">State the barrier plainly, without confession or apology.</text>
+
+  <!-- Part 2: Step tried -->
+  <rect x="40" y="222" width="600" height="80" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <circle cx="80" cy="262" r="18" fill="#DA291C"/>
+  <text x="80" y="268" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">2</text>
+  <text x="120" y="256" font-size="17" font-weight="700" fill="#15171C">Name the step you tried</text>
+  <text x="120" y="282" font-size="15" fill="#474C57">Show the attempt so the other person can see where it stalled.</text>
+
+  <!-- Part 3: Help needed -->
+  <rect x="40" y="314" width="600" height="80" rx="12" fill="#DA291C"/>
+  <circle cx="80" cy="354" r="18" fill="#ffffff"/>
+  <text x="80" y="360" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">3</text>
+  <text x="120" y="348" font-size="17" font-weight="700" fill="#ffffff">Name the specific help needed</text>
+  <text x="120" y="374" font-size="15" fill="#ffffff">Ask for the one thing that would move the step forward.</text>
+</svg>

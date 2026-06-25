@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Richardson's resilience model</text>
+  <text x="40" y="74" font-size="16" fill="#666">Resilience as disruption, reintegration, and growth</text>
+
+  <!-- Step 1: Disruption -->
+  <rect x="40" y="150" width="170" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="125" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Disruption</text>
+  <text x="125" y="222" text-anchor="middle" font-size="15" fill="#15171C">A stressor breaks</text>
+  <text x="125" y="242" text-anchor="middle" font-size="15" fill="#15171C">a settled balance</text>
+
+  <!-- arrow 1 -> 2 -->
+  <line x1="214" y1="210" x2="248" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="248,202 262,210 248,218" fill="#8a909c"/>
+
+  <!-- Step 2: Reintegration -->
+  <rect x="266" y="150" width="170" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="351" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Reintegration</text>
+  <text x="351" y="222" text-anchor="middle" font-size="15" fill="#15171C">The person responds</text>
+  <text x="351" y="242" text-anchor="middle" font-size="15" fill="#15171C">and reorganizes</text>
+
+  <!-- arrow 2 -> 3 -->
+  <line x1="440" y1="210" x2="474" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="474,202 488,210 474,218" fill="#8a909c"/>
+
+  <!-- Step 3: Growth -->
+  <rect x="492" y="150" width="170" height="120" rx="12" fill="#DA291C"/>
+  <text x="577" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Growth</text>
+  <text x="577" y="222" text-anchor="middle" font-size="15" fill="#ffffff">Reintegration can end</text>
+  <text x="577" y="242" text-anchor="middle" font-size="15" fill="#ffffff">in a stronger balance</text>
+
+  <text x="40" y="324" font-size="15" fill="#474C57">The model treats recovery as a path through stages, not a personal trait.</text>
+  <text x="40" y="356" font-size="15" fill="#474C57">Resource and support shape which reintegration becomes possible.</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">Richardson (2011). Resilience as disruption, reintegration, and growth.</text>
+</svg>

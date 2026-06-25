@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">From self criticism to a response</text>
+  <text x="40" y="74" font-size="16" fill="#666">The three step move you can rehearse</text>
+
+  <!-- Self criticism start -->
+  <rect x="40" y="118" width="600" height="56" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="64" y="152" font-size="16" fill="#474C57">Self criticism: a difficulty turned into a verdict about your worth</text>
+
+  <!-- down arrow -->
+  <line x1="340" y1="176" x2="340" y2="196" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="332,196 340,210 348,196" fill="#8a909c"/>
+
+  <!-- Step 1 -->
+  <rect x="14" y="226" width="200" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <circle cx="44" cy="258" r="14" fill="#DA291C"/>
+  <text x="44" y="263" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">1</text>
+  <text x="68" y="263" font-size="17" font-weight="600" fill="#15171C">Name the</text>
+  <text x="34" y="296" font-size="17" font-weight="600" fill="#15171C">difficulty</text>
+  <text x="34" y="324" font-size="13" fill="#666">Stay honest</text>
+
+  <line x1="218" y1="286" x2="232" y2="286" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="232,279 244,286 232,293" fill="#8a909c"/>
+
+  <!-- Step 2 -->
+  <rect x="250" y="226" width="200" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <circle cx="280" cy="258" r="14" fill="#DA291C"/>
+  <text x="280" y="263" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">2</text>
+  <text x="304" y="263" font-size="17" font-weight="600" fill="#15171C">Remove the</text>
+  <text x="270" y="296" font-size="17" font-weight="600" fill="#15171C">insult</text>
+  <text x="270" y="324" font-size="13" fill="#666">Keep it accurate</text>
+
+  <line x1="454" y1="286" x2="468" y2="286" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="468,279 480,286 468,293" fill="#8a909c"/>
+
+  <!-- Step 3 -->
+  <rect x="486" y="226" width="180" height="120" rx="12" fill="#DA291C"/>
+  <circle cx="516" cy="258" r="14" fill="#ffffff"/>
+  <text x="516" y="263" text-anchor="middle" font-size="15" font-weight="700" fill="#DA291C">3</text>
+  <text x="540" y="263" font-size="17" font-weight="600" fill="#ffffff">Choose the</text>
+  <text x="506" y="296" font-size="17" font-weight="600" fill="#ffffff">next action</text>
+  <text x="506" y="324" font-size="13" fill="#ffffff">Keep moving</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">Neff (2003); the disciplined form of self compassion.</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Three beliefs that are not the same</text>
+  <text x="40" y="74" font-size="16" fill="#666">Self-efficacy is the one tied to a specific task</text>
+
+  <!-- Confidence -->
+  <rect x="40" y="150" width="180" height="130" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="130" y="190" text-anchor="middle" font-size="18" font-weight="700" fill="#15171C">Confidence</text>
+  <text x="130" y="220" text-anchor="middle" font-size="14" fill="#474C57">A general sense</text>
+  <text x="130" y="240" text-anchor="middle" font-size="14" fill="#474C57">that things will</text>
+  <text x="130" y="260" text-anchor="middle" font-size="14" fill="#474C57">go well</text>
+
+  <!-- Self-esteem -->
+  <rect x="250" y="150" width="180" height="130" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="340" y="190" text-anchor="middle" font-size="18" font-weight="700" fill="#15171C">Self-esteem</text>
+  <text x="340" y="220" text-anchor="middle" font-size="14" fill="#474C57">A judgment of</text>
+  <text x="340" y="240" text-anchor="middle" font-size="14" fill="#474C57">your own worth</text>
+  <text x="340" y="260" text-anchor="middle" font-size="14" fill="#474C57">as a person</text>
+
+  <!-- Self-efficacy -->
+  <rect x="460" y="150" width="180" height="130" rx="12" fill="#DA291C"/>
+  <text x="550" y="190" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Self-efficacy</text>
+  <text x="550" y="220" text-anchor="middle" font-size="14" fill="#ffffff">Task-specific</text>
+  <text x="550" y="240" text-anchor="middle" font-size="14" fill="#ffffff">confidence: can I</text>
+  <text x="550" y="260" text-anchor="middle" font-size="14" fill="#ffffff">do this task?</text>
+
+  <text x="40" y="332" font-size="15" fill="#474C57">Act I of the week: distinguish confidence, self-esteem, and self-efficacy.</text>
+  <text x="40" y="360" font-size="15" fill="#474C57">Self-efficacy points at a task, so it is the belief that changes effort.</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 4. Motivation, self-efficacy, and academic confidence.</text>
+</svg>

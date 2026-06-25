@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">A problem solving sequence</text>
+  <text x="40" y="74" font-size="16" fill="#666">Working a realistic barrier one step at a time, not all at once</text>
+
+  <!-- Step 1: Name -->
+  <rect x="40" y="150" width="170" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="125" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Name</text>
+  <text x="125" y="222" text-anchor="middle" font-size="15" fill="#15171C">State the barrier</text>
+  <text x="125" y="242" text-anchor="middle" font-size="15" fill="#15171C">in plain words</text>
+
+  <!-- arrow 1 -> 2 -->
+  <line x1="214" y1="210" x2="248" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="248,202 262,210 248,218" fill="#8a909c"/>
+
+  <!-- Step 2: Try -->
+  <rect x="266" y="150" width="170" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="351" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Try</text>
+  <text x="351" y="222" text-anchor="middle" font-size="15" fill="#15171C">Take one step</text>
+  <text x="351" y="242" text-anchor="middle" font-size="15" fill="#15171C">and watch what happens</text>
+
+  <!-- arrow 2 -> 3 -->
+  <line x1="440" y1="210" x2="474" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="474,202 488,210 474,218" fill="#8a909c"/>
+
+  <!-- Step 3: Ask -->
+  <rect x="492" y="150" width="170" height="120" rx="12" fill="#DA291C"/>
+  <text x="577" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Ask</text>
+  <text x="577" y="222" text-anchor="middle" font-size="15" fill="#ffffff">Request specific help</text>
+  <text x="577" y="242" text-anchor="middle" font-size="15" fill="#ffffff">where the step stalled</text>
+
+  <text x="40" y="320" font-size="15" font-weight="600" fill="#15171C">The sequence keeps the problem from becoming the whole story</text>
+  <text x="40" y="352" font-size="15" fill="#474C57">Each step is small enough to start, so the barrier stays workable.</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 11. Problem solving, communication, and help seeking.</text>
+</svg>

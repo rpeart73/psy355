@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">When a strategy is not working</text>
+  <text x="40" y="74" font-size="16" fill="#666">Monitoring catches the gap; adjusting closes it</text>
+
+  <!-- Before -->
+  <rect x="40" y="150" width="180" height="110" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="130" y="185" text-anchor="middle" font-size="17" font-weight="700" fill="#15171C">Before</text>
+  <text x="130" y="212" text-anchor="middle" font-size="15" fill="#15171C">Plan a study</text>
+  <text x="130" y="232" text-anchor="middle" font-size="15" fill="#15171C">approach</text>
+  <line x1="224" y1="205" x2="256" y2="205" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="256,197 270,205 256,213" fill="#8a909c"/>
+
+  <!-- During -->
+  <rect x="274" y="150" width="180" height="110" rx="12" fill="#fdeceb" stroke="#DA291C" stroke-width="2"/>
+  <text x="364" y="185" text-anchor="middle" font-size="17" font-weight="700" fill="#DA291C">During</text>
+  <text x="364" y="212" text-anchor="middle" font-size="15" fill="#15171C">Notice it is</text>
+  <text x="364" y="232" text-anchor="middle" font-size="15" fill="#15171C">not working</text>
+  <line x1="458" y1="205" x2="490" y2="205" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="490,197 504,205 490,213" fill="#8a909c"/>
+
+  <!-- After -->
+  <rect x="508" y="150" width="150" height="110" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="583" y="185" text-anchor="middle" font-size="17" font-weight="700" fill="#15171C">After</text>
+  <text x="583" y="212" text-anchor="middle" font-size="15" fill="#15171C">Reflect and</text>
+  <text x="583" y="232" text-anchor="middle" font-size="15" fill="#15171C">revise the habit</text>
+
+  <text x="40" y="318" font-size="15" fill="#474C57">Where do you usually notice the strategy is failing:</text>
+  <text x="40" y="342" font-size="15" font-weight="600" fill="#DA291C">before, during, or after the task?</text>
+  <text x="40" y="382" font-size="14" fill="#474C57">The earlier you notice, the cheaper the adjustment.</text>
+
+  <text x="40" y="416" font-size="13" fill="#666">PSY355 Week 2. Monitoring and adjustment.</text>
+</svg>

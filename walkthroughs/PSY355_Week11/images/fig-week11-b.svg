@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Help seeking is a strategy, not a failure</text>
+  <text x="40" y="74" font-size="16" fill="#666">Asking for help is evidence of learning, not evidence of weakness</text>
+
+  <!-- Weakness framing box -->
+  <rect x="40" y="120" width="280" height="130" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="180" y="158" text-anchor="middle" font-size="18" font-weight="700" fill="#15171C">Help as weakness</text>
+  <text x="180" y="188" text-anchor="middle" font-size="15" fill="#474C57">Asking means you could not</text>
+  <text x="180" y="210" text-anchor="middle" font-size="15" fill="#474C57">manage it on your own,</text>
+  <text x="180" y="232" text-anchor="middle" font-size="15" fill="#474C57">so the barrier stays stuck</text>
+
+  <!-- Strength framing box -->
+  <rect x="360" y="120" width="280" height="130" rx="12" fill="#DA291C"/>
+  <text x="500" y="158" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Help as a strategy</text>
+  <text x="500" y="188" text-anchor="middle" font-size="15" fill="#ffffff">Asking is a learning move</text>
+  <text x="500" y="210" text-anchor="middle" font-size="15" fill="#ffffff">that adds a resource,</text>
+  <text x="500" y="232" text-anchor="middle" font-size="15" fill="#ffffff">so the barrier becomes workable</text>
+
+  <!-- arrow between framings -->
+  <line x1="322" y1="185" x2="356" y2="185" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="356,177 370,185 356,193" fill="#8a909c"/>
+
+  <text x="40" y="300" font-size="15" font-weight="600" fill="#15171C">What changes when the framing changes</text>
+  <text x="40" y="332" font-size="15" fill="#474C57">A clear request names the issue, the step already tried, and the help needed.</text>
+  <text x="40" y="358" font-size="15" fill="#474C57">The request does the work that silence cannot.</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 11. Asking for help without treating help as failure.</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">How task-specific confidence changes effort</text>
+  <text x="40" y="74" font-size="16" fill="#666">A small success builds belief, which builds the next attempt</text>
+
+  <!-- Node 1: Mastery experience -->
+  <rect x="40" y="150" width="180" height="110" rx="12" fill="#DA291C"/>
+  <text x="130" y="190" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">Mastery</text>
+  <text x="130" y="212" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">experience</text>
+  <text x="130" y="238" text-anchor="middle" font-size="14" fill="#ffffff">A small success</text>
+
+  <!-- arrow 1 -> 2 -->
+  <line x1="224" y1="205" x2="258" y2="205" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="258,197 272,205 258,213" fill="#8a909c"/>
+
+  <!-- Node 2: Self-efficacy -->
+  <rect x="276" y="150" width="180" height="110" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="366" y="190" text-anchor="middle" font-size="17" font-weight="700" fill="#15171C">Self-efficacy</text>
+  <text x="366" y="216" text-anchor="middle" font-size="14" fill="#474C57">Belief that you</text>
+  <text x="366" y="236" text-anchor="middle" font-size="14" fill="#474C57">can do this task</text>
+
+  <!-- arrow 2 -> 3 -->
+  <line x1="460" y1="205" x2="494" y2="205" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="494,197 508,205 494,213" fill="#8a909c"/>
+
+  <!-- Node 3: Effort -->
+  <rect x="512" y="150" width="128" height="110" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="576" y="190" text-anchor="middle" font-size="17" font-weight="700" fill="#15171C">Effort</text>
+  <text x="576" y="216" text-anchor="middle" font-size="14" fill="#474C57">You try, and</text>
+  <text x="576" y="236" text-anchor="middle" font-size="14" fill="#474C57">you persist</text>
+
+  <!-- return loop -->
+  <path d="M 576 264 L 576 320 L 130 320 L 130 264" fill="none" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="122,278 130,264 138,278" fill="#8a909c"/>
+  <text x="353" y="346" text-anchor="middle" font-size="14" fill="#474C57">Effort that pays off creates the next mastery experience</text>
+
+  <text x="40" y="396" font-size="14" fill="#474C57">Confidence is useful when it is tied to action, not to performance.</text>
+  <text x="40" y="424" font-size="13" fill="#666">PSY355 Week 4. Cassidy (2015), academic self-efficacy and resilience.</text>
+</svg>

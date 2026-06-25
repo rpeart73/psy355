@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">From intention to regulation</text>
+  <text x="40" y="74" font-size="16" fill="#666">Wanting to learn is not the same as managing the conditions of learning</text>
+
+  <!-- Intention box -->
+  <rect x="40" y="150" width="240" height="130" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="160" y="190" text-anchor="middle" font-size="19" font-weight="700" fill="#15171C">Intention</text>
+  <text x="160" y="220" text-anchor="middle" font-size="15" fill="#474C57">I want to do well.</text>
+  <text x="160" y="244" text-anchor="middle" font-size="15" fill="#474C57">I mean to study.</text>
+  <text x="160" y="266" text-anchor="middle" font-size="14" fill="#8a909c">A wish, with no plan attached</text>
+
+  <!-- arrow -->
+  <line x1="284" y1="215" x2="372" y2="215" stroke="#DA291C" stroke-width="3.5"/>
+  <polygon points="372,206 388,215 372,224" fill="#DA291C"/>
+  <text x="335" y="200" text-anchor="middle" font-size="13" font-weight="600" fill="#DA291C">regulate</text>
+
+  <!-- Regulation box -->
+  <rect x="400" y="150" width="240" height="130" rx="12" fill="#DA291C"/>
+  <text x="520" y="190" text-anchor="middle" font-size="19" font-weight="700" fill="#ffffff">Regulation</text>
+  <text x="520" y="220" text-anchor="middle" font-size="15" fill="#ffffff">I plan the task.</text>
+  <text x="520" y="244" text-anchor="middle" font-size="15" fill="#ffffff">I monitor and adjust.</text>
+  <text x="520" y="266" text-anchor="middle" font-size="14" fill="#ffd9d5">Action on the real conditions</text>
+
+  <text x="40" y="344" font-size="15" fill="#474C57">The central question: how do students move from wanting to learn</text>
+  <text x="40" y="368" font-size="15" fill="#474C57">to managing the actual conditions of learning?</text>
+
+  <text x="40" y="408" font-size="13" fill="#666">PSY355 Week 2. Self-regulated learning and study strategy.</text>
+</svg>

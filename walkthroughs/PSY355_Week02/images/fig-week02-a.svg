@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">The self-regulated learning cycle</text>
+  <text x="40" y="74" font-size="16" fill="#666">Learning as a sequence you can manage, not a single push of effort</text>
+
+  <!-- Phase 1: Forethought / Planning -->
+  <rect x="40" y="150" width="170" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="125" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Forethought</text>
+  <text x="125" y="222" text-anchor="middle" font-size="15" fill="#15171C">Plan the task and</text>
+  <text x="125" y="242" text-anchor="middle" font-size="15" fill="#15171C">set the conditions</text>
+
+  <!-- arrow 1 -> 2 -->
+  <line x1="214" y1="210" x2="248" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="248,202 262,210 248,218" fill="#8a909c"/>
+
+  <!-- Phase 2: Performance / Monitoring -->
+  <rect x="266" y="150" width="170" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="351" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Performance</text>
+  <text x="351" y="222" text-anchor="middle" font-size="15" fill="#15171C">Monitor and</text>
+  <text x="351" y="242" text-anchor="middle" font-size="15" fill="#15171C">adjust while you work</text>
+
+  <!-- arrow 2 -> 3 -->
+  <line x1="440" y1="210" x2="474" y2="210" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="474,202 488,210 474,218" fill="#8a909c"/>
+
+  <!-- Phase 3: Self-reflection -->
+  <rect x="492" y="150" width="170" height="120" rx="12" fill="#DA291C"/>
+  <text x="577" y="196" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Self-reflection</text>
+  <text x="577" y="222" text-anchor="middle" font-size="15" fill="#ffffff">Judge what worked</text>
+  <text x="577" y="242" text-anchor="middle" font-size="15" fill="#ffffff">and what to change</text>
+
+  <!-- return arrow 3 -> 1 -->
+  <path d="M 577 274 L 577 330 L 125 330 L 125 274" fill="none" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="117,288 125,274 133,288" fill="#8a909c"/>
+  <text x="351" y="356" text-anchor="middle" font-size="14" fill="#474C57">Reflection feeds the next plan: the cycle repeats</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 2. Planning, monitoring, adjusting, reflecting.</text>
+</svg>

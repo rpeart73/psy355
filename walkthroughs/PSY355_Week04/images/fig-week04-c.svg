@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Shrink the task to the smallest next action</text>
+  <text x="40" y="74" font-size="16" fill="#666">A mastery experience you can actually create this week</text>
+
+  <!-- Big difficult task -->
+  <rect x="40" y="110" width="600" height="56" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="340" y="144" text-anchor="middle" font-size="18" font-weight="700" fill="#15171C">One difficult academic task</text>
+  <line x1="340" y1="166" x2="340" y2="188" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="333,188 340,200 347,188" fill="#8a909c"/>
+
+  <!-- Ask box -->
+  <rect x="150" y="202" width="380" height="56" rx="12" fill="#f5f7f9" stroke="#DA291C" stroke-width="2"/>
+  <text x="340" y="228" text-anchor="middle" font-size="16" font-weight="600" fill="#15171C">Ask: what is the smallest next action</text>
+  <text x="340" y="250" text-anchor="middle" font-size="16" font-weight="600" fill="#15171C">that would count as progress?</text>
+  <line x1="340" y1="258" x2="340" y2="280" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="333,280 340,292 347,280" fill="#8a909c"/>
+
+  <!-- Smallest action -->
+  <rect x="190" y="294" width="300" height="64" rx="12" fill="#DA291C"/>
+  <text x="340" y="322" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">The smallest next action</text>
+  <text x="340" y="346" text-anchor="middle" font-size="14" fill="#ffffff">Small enough to finish, real enough to count</text>
+
+  <text x="40" y="392" font-size="14" fill="#474C57">Evidence that you are still moving keeps confidence tied to action.</text>
+  <text x="40" y="420" font-size="13" fill="#666">PSY355 Week 4. Design one small action that can create a mastery experience.</text>
+</svg>

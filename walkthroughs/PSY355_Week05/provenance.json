@@ -1,0 +1,15 @@
+{
+  "course": "PSY355",
+  "week": 5,
+  "title": "Resilience as Process, Not Personality",
+  "term": "Fall 2026",
+  "slides": 18,
+  "content_pairs": 5,
+  "images_present": 2,
+  "images_missing": 3,
+  "source_yaml": "../content/PSY355/week05.yaml",
+  "logo_embedded": true,
+  "rel": "PSY355_Week05/index.html",
+  "generated": "2026-06-25T19:58:05",
+  "generator": "web_builder.py (Reveal.js 5.1.0)"
+}

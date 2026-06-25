@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
+  <rect width="680" height="440" fill="#ffffff"/>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">A discipline, not indulgence</text>
+  <text x="40" y="74" font-size="16" fill="#666">Self compassion keeps you learning after a setback</text>
+
+  <!-- What it is NOT -->
+  <rect x="40" y="120" width="280" height="240" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
+  <text x="180" y="158" text-anchor="middle" font-size="18" font-weight="700" fill="#15171C">Not this</text>
+  <text x="64" y="200" font-size="15" fill="#474C57">Lowering your standards</text>
+  <text x="64" y="234" font-size="15" fill="#474C57">Excusing poor effort</text>
+  <text x="64" y="268" font-size="15" fill="#474C57">Avoiding responsibility</text>
+  <text x="64" y="302" font-size="15" fill="#474C57">Pretending the difficulty</text>
+  <text x="64" y="322" font-size="15" fill="#474C57">is not there</text>
+
+  <!-- arrow -->
+  <line x1="328" y1="240" x2="352" y2="240" stroke="#8a909c" stroke-width="3"/>
+  <polygon points="352,232 366,240 352,248" fill="#8a909c"/>
+
+  <!-- What it IS -->
+  <rect x="372" y="120" width="268" height="240" rx="12" fill="#DA291C"/>
+  <text x="506" y="158" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">This instead</text>
+  <text x="396" y="200" font-size="15" fill="#ffffff">A teachable response</text>
+  <text x="396" y="220" font-size="15" fill="#ffffff">to difficulty</text>
+  <text x="396" y="256" font-size="15" fill="#ffffff">A healthy attitude</text>
+  <text x="396" y="276" font-size="15" fill="#ffffff">toward yourself</text>
+  <text x="396" y="312" font-size="15" fill="#ffffff">An accurate and</text>
+  <text x="396" y="332" font-size="15" fill="#ffffff">humane response</text>
+
+  <text x="40" y="404" font-size="13" fill="#666">Neff (2003), self compassion as a teachable response to difficulty.</text>
+</svg>
