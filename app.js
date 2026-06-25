@@ -143,6 +143,7 @@ function ic(name,size,w){ var p=ICON[name]||ICON.grid,s=size||20,out='<svg width
 /* ---------- navigation ---------- */
 var ROUTES=[
   {id:'home',label:'Home',hash:'#/home',icon:'grid'},
+  {id:'walkthrough',label:'Weekly Walkthrough',url:'https://rpeart73.github.io/seneca-walkthroughs/PSY355.html',icon:'layers',external:true},
   {id:'glossary',label:'Glossary & Thinkers',hash:'#/glossary',icon:'book'},
   {id:'cards',label:'Self-check',hash:'#/cards',icon:'clipboard'},
   {id:'compare',label:'Compare ideas',hash:'#/compare',icon:'columns'}
@@ -150,7 +151,8 @@ var ROUTES=[
 function renderNav(active){
   var nav=ROUTES.map(function(r){
     var on=r.id===active;
-    return '<a href="'+r.hash+'" aria-current="'+(on?'page':'false')+'" style="display:flex;align-items:center;gap:11px;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:'+(on?'600':'500')+';background:'+(on?'#EEF1F5':'transparent')+';color:'+(on?'#15171C':'#474C57')+';text-decoration:none;margin-bottom:2px"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:'+(on?'var(--red)':'#8a909c')+'">'+ic(r.icon,19)+'</span><span style="flex:1">'+esc(r.label)+'</span></a>';
+    var href=r.external?r.url:r.hash; var ext=r.external?' target="_blank" rel="noopener"':'';
+    return '<a href="'+href+'"'+ext+' aria-current="'+(on?'page':'false')+'" style="display:flex;align-items:center;gap:11px;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:'+(on?'600':'500')+';background:'+(on?'#EEF1F5':'transparent')+';color:'+(on?'#15171C':'#474C57')+';text-decoration:none;margin-bottom:2px"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:'+(on?'var(--red)':'#8a909c')+'">'+ic(r.icon,19)+'</span><span style="flex:1">'+esc(r.label)+'</span></a>';
   }).join('');
   var weeks='<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--hair)"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#8a909c;padding:0 12px 8px">WEEKS</div>'+
     (D.weeks||[]).map(function(w){ var p=phaseOf(w.phaseId);
