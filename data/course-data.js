@@ -175,8 +175,61 @@ window.PSY355 = {
    ],
    "reflection": "What is one learning habit you already have that deserves to be strengthened rather than judged?",
    "slides": {
-    "available": false,
-    "count": 0
+    "deck": [
+     {
+      "kind": "title",
+      "eyebrow": "Week 01 - Learning and Mindset",
+      "title": "How Learning, Mindset, and Resilience Fit Together",
+      "sub": "What changes when you treat learning as a practice, not a verdict on ability?"
+     },
+     {
+      "kind": "statement",
+      "text": "Learning is something you <em>do</em>, not something you <em>are</em>.",
+      "note": "That single shift reorganizes the whole course."
+     },
+     {
+      "kind": "points",
+      "title": "Three threads, one fabric",
+      "lead": "This course braids three capacities together. None of them is fixed.",
+      "points": [
+       "<b>Mindset</b>: the story you tell about ability, effort, and challenge.",
+       "<b>Self-regulated learning</b>: how you actually manage the conditions of studying.",
+       "<b>Resilience</b>: how you adapt and recover when difficulty arrives."
+      ]
+     },
+     {
+      "kind": "concept",
+      "term": "Mindset",
+      "def": "A belief pattern about ability, effort, challenge, and change. Handled carefully, it is a lens you can notice and adjust, not a label you are stuck with.",
+      "cite": "Yeager and Dweck (2020)"
+     },
+     {
+      "kind": "concept",
+      "term": "Resilience",
+      "def": "A process of adapting and recovering through support, practice, and context, not a trait that some people simply have and others lack.",
+      "cite": "Ungar (2011)"
+     },
+     {
+      "kind": "statement",
+      "text": "A hard week is a set of <em>conditions to manage</em>, not proof of a flaw in you.",
+      "note": "Well being shifts with rest, support, workload, and circumstance."
+     },
+     {
+      "kind": "reflect",
+      "question": "What is one learning habit you already have that deserves to be strengthened, rather than judged?"
+     },
+     {
+      "kind": "close",
+      "title": "For this week",
+      "points": [
+       "<b>Read</b> Panadero (2017) on self-regulated learning, and Yeager and Dweck (2020) on what the mindset debate really shows.",
+       "<b>Try</b> a personal learning map: name the conditions that help or block your learning.",
+       "<b>Bring</b> one honest question to class."
+      ]
+     }
+    ],
+    "available": true,
+    "count": 8
    },
    "video": {}
   },
@@ -286,6 +339,7 @@ window.PSY355 = {
    ],
    "reflection": "Where do you usually notice that a strategy is not working: before, during, or after the task?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -402,6 +456,7 @@ window.PSY355 = {
    ],
    "reflection": "What support would make a growth mindset more realistic for you this term?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -518,6 +573,7 @@ window.PSY355 = {
    ],
    "reflection": "What is the smallest piece of evidence you could give yourself that you are still moving?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -629,6 +685,7 @@ window.PSY355 = {
    ],
    "reflection": "What support made a past recovery possible, even if you did not name it that way at the time?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -750,6 +807,7 @@ window.PSY355 = {
    ],
    "reflection": "What kind of support is missing when people tell students to just be resilient?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -866,6 +924,7 @@ window.PSY355 = {
    ],
    "reflection": "What would recovery look like in a realistic, ordinary form this week?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -977,6 +1036,7 @@ window.PSY355 = {
    ],
    "reflection": "What would you say to another student in your situation, and why do you deserve the same accuracy?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -1093,6 +1153,7 @@ window.PSY355 = {
    ],
    "reflection": "Where might changing the method be the most responsible way to keep going?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -1209,6 +1270,7 @@ window.PSY355 = {
    ],
    "reflection": "What is one experience from this term that makes more sense when you name the concept behind it?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -1325,6 +1387,7 @@ window.PSY355 = {
    ],
    "reflection": "What would change if asking for help counted as evidence of learning rather than evidence of weakness?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -1441,6 +1504,7 @@ window.PSY355 = {
    ],
    "reflection": "Which practice from the course is most likely to travel with you, and what makes it realistic?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -1562,6 +1626,7 @@ window.PSY355 = {
    ],
    "reflection": "Which course idea would you trust enough to use when things are not going smoothly?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },
@@ -1688,6 +1753,7 @@ window.PSY355 = {
    ],
    "reflection": "What is one idea from this course that you can now explain to someone else in plain language?",
    "slides": {
+    "deck": [],
     "available": false,
     "count": 0
    },

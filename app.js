@@ -46,7 +46,34 @@ var CSS = [
 ".cmpgrid{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}",
 ".cmppick{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:none;border-bottom:1px solid var(--raised);padding:10px 12px;background:none}",
 ".cmpcol{flex:none;width:288px;background:var(--surface);border:1px solid var(--hair);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}",
-"@media (max-width:760px){.cmpgrid{grid-template-columns:1fr}}"
+"@media (max-width:760px){.cmpgrid{grid-template-columns:1fr}}",
+".deck{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;background:radial-gradient(1100px 560px at 50% -8%, #E6EDF5, #F7F8FA)}",
+".deck-top{display:flex;align-items:center;gap:14px;padding:14px 20px}",
+".deck-top .pin{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink-faint);white-space:nowrap}",
+".deck-prog{flex:1;height:5px;background:var(--hair);border-radius:3px;overflow:hidden}",
+".deck-prog i{display:block;height:100%;background:var(--red);border-radius:3px;transition:width .35s cubic-bezier(.2,.7,.2,1)}",
+".deck-close{border:1px solid var(--hair);background:var(--surface);border-radius:999px;padding:8px 15px;font-weight:600;color:var(--ink);white-space:nowrap}",
+".deck-stage{flex:1;display:flex;align-items:center;justify-content:center;padding:18px 24px 0;min-height:0}",
+".deck-card{width:min(880px,100%);max-height:100%;overflow:auto;background:var(--surface);border:1px solid var(--hair);border-radius:22px;box-shadow:0 24px 70px rgba(27,42,74,.18);padding:clamp(28px,5vw,56px);position:relative;animation:deckIn .45s cubic-bezier(.2,.7,.2,1) both}",
+"@keyframes deckIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}",
+".deck-card .strip{position:absolute;top:0;left:0;right:0;height:7px;border-radius:22px 22px 0 0}",
+".deck-eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent,#3A6EA5);font-weight:600}",
+".deck-h{font-size:clamp(1.7rem,4.2vw,2.7rem);font-weight:700;line-height:1.12;color:var(--navy);margin:.32em 0 .2em;letter-spacing:-.01em}",
+".deck-sub{font-size:clamp(1.05rem,2.1vw,1.3rem);color:var(--ink-soft);line-height:1.5;margin:0}",
+".deck-statement{font-size:clamp(1.5rem,3.7vw,2.5rem);font-weight:600;line-height:1.24;color:var(--ink);margin:0}",
+".deck-statement em{font-style:normal;color:var(--red)}",
+".deck-points{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-direction:column;gap:15px}",
+".deck-points li{font-size:clamp(1.05rem,2.1vw,1.28rem);line-height:1.45;color:var(--ink);padding-left:22px;position:relative;opacity:0;transform:translateY(9px);transition:opacity .42s ease,transform .42s cubic-bezier(.2,.7,.2,1)}",
+".deck-points li.show{opacity:1;transform:none}",
+".deck-points li:before{content:'';position:absolute;left:0;top:.6em;width:10px;height:10px;border-radius:50%;background:var(--accent,#3A6EA5)}",
+".deck-cite{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint);margin-top:20px;border-left:3px solid var(--hair);padding-left:12px}",
+".deck-q{font-size:clamp(1.4rem,3.2vw,2.1rem);font-weight:600;line-height:1.3;color:var(--navy);border-left:4px solid var(--accent,#3A6EA5);padding-left:20px;margin:0}",
+".deck-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px 20px}",
+".deck-btn{border:1px solid var(--hair);background:var(--surface);border-radius:999px;padding:11px 20px;font-weight:600;font-size:.95rem;color:var(--ink);min-height:44px}",
+".deck-btn[disabled]{opacity:.4;cursor:default}",
+".deck-next{background:var(--red);border-color:var(--red);color:#fff}",
+".deck-count{font-family:var(--mono);font-size:.82rem;color:var(--ink-faint)}",
+"@media (prefers-reduced-motion:reduce){.deck-points li{transition:none}.deck-card{animation:none}}"
 ].join("\n");
 (function(){ var s=document.createElement('style'); s.textContent=CSS; document.head.appendChild(s); })();
 
@@ -255,7 +282,8 @@ function weekView(n){
     sec('readings','Readings', (function(){var rs=wk.readings||[];if(!rs.length)return '<p class="muted">Readings will be listed here.</p>';return rs.map(function(r){if(r.type==='head')return '<h4 style="margin:16px 0 6px">'+esc(r.text)+'</h4>';if(r.type==='video')return '<div class="reading">'+(r.label?'<p style="margin:0 0 8px"><b>'+esc(r.label)+'</b></p>':'')+readingMedia(r)+'</div>';if(r.type==='cite')return '<div class="reading"><p style="margin:0 0 .4em">'+linkify(r.text)+'</p>'+readingLink(r)+'</div>';return '<p style="margin:.45em 0">'+esc(r.text)+'</p>';}).join('');})())+
     sec('reflect','Reflection Corner', '<p class="muted">A question to carry through this week. It is not a quiz. There is no right answer. It is here to make you think.</p><blockquote style="border-left:4px solid '+p.accent+';margin:14px 0 0;padding:6px 0 6px 18px;font-size:1.2rem;line-height:1.5">'+esc(wk.reflection||'')+'</blockquote>')+
     sec('references','References', (function(){var rf=wk.references||[];return rf.length?rf.map(function(r){return '<div class="reading"><p style="margin:0">'+linkify(r)+'</p></div>';}).join(''):'<p class="muted">References will be listed here.</p>';})());
-  return head+jump+s;
+  var deckCta=(wk.slides&&(wk.slides.deck||[]).length)?'<section class="card" style="background:linear-gradient(180deg,var(--surface),#FBFCFD);border:1px solid var(--hair)"><div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap"><div style="flex:1;min-width:240px"><div class="eyebrow" style="color:'+p.accent+'">Walkthrough</div><h2 style="margin:0 0 4px">Walk through this week</h2><p class="muted" style="margin:0">A short interactive walkthrough of the week\'s big idea. '+wk.slides.deck.length+' slides, about five minutes.</p></div><button class="btn btn-primary" data-action="deck-open" data-week="'+n+'">Start the walkthrough &rarr;</button></div></section>':'';
+  return head+jump+deckCta+s;
 }
 
 /* ---------- glossary and thinkers, by week ---------- */
@@ -327,6 +355,35 @@ function compareView(){
   return head+'<div class="cmpgrid"><div>'+left+'</div><aside style="position:sticky;top:72px"><div class="card" style="padding:0;overflow:hidden;max-height:calc(100vh - 120px);display:flex;flex-direction:column"><div style="padding:13px 14px;border-bottom:1px solid var(--hair)"><b>Key ideas</b><div class="muted" style="font-size:.78rem;margin-top:2px">'+picked.length+' of 3 selected &middot; tap to add or remove</div></div><div style="overflow:auto">'+picklist+'</div></div></aside></div>';
 }
 
+/* ---------- living slides (interactive walkthrough) ---------- */
+var DECK={n:0,i:0,slides:[],week:0};
+function deckAccent(){ var p=phaseOf((week(DECK.week)||{}).phaseId); return (p&&p.accent)||'#3A6EA5'; }
+function deckSlide(s){
+  if(s.kind==='title') return '<div class="deck-eyebrow">'+(s.eyebrow||'')+'</div><h2 class="deck-h">'+(s.title||'')+'</h2><p class="deck-sub">'+(s.sub||'')+'</p>';
+  if(s.kind==='statement') return '<p class="deck-statement">'+(s.text||'')+'</p>'+(s.note?'<p class="deck-sub" style="margin-top:20px">'+s.note+'</p>':'');
+  if(s.kind==='concept') return '<div class="deck-eyebrow">Concept</div><h2 class="deck-h">'+esc(s.term||'')+'</h2><p class="deck-sub">'+esc(s.def||'')+'</p>'+(s.cite?'<div class="deck-cite">'+esc(s.cite)+'</div>':'');
+  if(s.kind==='reflect') return '<div class="deck-eyebrow">Reflection</div><h2 class="deck-h" style="font-size:clamp(1.15rem,2.4vw,1.45rem);color:var(--ink-faint);font-weight:600;margin-bottom:.5em">Carry this with you</h2><p class="deck-q">'+esc(s.question||'')+'</p>';
+  var pts=(s.points||[]).map(function(x){return '<li>'+x+'</li>';}).join('');
+  return '<div class="deck-eyebrow">'+(s.eyebrow||(s.kind==='close'?'For this week':'Key idea'))+'</div><h2 class="deck-h" style="font-size:clamp(1.5rem,3.2vw,2.1rem)">'+(s.title||'')+'</h2>'+(s.lead?'<p class="deck-sub" style="margin-bottom:4px">'+s.lead+'</p>':'')+'<ul class="deck-points">'+pts+'</ul>';
+}
+function deckRender(){
+  var s=DECK.slides[DECK.n], total=DECK.slides.length, acc=deckAccent(), pts=(s.points||[]);
+  var last=(DECK.n===total-1 && DECK.i>=pts.length);
+  OVERLAY.innerHTML='<div class="deck" role="dialog" aria-modal="true" aria-label="Week '+DECK.week+' walkthrough" style="--accent:'+acc+'">'+
+    '<div class="deck-top"><span class="pin">'+esc((D.course||{}).code||'PSY355')+' &middot; WEEK '+pad(DECK.week)+'</span><div class="deck-prog"><i style="width:'+(100*(DECK.n+1)/total)+'%"></i></div><button class="deck-close" data-action="deck-close" aria-label="Close walkthrough">Close &times;</button></div>'+
+    '<div class="deck-stage"><div class="deck-card"><div class="strip" style="background:'+acc+'"></div>'+deckSlide(s)+'</div></div>'+
+    '<div class="deck-foot"><button class="deck-btn" data-action="deck-prev"'+((DECK.n===0&&DECK.i===0)?' disabled':'')+'>&larr; Back</button><span class="deck-count">'+(DECK.n+1)+' / '+total+'</span><button class="deck-btn deck-next" data-action="deck-next">'+(last?'Finish':'Next &rarr;')+'</button></div>'+
+    '</div>';
+  var lis=OVERLAY.querySelectorAll('.deck-points li');
+  for(var k=0;k<lis.length && k<DECK.i;k++){ lis[k].classList.add('show'); }
+  var nb=OVERLAY.querySelector('.deck-next'); if(nb) nb.focus();
+}
+function deckOpen(wk){ var w=week(wk); if(!w||!w.slides||!(w.slides.deck||[]).length) return; DECK.week=wk; DECK.slides=w.slides.deck; DECK.n=0; DECK.i=0; document.body.style.overflow='hidden'; deckRender(); document.addEventListener('keydown',deckKey); }
+function deckNext(){ var pts=(DECK.slides[DECK.n].points||[]); if(DECK.i<pts.length){ DECK.i++; deckRender(); return; } if(DECK.n<DECK.slides.length-1){ DECK.n++; DECK.i=0; deckRender(); return; } deckClose(); }
+function deckPrev(){ if(DECK.i>0){ DECK.i--; deckRender(); return; } if(DECK.n>0){ DECK.n--; DECK.i=(DECK.slides[DECK.n].points||[]).length; deckRender(); } }
+function deckClose(){ OVERLAY.innerHTML=''; document.body.style.overflow=''; document.removeEventListener('keydown',deckKey); }
+function deckKey(e){ if(e.key==='Escape'){ deckClose(); } else if(e.key==='ArrowRight'||e.key===' '){ e.preventDefault(); deckNext(); } else if(e.key==='ArrowLeft'){ e.preventDefault(); deckPrev(); } }
+
 /* ---------- render dispatch ---------- */
 function render(){
   var h=location.hash||'#/home', path=h.replace(/^#\//,'').split('?')[0], html, active;
@@ -353,6 +410,10 @@ document.addEventListener('click',function(e){
   else if(a==='cmp-hide'){ SHOWSYN=false; render(); }
   else if(a==='home-layout'){ HL=t.getAttribute('data-layout'); MAIN.innerHTML=home(); }
   else if(a==='home-clear'){ HQ=''; MAIN.innerHTML=home(); var hs=document.getElementById('home-search'); if(hs) hs.focus(); }
+  else if(a==='deck-open'){ deckOpen(parseInt(t.getAttribute('data-week'),10)); }
+  else if(a==='deck-next'){ deckNext(); }
+  else if(a==='deck-prev'){ deckPrev(); }
+  else if(a==='deck-close'){ deckClose(); }
 });
 document.addEventListener('keydown',function(e){
   var f=e.target.closest&&e.target.closest('[data-action=flip]');
