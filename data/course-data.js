@@ -118,7 +118,7 @@ window.PSY355 = {
       "Well being is a working state that helps a person cope, act, recover, and contribute, rather than a fixed mood or a private feeling. In this course it is treated as a capacity that shifts with conditions: rest, support, workload, and circumstance all move it. Naming well being this way matters for students, because it reframes a hard week as a change in conditions to manage, not proof of a flaw in the person."
      ],
      "cites": [
-      "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience."
+      "Owen, J. (2023). Psychological resilience: Connecting contemporary psychology to ancient practical philosophy."
      ]
     },
     {
@@ -136,7 +136,7 @@ window.PSY355 = {
       "Resilience is a process of adapting and recovering through support, practice, and context, not a personality trait some people simply have. Understood as a process, it can be supported and built rather than only admired or envied. For a student, this reframing lowers the pressure to be tough alone and raises a more useful question: what response, what support, and what conditions make adaptation possible here."
      ],
      "cites": [
-      "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience."
+      "Ungar, M. (2011). The social ecology of resilience: Addressing contextual and cultural ambiguity of a nascent construct."
      ]
     },
     {
@@ -145,7 +145,7 @@ window.PSY355 = {
       "A learning map is a practical way to name the conditions that help or block learning. Drawn as two columns, what helps me learn and what makes learning harder, it turns vague frustration into specific, workable detail. The value is that conditions can be changed where character cannot, so the map gives a student a starting place to adjust the environment, the timing, or the strategy rather than judging their ability."
      ],
      "cites": [
-      "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience."
+      "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research."
      ]
     }
    ],
@@ -1626,7 +1626,7 @@ window.PSY355 = {
       "Transfer is using learning in a new situation beyond the original course task. It is the real test of whether a concept was learned: a student who can apply mindset, resilience, or self regulation ideas in work, family, or community life has carried the learning, not just passed the class. Transfer rarely happens automatically, so naming where a concept might apply next is part of making course learning durable rather than confined to the term."
      ],
      "cites": [
-      "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience."
+      "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research."
      ]
     },
     {
@@ -1698,7 +1698,7 @@ window.PSY355 = {
   {
    "term": "Well Being",
    "def": "Well being is a working state that helps a person cope, act, recover, and contribute, rather than a fixed mood or a private feeling. In this course it is treated as a capacity that shifts with conditions: rest, support, workload, and circumstance all move it. Naming well being this way matters for students, because it reframes a hard week as a change in conditions to manage, not proof of a flaw in the person.",
-   "cite": "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience.",
+   "cite": "Owen, J. (2023). Psychological resilience: Connecting contemporary psychology to ancient practical philosophy.",
    "weeks": [
     1
    ]
@@ -1714,7 +1714,7 @@ window.PSY355 = {
   {
    "term": "Resilience",
    "def": "Resilience is a process of adapting and recovering through support, practice, and context, not a personality trait some people simply have. Understood as a process, it can be supported and built rather than only admired or envied. For a student, this reframing lowers the pressure to be tough alone and raises a more useful question: what response, what support, and what conditions make adaptation possible here.",
-   "cite": "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience.",
+   "cite": "Ungar, M. (2011). The social ecology of resilience: Addressing contextual and cultural ambiguity of a nascent construct.",
    "weeks": [
     1
    ]
@@ -1722,7 +1722,7 @@ window.PSY355 = {
   {
    "term": "Learning Map",
    "def": "A learning map is a practical way to name the conditions that help or block learning. Drawn as two columns, what helps me learn and what makes learning harder, it turns vague frustration into specific, workable detail. The value is that conditions can be changed where character cannot, so the map gives a student a starting place to adjust the environment, the timing, or the strategy rather than judging their ability.",
-   "cite": "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience.",
+   "cite": "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research.",
    "weeks": [
     1
    ]
@@ -2114,7 +2114,7 @@ window.PSY355 = {
   {
    "term": "Transfer",
    "def": "Transfer is using learning in a new situation beyond the original course task. It is the real test of whether a concept was learned: a student who can apply mindset, resilience, or self regulation ideas in work, family, or community life has carried the learning, not just passed the class. Transfer rarely happens automatically, so naming where a concept might apply next is part of making course learning durable rather than confined to the term.",
-   "cite": "Seneca Polytechnic. PSY355 subject outline: Psychology of Learning: Mindset and Resilience.",
+   "cite": "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research.",
    "weeks": [
     14
    ]
