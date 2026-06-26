@@ -133,9 +133,8 @@ window.PSY355 = {
     "ungar2011",
     "panadero2017"
    ],
-   "url": "https://seneca.primo.exlibrisgroup.com/discovery/search?vid=01SENC_INST:01SENC_NDE&tab=Everything&offset=0&lang=en&query=any%2Ccontains%2CPsychological%20resilience%20Connecting%20contemporary%20psychology%20ancient%20practical%20philosophy",
-   "fulltext": false,
-   "senecaLib": true
+   "url": "https://ueaeprints.uea.ac.uk/id/eprint/90543/1/Psychological_Resilience_Accepted_Manuscript.pdf",
+   "fulltext": true
   },
   {
    "id": "yeager-dweck2020",
