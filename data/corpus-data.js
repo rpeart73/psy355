@@ -482,7 +482,7 @@ window.PSY355 = {
    "access": "library",
    "title": "The role of self compassion and psychological flexibility in the relationship between perseverance and life satisfaction among academics",
    "authors": "Esref Nas, Metin Taytas, and Mehmet Siddik Vangolu",
-   "year": 2026,
+   "year": 2025,
    "themes": [
     "wellbeing",
     "resilience"
