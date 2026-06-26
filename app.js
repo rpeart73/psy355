@@ -1,508 +1,702 @@
-/* BFS218 Atlas: learning companion. Vanilla JS, self-contained, no build step.
-   Companion to Blackboard: no assessment, no student-to-student interaction here. */
-(function(){
-"use strict";
-var D = window.PSY355 || {};
-var MAIN = document.getElementById('main');
-var NAV = document.getElementById('nav');
-var OVERLAY = document.getElementById('overlay');
+/* SOC122 Corpus: the course source library. Vanilla JS, no build step, no framework.
+   Organized by WEEK (the course arc). Each content week pairs one Western reading with
+   the course readings, week by week. A companion to Blackboard:
+   no accounts, no grading, no student-to-student interaction.
+   Saved + compare live on the student's own device (localStorage). */
+(function () {
+  'use strict';
+  var D = window.PSY355;
+  var MC = window.PSY355_MC || {};
+  var HAS_EYE = !!(D.course && D.course.frame);
+  if (!D) { document.getElementById('app').textContent = 'Course data did not load.'; return; }
 
-/* ---------- injected styles for richer components ---------- */
-var CSS = [
-"#hero{position:relative;overflow:hidden;border-radius:16px;padding:32px clamp(22px,5vw,42px);margin-bottom:22px;color:#fff;background:#1B2A4A;border:1px solid #1B2A4A}",
-"#hero .htag{font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:#F2A900}",
-"#hero h1{font-size:clamp(1.9rem,4.4vw,2.9rem);margin:.18em 0 .12em;color:#fff}",
-"#hero .hsub{font-size:1.15rem;color:rgba(255,255,255,.82)}",
-"#hero .hcontour{position:absolute;inset:0;opacity:.5;pointer-events:none}",
-"#hero .hactions{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px}",
-".toolgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}",
-".toolcard{display:block;text-decoration:none;color:inherit;border:1px solid var(--hair);border-radius:14px;padding:18px;background:var(--surface);transition:transform .15s,border-color .15s}",
-".toolcard:hover{transform:translateY(-2px);border-color:#cfc9bb}",
-".toolcard .ic{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:10px}",
-".wkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}",
-".wktile{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:#1A1A1A;border:1px solid var(--hair);border-radius:12px;padding:14px;min-height:104px;transition:transform .15s}",
-".wktile:hover{transform:translateY(-2px)}",
-".wktile .wn{font-family:var(--mono);font-size:.74rem;font-weight:600}",
-".wktile b{font-size:.98rem;line-height:1.25}",
-".cmap{display:flex;gap:6px;overflow-x:auto;padding:14px 4px 8px;border:1px solid var(--hair);border-radius:12px;background:var(--surface)}",
-".cphase{display:flex;flex-direction:column;gap:6px}",
-".cphase .pl{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;color:#54585A;padding:0 4px}",
-".ccols{display:flex;gap:6px}",
-".ccol{min-width:50px;display:flex;flex-direction:column;align-items:center;gap:5px;border-radius:8px;padding:6px 4px}",
-".ccol .cw{font-family:var(--mono);font-size:.66rem;color:#54585A}",
-".cpin{width:20px;height:20px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.18);cursor:pointer}",
-".cpin:focus-visible{outline:3px solid var(--focus);outline-offset:2px}",
-".cempty{width:10px;height:10px;border-radius:50%;background:#EDEAE2}",
-".glossweek{border:1px solid var(--hair);border-radius:12px;padding:6px 16px 14px;margin-bottom:14px;background:var(--surface)}",
-".cite{font-size:.85rem;color:#4A4A4A;border-left:3px solid var(--hair);padding-left:10px;margin:.5em 0 0}",
-".rlink{font-weight:600;font-size:.9rem}",
-".slideshow-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start}",
-".herogrid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px;align-items:center}",
-".heroimg img{width:100%;max-height:260px;object-fit:cover;border-radius:14px;box-shadow:0 8px 24px rgba(26,26,26,.14)}",
-"@media (max-width:760px){.herogrid{grid-template-columns:1fr}.heroimg{display:none}}",
-".slide-kp{background:var(--raised);border:1px solid var(--hair);border-radius:12px;padding:16px}",
-"@media (max-width:760px){.slideshow-grid{grid-template-columns:1fr}}",
-"@media (max-width:640px){.toolgrid{grid-template-columns:1fr}}",
-".cmpgrid{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}",
-".cmppick{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:none;border-bottom:1px solid var(--raised);padding:10px 12px;background:none}",
-".cmpcol{flex:none;width:288px;background:var(--surface);border:1px solid var(--hair);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}",
-"@media (max-width:760px){.cmpgrid{grid-template-columns:1fr}}",
-".deck{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;background:radial-gradient(1100px 560px at 50% -8%, #E6EDF5, #F7F8FA)}",
-".deck-top{display:flex;align-items:center;gap:14px;padding:14px 20px}",
-".deck-top .pin{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink-faint);white-space:nowrap}",
-".deck-prog{flex:1;height:5px;background:var(--hair);border-radius:3px;overflow:hidden}",
-".deck-prog i{display:block;height:100%;background:var(--red);border-radius:3px;transition:width .35s cubic-bezier(.2,.7,.2,1)}",
-".deck-close{border:1px solid var(--hair);background:var(--surface);border-radius:999px;padding:8px 15px;font-weight:600;color:var(--ink);white-space:nowrap}",
-".deck-stage{flex:1;display:flex;align-items:center;justify-content:center;padding:18px 24px 0;min-height:0}",
-".deck-card{width:min(880px,100%);max-height:100%;overflow:auto;background:var(--surface);border:1px solid var(--hair);border-radius:22px;box-shadow:0 24px 70px rgba(27,42,74,.18);padding:clamp(28px,5vw,56px);position:relative;animation:deckIn .45s cubic-bezier(.2,.7,.2,1) both}",
-"@keyframes deckIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}",
-".deck-card .strip{position:absolute;top:0;left:0;right:0;height:7px;border-radius:22px 22px 0 0}",
-".deck-eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent,#3A6EA5);font-weight:600}",
-".deck-h{font-size:clamp(1.7rem,4.2vw,2.7rem);font-weight:700;line-height:1.12;color:var(--navy);margin:.32em 0 .2em;letter-spacing:-.01em}",
-".deck-sub{font-size:clamp(1.05rem,2.1vw,1.3rem);color:var(--ink-soft);line-height:1.5;margin:0}",
-".deck-statement{font-size:clamp(1.5rem,3.7vw,2.5rem);font-weight:600;line-height:1.24;color:var(--ink);margin:0}",
-".deck-statement em{font-style:normal;color:var(--red)}",
-".deck-points{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-direction:column;gap:15px}",
-".deck-points li{font-size:clamp(1.05rem,2.1vw,1.28rem);line-height:1.45;color:var(--ink);padding-left:22px;position:relative;opacity:0;transform:translateY(9px);transition:opacity .42s ease,transform .42s cubic-bezier(.2,.7,.2,1)}",
-".deck-points li.show{opacity:1;transform:none}",
-".deck-points li:before{content:'';position:absolute;left:0;top:.6em;width:10px;height:10px;border-radius:50%;background:var(--accent,#3A6EA5)}",
-".deck-cite{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint);margin-top:20px;border-left:3px solid var(--hair);padding-left:12px}",
-".deck-q{font-size:clamp(1.4rem,3.2vw,2.1rem);font-weight:600;line-height:1.3;color:var(--navy);border-left:4px solid var(--accent,#3A6EA5);padding-left:20px;margin:0}",
-".deck-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px 20px}",
-".deck-btn{border:1px solid var(--hair);background:var(--surface);border-radius:999px;padding:11px 20px;font-weight:600;font-size:.95rem;color:var(--ink);min-height:44px}",
-".deck-btn[disabled]{opacity:.4;cursor:default}",
-".deck-next{background:var(--red);border-color:var(--red);color:#fff}",
-".deck-count{font-family:var(--mono);font-size:.82rem;color:var(--ink-faint)}",
-"@media (prefers-reduced-motion:reduce){.deck-points li{transition:none}.deck-card{animation:none}}"
-].join("\n");
-(function(){ var s=document.createElement('style'); s.textContent=CSS; document.head.appendChild(s); })();
+  var SKEY = 'psy355corpus.v2';
+  function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, lens: state.lens, rcNotes: state.rcNotes })); } catch (e) {} }
+  var saved0 = load();
 
-/* ---------- state (saved on the student's own device) ---------- */
-var CKEY='psy355-compare-v1';
-function loadCmp(){ try{ var a=JSON.parse(localStorage.getItem(CKEY)||'[]'); return Array.isArray(a)?a.slice(0,3):[]; }catch(e){ return []; } }
-function saveCmp(){ try{ localStorage.setItem(CKEY, JSON.stringify(CMP)); }catch(e){} }
-var CMP = [];
-var SHOWSYN = false;
-var HQ = '', HL = 'phase';
-var PREVPATH = '';
-var CODE = (D.course||{}).code || 'PSY355';
-var RKEY = CODE.toLowerCase()+'-reading-v1';
-function loadR(){ try{ var o=JSON.parse(localStorage.getItem(RKEY)||'{}'); return o&&typeof o==='object'?o:{}; }catch(e){ return {}; } }
-var RST = loadR();
-RST.lens = RST.lens || 'thematic';
-RST.notes = (RST.notes && typeof RST.notes==='object') ? RST.notes : {};
-if(!('reading' in RST)) RST.reading = null;
-function saveR(){ try{ localStorage.setItem(RKEY, JSON.stringify(RST)); }catch(e){} }
+  var state = {
+    screen: 'library',
+    layout: saved0.layout || 'byweek',
+    search: '',
+    activeTypes: [],
+    activeWeek: null,
+    sort: 'week',
+    detailId: null,
+    compareIds: [],
+    saved: Array.isArray(saved0.saved) ? saved0.saved : [],
+    introOpen: saved0.introOpen !== false,
+    savedView: false,
+    showSynthesis: false,
+    lens: saved0.lens || 'thematic',
+    cmpNotes: (saved0.cmpNotes && typeof saved0.cmpNotes === 'object') ? saved0.cmpNotes : {},
+    showModel: false,
+    exampleOpen: false,
+    rcReading: null,
+    rcNotes: (saved0.rcNotes && typeof saved0.rcNotes === 'object') ? saved0.rcNotes : {},
+    revealed: {},
+    mcSel: {},
+    libScroll: 0,
+    toast: null,
+    cardWeek: null,
+    glossWeek: 'all',
+    glossSearch: '',
+  };
+  var refocusSearch = false, focusTarget = null, toastTimer = null;
 
-/* ---------- helpers ---------- */
-function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
-function linkify(t){
-  t=String(t==null?'':t); var re=/(https?:\/\/[^\s]+|doi:\s*10\.\d{4,}\/[^\s]+|\b10\.\d{4,}\/[^\s]+)/gi, out='', last=0, m;
-  while((m=re.exec(t))){
-    out+=esc(t.slice(last,m.index));
-    var full=m[0], trail=''; var tm=full.match(/[).,;:]+$/); if(tm){ trail=tm[0]; full=full.slice(0,full.length-trail.length); }
-    var href=full; if(/^10\./.test(full)) href='https://doi.org/'+full; else if(/^doi:/i.test(full)) href='https://doi.org/'+full.replace(/^doi:\s*/i,'');
-    out+='<a href="'+esc(href)+'" target="_blank" rel="noopener">'+esc(full)+'</a>'+esc(trail);
-    last=m.index+m[0].length;
+  /* ---------- helpers ---------- */
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function typeMeta(t) { return D.types[t] || D.types.Article; }
+  function rec(id) { for (var i = 0; i < D.records.length; i++) if (D.records[i].id === id) return D.records[i]; return null; }
+  var OPENSTAX_CH = {
+    'soc-intro': 'https://openstax.org/books/introduction-sociology-3e/pages/1-introduction',
+    'soc-research': 'https://openstax.org/books/introduction-sociology-3e/pages/2-introduction',
+    'soc-socialization': 'https://openstax.org/books/introduction-sociology-3e/pages/5-introduction',
+    'soc-stratification': 'https://openstax.org/books/introduction-sociology-3e/pages/9-introduction',
+    'soc-family': 'https://openstax.org/books/introduction-sociology-3e/pages/14-introduction',
+    'anth-culture': 'https://openstax.org/books/introduction-anthropology/pages/3-introduction',
+    'psy-intro': 'https://openstax.org/books/psychology-2e/pages/1-introduction',
+    'psy-social': 'https://openstax.org/books/psychology-2e/pages/12-introduction'
+  };
+  // Only free, openly accessible readings get a public link. Copyrighted or
+  // library readings (access 'verified' or 'library') are reached through
+  // Blackboard or the Seneca Library, never linked or hosted here (copyright).
+  function readUrl(r) {
+    if (r.access === 'openstax') return OPENSTAX_CH[r.id] || 'https://openstax.org/';
+    if (r.access === 'open') return r.url || (r.doi ? 'https://doi.org/' + r.doi : null);
+    return null;
   }
-  return out+esc(t.slice(last));
-}
-function phaseOf(id){ for(var i=0;i<(D.phases||[]).length;i++){ if(D.phases[i].id===id) return D.phases[i]; } return {name:'',accent:'#5B7A8C',fill:'#eee'}; }
-function week(n){ for(var i=0;i<(D.weeks||[]).length;i++){ if(D.weeks[i].number===n) return D.weeks[i]; } return null; }
-function pad(n){ return (n<10?'0':'')+n; }
-function toast(msg){ OVERLAY.insertAdjacentHTML('beforeend','<div class="toast" role="status">'+esc(msg)+'</div>'); var t=OVERLAY.lastChild; setTimeout(function(){ if(t&&t.parentNode) t.parentNode.removeChild(t); },2600); }
-function dl(name,text){ var b=new Blob([text],{type:'application/json'}); var u=URL.createObjectURL(b); var a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},1000); }
-function contourSVG(){ return '<svg class="hcontour" viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true">'+
-  [40,90,150,220,300].map(function(y,i){ return '<path d="M0 '+y+' C 200 '+(y-30)+', 420 '+(y+34)+', 640 '+y+' S 1020 '+(y-26)+', 1200 '+(y+10)+'" fill="none" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="1.5"/>'; }).join('')+'</svg>'; }
+  function accessNote(r) {
+    if (r.access === 'openstax') return 'Free and open on OpenStax. Opens in a new tab.';
+    if (r.access === 'open') return 'Open access. Opens in a new tab.';
+    if (r.access === 'library') return 'A licensed reading. Read it through the Seneca Library, and in this week\'s Readings folder on Blackboard.';
+    return 'Posted in this week\'s Readings folder on Blackboard.';
+  }
+  function eyeLabel(r) { return r.eye === 'indigenous' ? 'Indigenous-scholar reading' : 'Western reading'; }
+  function weekTitle(n) { return (D.weeks && D.weeks[n]) ? D.weeks[n] : ''; }
+  function weeksWithReadings() { var set = {}; D.records.forEach(function (r) { set[r.week] = (set[r.week] || 0) + 1; }); return Object.keys(set).map(Number).sort(function (a, b) { return a - b; }); }
+  function templatedSynthesis(recs) {
+    function who(r) { return r.authors.indexOf('OpenStax') >= 0 ? 'OpenStax' : r.authors; }
+    function lower(s) { return s.charAt(0).toLowerCase() + s.slice(1); }
+    function trim(s) { return s.replace(/\.\s*$/, ''); }
+    var west = recs.filter(function (r) { return r.eye === 'western'; });
+    var ind = recs.filter(function (r) { return r.eye === 'indigenous'; });
+    var both = west.length && ind.length;
+    var named = recs.map(function (r) { return r.title + ' by ' + who(r); });
+    var lead = recs.length === 2
+      ? 'This compares ' + named[0] + ' and ' + named[1] + '.'
+      : 'This compares ' + named.slice(0, -1).join(', ') + ', and ' + named[named.length - 1] + '.';
+    var ideas = recs.map(function (r, i) {
+      var ord = recs.length === 2 ? (i === 0 ? 'The first' : 'The second') : ('The ' + (['first', 'second', 'third'][i] || 'next'));
+      return ord + ' says that ' + lower(trim(r.coreIdea)) + '.';
+    }).join(' ');
+    var rel = !HAS_EYE
+      ? 'Read them together for how the same ideas and approaches play out across different topics.'
+      : (both
+      ? 'These include a Western reading and an Indigenous one. The course asks you to read them together rather than choose between them.'
+      : (ind.length
+        ? 'Both are by Indigenous scholars. Read them for how Indigenous knowledge applies to different topics.'
+        : 'Both are Western readings. Read them for how the same approach applies to different topics.'));
+    var close = 'Reading them together shows what you would miss from ' + (recs.length === 2 ? 'either one' : 'any one') + ' alone.';
+    return [lead + ' ' + ideas + ' ' + rel + ' ' + close];
+  }
+  function pairText(a, b) {
+    var k = [a.id, b.id].sort().join('|');
+    return (D.syntheses && D.syntheses[k]) ? D.syntheses[k] : templatedSynthesis([a, b])[0];
+  }
+  function buildSynthesis(recs) {
+    if (recs.length <= 2) {
+      if (recs.length === 2) return { paras: [pairText(recs[0], recs[1])] };
+      return { paras: templatedSynthesis(recs) };
+    }
+    var paras = [];
+    for (var i = 0; i < recs.length; i++) for (var j = i + 1; j < recs.length; j++) paras.push(pairText(recs[i], recs[j]));
+    return { paras: paras };
+  }
 
-/* ---------- modal with focus trap + return ---------- */
-var lastFocus=null;
-function openModal(html){
-  lastFocus=document.activeElement;
-  OVERLAY.innerHTML='<div class="backdrop" data-close="1"><div class="modal" role="dialog" aria-modal="true">'+html+'</div></div>';
-  var m=OVERLAY.querySelector('.modal'); var f=m.querySelector('input,textarea,select,button,[href]'); if(f) f.focus(); else m.focus();
-  OVERLAY.querySelector('.backdrop').addEventListener('mousedown',function(e){ if(e.target.getAttribute('data-close')) closeModal(); });
-  document.addEventListener('keydown',modalKey);
-}
-function modalKey(e){
-  if(e.key==='Escape'){ closeModal(); return; }
-  if(e.key!=='Tab') return;
-  var m=OVERLAY.querySelector('.modal'); if(!m) return;
-  var f=m.querySelectorAll('a[href],button:not([disabled]),input,textarea,select'); if(!f.length) return;
-  var first=f[0],last=f[f.length-1];
-  if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); last.focus(); }
-  else if(!e.shiftKey&&document.activeElement===last){ e.preventDefault(); first.focus(); }
-}
-function closeModal(){ OVERLAY.innerHTML=''; document.removeEventListener('keydown',modalKey); if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+  var ICON = {
+    book: ['M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5H6.5A2.5 2.5 0 0 0 4 21z', 'M4 18.5A2.5 2.5 0 0 1 6.5 16H20'],
+    file: ['M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8z', 'M14 3v5h5'],
+    clipboard: ['M9 4.5h6v3H9z', 'M9 6H6v15h12V6h-3'],
+    search: ['M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z', 'M20 20l-4-4'],
+    x: ['M6 6l12 12', 'M18 6L6 18'],
+    check: ['M4 12.5l5 5 11-11'],
+    bookmark: ['M6 3h12v18l-6-4-6 4z'],
+    grid: ['M4 4h7v7H4z', 'M13 4h7v7h-7z', 'M4 13h7v7H4z', 'M13 13h7v7h-7z'],
+    list: ['M8 6h13', 'M8 12h13', 'M8 18h13', 'M3 6h.01', 'M3 12h.01', 'M3 18h.01'],
+    layers: ['M12 3l9 5-9 5-9-5z', 'M3 13l9 5 9-5'],
+    columns: ['M4 4h7v16H4z', 'M13 4h7v16h-7z'],
+    sparkle: ['M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z'],
+    chevron: ['M9 6l6 6-6 6'],
+    external: ['M14 4h6v6', 'M20 4l-9 9', 'M19 14v5H5V5h5'],
+    plus: ['M12 5v14', 'M5 12h14'],
+    clock: ['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'M12 6v6l4 2'],
+    globe: ['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'M2 12h20', 'M12 2a15 15 0 0 1 0 20', 'M12 2a15 15 0 0 0 0 20'],
+    gauge: ['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'M12 12l4-3'],
+    calendar: ['M5 5h14v15H5z', 'M5 9h14', 'M9 3v4', 'M15 3v4'],
+    type: ['M4 7V5h16v2', 'M9 19h6', 'M12 5v14'],
+    eye: ['M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z', 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z'],
+    unlock: ['M7 11V8a5 5 0 0 1 9.9-1', 'M5 11h14v10H5z'],
+  };
+  function ic(name, size, w) {
+    var paths = ICON[name] || ICON.file, s = size || 20;
+    var out = '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.8) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+    for (var i = 0; i < paths.length; i++) out += '<path d="' + paths[i] + '"></path>';
+    return out + '</svg>';
+  }
 
-/* ---------- icons (SOC122 family set) ---------- */
-var ICON={
-  grid:['M4 4h7v7H4z','M13 4h7v7h-7z','M4 13h7v7H4z','M13 13h7v7h-7z'],
-  book:['M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5H6.5A2.5 2.5 0 0 0 4 21z','M4 18.5A2.5 2.5 0 0 1 6.5 16H20'],
-  clipboard:['M9 4.5h6v3H9z','M9 6H6v15h12V6h-3'],
-  columns:['M4 4h7v16H4z','M13 4h7v16h-7z'],
-  search:['M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z','M20 20l-4-4'],
-  x:['M6 6l12 12','M18 6L6 18'],
-  layers:['M12 3l9 5-9 5-9-5z','M3 13l9 5 9-5'],
-  list:['M8 6h13','M8 12h13','M8 18h13','M3 6h.01','M3 12h.01','M3 18h.01'],
-  map:['M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z','M9 4v14','M15 6v14']
-};
-function ic(name,size,w){ var p=ICON[name]||ICON.grid,s=size||20,out='<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(w||1.8)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'; for(var i=0;i<p.length;i++) out+='<path d="'+p[i]+'"></path>'; return out+'</svg>'; }
+  /* ---------- filtering + sorting ---------- */
+  function filtered() {
+    var q = state.search.trim().toLowerCase();
+    var base = state.savedView ? D.records.filter(function (r) { return state.saved.indexOf(r.id) >= 0; }) : D.records;
+    var list = base.filter(function (r) {
+      if (state.activeTypes.length && state.activeTypes.indexOf(r.type) < 0) return false;
+      if (state.activeWeek != null && r.week !== state.activeWeek) return false;
+      if (q) {
+        var hay = (r.title + ' ' + r.authors + ' ' + r.abstract + ' ' + r.coreIdea + ' ' + r.type + ' Week ' + r.week + ' ' + weekTitle(r.week)).toLowerCase();
+        if (hay.indexOf(q) < 0) return false;
+      }
+      return true;
+    });
+    var by = state.sort;
+    list.sort(function (a, b) {
+      return by === 'year' ? b.year - a.year : by === 'title' ? a.title.localeCompare(b.title) : by === 'type' ? (a.type.localeCompare(b.type) || a.week - b.week) : (a.week - b.week || (a.eye === b.eye ? 0 : a.eye === 'western' ? -1 : 1));
+    });
+    return list;
+  }
 
-/* ---------- navigation ---------- */
-var ROUTES=[
-  {id:'home',label:'Home',hash:'#/home',icon:'grid'},
-  {id:'walkthrough',label:'Weekly Walkthrough',url:'https://rpeart73.github.io/psy355-companion/walkthroughs/',icon:'layers',external:true},
-  {id:'reading',label:'Build Your Reading Comprehension',hash:'#/reading',icon:'book'},
-  {id:'compare',label:'Compare',hash:'#/compare',icon:'columns'},
-  {id:'glossary',label:'Glossary & Thinkers',hash:'#/glossary',icon:'book'},
-  {id:'cards',label:'Self-check',hash:'#/cards',icon:'clipboard'}
-];
-function renderNav(active){
-  var nav=ROUTES.map(function(r){
-    var on=r.id===active;
-    var href=r.external?r.url:r.hash; var ext=r.external?' target="_blank" rel="noopener"':'';
-    return '<a href="'+href+'"'+ext+' aria-current="'+(on?'page':'false')+'" style="display:flex;align-items:center;gap:11px;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:'+(on?'600':'500')+';background:'+(on?'#EEF1F5':'transparent')+';color:'+(on?'#15171C':'#474C57')+';text-decoration:none;margin-bottom:2px"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:'+(on?'var(--red)':'#8a909c')+'">'+ic(r.icon,19)+'</span><span style="flex:1">'+esc(r.label)+'</span></a>';
-  }).join('');
-  var weeks='<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--hair)"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#8a909c;padding:0 12px 8px">WEEKS</div>'+
-    (D.weeks||[]).map(function(w){ var p=phaseOf(w.phaseId);
-      return '<a href="#/week/'+w.number+'" style="display:flex;align-items:center;gap:9px;border-radius:9px;padding:7px 12px;font-size:.8125rem;font-weight:500;color:#474C57;text-decoration:none"><span class="mono" style="font-size:.6875rem;color:'+p.accent+';flex:none;width:18px">'+pad(w.number)+'</span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(w.title||'')+'</span></a>';
-    }).join('')+'</div>';
-  var foot='<div style="margin-top:14px;padding:13px 12px;border-radius:12px;background:var(--raised)"><div class="mono" style="font-size:.75rem;color:#474C57;margin-bottom:4px">'+esc((D.course||{}).code||'BFS218')+'</div><div style="font-size:.8125rem;color:#15171C;line-height:1.45">A companion to Blackboard, week by week.</div></div>';
-  NAV.innerHTML=nav+weeks+foot;
-}
+  /* ---------- style builders ---------- */
+  function saveBtnStyle(on) { return 'display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;border:1px solid ' + (on ? '#f0d89a' : '#DEE3EA') + ';background:' + (on ? '#FCEFD2' : '#fff') + ';color:' + (on ? '#B7791F' : '#8a909c') + ';flex:none'; }
+  function cmpBtnStyle(on) { return 'display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;border:1px solid ' + (on ? '#bcd0f2' : '#DEE3EA') + ';background:' + (on ? '#E7EEFB' : '#fff') + ';color:' + (on ? '#1552D8' : '#8a909c') + ';flex:none'; }
+  function chipStyle(active, accent) { return 'display:inline-flex;align-items:center;gap:6px;border:1px solid ' + (active ? accent : '#DEE3EA') + ';background:' + (active ? accent + '22' : '#fff') + ';color:' + (active ? '#15171C' : '#474C57') + ';font-size:.8125rem;font-weight:' + (active ? '600' : '500') + ';padding:6px 11px;border-radius:999px'; }
+  function segStyle(active) { return 'border:none;border-radius:7px;padding:6px 12px;font-size:.8125rem;font-weight:' + (active ? '600' : '500') + ';background:' + (active ? '#fff' : 'transparent') + ';color:' + (active ? '#15171C' : '#474C57') + ';box-shadow:' + (active ? '0 1px 2px rgba(21,23,28,.12)' : 'none') + ';display:flex;align-items:center;gap:6px'; }
+  function eyePill(r) {
+    if (!HAS_EYE) return '';
+    var ind = r.eye === 'indigenous';
+    return '<span title="' + esc(eyeLabel(r)) + '" style="display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.625rem;font-weight:600;letter-spacing:.04em;color:' + (ind ? '#1f4d38' : '#3a47a8') + ';background:' + (ind ? '#E4F0E9' : '#E7E9FB') + ';padding:3px 8px;border-radius:999px">' + (ind ? 'INDIGENOUS' : 'WESTERN') + '</span>';
+  }
+  function weekTag(r) { return '<span class="mono" style="font-size:.6875rem;color:#8a909c;background:#EEF1F5;padding:3px 8px;border-radius:6px">Week ' + r.week + '</span>'; }
 
-/* ---------- media embeds ---------- */
-function videoBlock(wk){
-  var v=wk.video||{};
-  if(!v.url&&!v.id) return '<div class="aspect"><div class="placeholder">Your weekly video will appear here once it is posted. It loads only when a student presses play.</div></div>';
-  var poster=v.poster?'<img src="'+esc(v.poster)+'" alt="">':'';
-  return '<div class="aspect" data-video="1">'+poster+'<button class="playbtn" data-action="play-video" data-week="'+wk.number+'" aria-label="Play the Week '+wk.number+' video"><span class="circ" aria-hidden="true">&#9654;</span><span>Play the video</span><span class="muted" style="font-size:.8rem">Loads only when you click</span></button></div>';
-}
-function videoEmbed(v,label){
-  if(v.provider==='youtube'||/youtu/.test(v.url||v.id||'')){ var id=v.id||(String(v.url).match(/[?&]v=([^&]+)/)||[])[1]||String(v.url).split('/').pop(); return '<iframe src="https://www.youtube-nocookie.com/embed/'+esc(id)+'?rel=0" title="'+esc(label||'Video')+'" allow="fullscreen" allowfullscreen></iframe>'; }
-  if(v.provider==='vimeo'||/vimeo/.test(v.url||'')){ var vid=v.id||String(v.url).split('/').pop(); return '<iframe src="https://player.vimeo.com/video/'+esc(vid)+'" title="'+esc(label||'Video')+'" allowfullscreen></iframe>'; }
-  return '<video controls preload="metadata" '+(v.poster?'poster="'+esc(v.poster)+'"':'')+'><source src="'+esc(v.url)+'"></video>';
-}
-function readingMedia(r){ return '<div class="aspect">'+videoEmbed({provider:r.provider,url:r.url})+'</div>'; }
+  /* ---------- cards ---------- */
+  function tileCard(r) {
+    var tm = typeMeta(r.type), savedOn = state.saved.indexOf(r.id) >= 0, inC = state.compareIds.indexOf(r.id) >= 0;
+    return '<div class="card" style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04);display:flex;flex-direction:column">'
+      + '<button onclick="SOC.open(\'' + r.id + '\')" style="text-align:left;background:none;border:none;padding:0;display:flex;flex-direction:column;flex:1">'
+      + '<div style="height:5px;background:' + tm.color + ';width:100%"></div>'
+      + '<div style="padding:16px 17px 12px;flex:1;display:flex;flex-direction:column">'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:11px;flex-wrap:wrap">'
+      + '<span style="display:inline-flex;align-items:center;gap:6px;background:' + tm.soft + ';color:' + tm.color + ';font-size:.6875rem;font-weight:600;letter-spacing:.03em;padding:4px 9px;border-radius:999px">' + ic(tm.icon, 13) + esc(r.type) + '</span>'
+      + eyePill(r)
+      + '<span class="mono" style="font-size:.75rem;color:#8a909c;margin-left:auto">' + esc(String(r.year)) + '</span></div>'
+      + '<h3 style="font-size:1.125rem;line-height:1.28;font-weight:600;margin:0 0 4px;color:#15171C">' + esc(r.title) + '</h3>'
+      + '<div style="font-size:.8125rem;color:#474C57;margin-bottom:11px">' + esc(r.authors) + '</div>'
+      + '<p style="font-size:.875rem;line-height:1.5;color:#474C57;margin:0 0 13px">' + esc(r.abstract) + '</p>'
+      + '<div style="margin-top:auto">' + weekTag(r) + '</div>'
+      + '</div></button>'
+      + '<div style="display:flex;align-items:center;gap:8px;padding:11px 17px;border-top:1px solid #EEF1F5;background:#FBFCFD">'
+      + '<span class="mono" style="font-size:.75rem;color:#8a909c">' + esc(r.len) + '</span>'
+      + '<button onclick="SOC.compare(\'' + r.id + '\')" aria-label="' + (inC ? 'In compare' : 'Add to compare') + '" title="' + (inC ? 'In compare' : 'Add to compare') + '" style="' + cmpBtnStyle(inC) + ';margin-left:auto">' + ic('columns', 15) + '</button>'
+      + '</div></div>';
+  }
+  function indexRow(r) {
+    var tm = typeMeta(r.type), savedOn = state.saved.indexOf(r.id) >= 0, inC = state.compareIds.indexOf(r.id) >= 0;
+    return '<div class="idxrow" style="display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid #EEF1F5">'
+      + '<span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:' + tm.soft + ';color:' + tm.color + ';flex:none">' + ic(tm.icon, 18) + '</span>'
+      + '<button onclick="SOC.open(\'' + r.id + '\')" style="flex:1;min-width:0;text-align:left;background:none;border:none;padding:0">'
+      + '<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-size:1rem;font-weight:600;color:#15171C">' + esc(r.title) + '</span><span style="font-size:.8125rem;color:#474C57">' + esc(r.authors) + ' · ' + esc(String(r.year)) + '</span></div>'
+      + '<div style="font-size:.8125rem;color:#8a909c;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:64ch">' + esc(r.abstract) + '</div></button>'
+      + eyePill(r)
+      + '<span class="mono" style="font-size:.75rem;color:#8a909c;flex:none;width:64px;text-align:right">Week ' + r.week + '</span>'
+      + '<button onclick="SOC.compare(\'' + r.id + '\')" aria-label="' + (inC ? 'In compare' : 'Add to compare') + '" style="' + cmpBtnStyle(inC) + '">' + ic('columns', 15) + '</button>'
+      + '</div>';
+  }
 
-/* ---------- slideshow ---------- */
-function kpHTML(wk,cur){
-  var s=wk.slides||{}, ins=(s.insights||[])[cur-1], count=s.count||0;
-  var h='<div class="eyebrow">The deeper point &middot; slide '+cur+' of '+count+'</div>';
-  if(!ins) return h+'<p class="muted" style="margin:0">Follow the narration for this slide.</p>';
-  return h+'<p style="margin:.2em 0 0;font-size:1.02rem;line-height:1.55">'+esc(ins)+'</p>';
-}
-function slideBlock(wk){
-  var s=wk.slides||{};
-  if(!s.available||!s.count) return '<div class="aspect"><div class="placeholder">The slideshow for this week will appear here once the deck is posted.</div></div>';
-  var dir=s.dir||('slides/week-'+pad(wk.number));
-  return '<div class="slidewrap" data-week="'+wk.number+'" data-count="'+s.count+'" data-dir="'+esc(dir)+'" tabindex="0" aria-label="Slideshow for Week '+wk.number+', use arrow keys to move">'+
-    '<div class="slideshow-grid"><div><div class="aspect"><img id="slide-img" src="'+esc(dir+'/slide-1.png')+'" alt="Slide 1 of '+s.count+'"></div>'+
-    '<div style="height:4px;background:var(--hair);border-radius:2px;margin-top:8px"><div id="slide-bar" style="height:100%;width:'+(100/s.count)+'%;background:var(--red);border-radius:2px"></div></div>'+
-    '<div class="slidebar"><button class="btn" data-action="slide-prev">Previous</button><span class="count"><span id="slide-n">1</span> / '+s.count+'</span><button class="btn" data-action="slide-next">Next</button></div></div>'+
-    '<aside class="slide-kp" id="slide-kp" aria-live="polite">'+kpHTML(wk,1)+'</aside></div></div>';
-}
-function stepSlide(wrap,dir){
-  if(!wrap) return;
-  var count=parseInt(wrap.getAttribute('data-count'),10),dirp=wrap.getAttribute('data-dir');
-  var nEl=wrap.querySelector('#slide-n'),img=wrap.querySelector('#slide-img'),bar=wrap.querySelector('#slide-bar');
-  var cur=parseInt(nEl.textContent,10)+dir; if(cur<1)cur=count; if(cur>count)cur=1;
-  nEl.textContent=cur; img.src=dirp+'/slide-'+cur+'.png'; img.alt='Slide '+cur+' of '+count; if(bar) bar.style.width=(100*cur/count)+'%';
-  var wk=week(parseInt(wrap.getAttribute('data-week'),10)); var kpEl=document.getElementById('slide-kp'); if(kpEl&&wk) kpEl.innerHTML=kpHTML(wk,cur);
-}
-
-/* ---------- home ---------- */
-function home(){
-  var c=D.course||{},inst=D.instructor||{};
-  var conceptCount=0; (D.weeks||[]).forEach(function(w){ conceptCount+=(w.concepts||[]).length; });
-  var stats=[['Weeks',(D.weeks||[]).length],['Key ideas',conceptCount],['Tools',ROUTES.length-1]];
-  var hero='<section style="background:var(--surface);border:1px solid var(--hair);border-top:4px solid var(--red);border-radius:14px;padding:30px 32px;margin-bottom:22px;box-shadow:0 1px 2px rgba(21,23,28,.04)">'+
-    '<div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;justify-content:space-between">'+
-    '<div style="flex:1;min-width:280px"><div class="eyebrow" style="color:var(--red)">'+esc(c.code||'BFS218')+' &middot; '+esc(c.institution||'Seneca Polytechnic')+'</div>'+
-    '<h1 style="font-size:2.05rem;line-height:1.14;margin:0 0 10px;color:var(--ink)">'+esc(c.title||'')+'</h1>'+
-    '<p class="lede" style="margin:0;max-width:60ch">'+esc(c.subtitle||'')+'. Read, watch, and work through the course week by week, with tools that help the ideas take hold.</p>'+
-    '</div>'+
-    '<div style="display:flex;gap:10px;flex:none">'+stats.map(function(st){return '<div style="background:var(--raised);border:1px solid var(--hair);border-radius:12px;padding:12px 16px;text-align:center;min-width:78px"><div class="mono" style="font-size:1.7rem;font-weight:600;line-height:1;color:var(--red)">'+st[1]+'</div><div style="font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-top:5px">'+st[0]+'</div></div>';}).join('')+'</div>'+
-    '</div></section>';
-  var layoutDefs=[['phase','By phase','layers'],['tiles','Tiles','grid'],['index','Index','list']];
-  var chips=layoutDefs.map(function(d){ var on=HL===d[0]; return '<button data-action="home-layout" data-layout="'+d[0]+'" aria-pressed="'+on+'" style="display:flex;align-items:center;gap:6px;border:none;border-radius:7px;padding:6px 12px;font-size:.8125rem;font-weight:'+(on?'600':'500')+';background:'+(on?'#fff':'transparent')+';color:'+(on?'#15171C':'#474C57')+';box-shadow:'+(on?'0 1px 2px rgba(21,23,28,.12)':'none')+'">'+ic(d[2],15)+'<span>'+d[1]+'</span></button>'; }).join('');
-  var bar='<section style="background:var(--surface);border:1px solid var(--hair);border-radius:14px;padding:16px 18px;margin-bottom:18px;box-shadow:0 1px 2px rgba(21,23,28,.04)">'+
-    '<div style="display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--hair);border-radius:10px;padding:11px 14px">'+
-    '<span style="color:var(--ink-faint);display:flex;flex:none">'+ic('search',18)+'</span>'+
-    '<input id="home-search" value="'+esc(HQ)+'" placeholder="Search weeks, topics, or concepts..." aria-label="Search weeks" autocomplete="off" style="flex:1;border:none;background:none;outline:none;font-size:1rem;color:var(--ink);min-width:0">'+
-    (HQ?'<button data-action="home-clear" aria-label="Clear search" style="background:none;border:none;color:var(--ink-faint);display:flex;padding:2px">'+ic('x',16)+'</button>':'')+
-    '</div>'+
-    '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--raised)">'+
-    '<span id="home-resultlabel" style="font-size:.8125rem;color:var(--ink-soft)">'+resultLabel()+'</span>'+
-    '<div style="margin-left:auto;display:flex;gap:4px;background:var(--raised);border-radius:9px;padding:4px" role="group" aria-label="Layout">'+chips+'</div>'+
-    '</div></section>';
-  var foot='<div class="card"><div class="eyebrow">A companion to Blackboard</div><p style="margin:0">This site holds the learning materials and private study tools. Official records, submission, and class discussion live in Blackboard. Nothing here is assessed or tracked.</p></div>';
-  return hero+bar+'<div id="home-results">'+homeList()+'</div>'+foot;
-}
-function resultLabel(){ var n=filteredWeeks().length, total=(D.weeks||[]).length; return HQ.trim()?(n+' of '+total+' weeks'):('All '+total+' weeks'); }
-function filteredWeeks(){
-  var q=HQ.trim().toLowerCase();
-  return (D.weeks||[]).filter(function(w){
-    if(!q) return true;
-    var hay=(w.title+' '+(w.concept||'')+' '+(w.concepts||[]).map(function(c){return c.term+' '+(c.paras||[]).join(' ');}).join(' ')+' week '+w.number).toLowerCase();
-    return hay.indexOf(q)>=0;
-  });
-}
-function weekCard(w){
-  var p=phaseOf(w.phaseId);
-  return '<a href="#/week/'+w.number+'" style="text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--hair);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04);display:flex;flex-direction:column"><div style="height:5px;background:'+p.accent+'"></div><div style="padding:15px 16px"><div class="mono" style="font-size:.6875rem;color:var(--ink-faint);letter-spacing:.04em">WEEK '+pad(w.number)+'</div><div style="font-weight:600;font-size:1rem;line-height:1.3;margin:5px 0 4px;color:var(--ink)">'+esc(w.title||'')+'</div><div style="font-size:.8125rem;color:var(--ink-soft);line-height:1.45">'+esc(w.concept||'')+'</div></div></a>';
-}
-function weekRow(w){
-  var p=phaseOf(w.phaseId);
-  return '<a href="#/week/'+w.number+'" style="display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--raised);text-decoration:none;color:inherit"><span class="mono" style="font-size:.74rem;color:'+p.accent+';flex:none;width:56px">WEEK '+pad(w.number)+'</span><span style="flex:1;min-width:0"><span style="font-weight:600;color:var(--ink)">'+esc(w.title||'')+'</span><span style="display:block;font-size:.82rem;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(w.concept||'')+'</span></span><span style="color:var(--ink-faint);flex:none">&rarr;</span></a>';
-}
-function homeList(){
-  var weeks=filteredWeeks();
-  if(!weeks.length) return '<div style="text-align:center;padding:54px 20px;color:var(--ink-soft)"><div style="font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:6px">No weeks match that.</div><p style="margin:0">Try a broader word.</p></div>';
-  if(HL==='index') return '<div style="background:var(--surface);border:1px solid var(--hair);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04)">'+weeks.map(weekRow).join('')+'</div>';
-  if(HL==='tiles') return '<div class="wkgrid">'+weeks.map(weekCard).join('')+'</div>';
-  return (D.phases||[]).map(function(p){
-    var pw=(p.weeks||[]).map(function(n){return week(n);}).filter(Boolean).filter(function(w){return weeks.indexOf(w)>=0;});
-    if(!pw.length) return '';
-    return '<section style="margin-bottom:22px"><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:8px;background:'+p.fill+';color:'+p.accent+';font-family:var(--mono);font-size:.75rem;font-weight:600">'+esc(p.name)+'</span><span class="muted" style="font-size:.8125rem">Weeks '+p.weeks[0]+' to '+p.weeks[p.weeks.length-1]+'</span><div style="flex:1;height:1px;background:var(--raised)"></div></div><div class="wkgrid">'+pw.map(weekCard).join('')+'</div></section>';
-  }).join('');
-}
-
-/* ---------- week page ---------- */
-function structList(arr){
-  return (arr||[]).map(function(it){ return it.type==='head' ? '<h4 style="margin:14px 0 6px">'+esc(it.text)+'</h4>' : '<p style="margin:.45em 0">'+esc(it.text)+'</p>'; }).join('');
-}
-function readingLink(r){
-  if(r.url) return '<a class="rlink" href="'+esc(r.url)+'" target="_blank" rel="noopener">Access Reading</a>';
-  return '<span class="muted" style="font-size:.85rem">Available through the Seneca library.</span>';
-}
-function weekView(n){
-  var wk=week(n); if(!wk) return '<p>Week not found.</p>';
-  var p=phaseOf(wk.phaseId);
-  function sec(id,title,inner){ return '<section id="sec-'+id+'" class="card" style="scroll-margin-top:14px" aria-labelledby="h-'+id+'"><h2 id="h-'+id+'" style="margin-top:0">'+esc(title)+'</h2>'+inner+'</section>'; }
-  function li(x){ return '<li>'+esc(x)+'</li>'; }
-  var head='<a class="btn btn-quiet" href="#/home">&#8592; All weeks</a><p class="eyebrow" style="margin-top:14px">Week '+pad(n)+' &middot; <span style="color:'+p.accent+'">'+esc(p.name)+'</span></p><h1>'+esc(wk.title||'')+'</h1><p><span class="tag" style="background:'+p.fill+'"><span class="dot" style="background:'+p.accent+'"></span>'+esc(wk.concept||'')+'</span></p>';
-  var defs=[['overview','Overview'],['purpose','Purpose and Learning Outcomes'],['guiding','Guiding Questions'],['concepts','Weekly Concepts'],['readings','Readings'],['reflect','Reflection Corner'],['references','References']];
-  var jump='<nav class="section-tabs" aria-label="On this page">'+defs.map(function(s){return '<button data-action="jump" data-target="sec-'+s[0]+'">'+esc(s[1])+'</button>';}).join('')+'</nav>';
-  var pu=wk.purpose||{statement:[],outcomes:[]};
-  var s=
-    sec('overview','Overview', (wk.overview&&wk.overview.length)?structList(wk.overview):'<p class="muted">Overview coming soon.</p>')+
-    sec('purpose','Purpose and Learning Outcomes', ((pu.statement||[]).map(function(x){return '<p>'+esc(x)+'</p>';}).join(''))+((pu.outcomes&&pu.outcomes.length)?'<div class="eyebrow">By the end of this week you will be able to:</div><ul style="line-height:1.7">'+pu.outcomes.map(li).join('')+'</ul>':''))+
-    sec('guiding','Guiding Questions', (wk.guiding&&wk.guiding.length)?'<ol style="line-height:1.8">'+wk.guiding.map(li).join('')+'</ol>':'<p class="muted">Guiding questions coming soon.</p>')+
-    sec('concepts','Weekly Concepts', (wk.concepts&&wk.concepts.length)?wk.concepts.map(function(c,ci){return '<div style="margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--hair)"><h3 style="margin:0 0 .4em">'+esc((ci+1)+'. '+c.term)+'</h3>'+((c.paras||[]).map(function(x){return '<p style="margin:.5em 0">'+esc(x)+'</p>';}).join(''))+((c.cites&&c.cites.length)?'<p class="cite"><b>Reference (APA 7th):</b><br>'+c.cites.map(function(x){return esc(x);}).join('<br>')+'</p>':'')+'</div>';}).join(''):'<p class="muted">Concepts coming soon.</p>')+
-    sec('readings','Readings', (function(){var rs=wk.readings||[];if(!rs.length)return '<p class="muted">Readings will be listed here.</p>';return rs.map(function(r){if(r.type==='head')return '<h4 style="margin:16px 0 6px">'+esc(r.text)+'</h4>';if(r.type==='video')return '<div class="reading">'+(r.label?'<p style="margin:0 0 8px"><b>'+esc(r.label)+'</b></p>':'')+readingMedia(r)+'</div>';if(r.type==='cite')return '<div class="reading"><p style="margin:0 0 .4em">'+linkify(r.text)+'</p>'+readingLink(r)+'</div>';return '<p style="margin:.45em 0">'+esc(r.text)+'</p>';}).join('');})())+
-    sec('reflect','Reflection Corner', '<p class="muted">A question to carry through this week. It is not a quiz. There is no right answer. It is here to make you think.</p><blockquote style="border-left:4px solid '+p.accent+';margin:14px 0 0;padding:6px 0 6px 18px;font-size:1.2rem;line-height:1.5">'+esc(wk.reflection||'')+'</blockquote>')+
-    sec('references','References', (function(){var rf=wk.references||[];return rf.length?rf.map(function(r){return '<div class="reading"><p style="margin:0">'+linkify(r)+'</p></div>';}).join(''):'<p class="muted">References will be listed here.</p>';})());
-  var deckCta=(wk.slides&&(wk.slides.deck||[]).length)?'<section class="card" style="background:linear-gradient(180deg,var(--surface),#FBFCFD);border:1px solid var(--hair)"><div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap"><div style="flex:1;min-width:240px"><div class="eyebrow" style="color:'+p.accent+'">Walkthrough</div><h2 style="margin:0 0 4px">Walk through this week</h2><p class="muted" style="margin:0">A short interactive walkthrough of the week\'s big idea. '+wk.slides.deck.length+' slides, about five minutes.</p></div><button class="btn btn-primary" data-action="deck-open" data-week="'+n+'">Start the walkthrough &rarr;</button></div></section>':'';
-  return head+jump+deckCta+s;
-}
-
-/* ---------- glossary and thinkers, by week ---------- */
-function glossary(){
-  var sel=(location.hash.split('?week=')[1])||'all';
-  var weekOpts='<option value="all"'+(sel==='all'?' selected':'')+'>All weeks</option>'+(D.weeks||[]).map(function(w){return '<option value="'+w.number+'"'+(String(w.number)===String(sel)?' selected':'')+'>Week '+pad(w.number)+': '+esc(w.title||'')+'</option>';}).join('');
-  var head='<h1>Glossary and Thinkers</h1><p class="lede">The language of the course in plain words, and the people behind the ideas, organized by week.</p>'+
-    '<label for="gsearch">Search every term</label><input id="gsearch" data-action="g" placeholder="Type a word, for example: coded exposure" autocomplete="off">'+
-    '<div id="gsearchout" style="margin-top:12px"></div>'+
-    '<label for="gweek" style="margin-top:16px">Or browse by week</label><select id="gweek" data-action="gweek" style="max-width:420px">'+weekOpts+'</select>'+
-    '<div id="gout" style="margin-top:16px">'+glossaryByWeek(sel)+'</div>';
-  return head;
-}
-function glossaryByWeek(sel){
-  var ws=(sel==='all')?(D.weeks||[]):[week(parseInt(sel,10))].filter(Boolean);
-  return ws.map(function(w){
-    var p=phaseOf(w.phaseId);
-    var cons=(w.concepts||[]).map(function(c){return '<div style="margin:10px 0"><b>'+esc(c.term)+'</b><p style="margin:.25em 0 .3em">'+esc((c.paras||[]).join(' '))+'</p>'+((c.cites&&c.cites.length)?'<p class="cite">'+esc(c.cites[0])+'</p>':'')+'</div>';}).join('');
-    var thinks=(D.thinkers||[]).filter(function(t){return (t.weeks||[]).indexOf(w.number)>=0;});
-    var tk=thinks.length?'<div class="eyebrow" style="margin-top:10px">Thinkers this week</div>'+thinks.map(function(t){return '<p style="margin:.2em 0"><b>'+esc(t.name)+'.</b> '+esc(t.note)+'</p>';}).join(''):'';
-    return '<div class="glossweek"><div class="eyebrow" style="color:'+p.accent+';margin-top:8px">Week '+pad(w.number)+' &middot; '+esc(w.title||'')+'</div>'+(cons||'<p class="muted">No concepts listed.</p>')+tk+'</div>';
-  }).join('');
-}
-function glossarySearch(q){
-  q=(q||'').toLowerCase().trim(); if(!q) return '';
-  var hits=(D.glossary||[]).filter(function(g){return (g.term+' '+g.def).toLowerCase().indexOf(q)>=0;});
-  if(!hits.length) return '<p class="muted">No matches. Try another word.</p>';
-  return '<div class="grid grid-2">'+hits.map(function(g){return '<div class="card"><b>'+esc(g.term)+'</b><p style="margin:.3em 0 .4em">'+esc(g.def||'')+'</p>'+(g.cite?'<p class="cite">'+esc(g.cite)+'</p>':'')+'<div class="mono" style="font-size:.72rem;color:#54585A;margin-top:6px">Weeks: '+(g.weeks||[]).map(function(n){return '<a href="#/week/'+n+'">W'+pad(n)+'</a>';}).join(', ')+'</div></div>';}).join('')+'</div>';
-}
-
-/* ---------- self-check cards ---------- */
-function cards(){
-  var pre=(location.hash.split('?week=')[1])||'';
-  var opts='<option value="">All weeks</option>'+(D.weeks||[]).map(function(w){return '<option value="'+w.number+'"'+(String(w.number)===String(pre)?' selected':'')+'>Week '+pad(w.number)+'</option>';}).join('');
-  return '<h1>Self-check cards</h1><p class="lede">Practice recalling the key ideas in your own words, then flip to check. Private study, never a test.</p>'+
-    '<label for="card-week">Show cards for</label><select id="card-week" data-action="cw" style="max-width:280px">'+opts+'</select><div id="cardgrid" style="margin-top:16px">'+cardGrid(pre)+'</div>';
-}
-function cardGrid(wk){
-  var cs=(D.cards||[]).filter(function(c){return !wk||(c.weeks||[]).indexOf(parseInt(wk,10))>=0;});
-  if(!cs.length) return '<p class="muted">No cards for this selection.</p>';
-  return '<div class="grid grid-2">'+cs.map(function(c){return '<div class="flip" data-action="flip" tabindex="0" role="button" aria-label="Flashcard: '+esc(c.front)+'. Activate to flip."><div class="flip-inner"><div class="flip-face"><div class="eyebrow">Recall</div><b style="font-size:1.1rem">'+esc(c.front)+'</b><span class="muted" style="margin-top:auto;font-size:.8rem">Click to flip</span></div><div class="flip-face flip-back"><div class="eyebrow">Definition</div><p style="margin:0">'+esc(c.back)+'</p></div></div></div>';}).join('')+'</div>';
-}
-
-/* ---------- compare ideas (hold concepts side by side + synthesize) ---------- */
-function allConcepts(){ var out=[]; (D.weeks||[]).forEach(function(w){ (w.concepts||[]).forEach(function(c,i){ out.push({id:'w'+w.number+'-'+i,week:w.number,term:c.term,text:(c.paras||[]).join(' '),cite:(c.cites&&c.cites[0])||'',wtitle:w.title||''}); }); }); return out; }
-function conceptById(id){ var a=allConcepts(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function cmpToggle(id){ var i=CMP.indexOf(id); if(i>=0){ CMP.splice(i,1); } else { if(CMP.length>=3){ toast('Compare holds three ideas at a time.'); return; } CMP.push(id); } SHOWSYN=false; saveCmp(); render(); }
-function cmpSynth(items){
-  function gist(c){ var s=(c.text||'').trim(); var i=s.indexOf('. '); return (i>5?s.slice(0,i):s).replace(/\s*\.?\s*$/,''); }
-  var named=items.map(function(c){ return c.term; });
-  var list=items.length===2?(named[0]+' and '+named[1]):(named.slice(0,-1).join(', ')+', and '+named[named.length-1]);
-  var ideas=items.map(function(c){ return gist(c)+'.'; }).join(' ');
-  return 'This compares '+list+'. '+ideas+' Put them together and you see different parts of one idea: how you learn can be shaped, with the right strategy, the right mindset, and the right support.';
-}
-function compareView(){
-  var picked=CMP.map(conceptById).filter(Boolean), all=allConcepts();
-  var left;
-  if(picked.length){
-    var cols=picked.map(function(c){ var p=phaseOf((week(c.week)||{}).phaseId);
-      return '<div class="cmpcol"><div style="height:5px;background:'+p.accent+'"></div><div style="padding:16px 17px"><h3 style="margin:0 0 .5em">'+esc(c.term)+'</h3><p style="margin:0;font-size:.92rem;color:var(--ink-soft);line-height:1.55">'+esc(c.text)+'</p>'+(c.cite?'<p class="cite" style="margin-top:10px">'+esc(c.cite)+'</p>':'')+'<button class="btn btn-quiet" data-action="cmp-add" data-id="'+esc(c.id)+'" style="margin-top:10px;color:var(--red)">Remove</button></div></div>';
+  /* ---------- chrome ---------- */
+  function header() {
+    return '<header style="position:sticky;top:0;z-index:40;height:62px;background:#fff;border-bottom:2px solid var(--red);display:flex;align-items:center;padding:0 22px;gap:14px;flex:none">'
+      + '<div style="display:flex;align-items:center;gap:10px;flex:none"><img src="./seneca-logo.png" alt="Seneca Polytechnic" style="height:34px;width:auto;display:block"><span style="font-weight:600;font-size:1.0625rem;color:var(--ink);letter-spacing:-.01em">PSY355 Companion</span></div>'
+      + '<span class="mono" style="margin-left:auto;font-size:.75rem;font-weight:600;color:var(--red);background:#F6E3E1;padding:5px 10px;border-radius:6px;flex:none">FALL 2026</span>'
+      + '</header>';
+  }
+  function sidebar() {
+    var s = state;
+    var navDefs = [['library', 'Home', 'grid'], ['compare', 'Compare', 'columns'], ['reading', 'Build Your Reading Comprehension', 'book'], ['glossary', 'Glossary & Thinkers', 'book'], ['cards', 'Self-check', 'clipboard']];
+    var btns = navDefs.map(function (d) {
+      var key = d[0], active = (key === 'library' && (s.screen === 'library' || s.screen === 'detail')) || s.screen === key;
+      var badge = '';
+      if (key === 'compare' && s.compareIds.length) badge = '<span class="mono" style="font-size:.6875rem;font-weight:600;color:#1552D8;background:#E7EEFB;padding:1px 7px;border-radius:999px">' + s.compareIds.length + '</span>';
+      var click = "SOC.go('" + key + "')";
+      return '<button onclick="' + click + '" aria-current="' + (active ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (active ? '600' : '500') + ';background:' + (active ? '#EEF1F5' : 'transparent') + ';color:' + (active ? '#15171C' : '#474C57') + ';text-align:left">'
+        + '<span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (active ? 'var(--red)' : '#8a909c') + '">' + ic(d[2], 19) + '</span><span style="flex:1;text-align:left">' + d[1] + '</span>' + badge + '</button>';
+    });
+    var walk = '<a href="https://rpeart73.github.io/psy355-companion/walkthroughs/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:11px;width:100%;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;color:#474C57;text-decoration:none"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#8a909c">' + ic('layers', 19) + '</span><span style="flex:1">Weekly Walkthrough</span><span style="color:#8a909c">↗</span></a>';
+    var nav = btns[0] + walk + btns.slice(1).join('');
+    var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
+    var weekNav = weeksWithReadings().map(function (w) {
+      var active = s.activeWeek === w;
+      return '<button onclick="SOC.week(' + w + ')" style="display:flex;align-items:center;gap:9px;width:100%;border:none;border-radius:9px;padding:7px 12px;font-size:.8125rem;font-weight:' + (active ? '600' : '500') + ';background:' + (active ? '#E6EAF1' : 'transparent') + ';color:' + (active ? '#1B2A4A' : '#474C57') + ';text-align:left">'
+        + '<span class="mono" style="font-size:.6875rem;color:' + (active ? '#1B2A4A' : '#8a909c') + ';flex:none;width:18px">' + w + '</span>'
+        + '<span style="flex:1;text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(weekTitle(w)) + '</span>'
+        + '<span class="mono" style="font-size:.6875rem;color:#8a909c">' + counts[w] + '</span></button>';
     }).join('');
-    var synth=picked.length>=2?(SHOWSYN?'<div style="background:#15171C;color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:18px"><div style="display:flex;align-items:center;gap:9px;margin-bottom:10px"><span class="eyebrow" style="color:#fff;margin:0">How these connect</span><button class="btn btn-quiet" data-action="cmp-hide" style="margin-left:auto;color:#fff">Hide</button></div><p style="margin:0 0 14px;font-size:1rem;line-height:1.6;color:rgba(255,255,255,.92)">'+esc(cmpSynth(picked))+'</p><button data-action="save-compare" style="background:rgba(255,255,255,.14);border:none;color:#fff;border-radius:8px;padding:9px 15px;font-size:.875rem;font-weight:600">Save my notes</button></div>':'<button class="btn btn-primary" data-action="cmp-synth" style="margin-bottom:18px">Synthesize their relationship</button>'):'<p class="muted" style="margin:0 0 14px">Add one more idea to compare it against this one.</p>';
-    left=synth+'<div style="display:flex;gap:16px;overflow-x:auto;padding-bottom:10px">'+cols+'</div>';
-  } else {
-    left='<div class="card" style="text-align:center;padding:42px 24px"><p class="muted" style="margin:0">Nothing selected yet. Choose two or three ideas from the list on the right.</p></div>';
+    return '<nav class="soc-sidebar" aria-label="Primary" style="width:240px;flex:none;border-right:1px solid #DEE3EA;background:#fff;padding:18px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:62px;align-self:flex-start;height:calc(100vh - 62px);overflow:auto">'
+      + nav
+      + '<div style="margin-top:14px;padding-top:14px;border-top:1px solid #EEF1F5"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#8a909c;padding:0 12px 8px">WEEKS</div>' + weekNav + '</div>'
+      + '<div style="margin-top:auto;padding:13px 12px;border-radius:12px;background:#EEF1F5"><div class="mono" style="font-size:.75rem;color:#474C57;margin-bottom:4px">PSY355</div><div style="font-size:.8125rem;color:#15171C;line-height:1.45">A living collection, week by week. A companion to Blackboard.</div></div>'
+      + '</nav>';
   }
-  var picklist=all.map(function(c){ var sel=CMP.indexOf(c.id)>=0; var p=phaseOf((week(c.week)||{}).phaseId);
-    return '<button class="cmppick" data-action="cmp-add" data-id="'+esc(c.id)+'" style="background:'+(sel?'#E6EAF1':'none')+'"><span style="width:9px;height:9px;border-radius:50%;background:'+p.accent+';flex:none"></span><span style="flex:1;min-width:0;font-size:.85rem;font-weight:600;color:var(--ink)">'+esc(c.term)+'</span><span style="flex:none;font-weight:700;color:'+(sel?'#1B2A4A':'#9aa3b2')+'">'+(sel?'&#10003;':'+')+'</span></button>';
-  }).join('');
-  var head='<h1>Compare ideas</h1><p class="lede">Hold two or three of the course\'s key ideas side by side, then synthesize how they connect. Private study, saved on your device.</p>'+(picked.length?'<button class="btn btn-quiet" data-action="cmp-clear" style="color:var(--red);margin-bottom:10px">Clear all</button>':'');
-  return head+'<div class="cmpgrid"><div>'+left+'</div><aside style="position:sticky;top:72px"><div class="card" style="padding:0;overflow:hidden;max-height:calc(100vh - 120px);display:flex;flex-direction:column"><div style="padding:13px 14px;border-bottom:1px solid var(--hair)"><b>Key ideas</b><div class="muted" style="font-size:.78rem;margin-top:2px">'+picked.length+' of 3 selected &middot; tap to add or remove</div></div><div style="overflow:auto">'+picklist+'</div></div></aside></div>';
-}
 
-/* ---------- living slides (interactive walkthrough) ---------- */
-var DECK={n:0,i:0,slides:[],week:0};
-function deckAccent(){ var p=phaseOf((week(DECK.week)||{}).phaseId); return (p&&p.accent)||'#3A6EA5'; }
-function deckSlide(s){
-  if(s.kind==='title') return '<div class="deck-eyebrow">'+(s.eyebrow||'')+'</div><h2 class="deck-h">'+(s.title||'')+'</h2><p class="deck-sub">'+(s.sub||'')+'</p>';
-  if(s.kind==='statement') return '<p class="deck-statement">'+(s.text||'')+'</p>'+(s.note?'<p class="deck-sub" style="margin-top:20px">'+s.note+'</p>':'');
-  if(s.kind==='concept') return '<div class="deck-eyebrow">Concept</div><h2 class="deck-h">'+esc(s.term||'')+'</h2><p class="deck-sub">'+esc(s.def||'')+'</p>'+(s.cite?'<div class="deck-cite">'+esc(s.cite)+'</div>':'');
-  if(s.kind==='reflect') return '<div class="deck-eyebrow">Reflection</div><h2 class="deck-h" style="font-size:clamp(1.15rem,2.4vw,1.45rem);color:var(--ink-faint);font-weight:600;margin-bottom:.5em">Carry this with you</h2><p class="deck-q">'+esc(s.question||'')+'</p>';
-  var pts=(s.points||[]).map(function(x){return '<li>'+x+'</li>';}).join('');
-  return '<div class="deck-eyebrow">'+(s.eyebrow||(s.kind==='close'?'For this week':'Key idea'))+'</div><h2 class="deck-h" style="font-size:clamp(1.5rem,3.2vw,2.1rem)">'+(s.title||'')+'</h2>'+(s.lead?'<p class="deck-sub" style="margin-bottom:4px">'+s.lead+'</p>':'')+'<ul class="deck-points">'+pts+'</ul>';
-}
-function deckRender(){
-  var s=DECK.slides[DECK.n], total=DECK.slides.length, acc=deckAccent(), pts=(s.points||[]);
-  var last=(DECK.n===total-1 && DECK.i>=pts.length);
-  OVERLAY.innerHTML='<div class="deck" role="dialog" aria-modal="true" aria-label="Week '+DECK.week+' walkthrough" style="--accent:'+acc+'">'+
-    '<div class="deck-top"><span class="pin">'+esc((D.course||{}).code||'PSY355')+' &middot; WEEK '+pad(DECK.week)+'</span><div class="deck-prog"><i style="width:'+(100*(DECK.n+1)/total)+'%"></i></div><button class="deck-close" data-action="deck-close" aria-label="Close walkthrough">Close &times;</button></div>'+
-    '<div class="deck-stage"><div class="deck-card"><div class="strip" style="background:'+acc+'"></div>'+deckSlide(s)+'</div></div>'+
-    '<div class="deck-foot"><button class="deck-btn" data-action="deck-prev"'+((DECK.n===0&&DECK.i===0)?' disabled':'')+'>&larr; Back</button><span class="deck-count">'+(DECK.n+1)+' / '+total+'</span><button class="deck-btn deck-next" data-action="deck-next">'+(last?'Finish':'Next &rarr;')+'</button></div>'+
-    '</div>';
-  var lis=OVERLAY.querySelectorAll('.deck-points li');
-  for(var k=0;k<lis.length && k<DECK.i;k++){ lis[k].classList.add('show'); }
-  var nb=OVERLAY.querySelector('.deck-next'); if(nb) nb.focus();
-}
-function deckOpen(wk){ var w=week(wk); if(!w||!w.slides||!(w.slides.deck||[]).length) return; DECK.week=wk; DECK.slides=w.slides.deck; DECK.n=0; DECK.i=0; document.body.style.overflow='hidden'; deckRender(); document.addEventListener('keydown',deckKey); }
-function deckNext(){ var pts=(DECK.slides[DECK.n].points||[]); if(DECK.i<pts.length){ DECK.i++; deckRender(); return; } if(DECK.n<DECK.slides.length-1){ DECK.n++; DECK.i=0; deckRender(); return; } deckClose(); }
-function deckPrev(){ if(DECK.i>0){ DECK.i--; deckRender(); return; } if(DECK.n>0){ DECK.n--; DECK.i=(DECK.slides[DECK.n].points||[]).length; deckRender(); } }
-function deckClose(){ OVERLAY.innerHTML=''; document.body.style.overflow=''; document.removeEventListener('keydown',deckKey); }
-function deckKey(e){ if(e.key==='Escape'){ deckClose(); } else if(e.key==='ArrowRight'||e.key===' '){ e.preventDefault(); deckNext(); } else if(e.key==='ArrowLeft'){ e.preventDefault(); deckPrev(); } }
-
-/* ---------- comparative-reading lenses + reading comprehension ---------- */
-var LENSES = {
-  thematic: { label:'Thematic', hint:'shared themes or topics, and how each text handles them differently' },
-  stylistic: { label:'Stylistic', hint:'tone, structure, and how each text is written' },
-  contextual: { label:'Contextual', hint:'the history, culture, and who is speaking' },
-  theoretical: { label:'Theoretical', hint:'a critical lens, for example power or whose knowledge counts' }
-};
-var RC_QUESTIONS = {
-  thematic: ['What is the main idea or argument of this reading? Put it in one sentence.','What evidence or examples does the author use to support it?','What is the author really saying about the larger topic or theme?','How does this reading change or add to how you understand the topic?'],
-  stylistic: ['What is the author tone (for example plain, urgent, careful, personal)?','How is the reading organized, and how does that shape its argument?','Which words, images, or moments stood out, and what effect did they have?','Who does the writing seem to be for?'],
-  contextual: ['Who wrote this, and from what background or position?','How might the time, place, or community shape what the author says?','Whose perspective is centred here, and whose is missing?','What would someone need to know about the context to read this fairly?'],
-  theoretical: ['Read this through one lens, for example power, or whose knowledge counts. What does that lens reveal?','Who benefits from the way this is framed, and who is left out?','What does the author assume that a critical reader should question?','What would change if you read it through a different lens?']
-};
-function readingTitle(t){ t=String(t||'').trim(); var m=t.match(/\(\d{4}[a-z]?\)\.?\s*(.+?)[.?](\s|$)/); if(m&&m[1]&&m[1].length>4) return m[1].trim(); return t.length>90?t.slice(0,90).trim()+'...':t; }
-function allReadings(){ var out=[]; (D.weeks||[]).forEach(function(w){ (w.readings||[]).forEach(function(r,i){ if(r.type!=='cite'||!r.text) return; if(/subject outline|course description|course learning outcomes/i.test(r.text)) return; out.push({id:'w'+w.number+'-r'+i, week:w.number, wtitle:w.title||'', text:r.text, url:r.url||'', title:readingTitle(r.text)}); }); }); return out; }
-function readingById(id){ var a=allReadings(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
-function lensChips(){ return Object.keys(LENSES).map(function(k){ var on=RST.lens===k; return '<button data-action="set-lens" data-lens="'+k+'" style="border:1px solid '+(on?'#15171C':'#DEE3EA')+';background:'+(on?'#15171C':'#fff')+';color:'+(on?'#fff':'#15171C')+';border-radius:999px;padding:7px 15px;font-size:.85rem;font-weight:600">'+LENSES[k].label+'</button>'; }).join(' '); }
-function readingComp(){
-  var rs=allReadings();
-  var r=RST.reading?readingById(RST.reading):null;
-  if(!r){
-    var picks=rs.map(function(rd){ return '<button data-action="r-pick" data-id="'+esc(rd.id)+'" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#fff;border:1px solid #DEE3EA;border-radius:10px;padding:12px 14px;margin-bottom:8px;color:#15171C"><span style="width:9px;height:9px;border-radius:50%;background:var(--red);flex:none"></span><span style="flex:1;min-width:0"><span style="display:block;font-weight:600;font-size:.95rem">'+esc(rd.title)+'</span><span style="font-size:.8125rem;color:#474C57">Week '+pad(rd.week)+' &middot; '+esc(rd.wtitle)+'</span></span><span style="color:#8a909c;flex:none">'+ic('book',16)+'</span></button>'; }).join('');
-    return '<h1>Build Your Reading Comprehension</h1><p class="lede" style="max-width:72ch">Pick one reading. You will work through questions that build your understanding of it. Switch the lens to change the kind of questions you answer. Your answers save to your notes.</p>'+(picks||'<p class="muted">Readings will appear here once they are posted.</p>');
+  /* ---------- library ---------- */
+  function library() {
+    var s = section_state();
+    return s;
   }
-  var lens=LENSES[RST.lens]||LENSES.thematic;
-  var qs=RC_QUESTIONS[RST.lens]||RC_QUESTIONS.thematic;
-  var zones=qs.map(function(q,i){ var key=r.id+'|'+RST.lens+'|'+i; var v=esc((RST.notes&&RST.notes[key])||''); return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:7px"><span style="display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;background:#15171C;color:#fff;border-radius:50%;font-size:.8rem;font-weight:700;flex:none">'+(i+1)+'</span><p style="margin:0;font-size:.95rem;color:#15171C">'+esc(q)+'</p></div><textarea data-rckey="'+esc(key)+'" placeholder="Your answer" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">'+v+'</textarea></div>'; }).join('');
-  var openBtn=r.url?'<a href="'+esc(r.url)+'" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;background:rgba(255,255,255,.14);color:#fff;border-radius:7px;padding:7px 13px;font-size:.85rem;font-weight:600;text-decoration:none">Open the reading &#8599;</a>':'<div style="margin-top:8px;font-size:.8125rem;color:rgba(255,255,255,.7)">Find this in this week\'s Readings on Blackboard.</div>';
-  return '<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px"><h1 style="margin:0">Build Your Reading Comprehension</h1><button data-action="r-clear" style="margin-left:auto;background:none;border:none;color:var(--red);font-size:.875rem;font-weight:600">Choose a different reading</button></div>'
-    +'<div style="background:#15171C;color:#fff;border-radius:12px;padding:15px 18px;margin:8px 0 16px"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#9aa3b2;margin-bottom:3px">YOUR READING</div><div style="font-size:1.0625rem;font-weight:600">'+esc(r.title)+'</div><div style="font-size:.875rem;color:rgba(255,255,255,.85)">Week '+pad(r.week)+' &middot; '+esc(r.wtitle)+'</div>'+openBtn+'</div>'
-    +'<div style="font-size:.8125rem;font-weight:600;color:#15171C;margin-bottom:7px">Choose a lens (this changes the questions)</div><div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px">'+lensChips()+'</div><p style="font-size:.82rem;color:#8a909c;margin:0 0 16px">'+esc(lens.label)+': '+esc(lens.hint)+'.</p>'
-    +zones
-    +'<button data-action="save-reading" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:10px 18px;font-size:.9rem;font-weight:600;margin-top:4px">Save my notes</button>';
-}
-function senecaDoc(course,title,sub,body,fn){
-  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>'+esc(title)+'</title><style>@page{margin:1in} body{font-family:"IBM Plex Sans",Calibri,Arial,sans-serif;color:#15171C;font-size:11pt;line-height:1.5} .eyebrow{color:#DA291C;font-weight:bold;letter-spacing:1pt;font-size:9pt;margin:0} h1{color:#DA291C;font-size:18pt;margin:2pt 0 2pt} .sub{color:#474C57;margin:0 0 12pt;font-size:10pt;border-bottom:1pt solid #DEE3EA;padding-bottom:8pt}</style></head><body><p class="eyebrow">SENECA POLYTECHNIC &middot; '+esc(course)+'</p><h1>'+esc(title)+'</h1><p class="sub">'+sub+'</p>'+body+'</body></html>';
-  var blob=new Blob(['﻿'+html],{type:'application/msword'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fn+'.doc'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href); toast('Saved to your device (Seneca template).');
-}
-function saveReadingDoc(){
-  var r=RST.reading&&readingById(RST.reading); if(!r){ toast('Pick a reading first.'); return; }
-  var L=(LENSES[RST.lens]||LENSES.thematic).label, qs=RC_QUESTIONS[RST.lens]||RC_QUESTIONS.thematic;
-  var body=qs.map(function(q,i){ var a=((RST.notes||{})[r.id+'|'+RST.lens+'|'+i]||'').trim(); return '<p style="margin:14pt 0 2pt;font-weight:bold;color:#DA291C">'+esc(q)+'</p><p style="margin:0">'+(a?esc(a).replace(/\n/g,'<br>'):'<i>(not written yet)</i>')+'</p>'; }).join('');
-  senecaDoc(CODE,'Build Your Reading Comprehension','Reading: '+esc(r.title)+'<br>Lens: '+esc(L),body,CODE+'_reading_comprehension');
-}
-function saveCompareDoc(){
-  var picked=CMP.map(conceptById).filter(Boolean); if(picked.length<2){ toast('Add two or three ideas first.'); return; }
-  var body=picked.map(function(c){ return '<p style="margin:12pt 0 2pt;font-weight:bold;color:#DA291C">'+esc(c.term)+'</p><p style="margin:0">'+esc(c.text)+'</p>'; }).join('')+'<p style="margin:16pt 0 2pt;font-weight:bold;color:#15171C">How these connect</p><p style="margin:0">'+esc(cmpSynth(picked))+'</p>';
-  senecaDoc(CODE,'Compare','Ideas: '+picked.map(function(c){return esc(c.term);}).join(', '),body,CODE+'_comparison');
-}
+  function section_state() {
+    var s = state, list = filtered();
+    var typeCounts = {}; D.records.forEach(function (r) { typeCounts[r.type] = (typeCounts[r.type] || 0) + 1; });
+    var html = '<div class="rise">' + (s.introOpen ? '' : '<h1 class="vh">PSY355 source library, by week</h1>');
 
-/* ---------- render dispatch ---------- */
-function homeBar(){ return '<a href="#/home" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--hair);border-radius:8px;padding:8px 14px;font-size:.875rem;font-weight:600;color:var(--ink);text-decoration:none;margin-bottom:18px">&#8592; Return to Home</a>'; }
-function render(){
-  var h=location.hash||'#/home', path=h.replace(/^#\//,'').split('?')[0], html, active;
-  if(path!=='compare' && PREVPATH!=='' && PREVPATH!==path && (CMP.length||SHOWSYN)){ CMP=[]; SHOWSYN=false; saveCmp(); }
-  PREVPATH=path;
-  if(path.indexOf('week/')===0){ active='home'; html=weekView(parseInt(path.split('/')[1],10)); }
-  else if(path==='reading'){ active='reading'; html=homeBar()+readingComp(); }
-  else if(path==='glossary'){ active='glossary'; html=homeBar()+glossary(); }
-  else if(path==='cards'){ active='cards'; html=homeBar()+cards(); }
-  else if(path==='compare'){ active='compare'; html=homeBar()+compareView(); }
-  else { active='home'; html=home(); }
-  renderNav(active); MAIN.innerHTML=html; MAIN.focus(); window.scrollTo(0,0);
-}
+    if (s.introOpen) {
+      var stats = [['Readings', D.records.length], ['Weeks', weeksWithReadings().length], ['Formats', Object.keys(typeCounts).length]];
+      html += '<section style="background:#fff;border:1px solid #DEE3EA;border-top:4px solid var(--red);border-radius:14px;padding:28px 30px;margin-bottom:22px;position:relative;box-shadow:0 1px 2px rgba(21,23,28,.04)">'
+        + '<div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;justify-content:space-between">'
+        + '<div style="flex:1;min-width:280px"><div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--red);margin-bottom:10px;font-weight:600">THE COURSE CORPUS</div>'
+        + '<h1 style="font-size:2.125rem;line-height:1.14;font-weight:600;margin:0 0 10px;color:var(--ink)">Every reading, week by week.</h1>'
+        + '<p style="font-size:1rem;line-height:1.6;color:#474C57;margin:0;max-width:62ch">These are the readings behind PSY355, in course order. Search them, hold two against each other, and follow the course as it moves.</p></div>'
+        + '<div style="display:flex;gap:10px;flex:none">' + stats.map(function (st) { return '<div style="background:#EEF1F5;border:1px solid #DEE3EA;border-radius:12px;padding:12px 16px;text-align:center;min-width:78px"><div class="mono" style="font-size:1.75rem;font-weight:600;line-height:1;color:var(--red)">' + st[1] + '</div><div style="font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:#474C57;margin-top:5px">' + st[0] + '</div></div>'; }).join('') + '</div></div>'
+        + '<button onclick="SOC.dismissIntro()" aria-label="Dismiss" style="position:absolute;top:14px;right:14px;background:#EEF1F5;border:none;border-radius:8px;width:30px;height:30px;color:#474C57;display:flex;align-items:center;justify-content:center">' + ic('x', 16) + '</button></section>';
+    }
 
-/* ---------- events ---------- */
-document.addEventListener('click',function(e){
-  var t=e.target.closest('[data-action]'); if(!t) return;
-  var a=t.getAttribute('data-action');
-  if(a==='play-video'){ var wk=week(parseInt(t.getAttribute('data-week'),10)); t.closest('.aspect').innerHTML=videoEmbed(wk.video,'Week '+wk.number+' video'); }
-  else if(a==='jump'){ var je=document.getElementById(t.getAttribute('data-target')); if(je) je.scrollIntoView({behavior:'smooth',block:'start'}); }
-  else if(a==='slide-prev'||a==='slide-next'){ stepSlide(t.closest('.slidewrap'),a==='slide-next'?1:-1); }
-  else if(a==='flip'){ t.classList.toggle('flipped'); }
-  else if(a==='modal-close'){ closeModal(); }
-  else if(a==='cmp-add'){ cmpToggle(t.getAttribute('data-id')); }
-  else if(a==='cmp-clear'){ CMP=[]; SHOWSYN=false; saveCmp(); render(); }
-  else if(a==='cmp-synth'){ SHOWSYN=true; render(); }
-  else if(a==='cmp-hide'){ SHOWSYN=false; render(); }
-  else if(a==='set-lens'){ RST.lens=t.getAttribute('data-lens'); saveR(); MAIN.innerHTML=readingComp(); }
-  else if(a==='r-pick'){ RST.reading=t.getAttribute('data-id'); saveR(); MAIN.innerHTML=readingComp(); MAIN.focus(); window.scrollTo(0,0); }
-  else if(a==='r-clear'){ RST.reading=null; saveR(); MAIN.innerHTML=readingComp(); window.scrollTo(0,0); }
-  else if(a==='save-reading'){ saveReadingDoc(); }
-  else if(a==='save-compare'){ saveCompareDoc(); }
-  else if(a==='home-layout'){ HL=t.getAttribute('data-layout'); MAIN.innerHTML=home(); }
-  else if(a==='home-clear'){ HQ=''; MAIN.innerHTML=home(); var hs=document.getElementById('home-search'); if(hs) hs.focus(); }
-  else if(a==='deck-open'){ deckOpen(parseInt(t.getAttribute('data-week'),10)); }
-  else if(a==='deck-next'){ deckNext(); }
-  else if(a==='deck-prev'){ deckPrev(); }
-  else if(a==='deck-close'){ deckClose(); }
-});
-document.addEventListener('keydown',function(e){
-  var f=e.target.closest&&e.target.closest('[data-action=flip]');
-  if(f&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); f.classList.toggle('flipped'); }
-  var sw=e.target.closest&&e.target.closest('.slidewrap');
-  if(sw&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){ e.preventDefault(); stepSlide(sw,e.key==='ArrowRight'?1:-1); }
-});
-document.addEventListener('input',function(e){
-  if(e.target.id==='gsearch'){ document.getElementById('gsearchout').innerHTML=glossarySearch(e.target.value); }
-  else if(e.target.id==='home-search'){ HQ=e.target.value; var hr=document.getElementById('home-results'); if(hr) hr.innerHTML=homeList(); var rl=document.getElementById('home-resultlabel'); if(rl) rl.textContent=resultLabel(); }
-  else if(e.target.getAttribute&&e.target.getAttribute('data-rckey')){ RST.notes[e.target.getAttribute('data-rckey')]=e.target.value; saveR(); }
-});
-document.addEventListener('change',function(e){
-  if(e.target.id==='gweek'){ location.hash='#/glossary?week='+e.target.value; }
-  else if(e.target.id==='card-week'){ document.getElementById('cardgrid').innerHTML=cardGrid(e.target.value); }
-});
-window.addEventListener('hashchange',render);
-render();
+    var layoutDefs = [['byweek', 'By week', 'layers'], ['tiles', 'Tiles', 'grid'], ['index', 'Index', 'list']];
+    var layoutChips = layoutDefs.map(function (d) { return '<button onclick="SOC.layout(\'' + d[0] + '\')" title="' + d[1] + '" aria-label="' + d[1] + '" aria-pressed="' + (s.layout === d[0]) + '" style="' + segStyle(s.layout === d[0]) + '">' + ic(d[2], 15) + '<span>' + d[1] + '</span></button>'; }).join('');
+    var filtersActive = s.activeTypes.length || s.activeWeek != null || s.search.trim().length || s.savedView;
+    var n = list.length;
+    var resultLabel = s.savedView ? ('Saved shelf · ' + n + (n === 1 ? ' reading' : ' readings')) : (s.activeWeek != null ? ('Week ' + s.activeWeek + ' · ' + n + (n === 1 ? ' reading' : ' readings')) : (n === D.records.length ? 'All ' + n + ' readings' : n + ' of ' + D.records.length));
+    var weekStrip = '<div class="soc-weekstrip" style="gap:8px;overflow-x:auto;margin-bottom:16px;padding-bottom:4px" aria-label="Filter by week">' + weeksWithReadings().map(function (w) { var aw = s.activeWeek === w; return '<button onclick="SOC.week(' + w + ')" aria-pressed="' + aw + '" style="flex:none;border:1px solid ' + (aw ? '#1B2A4A' : '#DEE3EA') + ';background:' + (aw ? '#E6EAF1' : '#fff') + ';color:' + (aw ? '#1B2A4A' : '#474C57') + ';font-size:.8125rem;font-weight:' + (aw ? '600' : '500') + ';padding:8px 12px;border-radius:999px;white-space:nowrap"><span class="mono" style="opacity:.7">W' + w + '</span> ' + esc(weekTitle(w)) + '</button>'; }).join('') + '</div>';
+
+    html += '<section style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;padding:16px 18px;margin-bottom:18px;box-shadow:0 1px 2px rgba(21,23,28,.04)">'
+      + '<div style="display:flex;align-items:center;gap:10px;background:#F7F8FA;border:1px solid #DEE3EA;border-radius:10px;padding:11px 14px">'
+      + '<span style="display:flex;color:#8a909c;flex:none">' + ic('search', 18) + '</span>'
+      + '<input id="soc-search" value="' + esc(s.search) + '" oninput="SOC.search(this.value)" placeholder="Search by title, author, idea, or week..." aria-label="Search readings" style="flex:1;border:none;background:none;outline:none;font-size:1rem;color:#15171C;min-width:0" />'
+      + (s.search ? '<button onclick="SOC.clearSearch()" aria-label="Clear search" style="background:none;border:none;color:#8a909c;display:flex;padding:2px">' + ic('x', 16) + '</button>' : '')
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid #EEF1F5">'
+      + '<span style="font-size:.8125rem;color:#474C57">' + resultLabel + '</span>'
+      + (filtersActive ? '<button onclick="SOC.clearFilters()" style="background:none;border:none;color:var(--red);font-size:.8125rem;font-weight:600;padding:2px 4px">Clear</button>' : '')
+      + '<div style="margin-left:auto;display:flex;gap:4px;background:#EEF1F5;border-radius:9px;padding:4px" role="group" aria-label="Layout">' + layoutChips + '</div>'
+      + '</div></section>';
+    html += weekStrip;
+
+    if (n === 0) {
+      html += '<div style="text-align:center;padding:70px 20px;color:#474C57"><div style="display:inline-flex;color:#C9D1DC;margin-bottom:14px">' + ic('search', 44, 1.4) + '</div><div style="font-size:1.125rem;font-weight:600;color:#15171C;margin-bottom:6px">No readings match that yet.</div><p style="margin:0 0 16px;font-size:.9375rem">Try a broader term or clear a filter.</p><button onclick="SOC.clearFilters()" style="background:#1B2A4A;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:.9375rem;font-weight:600">Reset filters</button></div>';
+    } else if (s.layout === 'tiles') {
+      html += '<div class="soc-cardgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:16px">' + list.map(tileCard).join('') + '</div>';
+    } else if (s.layout === 'index') {
+      html += '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04)">' + list.map(indexRow).join('') + '</div>';
+    } else {
+      // by week
+      var weeks = {};
+      list.forEach(function (r) { (weeks[r.week] = weeks[r.week] || []).push(r); });
+      var order = Object.keys(weeks).map(Number).sort(function (a, b) { return a - b; });
+      html += '<div style="display:flex;flex-direction:column;gap:26px">' + order.map(function (w) {
+        var cards = weeks[w].map(tileCard).join('');
+        return '<section><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px">'
+          + '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:26px;padding:0 8px;border-radius:8px;background:#1B2A4A;color:#fff;font-family:var(--mono);font-size:.8125rem;font-weight:600;flex:none">' + w + '</span>'
+          + '<h2 style="font-size:1.1875rem;font-weight:600;margin:0;color:#15171C">' + esc(weekTitle(w)) + '</h2>'
+          + '<span class="mono" style="font-size:.75rem;color:#8a909c">' + weeks[w].length + (weeks[w].length === 1 ? ' reading' : ' readings') + '</span>'
+          + '<div style="flex:1;height:1px;background:#EEF1F5"></div></div>'
+          + '<div class="soc-cardgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:16px">' + cards + '</div></section>';
+      }).join('') + '</div>';
+    }
+    return html + '</div>';
+  }
+
+  /* ---------- detail ---------- */
+  function detail() {
+    var r = rec(state.detailId); if (!r) return library();
+    var tm = typeMeta(r.type), savedOn = state.saved.indexOf(r.id) >= 0, inC = state.compareIds.indexOf(r.id) >= 0;
+    var related = (r.related || []).map(function (id) {
+      var rr = rec(id); if (!rr) return ''; var rtm = typeMeta(rr.type);
+      var conn = rr.week === r.week ? 'Also in Week ' + rr.week : (HAS_EYE ? eyeLabel(rr) : ('Week ' + rr.week));
+      return '<button onclick="SOC.open(\'' + id + '\')" class="relrow" style="display:flex;align-items:center;gap:13px;text-align:left;background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:13px 15px"><span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:' + rtm.soft + ';color:' + rtm.color + ';flex:none">' + ic(rtm.icon, 16) + '</span><span style="flex:1;min-width:0"><span style="display:block;font-size:.9375rem;font-weight:600;color:#15171C">' + esc(rr.title) + '</span><span style="display:block;font-size:.8125rem;color:#474C57">' + esc(rr.authors) + ' · ' + esc(conn) + '</span></span><span style="display:flex;color:#C9D1DC;flex:none">' + ic('chevron', 18) + '</span></button>';
+    }).join('');
+    var facts = [
+      [ic('calendar', 16), 'Used in', 'Week ' + r.week + ': ' + esc(weekTitle(r.week))],
+      [ic('type', 16), 'Format', esc(r.type)],
+      [ic('clock', 16), 'Length', esc(r.len)],
+      [ic('gauge', 16), 'Level', esc(D.levels[r.diff] || '')],
+      [ic('unlock', 16), 'Access', esc((D.accessLabels && D.accessLabels[r.access]) || '')],
+      [ic('globe', 16), 'Origin', esc(r.origin)],
+    ].map(function (f) { return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #EEF1F5"><span style="display:flex;color:#8a909c;flex:none">' + f[0] + '</span><span style="font-size:.8125rem;color:#474C57;flex:none;width:84px">' + f[1] + '</span><span style="font-size:.875rem;font-weight:500;color:#15171C;text-align:right;flex:1">' + f[2] + '</span></div>'; }).join('');
+    var hasLink = !!readUrl(r);
+
+    return '<div class="rise"><button onclick="SOC.back()" style="background:none;border:none;color:#474C57;font-size:.875rem;font-weight:500;padding:0 0 16px;display:inline-flex;align-items:center;gap:6px">&larr; Back to the library</button>'
+      + '<div class="soc-detailgrid" style="display:grid;grid-template-columns:1fr 312px;gap:26px;align-items:start"><div>'
+      + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:13px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:7px;background:' + tm.soft + ';color:' + tm.color + ';font-size:.8125rem;font-weight:600;padding:5px 12px;border-radius:999px">' + ic(tm.icon, 15) + esc(r.type) + '</span>' + eyePill(r) + '<button onclick="SOC.week(' + r.week + ')" class="mono" style="font-size:.8125rem;color:#1B2A4A;background:#E6EAF1;border:none;padding:4px 10px;border-radius:999px">Week ' + r.week + '</button><span class="mono" style="font-size:.8125rem;color:#474C57">' + esc(String(r.year)) + ' · ' + esc(r.origin) + '</span></div>'
+      + '<h1 style="font-size:2.125rem;line-height:1.15;font-weight:600;margin:0 0 8px">' + esc(r.title) + '</h1>'
+      + '<div style="font-size:1.0625rem;color:#474C57;margin-bottom:24px">' + esc(r.authors) + '</div>'
+      + '<div class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#8a909c;margin-bottom:9px">ABSTRACT</div><p style="font-size:1.0625rem;line-height:1.62;color:#15171C;margin:0 0 26px;max-width:64ch">' + esc(r.abstract) + '</p>'
+      + '<div style="background:' + tm.soft + ';border-radius:14px;padding:20px 22px;margin-bottom:26px;border:1px solid ' + tm.color + '33"><div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><span style="display:flex;color:' + tm.color + '">' + ic('sparkle', 17) + '</span><span style="font-size:.8125rem;font-weight:600;color:' + tm.color + ';letter-spacing:.02em">THE CORE IDEA</span></div><p style="font-size:1.1875rem;line-height:1.5;font-weight:500;color:#15171C;margin:0">' + esc(r.coreIdea) + '</p></div>'
+      + (related ? '<div class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#8a909c;margin-bottom:12px">READ ALONGSIDE</div><div style="display:flex;flex-direction:column;gap:10px">' + related + '</div>' : '')
+      + '</div>'
+      + '<aside class="soc-rail" style="position:sticky;top:84px;display:flex;flex-direction:column;gap:14px">'
+      + '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;padding:18px;box-shadow:0 1px 2px rgba(21,23,28,.04)">'
+      + '<button onclick="SOC.read(\'' + r.id + '\')" aria-label="' + (hasLink ? 'Open the reading in a new tab' : 'Find this reading on Blackboard') + '" style="width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:13px;font-size:1rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:9px">' + (hasLink ? 'Open the reading' : 'Find this on Blackboard') + '<span style="display:flex">' + ic('external', 16) + '</span></button>'
+      + '<div style="font-size:.75rem;line-height:1.4;color:#6B7280;margin:-2px 0 9px;text-align:center">' + esc(accessNote(r)) + '</div>'
+      + '<button onclick="SOC.compare(\'' + r.id + '\')" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:9px;padding:11px;font-size:.9375rem;font-weight:600;border:1px solid ' + (inC ? '#bcd0f2' : '#DEE3EA') + ';background:' + (inC ? '#E7EEFB' : '#fff') + ';color:' + (inC ? '#1552D8' : '#15171C') + '">' + ic('columns', 16) + (inC ? 'In tray' : 'Compare') + '</button>'
+      + '</div>'
+      + '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;padding:6px 18px;box-shadow:0 1px 2px rgba(21,23,28,.04)">' + facts + '</div>'
+      + '</aside></div></div>';
+  }
+
+  /* ---------- compare ---------- */
+  function comparePickList() {
+    var list = D.records.slice().sort(function (a, b) { return a.week - b.week || (a.eye === b.eye ? 0 : a.eye === 'western' ? -1 : 1); });
+    return list.map(function (r) {
+      var tm = typeMeta(r.type), sel = state.compareIds.indexOf(r.id) >= 0;
+      return '<button onclick="SOC.compare(\'' + r.id + '\')" class="mapsrc" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:' + (sel ? '#E7EEFB' : 'none') + ';border:none;border-bottom:1px solid #EEF1F5;padding:10px 12px">'
+        + '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:7px;background:' + tm.soft + ';color:' + tm.color + ';flex:none">' + ic(tm.icon, 14) + '</span>'
+        + '<span style="flex:1;min-width:0"><span style="display:block;font-size:.8125rem;font-weight:600;color:#15171C;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(r.title) + '</span><span style="display:block;font-size:.6875rem;color:#8a909c">Week ' + r.week + (HAS_EYE ? ' · ' + (r.eye === 'indigenous' ? 'Indigenous' : 'Western') : '') + '</span></span>'
+        + (sel ? '<span style="display:flex;color:#1552D8;flex:none">' + ic('check', 16, 2.2) + '</span>' : '<span style="display:flex;color:#6b7280;flex:none">' + ic('plus', 16) + '</span>') + '</button>';
+    }).join('');
+  }
+  var LENSES = {
+    thematic: { label: 'Thematic', hint: 'shared themes or topics, and how each text handles them differently', diff: 'How does each reading treat the shared topic? What does each one emphasize, include, or leave out?' },
+    stylistic: { label: 'Stylistic', hint: 'tone, structure, and how each text is written', diff: 'How do their tone, structure, and word choices differ? Who does each one seem written for?' },
+    contextual: { label: 'Contextual', hint: 'the history, culture, and who is speaking', diff: 'How do the authors background, time, or community shape what each one says?' },
+    theoretical: { label: 'Theoretical', hint: 'a critical lens, for example power or whose knowledge counts', diff: 'Read both through one lens, for example power or whose knowledge counts. What does that lens show in each?' }
+  };
+  var CMP_EXAMPLE = [
+    ['The subject', 'Two newspapers report the same event: a 1.5% city property tax increase.'],
+    ['Article A, the Community Gazette', 'A human-interest lens. Empathetic, a little critical. Leads with retirees on fixed incomes and asks whether the council tried other cuts first.'],
+    ['Article B, the Metro Financial Daily', 'An economic lens. Objective and forward-looking. Focuses on the transit and roads the revenue funds, and the long-run savings.'],
+    ['Similarities', 'Both agree on the core fact, a 1.5% increase, and both treat it as controversial.'],
+    ['Differences', 'The Gazette uses a local, emotional frame. The Financial Daily uses a structural, analytical one.'],
+    ['The insight', 'A city makeup and its politics shape how the same policy gets framed in the press. The framing is the story behind the story.']
+  ];
+  function comparativeStudio(recs) {
+    var lens = LENSES[state.lens] || LENSES.thematic;
+    function zone(n, title, prompt, key, ph) {
+      var v = esc((state.cmpNotes && state.cmpNotes[key]) || '');
+      return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px">'
+        + '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:5px"><span style="display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;background:#15171C;color:#fff;border-radius:50%;font-size:.8rem;font-weight:700;flex:none">' + n + '</span><h3 style="margin:0;font-size:1.0625rem">' + title + '</h3></div>'
+        + '<p style="margin:0 0 8px;font-size:.875rem;color:#474C57">' + prompt + '</p>'
+        + '<textarea oninput="SOC.cmpNote(\'' + key + '\',this.value)" placeholder="' + ph + '" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">' + v + '</textarea></div>';
+    }
+    var chips = Object.keys(LENSES).map(function (k) {
+      var on = state.lens === k;
+      return '<button onclick="SOC.setLens(\'' + k + '\')" style="border:1px solid ' + (on ? '#15171C' : '#DEE3EA') + ';background:' + (on ? '#15171C' : '#fff') + ';color:' + (on ? '#fff' : '#15171C') + ';border-radius:999px;padding:7px 15px;font-size:.85rem;font-weight:600">' + LENSES[k].label + '</button>';
+    }).join(' ');
+    var ex = state.exampleOpen
+      ? '<div style="background:#15171C;color:#fff;border-radius:13px;padding:16px 18px;margin-bottom:15px"><div style="display:flex;align-items:center;margin-bottom:10px"><span class="mono" style="font-size:.72rem;letter-spacing:.05em;color:#fff">A WORKED EXAMPLE</span><button onclick="SOC.toggleExample()" style="margin-left:auto;background:rgba(255,255,255,.14);border:none;border-radius:7px;color:#fff;padding:4px 10px;font-size:.78rem;font-weight:600">Hide</button></div>'
+        + CMP_EXAMPLE.map(function (r) { return '<div style="margin-bottom:8px"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#9aa3b2">' + esc(r[0]).toUpperCase() + '</div><div style="font-size:.875rem;line-height:1.5;color:rgba(255,255,255,.93)">' + esc(r[1]) + '</div></div>'; }).join('') + '</div>'
+      : '<button onclick="SOC.toggleExample()" style="background:none;border:1px solid #DEE3EA;border-radius:9px;padding:9px 14px;font-size:.875rem;font-weight:600;color:#15171C;margin-bottom:15px">See a worked example</button>';
+    var model = state.showModel
+      ? '<div style="background:#15171C;color:#fff;border-radius:14px;padding:18px 20px;margin-top:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="display:flex;color:#fff">' + ic('sparkle', 16) + '</span><span class="mono" style="font-size:.72rem;letter-spacing:.04em;color:#fff">A MODEL COMPARISON</span><button onclick="SOC.hideModel()" aria-label="Hide" style="margin-left:auto;background:rgba(255,255,255,.14);border:none;border-radius:7px;color:#fff;width:26px;height:26px">' + ic('x', 14) + '</button></div>'
+        + buildSynthesis(recs).paras.map(function (p) { return '<p style="font-size:.95rem;line-height:1.6;margin:0 0 10px;color:rgba(255,255,255,.94)">' + esc(p) + '</p>'; }).join('')
+        + '<p style="font-size:.82rem;margin:6px 0 0;color:#9aa3b2">One way to read it. Compare it with yours, do not copy it.</p></div>'
+      : '<button onclick="SOC.revealModel()" style="background:none;border:1px solid #15171C;color:#15171C;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600">Reveal a model comparison</button>';
+    return '<div style="margin-bottom:18px">'
+      + '<h2 style="font-size:1.25rem;margin:0 0 4px">Compare them</h2>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 14px;max-width:72ch">Comparative reading goes past what each text says on its own. Read the two together and look for what they share, how they differ, and why those differences matter.</p>'
+      + ex
+      + '<div style="font-size:.8125rem;font-weight:600;color:#15171C;margin-bottom:7px">Read them through a lens</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px">' + chips + '</div>'
+      + '<p style="font-size:.82rem;color:#8a909c;margin:0 0 16px">' + esc(lens.label) + ': ' + esc(lens.hint) + '.</p>'
+      + zone('1', 'Similarities', 'What do these readings share? Where do they agree, in facts, topic, or the same idea?', 'sim', 'They both...')
+      + zone('2', 'Differences', esc(lens.diff), 'diff', 'The first... while the second...')
+      + zone('3', 'Why the differences matter', 'Finish the thought: these differences matter because...', 'ins', 'These differences matter because...')
+      + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:4px"><button onclick="SOC.saveComparison()" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:10px 18px;font-size:.9rem;font-weight:600">Save my comparison</button>' + (state.showModel ? '' : model) + '</div>'
+      + (state.showModel ? model : '')
+      + '</div>';
+  }
+  var RC_QUESTIONS = {
+    thematic: ['What is the main idea or argument of this reading? Put it in one sentence.', 'What evidence or examples does the author use to support it?', 'What is the author really saying about the larger topic or theme?', 'How does this reading change or add to how you understand the topic?'],
+    stylistic: ['What is the author tone (for example plain, urgent, careful, personal)?', 'How is the reading organized, and how does that shape its argument?', 'Which words, images, or moments stood out, and what effect did they have?', 'Who does the writing seem to be for?'],
+    contextual: ['Who wrote this, and from what background or position?', 'How might the time, place, or community shape what the author says?', 'Whose perspective is centred here, and whose is missing?', 'What would someone need to know about the context to read this fairly?'],
+    theoretical: ['Read this through one lens, for example power, or whose knowledge counts. What does that lens reveal?', 'Who benefits from the way this is framed, and who is left out?', 'What does the author assume that a critical reader should question?', 'What would change if you read it through a different lens?']
+  };
+  var RC_GUIDANCE = {
+    thematic: [
+      'A strong response states the single main idea in one sentence, in your own words, not a list of topics.',
+      'A strong response points to specific evidence or examples the author uses, not just that evidence exists.',
+      'A strong response gets past the surface topic to the author\'s actual claim about it, the point being argued.',
+      'A strong response names something specific that shifted, was added to, or was challenged in your understanding.'
+    ],
+    stylistic: [
+      'A strong response names the tone in a word or two (for example plain, urgent, careful) and says where you felt it.',
+      'A strong response describes the structure (for example story then analysis) and links it to how the argument lands.',
+      'A strong response picks one specific word, image, or moment and says what effect it had on you as a reader.',
+      'A strong response describes the likely audience and what in the writing signals who it is for.'
+    ],
+    contextual: [
+      'A strong response identifies the author and the position or background they are writing from.',
+      'A strong response ties the time, place, or community to a specific choice the author makes.',
+      'A strong response names whose perspective is centred and whose is absent, with a reason.',
+      'A strong response names the context a fair reader needs, not just that context matters.'
+    ],
+    theoretical: [
+      'A strong response picks one clear lens (for example power, or whose knowledge counts) and says what it surfaces here.',
+      'A strong response names who benefits from the framing and who is disadvantaged or left out.',
+      'A strong response identifies an assumption the author treats as given that a critical reader should question.',
+      'A strong response contrasts the chosen lens with a different one and shows how the reading would look different.'
+    ]
+  };
+  function rcChips() {
+    return Object.keys(LENSES).map(function (k) {
+      var on = state.lens === k;
+      return '<button onclick="SOC.setLens(\'' + k + '\')" style="border:1px solid ' + (on ? '#15171C' : '#DEE3EA') + ';background:' + (on ? '#15171C' : '#fff') + ';color:' + (on ? '#fff' : '#15171C') + ';border-radius:999px;padding:7px 15px;font-size:.85rem;font-weight:600">' + LENSES[k].label + '</button>';
+    }).join(' ');
+  }
+  function readingComp() {
+    var r = state.rcReading ? rec(state.rcReading) : null;
+    if (!r) {
+      var picks = D.records.map(function (rd) {
+        var tm = typeMeta(rd.type);
+        return '<button onclick="SOC.rcPick(\'' + rd.id + '\')" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#fff;border:1px solid #DEE3EA;border-radius:10px;padding:12px 14px;margin-bottom:8px;color:#15171C"><span style="width:9px;height:9px;border-radius:50%;background:' + tm.color + ';flex:none"></span><span style="flex:1;min-width:0"><span style="display:block;font-weight:600;font-size:.95rem">' + esc(rd.title) + '</span><span style="font-size:.8125rem;color:#474C57">Week ' + rd.week + ' · ' + esc(rd.authors) + '</span></span><span style="color:#8a909c">' + ic('book', 16) + '</span></button>';
+      }).join('');
+      return '<div class="rise"><h1 style="font-size:1.75rem;margin:0 0 6px">Build Your Reading Comprehension</h1><p class="lede" style="max-width:72ch;margin:0 0 18px">Pick one reading. You will work through questions that build your understanding of it. Switch the lens to change the kind of questions you answer. Your answers save to your notes.</p>' + picks + '</div>';
+    }
+    var lens = LENSES[state.lens] || LENSES.thematic;
+    var qs = RC_QUESTIONS[state.lens] || RC_QUESTIONS.thematic;
+    var guide = RC_GUIDANCE[state.lens] || RC_GUIDANCE.thematic;
+    var zones = qs.map(function (q, i) {
+      var key = r.id + '|' + state.lens + '|' + i;
+      var v = esc((state.rcNotes && state.rcNotes[key]) || '');
+      var coreBit = (i === 0 && r.coreIdea) ? ' For this reading, the central idea is: ' + esc(String(r.coreIdea).replace(/\s*\.?\s*$/, '')) + '.' : '';
+      var rev = state.revealed[key]
+        ? '<div style="margin-top:10px;background:#15171C;color:#fff;border-radius:9px;padding:11px 14px"><div class="mono" style="font-size:.66rem;letter-spacing:.04em;color:#9aa3b2;margin-bottom:4px">A STRONG RESPONSE</div><div style="font-size:.875rem;line-height:1.55;color:rgba(255,255,255,.93)">' + esc(guide[i] || '') + coreBit + '</div><button onclick="SOC.rcReveal(\'' + key + '\')" style="margin-top:9px;background:rgba(255,255,255,.14);border:none;color:#fff;border-radius:7px;padding:5px 11px;font-size:.78rem;font-weight:600">Hide</button></div>'
+        : '<button onclick="SOC.rcReveal(\'' + key + '\')" style="margin-top:10px;background:none;border:1px solid #DEE3EA;border-radius:8px;padding:7px 13px;font-size:.82rem;font-weight:600;color:#15171C">Reveal a strong response</button>';
+      return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:7px"><span style="display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;background:#15171C;color:#fff;border-radius:50%;font-size:.8rem;font-weight:700;flex:none">' + (i + 1) + '</span><p style="margin:0;font-size:.95rem;color:#15171C">' + esc(q) + '</p></div><textarea oninput="SOC.rcNote(\'' + key + '\',this.value)" placeholder="Your answer" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">' + v + '</textarea>' + rev + '</div>';
+    }).join('');
+    var mcItems = MC[r.id] || [];
+    var mcHtml = '';
+    if (mcItems.length) {
+      var answered = 0, correct = 0;
+      var rows = mcItems.map(function (m, mi) {
+        var mkey = r.id + '|mc|' + mi;
+        var sel = state.mcSel[mkey];
+        var done = (sel !== undefined && sel !== null);
+        if (done) { answered++; if (sel === m.answer) correct++; }
+        var opts = (m.options || []).map(function (o, oi) {
+          var isSel = (sel === oi), isCor = (oi === m.answer);
+          var bg = '#fff', bd = '#DEE3EA', col = '#15171C';
+          if (done && isCor) { bg = '#E9EFE7'; bd = '#50694C'; col = '#2c3b29'; }
+          else if (done && isSel) { bg = '#F6E3E1'; bd = '#DA291C'; col = '#8f1b12'; }
+          var mark = (done && isCor) ? ' &#10003;' : ((done && isSel) ? ' &#10007;' : '');
+          return '<button onclick="SOC.mcPick(\'' + mkey + '\',' + oi + ')" style="display:block;width:100%;text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:8px;padding:9px 12px;margin-bottom:7px;font-size:.9rem;font-weight:500">' + esc(o) + mark + '</button>';
+        }).join('');
+        var why = done ? '<p style="margin:3px 0 0;font-size:.82rem;color:#474C57">' + (sel === m.answer ? 'Correct. ' : 'Not quite. ') + esc(m.why || '') + '</p>' : '';
+        return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600;color:#15171C">' + (mi + 1) + '. ' + esc(m.q) + '</p>' + opts + why + '</div>';
+      }).join('');
+      var score = answered
+        ? '<div style="display:inline-block;background:#EEF1F5;border-radius:999px;padding:5px 13px;font-size:.85rem;font-weight:600;color:#15171C;margin-bottom:12px">Score: ' + correct + ' / ' + answered + ' answered' + (answered === mcItems.length ? '' : ' (' + mcItems.length + ' total)') + '</div>'
+        : '<p style="font-size:.82rem;color:#8a909c;margin:0 0 12px">Pick an answer to check it right away. You can change your choice.</p>';
+      mcHtml = '<div style="margin:24px 0 4px"><h2 style="font-size:1.15rem;margin:0 0 3px">Check your understanding</h2><p style="font-size:.85rem;color:#8a909c;margin:0 0 12px">Quick questions on this reading, with the answer right away.</p>' + score + rows + '</div>';
+    }
+    return '<div class="rise"><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px"><h1 style="font-size:1.5rem;margin:0">Build Your Reading Comprehension</h1><button onclick="SOC.rcClear()" style="margin-left:auto;background:none;border:none;color:var(--red);font-size:.875rem;font-weight:600">Choose a different reading</button></div>'
+      + '<div style="background:#15171C;color:#fff;border-radius:12px;padding:15px 18px;margin:8px 0 16px"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#9aa3b2;margin-bottom:3px">YOUR READING</div><div style="font-size:1.0625rem;font-weight:600">' + esc(r.title) + '</div><div style="font-size:.875rem;color:rgba(255,255,255,.85)">Week ' + r.week + ' · ' + esc(r.authors) + ' · ' + esc(r.year) + '</div><button onclick="SOC.read(\'' + r.id + '\')" style="margin-top:10px;background:rgba(255,255,255,.14);border:none;color:#fff;border-radius:7px;padding:7px 13px;font-size:.85rem;font-weight:600">Open the reading ↗</button></div>'
+      + '<div style="font-size:.8125rem;font-weight:600;color:#15171C;margin-bottom:7px">Choose a lens (this changes the questions)</div><div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px">' + rcChips() + '</div><p style="font-size:.82rem;color:#8a909c;margin:0 0 16px">' + esc(lens.label) + ': ' + esc(lens.hint) + '.</p>'
+      + zones
+      + mcHtml
+      + '<button onclick="SOC.saveReadingNotes()" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:10px 18px;font-size:.9rem;font-weight:600;margin-top:8px">Save my notes</button></div>';
+  }
+  function compare() {
+    var recs = state.compareIds.map(rec).filter(Boolean);
+    var html = '<div class="rise"><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap"><h1 style="font-size:1.75rem;font-weight:600;margin:0">Hold them side by side</h1><span style="font-size:.9375rem;color:#474C57">' + (recs.length ? recs.length + ' of 3 selected' : 'choose 2 or 3') + '</span>'
+      + (recs.length ? '<button onclick="SOC.clearCompare()" style="margin-left:auto;background:none;border:none;color:var(--red);font-size:.875rem;font-weight:600">Clear all</button>' : '') + '</div>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 22px;max-width:70ch">Choose readings from the list on the right, up to three, and they appear side by side here. Holding two readings together shows how they connect on the same topic.</p>';
+
+    var left;
+    if (recs.length >= 1) {
+      var cols = recs.map(function (r) {
+        var tm = typeMeta(r.type);
+        var rows = [['WEEK', 'Week ' + r.week + ': ' + weekTitle(r.week)], ['YEAR', String(r.year)], ['ORIGIN', r.origin], ['LENGTH', r.len], ['LEVEL', D.levels[r.diff] || ''], ['THE CORE IDEA', r.coreIdea]]
+          .map(function (row) { return '<div style="padding:11px 17px;border-top:1px solid #EEF1F5"><div class="mono" style="font-size:.625rem;letter-spacing:.05em;color:#8a909c;margin-bottom:4px">' + row[0] + '</div><div style="font-size:.875rem;line-height:1.45;color:#15171C">' + esc(row[1]) + '</div></div>'; }).join('');
+        return '<div style="flex:none;width:280px;background:#fff;border:1px solid #DEE3EA;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04);display:flex;flex-direction:column"><div style="height:5px;background:' + tm.color + '"></div><div style="padding:16px 17px 14px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><span style="display:inline-flex;align-items:center;gap:6px;background:' + tm.soft + ';color:' + tm.color + ';font-size:.6875rem;font-weight:600;padding:4px 9px;border-radius:999px">' + ic(tm.icon, 13) + esc(r.type) + '</span><button onclick="SOC.compare(\'' + r.id + '\')" class="removebtn" aria-label="Remove" style="margin-left:auto;background:none;border:none;color:#6b7280;display:flex;padding:6px">' + ic('x', 16) + '</button></div><button onclick="SOC.open(\'' + r.id + '\')" style="text-align:left;background:none;border:none;padding:0;display:block;margin-bottom:4px"><h3 style="font-size:1.0625rem;line-height:1.3;font-weight:600;margin:0;color:#15171C">' + esc(r.title) + '</h3></button><div style="font-size:.8125rem;color:#474C57">' + esc(r.authors) + '</div></div>' + rows + '</div>';
+      }).join('');
+      var hint = recs.length < 2 ? '<p style="font-size:.875rem;color:#8a909c;margin:0 0 12px">Pick one more reading on the right to compare it against this one.</p>' : '';
+      var synthBlock = '';
+      if (recs.length >= 2) {
+        if (state.showSynthesis) {
+          var syn = buildSynthesis(recs);
+          synthBlock = '<div style="background:#15171C;color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:18px">'
+            + '<div style="display:flex;align-items:center;gap:9px;margin-bottom:12px"><span style="display:flex;color:#fff">' + ic('sparkle', 17) + '</span><span class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#fff">HOW THESE CONNECT</span><button onclick="SOC.hideSynthesis()" aria-label="Hide" style="margin-left:auto;background:rgba(255,255,255,.12);border:none;border-radius:7px;color:#fff;width:26px;height:26px;display:flex;align-items:center;justify-content:center">' + ic('x', 15) + '</button></div>'
+            + syn.paras.map(function (p) { return '<p style="font-size:1rem;line-height:1.6;margin:0 0 12px;color:rgba(255,255,255,.92)">' + esc(p) + '</p>'; }).join('')
+            + '</div>';
+        } else {
+          synthBlock = '<button onclick="SOC.synthesize()" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:12px 22px;font-size:1rem;font-weight:600;color:#fff;background:#15171C;margin-bottom:18px">' + ic('sparkle', 16) + 'Synthesize their relationship</button>';
+        }
+      }
+      left = hint + synthBlock + '<div class="hshelf" style="display:flex;gap:16px;align-items:stretch;overflow-x:auto;padding-bottom:10px">' + cols + '</div>';
+    } else {
+      left = '<div style="background:#fff;border:1px dashed #DEE3EA;border-radius:14px;padding:48px 26px;text-align:center;color:#474C57"><div style="display:inline-flex;color:#C9D1DC;margin-bottom:12px">' + ic('columns', 40, 1.4) + '</div><div style="font-size:1.0625rem;font-weight:600;color:#15171C;margin-bottom:6px">Nothing selected yet.</div><p style="font-size:.9375rem;margin:0">Choose two or three readings from the list on the right.</p></div>';
+    }
+
+    var right = '<aside class="soc-rail" style="position:sticky;top:84px">'
+      + '<div class="soc-pickbox" style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04);display:flex;flex-direction:column;max-height:calc(100vh - 110px)">'
+      + '<div style="padding:13px 14px;border-bottom:1px solid #EEF1F5;flex:none"><div style="font-size:.9375rem;font-weight:600;color:#15171C">Readings</div><div style="font-size:.75rem;color:#8a909c;margin-top:2px">' + recs.length + ' of 3 selected. Tap to add or remove.</div></div>'
+      + '<div class="scrollarea" style="overflow:auto">' + comparePickList() + '</div>'
+      + '</div></aside>';
+
+    html += '<div class="soc-detailgrid" style="display:grid;grid-template-columns:1fr 300px;gap:26px;align-items:start"><div>' + left + '</div>' + right + '</div>';
+    return html + '</div>';
+  }
+
+  /* ---------- glossary & thinkers + self-check (course concepts) ---------- */
+  function conceptsForWeek(w) { return (D.glossary || []).filter(function (g) { return g.week === w; }); }
+  function thinkersForWeek(w) { return D.records.filter(function (r) { return r.week === w && r.authors.indexOf('OpenStax') < 0; }); }
+
+  function glossaryByWeek(sel) {
+    var weeks = (sel === 'all' || sel == null) ? weeksWithReadings() : [parseInt(sel, 10)];
+    return weeks.map(function (w) {
+      var cons = conceptsForWeek(w).map(function (g) {
+        return '<div style="margin:12px 0"><div style="font-size:.9375rem;font-weight:600;color:#15171C">' + esc(g.term) + '</div><div style="font-size:.875rem;line-height:1.55;color:#474C57;margin-top:3px">' + esc(g.def) + '</div>' + (g.cite ? '<div style="font-size:.75rem;color:#8a909c;border-left:3px solid #DEE3EA;padding-left:10px;margin-top:7px">' + esc(g.cite) + '</div>' : '') + '</div>';
+      }).join('');
+      var thinks = thinkersForWeek(w);
+      var tk = thinks.length ? '<div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#8a909c;margin:14px 0 5px">SCHOLARS THIS WEEK</div>' + thinks.map(function (r) {
+        return '<div style="margin:5px 0;font-size:.8125rem;color:#15171C;line-height:1.5">' + eyePill(r) + ' <button onclick="SOC.open(\'' + r.id + '\')" style="background:none;border:none;padding:0;color:#1552D8;font-weight:600;cursor:pointer">' + esc(r.authors) + '</button>. ' + esc(r.coreIdea) + '</div>';
+      }).join('') : '';
+      return '<div style="border:1px solid #DEE3EA;border-radius:12px;padding:10px 16px 15px;margin-bottom:14px;background:#fff"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#1B2A4A;margin:6px 0 2px">WEEK ' + w + ' &middot; ' + esc(weekTitle(w)) + '</div>' + (cons || '<p style="color:#8a909c;font-size:.875rem">No concepts listed.</p>') + tk + '</div>';
+    }).join('');
+  }
+  function glossarySearchHTML(q) {
+    q = (q || '').toLowerCase().trim(); if (!q) return '';
+    var hits = (D.glossary || []).filter(function (g) { return (g.term + ' ' + g.def).toLowerCase().indexOf(q) >= 0; });
+    if (!hits.length) return '<p style="color:#8a909c;font-size:.875rem">No matches. Try another word.</p>';
+    return '<div class="soc-cardgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">' + hits.map(function (g) {
+      return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:14px 16px"><div style="font-size:.9375rem;font-weight:600;color:#15171C">' + esc(g.term) + '</div><div style="font-size:.8125rem;line-height:1.55;color:#474C57;margin:4px 0 8px">' + esc(g.def) + '</div>' + (g.cite ? '<div style="font-size:.7rem;color:#8a909c;margin-bottom:8px">' + esc(g.cite) + '</div>' : '') + '<button onclick="SOC.glossWeekGo(' + g.week + ')" class="mono" style="font-size:.6875rem;color:#1B2A4A;background:#E6EAF1;border:none;padding:3px 8px;border-radius:6px;cursor:pointer">Week ' + g.week + '</button></div>';
+    }).join('') + '</div>';
+  }
+  function glossaryScreen() {
+    var sel = state.glossWeek;
+    var weekOpts = '<option value="all"' + (sel === 'all' ? ' selected' : '') + '>All weeks</option>' + weeksWithReadings().map(function (w) { return '<option value="' + w + '"' + (String(w) === String(sel) ? ' selected' : '') + '>Week ' + w + ': ' + esc(weekTitle(w)) + '</option>'; }).join('');
+    return '<div class="rise">'
+      + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:#8a909c;margin-bottom:8px">REFERENCE</div>'
+      + '<h1 style="font-size:1.75rem;font-weight:600;margin:0 0 8px">Glossary and Thinkers</h1>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;max-width:72ch">The course concepts in plain words, week by week, and the scholars behind the readings.</p>'
+      + '<label for="soc-gsearch" style="font-size:.8125rem;font-weight:600;color:#474C57;display:block;margin-bottom:6px">Search every concept</label>'
+      + '<input id="soc-gsearch" oninput="SOC.glossSearch(this.value)" value="' + esc(state.glossSearch) + '" placeholder="Type a concept, for example: ways of knowing" autocomplete="off" style="width:100%;max-width:460px;padding:10px 13px;border:1px solid #DEE3EA;border-radius:9px;background:#fff;font-size:.9375rem;color:#15171C" />'
+      + '<div id="soc-gsearchout" style="margin-top:12px">' + glossarySearchHTML(state.glossSearch) + '</div>'
+      + '<label for="soc-gweek" style="font-size:.8125rem;font-weight:600;color:#474C57;display:block;margin:18px 0 6px">Or browse by week</label>'
+      + '<select id="soc-gweek" onchange="SOC.glossWeek(this.value)" style="max-width:440px;padding:9px 12px;border:1px solid #DEE3EA;border-radius:9px;background:#fff;font-size:.9375rem;color:#15171C">' + weekOpts + '</select>'
+      + '<div id="soc-gout" style="margin-top:16px">' + glossaryByWeek(sel) + '</div>'
+      + '</div>';
+  }
+
+  function card(g) {
+    return '<button class="flip" onclick="SOC.flip(this)" aria-label="Self-check: ' + esc(g.term) + '. Activate to reveal the definition.">'
+      + '<span class="flip-inner">'
+      + '<span class="flip-face flip-front">'
+      + '<span style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><span class="mono" style="font-size:.6875rem;color:#8a909c;margin-left:auto">WEEK ' + g.week + '</span></span>'
+      + '<span class="mono" style="font-size:.6875rem;letter-spacing:.05em;color:#1B2A4A;margin-bottom:6px">RECALL</span>'
+      + '<span style="font-size:1.0625rem;font-weight:600;line-height:1.3;color:#15171C">' + esc(g.term) + '</span>'
+      + '<span style="margin-top:auto;padding-top:14px;font-size:.8125rem;color:#1552D8;font-weight:600">Reveal the definition &rarr;</span>'
+      + '</span>'
+      + '<span class="flip-face flip-back">'
+      + '<span class="mono" style="font-size:.6875rem;letter-spacing:.05em;color:#F2A900;margin-bottom:8px">DEFINITION</span>'
+      + '<span style="font-size:.9rem;line-height:1.5;font-weight:500">' + esc(g.def) + '</span>'
+      + '<span style="margin-top:auto;padding-top:10px;font-size:.7rem;color:rgba(255,255,255,.62)">' + (g.cite ? esc(g.cite) : 'Week ' + g.week + ' &middot; ' + esc(weekTitle(g.week))) + '</span>'
+      + '</span>'
+      + '</span></button>';
+  }
+  function cardsScreen() {
+    var weeks = weeksWithReadings();
+    var sel = state.cardWeek;
+    var list = (D.glossary || []).filter(function (g) { return sel == null || g.week === sel; });
+    var opts = '<option value="">All weeks</option>' + weeks.map(function (w) { return '<option value="' + w + '"' + (sel === w ? ' selected' : '') + '>Week ' + w + ': ' + esc(weekTitle(w)) + '</option>'; }).join('');
+    return '<div class="rise">'
+      + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:#8a909c;margin-bottom:8px">SELF-CHECK</div>'
+      + '<h1 style="font-size:1.75rem;font-weight:600;margin:0 0 8px">Recall the concepts</h1>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;max-width:70ch">Read the concept, define it in your own words, then flip the card to check yourself. Each card is one concept. Private study, never a test.</p>'
+      + '<label for="soc-cardweek" style="font-size:.8125rem;font-weight:600;color:#474C57;display:block;margin-bottom:6px">Show concepts for</label>'
+      + '<select id="soc-cardweek" onchange="SOC.cardWeek(this.value)" style="max-width:360px;padding:9px 12px;border:1px solid #DEE3EA;border-radius:9px;background:#fff;font-size:.9375rem;color:#15171C;margin-bottom:20px">' + opts + '</select>'
+      + '<div class="soc-cardgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">' + list.map(card).join('') + '</div></div>';
+  }
+
+  /* ---------- render ---------- */
+  function homeBar() {
+    return '<button onclick="SOC.go(\'library\')" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #DEE3EA;border-radius:8px;padding:8px 14px;font-size:.875rem;font-weight:600;color:#15171C;margin-bottom:18px;cursor:pointer">&#8592; Return to Home</button>';
+  }
+  function body() {
+    if (state.screen === 'detail') return homeBar() + detail();
+    if (state.screen === 'compare') return homeBar() + compare();
+    if (state.screen === 'reading') return homeBar() + readingComp();
+    if (state.screen === 'glossary') return homeBar() + glossaryScreen();
+    if (state.screen === 'cards') return homeBar() + cardsScreen();
+    return library();
+  }
+  function render() {
+    if (state.screen !== 'compare' && render._prev !== undefined && render._prev !== state.screen && (state.compareIds.length || state.showSynthesis)) { state.compareIds = []; state.showSynthesis = false; }
+    render._prev = state.screen;
+    var toast = state.toast ? '<div role="status" style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:80;background:#15171C;color:#fff;font-size:.9375rem;font-weight:500;padding:12px 20px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.24);display:flex;align-items:center;gap:10px"><span style="display:flex;color:#F2A900">' + ic('check', 16, 2.2) + '</span>' + esc(state.toast) + '</div>' : '';
+    document.getElementById('app').innerHTML =
+      '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
+      + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
+      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="max-width:1180px;margin:0 auto;padding:30px 30px 110px">' + body() + '</div></main>'
+      + '</div>' + toast + '</div>';
+    if (refocusSearch) {
+      var el = document.getElementById('soc-search');
+      if (el) { el.focus(); var v = el.value; el.setSelectionRange(v.length, v.length); }
+      refocusSearch = false;
+    }
+    if (focusTarget) {
+      var ft = document.getElementById(focusTarget);
+      if (ft) { if (!ft.hasAttribute('tabindex')) ft.setAttribute('tabindex', '-1'); ft.focus(); }
+      focusTarget = null;
+    }
+  }
+  function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
+
+  /* ---------- actions ---------- */
+  function flash(msg) { clearTimeout(toastTimer); var lr = document.getElementById('soc-live'); if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = msg; }, 30); } state.toast = msg; render(); toastTimer = setTimeout(function () { state.toast = null; render(); }, 2200); }
+  function senecaDoc(course, title, sub, body, fn) {
+    var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>'
+      + '@page{margin:1in} body{font-family:"IBM Plex Sans",Calibri,Arial,sans-serif;color:#15171C;font-size:11pt;line-height:1.5}'
+      + '.eyebrow{color:#DA291C;font-weight:bold;letter-spacing:1pt;font-size:9pt;margin:0} h1{color:#DA291C;font-size:18pt;margin:2pt 0 2pt} .sub{color:#474C57;margin:0 0 12pt;font-size:10pt;border-bottom:1pt solid #DEE3EA;padding-bottom:8pt}'
+      + '</style></head><body><p class="eyebrow">SENECA POLYTECHNIC &middot; ' + esc(course) + '</p><h1>' + esc(title) + '</h1><p class="sub">' + sub + '</p>' + body + '</body></html>';
+    var blob = new Blob(['﻿' + html], { type: 'application/msword' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fn + '.doc';
+    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+    flash('Saved to your device (Seneca template).');
+  }
+  window.SOC = {
+    go: function (s) { if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
+    back: function () { state.screen = 'library'; focusTarget = 'soc-main'; render(); var m = document.getElementById('soc-main'); if (m) m.scrollTop = state.libScroll || 0; },
+    open: function (id) { var m = document.getElementById('soc-main'); if (m) state.libScroll = m.scrollTop; state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); },
+    layout: function (l) { state.layout = l; persist(); render(); },
+    sort: function (s) { state.sort = s; render(); },
+    search: function (v) { state.search = v; refocusSearch = true; render(); },
+    clearSearch: function () { state.search = ''; render(); },
+    type: function (t) { state.activeTypes = (state.activeTypes.length === 1 && state.activeTypes[0] === t) ? [] : [t]; render(); },
+    week: function (w) { state.activeWeek = (state.activeWeek === w) ? null : w; state.savedView = false; state.screen = 'library'; focusTarget = 'soc-main'; render(); topScroll(); },
+    clearFilters: function () { state.activeTypes = []; state.activeWeek = null; state.search = ''; state.savedView = false; render(); },
+    dismissIntro: function () { state.introOpen = false; persist(); render(); },
+    save: function (id) { var a = state.saved, i = a.indexOf(id); var msg; if (i >= 0) { a.splice(i, 1); msg = 'Removed from saved.'; } else { a.push(id); msg = 'Saved to your shelf.'; } persist(); flash(msg); },
+    compare: function (id) { var a = state.compareIds, i = a.indexOf(id); if (i >= 0) { a.splice(i, 1); persist(); flash('Removed from compare.'); } else { if (a.length >= 3) { flash('Compare holds three at a time.'); return; } a.push(id); persist(); flash('Added to compare.'); } },
+    clearCompare: function () { state.compareIds = []; state.showSynthesis = false; render(); },
+    synthesize: function () { state.showSynthesis = true; render(); },
+    hideSynthesis: function () { state.showSynthesis = false; render(); },
+    setLens: function (l) { state.lens = l; render(); },
+    rcPick: function (id) { state.rcReading = id; persist(); render(); topScroll(); },
+    rcClear: function () { state.rcReading = null; render(); topScroll(); },
+    rcNote: function (k, v) { state.rcNotes[k] = v; persist(); },
+    rcReveal: function (k) { state.revealed[k] = !state.revealed[k]; render(); },
+    mcPick: function (k, i) { state.mcSel[k] = i; render(); },
+    saveReadingNotes: function () {
+      var r = state.rcReading && rec(state.rcReading); if (!r) { flash('Pick a reading first.'); return; }
+      var L = (LENSES[state.lens] || LENSES.thematic).label, qs = RC_QUESTIONS[state.lens] || RC_QUESTIONS.thematic;
+      var body = qs.map(function (q, i) { var a = (state.rcNotes[r.id + '|' + state.lens + '|' + i] || '').trim(); return '<p style="margin:14pt 0 2pt;font-weight:bold;color:#DA291C">' + esc(q) + '</p><p style="margin:0">' + (a ? esc(a).replace(/\n/g, '<br>') : '<i>(not written yet)</i>') + '</p>'; }).join('');
+      senecaDoc('PSY355', 'Build Your Reading Comprehension', 'Reading: ' + esc(r.title) + ' by ' + esc(r.authors) + '<br>Lens: ' + esc(L), body, 'PSY355_reading_comprehension');
+    },
+    read: function (id) { var r = rec(id); var u = r && readUrl(r); if (u) { window.open(u, '_blank', 'noopener'); } else { state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); } },
+    openSaved: function () { state.screen = 'library'; state.activeTypes = []; state.activeWeek = null; state.search = ''; state.savedView = state.saved.length > 0; flash(state.saved.length ? 'Your saved shelf.' : 'Nothing saved yet. Tap the bookmark on any reading.'); topScroll(); },
+    cardWeek: function (v) { state.cardWeek = (v === '' ? null : parseInt(v, 10)); render(); },
+    glossWeek: function (v) { state.glossWeek = v; var o = document.getElementById('soc-gout'); if (o) o.innerHTML = glossaryByWeek(v); },
+    glossSearch: function (v) { state.glossSearch = v; var o = document.getElementById('soc-gsearchout'); if (o) o.innerHTML = glossarySearchHTML(v); },
+    glossWeekGo: function (w) { state.glossWeek = String(w); var sel = document.getElementById('soc-gweek'); if (sel) sel.value = String(w); var o = document.getElementById('soc-gout'); if (o) { o.innerHTML = glossaryByWeek(String(w)); o.scrollIntoView({ behavior: 'smooth', block: 'start' }); } },
+    flip: function (el) { var c = el && (el.classList && el.classList.contains('flip') ? el : (el.closest ? el.closest('.flip') : null)); if (c) c.classList.toggle('flipped'); },
+  };
+
+  render();
 })();
