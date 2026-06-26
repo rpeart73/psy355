@@ -545,6 +545,7 @@ window.PSY355 = {
   },
   {
    "id": "wrench2020",
+   "assigned": "Chapter 9: Conflict in Relationships",
    "eye": "western",
    "type": "Book",
    "access": "openaccess",
