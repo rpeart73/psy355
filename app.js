@@ -84,6 +84,14 @@ function saveCmp(){ try{ localStorage.setItem(CKEY, JSON.stringify(CMP)); }catch
 var CMP = loadCmp();
 var SHOWSYN = false;
 var HQ = '', HL = 'phase';
+var CODE = (D.course||{}).code || 'PSY355';
+var RKEY = CODE.toLowerCase()+'-reading-v1';
+function loadR(){ try{ var o=JSON.parse(localStorage.getItem(RKEY)||'{}'); return o&&typeof o==='object'?o:{}; }catch(e){ return {}; } }
+var RST = loadR();
+RST.lens = RST.lens || 'thematic';
+RST.notes = (RST.notes && typeof RST.notes==='object') ? RST.notes : {};
+if(!('reading' in RST)) RST.reading = null;
+function saveR(){ try{ localStorage.setItem(RKEY, JSON.stringify(RST)); }catch(e){} }
 
 /* ---------- helpers ---------- */
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
@@ -144,9 +152,10 @@ function ic(name,size,w){ var p=ICON[name]||ICON.grid,s=size||20,out='<svg width
 var ROUTES=[
   {id:'home',label:'Home',hash:'#/home',icon:'grid'},
   {id:'walkthrough',label:'Weekly Walkthrough',url:'https://rpeart73.github.io/psy355-companion/walkthroughs/',icon:'layers',external:true},
+  {id:'reading',label:'Build Your Reading Comprehension',hash:'#/reading',icon:'book'},
+  {id:'compare',label:'Compare',hash:'#/compare',icon:'columns'},
   {id:'glossary',label:'Glossary & Thinkers',hash:'#/glossary',icon:'book'},
-  {id:'cards',label:'Self-check',hash:'#/cards',icon:'clipboard'},
-  {id:'compare',label:'Compare ideas',hash:'#/compare',icon:'columns'}
+  {id:'cards',label:'Self-check',hash:'#/cards',icon:'clipboard'}
 ];
 function renderNav(active){
   var nav=ROUTES.map(function(r){
@@ -334,9 +343,11 @@ function allConcepts(){ var out=[]; (D.weeks||[]).forEach(function(w){ (w.concep
 function conceptById(id){ var a=allConcepts(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
 function cmpToggle(id){ var i=CMP.indexOf(id); if(i>=0){ CMP.splice(i,1); } else { if(CMP.length>=3){ toast('Compare holds three ideas at a time.'); return; } CMP.push(id); } SHOWSYN=false; saveCmp(); render(); }
 function cmpSynth(items){
+  function gist(c){ var s=(c.text||'').trim(); var i=s.indexOf('. '); return (i>5?s.slice(0,i):s).replace(/\s*\.?\s*$/,''); }
   var named=items.map(function(c){ return c.term; });
   var list=items.length===2?(named[0]+' and '+named[1]):(named.slice(0,-1).join(', ')+', and '+named[named.length-1]);
-  return 'Put '+list+' side by side and test them against one real moment in your own learning, like a hard week, a setback, or a habit you are trying to build. Then ask three simple questions. Do these ideas work together, naming the same thing from different angles? Does one of them explain something the others leave out, a feeling, a situation, or a step that got skipped? And what would you miss if you used only one? This course asks you to use them together: how you learn can be shaped, with the right strategy, the right mindset, and the right support.';
+  var ideas=items.map(function(c){ return gist(c)+'.'; }).join(' ');
+  return 'This compares '+list+'. '+ideas+' Put them together and you see different parts of one idea: how you learn can be shaped, with the right strategy, the right mindset, and the right support.';
 }
 function compareView(){
   var picked=CMP.map(conceptById).filter(Boolean), all=allConcepts();
@@ -345,7 +356,7 @@ function compareView(){
     var cols=picked.map(function(c){ var p=phaseOf((week(c.week)||{}).phaseId);
       return '<div class="cmpcol"><div style="height:5px;background:'+p.accent+'"></div><div style="padding:16px 17px"><h3 style="margin:0 0 .5em">'+esc(c.term)+'</h3><p style="margin:0;font-size:.92rem;color:var(--ink-soft);line-height:1.55">'+esc(c.text)+'</p>'+(c.cite?'<p class="cite" style="margin-top:10px">'+esc(c.cite)+'</p>':'')+'<button class="btn btn-quiet" data-action="cmp-add" data-id="'+esc(c.id)+'" style="margin-top:10px;color:var(--red)">Remove</button></div></div>';
     }).join('');
-    var synth=picked.length>=2?(SHOWSYN?'<div style="background:var(--red);color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:18px"><div style="display:flex;align-items:center;gap:9px;margin-bottom:10px"><span class="eyebrow" style="color:#fff;margin:0">How these connect</span><button class="btn btn-quiet" data-action="cmp-hide" style="margin-left:auto;color:#fff">Hide</button></div><p style="margin:0;font-size:1rem;line-height:1.6;color:rgba(255,255,255,.92)">'+esc(cmpSynth(picked))+'</p></div>':'<button class="btn btn-primary" data-action="cmp-synth" style="margin-bottom:18px">Synthesize their relationship</button>'):'<p class="muted" style="margin:0 0 14px">Add one more idea to compare it against this one.</p>';
+    var synth=picked.length>=2?(SHOWSYN?'<div style="background:#15171C;color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:18px"><div style="display:flex;align-items:center;gap:9px;margin-bottom:10px"><span class="eyebrow" style="color:#fff;margin:0">How these connect</span><button class="btn btn-quiet" data-action="cmp-hide" style="margin-left:auto;color:#fff">Hide</button></div><p style="margin:0 0 14px;font-size:1rem;line-height:1.6;color:rgba(255,255,255,.92)">'+esc(cmpSynth(picked))+'</p><button data-action="save-compare" style="background:rgba(255,255,255,.14);border:none;color:#fff;border-radius:8px;padding:9px 15px;font-size:.875rem;font-weight:600">Save my notes</button></div>':'<button class="btn btn-primary" data-action="cmp-synth" style="margin-bottom:18px">Synthesize their relationship</button>'):'<p class="muted" style="margin:0 0 14px">Add one more idea to compare it against this one.</p>';
     left=synth+'<div style="display:flex;gap:16px;overflow-x:auto;padding-bottom:10px">'+cols+'</div>';
   } else {
     left='<div class="card" style="text-align:center;padding:42px 24px"><p class="muted" style="margin:0">Nothing selected yet. Choose two or three ideas from the list on the right.</p></div>';
@@ -386,10 +397,61 @@ function deckPrev(){ if(DECK.i>0){ DECK.i--; deckRender(); return; } if(DECK.n>0
 function deckClose(){ OVERLAY.innerHTML=''; document.body.style.overflow=''; document.removeEventListener('keydown',deckKey); }
 function deckKey(e){ if(e.key==='Escape'){ deckClose(); } else if(e.key==='ArrowRight'||e.key===' '){ e.preventDefault(); deckNext(); } else if(e.key==='ArrowLeft'){ e.preventDefault(); deckPrev(); } }
 
+/* ---------- comparative-reading lenses + reading comprehension ---------- */
+var LENSES = {
+  thematic: { label:'Thematic', hint:'shared themes or topics, and how each text handles them differently' },
+  stylistic: { label:'Stylistic', hint:'tone, structure, and how each text is written' },
+  contextual: { label:'Contextual', hint:'the history, culture, and who is speaking' },
+  theoretical: { label:'Theoretical', hint:'a critical lens, for example power or whose knowledge counts' }
+};
+var RC_QUESTIONS = {
+  thematic: ['What is the main idea or argument of this reading? Put it in one sentence.','What evidence or examples does the author use to support it?','What is the author really saying about the larger topic or theme?','How does this reading change or add to how you understand the topic?'],
+  stylistic: ['What is the author tone (for example plain, urgent, careful, personal)?','How is the reading organized, and how does that shape its argument?','Which words, images, or moments stood out, and what effect did they have?','Who does the writing seem to be for?'],
+  contextual: ['Who wrote this, and from what background or position?','How might the time, place, or community shape what the author says?','Whose perspective is centred here, and whose is missing?','What would someone need to know about the context to read this fairly?'],
+  theoretical: ['Read this through one lens, for example power, or whose knowledge counts. What does that lens reveal?','Who benefits from the way this is framed, and who is left out?','What does the author assume that a critical reader should question?','What would change if you read it through a different lens?']
+};
+function readingTitle(t){ t=String(t||'').trim(); var m=t.match(/\(\d{4}[a-z]?\)\.?\s*(.+?)[.?](\s|$)/); if(m&&m[1]&&m[1].length>4) return m[1].trim(); return t.length>90?t.slice(0,90).trim()+'...':t; }
+function allReadings(){ var out=[]; (D.weeks||[]).forEach(function(w){ (w.readings||[]).forEach(function(r,i){ if(r.type!=='cite'||!r.text) return; if(/subject outline|course description|course learning outcomes/i.test(r.text)) return; out.push({id:'w'+w.number+'-r'+i, week:w.number, wtitle:w.title||'', text:r.text, url:r.url||'', title:readingTitle(r.text)}); }); }); return out; }
+function readingById(id){ var a=allReadings(); for(var i=0;i<a.length;i++) if(a[i].id===id) return a[i]; return null; }
+function lensChips(){ return Object.keys(LENSES).map(function(k){ var on=RST.lens===k; return '<button data-action="set-lens" data-lens="'+k+'" style="border:1px solid '+(on?'#15171C':'#DEE3EA')+';background:'+(on?'#15171C':'#fff')+';color:'+(on?'#fff':'#15171C')+';border-radius:999px;padding:7px 15px;font-size:.85rem;font-weight:600">'+LENSES[k].label+'</button>'; }).join(' '); }
+function readingComp(){
+  var rs=allReadings();
+  var r=RST.reading?readingById(RST.reading):null;
+  if(!r){
+    var picks=rs.map(function(rd){ return '<button data-action="r-pick" data-id="'+esc(rd.id)+'" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#fff;border:1px solid #DEE3EA;border-radius:10px;padding:12px 14px;margin-bottom:8px;color:#15171C"><span style="width:9px;height:9px;border-radius:50%;background:var(--red);flex:none"></span><span style="flex:1;min-width:0"><span style="display:block;font-weight:600;font-size:.95rem">'+esc(rd.title)+'</span><span style="font-size:.8125rem;color:#474C57">Week '+pad(rd.week)+' &middot; '+esc(rd.wtitle)+'</span></span><span style="color:#8a909c;flex:none">'+ic('book',16)+'</span></button>'; }).join('');
+    return '<h1>Build Your Reading Comprehension</h1><p class="lede" style="max-width:72ch">Pick one reading. You will work through questions that build your understanding of it. Switch the lens to change the kind of questions you answer. Your answers save to your notes.</p>'+(picks||'<p class="muted">Readings will appear here once they are posted.</p>');
+  }
+  var lens=LENSES[RST.lens]||LENSES.thematic;
+  var qs=RC_QUESTIONS[RST.lens]||RC_QUESTIONS.thematic;
+  var zones=qs.map(function(q,i){ var key=r.id+'|'+RST.lens+'|'+i; var v=esc((RST.notes&&RST.notes[key])||''); return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:7px"><span style="display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;background:#15171C;color:#fff;border-radius:50%;font-size:.8rem;font-weight:700;flex:none">'+(i+1)+'</span><p style="margin:0;font-size:.95rem;color:#15171C">'+esc(q)+'</p></div><textarea data-rckey="'+esc(key)+'" placeholder="Your answer" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">'+v+'</textarea></div>'; }).join('');
+  var openBtn=r.url?'<a href="'+esc(r.url)+'" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;background:rgba(255,255,255,.14);color:#fff;border-radius:7px;padding:7px 13px;font-size:.85rem;font-weight:600;text-decoration:none">Open the reading &#8599;</a>':'<div style="margin-top:8px;font-size:.8125rem;color:rgba(255,255,255,.7)">Find this in this week\'s Readings on Blackboard.</div>';
+  return '<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px"><h1 style="margin:0">Build Your Reading Comprehension</h1><button data-action="r-clear" style="margin-left:auto;background:none;border:none;color:var(--red);font-size:.875rem;font-weight:600">Choose a different reading</button></div>'
+    +'<div style="background:#15171C;color:#fff;border-radius:12px;padding:15px 18px;margin:8px 0 16px"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#9aa3b2;margin-bottom:3px">YOUR READING</div><div style="font-size:1.0625rem;font-weight:600">'+esc(r.title)+'</div><div style="font-size:.875rem;color:rgba(255,255,255,.85)">Week '+pad(r.week)+' &middot; '+esc(r.wtitle)+'</div>'+openBtn+'</div>'
+    +'<div style="font-size:.8125rem;font-weight:600;color:#15171C;margin-bottom:7px">Choose a lens (this changes the questions)</div><div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px">'+lensChips()+'</div><p style="font-size:.82rem;color:#8a909c;margin:0 0 16px">'+esc(lens.label)+': '+esc(lens.hint)+'.</p>'
+    +zones
+    +'<button data-action="save-reading" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:10px 18px;font-size:.9rem;font-weight:600;margin-top:4px">Save my notes</button>';
+}
+function senecaDoc(course,title,sub,body,fn){
+  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>'+esc(title)+'</title><style>@page{margin:1in} body{font-family:"IBM Plex Sans",Calibri,Arial,sans-serif;color:#15171C;font-size:11pt;line-height:1.5} .eyebrow{color:#DA291C;font-weight:bold;letter-spacing:1pt;font-size:9pt;margin:0} h1{color:#DA291C;font-size:18pt;margin:2pt 0 2pt} .sub{color:#474C57;margin:0 0 12pt;font-size:10pt;border-bottom:1pt solid #DEE3EA;padding-bottom:8pt}</style></head><body><p class="eyebrow">SENECA POLYTECHNIC &middot; '+esc(course)+'</p><h1>'+esc(title)+'</h1><p class="sub">'+sub+'</p>'+body+'</body></html>';
+  var blob=new Blob(['﻿'+html],{type:'application/msword'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fn+'.doc'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href); toast('Saved to your device (Seneca template).');
+}
+function saveReadingDoc(){
+  var r=RST.reading&&readingById(RST.reading); if(!r){ toast('Pick a reading first.'); return; }
+  var L=(LENSES[RST.lens]||LENSES.thematic).label, qs=RC_QUESTIONS[RST.lens]||RC_QUESTIONS.thematic;
+  var body=qs.map(function(q,i){ var a=((RST.notes||{})[r.id+'|'+RST.lens+'|'+i]||'').trim(); return '<p style="margin:14pt 0 2pt;font-weight:bold;color:#DA291C">'+esc(q)+'</p><p style="margin:0">'+(a?esc(a).replace(/\n/g,'<br>'):'<i>(not written yet)</i>')+'</p>'; }).join('');
+  senecaDoc(CODE,'Build Your Reading Comprehension','Reading: '+esc(r.title)+'<br>Lens: '+esc(L),body,CODE+'_reading_comprehension');
+}
+function saveCompareDoc(){
+  var picked=CMP.map(conceptById).filter(Boolean); if(picked.length<2){ toast('Add two or three ideas first.'); return; }
+  var body=picked.map(function(c){ return '<p style="margin:12pt 0 2pt;font-weight:bold;color:#DA291C">'+esc(c.term)+'</p><p style="margin:0">'+esc(c.text)+'</p>'; }).join('')+'<p style="margin:16pt 0 2pt;font-weight:bold;color:#15171C">How these connect</p><p style="margin:0">'+esc(cmpSynth(picked))+'</p>';
+  senecaDoc(CODE,'Compare','Ideas: '+picked.map(function(c){return esc(c.term);}).join(', '),body,CODE+'_comparison');
+}
+
 /* ---------- render dispatch ---------- */
 function render(){
   var h=location.hash||'#/home', path=h.replace(/^#\//,'').split('?')[0], html, active;
   if(path.indexOf('week/')===0){ active='home'; html=weekView(parseInt(path.split('/')[1],10)); }
+  else if(path==='reading'){ active='reading'; html=readingComp(); }
   else if(path==='glossary'){ active='glossary'; html=glossary(); }
   else if(path==='cards'){ active='cards'; html=cards(); }
   else if(path==='compare'){ active='compare'; html=compareView(); }
@@ -410,6 +472,11 @@ document.addEventListener('click',function(e){
   else if(a==='cmp-clear'){ CMP=[]; SHOWSYN=false; saveCmp(); render(); }
   else if(a==='cmp-synth'){ SHOWSYN=true; render(); }
   else if(a==='cmp-hide'){ SHOWSYN=false; render(); }
+  else if(a==='set-lens'){ RST.lens=t.getAttribute('data-lens'); saveR(); MAIN.innerHTML=readingComp(); }
+  else if(a==='r-pick'){ RST.reading=t.getAttribute('data-id'); saveR(); MAIN.innerHTML=readingComp(); MAIN.focus(); window.scrollTo(0,0); }
+  else if(a==='r-clear'){ RST.reading=null; saveR(); MAIN.innerHTML=readingComp(); window.scrollTo(0,0); }
+  else if(a==='save-reading'){ saveReadingDoc(); }
+  else if(a==='save-compare'){ saveCompareDoc(); }
   else if(a==='home-layout'){ HL=t.getAttribute('data-layout'); MAIN.innerHTML=home(); }
   else if(a==='home-clear'){ HQ=''; MAIN.innerHTML=home(); var hs=document.getElementById('home-search'); if(hs) hs.focus(); }
   else if(a==='deck-open'){ deckOpen(parseInt(t.getAttribute('data-week'),10)); }
@@ -426,6 +493,7 @@ document.addEventListener('keydown',function(e){
 document.addEventListener('input',function(e){
   if(e.target.id==='gsearch'){ document.getElementById('gsearchout').innerHTML=glossarySearch(e.target.value); }
   else if(e.target.id==='home-search'){ HQ=e.target.value; var hr=document.getElementById('home-results'); if(hr) hr.innerHTML=homeList(); var rl=document.getElementById('home-resultlabel'); if(rl) rl.textContent=resultLabel(); }
+  else if(e.target.getAttribute&&e.target.getAttribute('data-rckey')){ RST.notes[e.target.getAttribute('data-rckey')]=e.target.value; saveR(); }
 });
 document.addEventListener('change',function(e){
   if(e.target.id==='gweek'){ location.hash='#/glossary?week='+e.target.value; }
