@@ -132,7 +132,9 @@ window.PSY355 = {
     "yeager-dweck2020",
     "ungar2011",
     "panadero2017"
-   ]
+   ],
+   "url": "https://doi.org/10.1177/09593543231153820",
+   "fulltext": false
   },
   {
    "id": "yeager-dweck2020",
@@ -155,7 +157,9 @@ window.PSY355 = {
     "owen2023",
     "ungar2011",
     "panadero2017"
-   ]
+   ],
+   "url": "https://par.nsf.gov/servlets/purl/10252472",
+   "fulltext": true
   },
   {
    "id": "ungar2011",
@@ -179,7 +183,9 @@ window.PSY355 = {
     "owen2023",
     "yeager-dweck2020",
     "panadero2017"
-   ]
+   ],
+   "url": "https://michaelungar.com/files/15contributions/10._The_Social_Ecology_of_Resilience.pdf",
+   "fulltext": true
   },
   {
    "id": "panadero2017",
@@ -202,7 +208,9 @@ window.PSY355 = {
     "owen2023",
     "yeager-dweck2020",
     "ungar2011"
-   ]
+   ],
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5408091/",
+   "fulltext": true
   },
   {
    "id": "yeager2019",
@@ -224,7 +232,9 @@ window.PSY355 = {
    "coreIdea": "A brief growth mindset intervention can raise achievement for lower achieving students, but the effect depends on context, especially whether the school's peer norms support it.",
    "related": [
     "claro2016"
-   ]
+   ],
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6786290/",
+   "fulltext": true
   },
   {
    "id": "claro2016",
@@ -245,7 +255,9 @@ window.PSY355 = {
    "coreIdea": "Mindset and achievement can be studied empirically, which keeps the idea grounded in evidence rather than slogan.",
    "related": [
     "yeager2019"
-   ]
+   ],
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4978255/",
+   "fulltext": true
   },
   {
    "id": "cassidy2015",
@@ -267,7 +279,9 @@ window.PSY355 = {
    "coreIdea": "Academic self efficacy, the belief that one can do a specific task, predicts academic resilience and can be built deliberately as a protective factor.",
    "related": [
     "yeager-bryan-gross"
-   ]
+   ],
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4661232/",
+   "fulltext": true
   },
   {
    "id": "yeager-bryan-gross",
@@ -289,7 +303,9 @@ window.PSY355 = {
    "coreIdea": "Pairing a growth mindset with the belief that stress can be enhancing protects adolescents from stress better than either belief on its own.",
    "related": [
     "cassidy2015"
-   ]
+   ],
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9258473/",
+   "fulltext": true
   },
   {
    "id": "richardson2011",
@@ -308,7 +324,9 @@ window.PSY355 = {
    "week": 5,
    "abstract": "Richardson explains resilience through his Metatheory of Resilience and Resiliency, presenting it as a process, a personal journey through disruption and reintegration that moves in a series of choices toward optimal health. He centres the trough of disruption, the chaos of leaving homeostasis, as the key stage where helping professionals can guide a person to discover an innate resilient drive. He describes the three waves of resiliency inquiry and how popular theories such as self determination, hardiness, and self efficacy fit within the metatheory.",
    "coreIdea": "Resilience is a process of disruption and reintegration moving toward growth, so a hard period is a stage to move through, not a verdict on a person.",
-   "related": []
+   "related": [],
+   "url": "https://doi.org/10.7202/1087261ar",
+   "fulltext": false
   },
   {
    "id": "ungar2013",
@@ -331,7 +349,9 @@ window.PSY355 = {
    "related": [
     "lopez2021",
     "antony2023"
-   ]
+   ],
+   "url": "https://michaelungar.com/files/15contributions/5._Resilience,_Trauma,_Context,_and_Culture.pdf",
+   "fulltext": true
   },
   {
    "id": "lopez2021",
@@ -354,7 +374,9 @@ window.PSY355 = {
    "related": [
     "ungar2013",
     "antony2023"
-   ]
+   ],
+   "url": "https://snaplab.stanford.edu/sites/g/files/sbiybj31146/files/media/file/social_ecology_of_childhood_0.pdf",
+   "fulltext": true
   },
   {
    "id": "antony2023",
@@ -376,7 +398,9 @@ window.PSY355 = {
    "related": [
     "ungar2013",
     "lopez2021"
-   ]
+   ],
+   "url": "https://cerj.educ.cam.ac.uk/archive/v9_2022/v9_18_244-257_antony.pdf",
+   "fulltext": true
   },
   {
    "id": "weight2024",
@@ -396,7 +420,9 @@ window.PSY355 = {
    "week": 7,
    "abstract": "Guided by Richardson's resiliency theory, this qualitative study interviewed 215 former United States college athletes about the adversity they faced, with the most common themes being injury, time demands, and coach athlete tension. Athletes reported that this adversity promoted their resiliency and grit, improved teamwork and time management, and led to other forms of personal growth. The authors frame the findings as useful for administrators seeking to improve athlete experiences and reform the college sport model.",
    "coreIdea": "Common adversities in college sport, such as injury and time demands, can become sources of resilience and growth rather than only harm.",
-   "related": []
+   "related": [],
+   "url": "https://journals.ku.edu/jis/article/view/21465",
+   "fulltext": true
   },
   {
    "id": "neff2003",
@@ -417,7 +443,9 @@ window.PSY355 = {
    "coreIdea": "Self compassion is a kind, connected, and clear sighted way of responding to one's own difficulty, and a healthier alternative to self esteem built on judgment.",
    "related": [
     "stephenson2018"
-   ]
+   ],
+   "url": "https://self-compassion.org/wp-content/uploads/publications/SCtheoryarticle.pdf",
+   "fulltext": true
   },
   {
    "id": "stephenson2018",
@@ -438,7 +466,9 @@ window.PSY355 = {
    "coreIdea": "Self compassion, more than self esteem, is incompatible with the irrational beliefs that drive emotional distress, making it part of a healthier personal philosophy.",
    "related": [
     "neff2003"
-   ]
+   ],
+   "url": "https://self-compassion.org/wp-content/uploads/2018/05/Stephenson2017.pdf",
+   "fulltext": true
   },
   {
    "id": "nas2025",
@@ -458,7 +488,9 @@ window.PSY355 = {
    "week": 9,
    "abstract": "This cross sectional study of 305 academics in Turkiye tests how perseverance relates to life satisfaction, with self compassion and psychological flexibility as parallel mediators. Correlational analyses found positive associations among all the variables, and structural equation modeling indicated that perseverance enhances self compassion, which in turn promotes psychological flexibility, ultimately raising life satisfaction. The authors frame this chain as evidence for how perseverance supports well being and as guidance for interventions to reduce stress and foster resilience among higher education professionals.",
    "coreIdea": "Perseverance supports life satisfaction in part because it builds self compassion and, through it, psychological flexibility.",
-   "related": []
+   "related": [],
+   "url": "https://bmcpsychology.biomedcentral.com/articles/10.1186/s40359-025-03757-y",
+   "fulltext": true
   },
   {
    "id": "jadmiko2024",
@@ -480,7 +512,9 @@ window.PSY355 = {
    "coreIdea": "Structured, constructivist reflective journaling can be taught and measurably raises nursing students' resilience by turning their own experience into learning.",
    "related": [
     "kamarulzaman2026"
-   ]
+   ],
+   "url": "https://eduimed.usm.my/EIMJ20241604/EIMJ20241604_09.pdf",
+   "fulltext": true
   },
   {
    "id": "kamarulzaman2026",
@@ -501,7 +535,9 @@ window.PSY355 = {
    "coreIdea": "Reflective journaling can surface and strengthen critical thinking dispositions, and students' reflections deepen the more they practise it.",
    "related": [
     "jadmiko2024"
-   ]
+   ],
+   "url": "https://journal.unisza.edu.my/jonus/index.php/jonus/article/download/921/570/2338",
+   "fulltext": true
   },
   {
    "id": "wrench2020",
@@ -521,7 +557,9 @@ window.PSY355 = {
    "week": 11,
    "abstract": "An open educational textbook that approaches interpersonal communication mindfully, asking speakers to notice why they are communicating, with whom, and to what effect, and treating empathy as central to mindful relationships. The course uses it to support clear, purposeful requests that name the issue, the step already tried, and the specific help needed.",
    "coreIdea": "Mindful communication and empathy make requests and conflicts clearer, which is what lets help seeking actually land.",
-   "related": []
+   "related": [],
+   "url": "https://milnepublishing.geneseo.edu/interpersonalcommunication/",
+   "fulltext": true
   }
  ],
  "glossary": [
