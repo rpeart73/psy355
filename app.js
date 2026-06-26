@@ -81,7 +81,7 @@ var CSS = [
 var CKEY='psy355-compare-v1';
 function loadCmp(){ try{ var a=JSON.parse(localStorage.getItem(CKEY)||'[]'); return Array.isArray(a)?a.slice(0,3):[]; }catch(e){ return []; } }
 function saveCmp(){ try{ localStorage.setItem(CKEY, JSON.stringify(CMP)); }catch(e){} }
-var CMP = loadCmp();
+var CMP = [];
 var SHOWSYN = false;
 var HQ = '', HL = 'phase';
 var PREVPATH = '';
@@ -452,7 +452,7 @@ function saveCompareDoc(){
 function homeBar(){ return '<a href="#/home" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--hair);border-radius:8px;padding:8px 14px;font-size:.875rem;font-weight:600;color:var(--ink);text-decoration:none;margin-bottom:18px">&#8592; Return to Home</a>'; }
 function render(){
   var h=location.hash||'#/home', path=h.replace(/^#\//,'').split('?')[0], html, active;
-  if(PREVPATH==='compare' && path!=='compare'){ CMP=[]; SHOWSYN=false; saveCmp(); }
+  if(path!=='compare' && PREVPATH!=='' && PREVPATH!==path && (CMP.length||SHOWSYN)){ CMP=[]; SHOWSYN=false; saveCmp(); }
   PREVPATH=path;
   if(path.indexOf('week/')===0){ active='home'; html=weekView(parseInt(path.split('/')[1],10)); }
   else if(path==='reading'){ active='reading'; html=homeBar()+readingComp(); }
