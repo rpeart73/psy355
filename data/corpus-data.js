@@ -206,7 +206,7 @@ window.PSY355 = {
    "diff": 3,
    "week": 1,
    "abstract": "Panadero reviews and compares six major models of self-regulated learning, those of Zimmerman, Boekaerts, Winne and Hadwin, Pintrich, Efklides, and Hadwin, Jarvela and Miller, treating self-regulated learning as an umbrella that covers the cognitive, metacognitive, behavioral, motivational, and emotional sides of learning. He examines each model's history, structure, empirical support, and measures, then compares them on phases, how they treat cognition, motivation, and emotion, and other features. He concludes that the models form one coherent framework students can be taught from, while warning that their effects differ by students' developmental stage and educational level.",
-   "coreIdea": "Self regulated learning is a coherent, teachable framework of planning, monitoring, and adjusting, not a single intense effort, and its models apply differently at different levels.",
+   "coreIdea": "Self-regulated learning is a coherent, teachable framework of planning, monitoring, and adjusting, not a single intense effort, and its models apply differently at different levels.",
    "related": [
     "owen2023",
     "yeager-dweck2020",
@@ -283,7 +283,7 @@ window.PSY355 = {
    "len": "~30 min read",
    "diff": 2,
    "week": 4,
-   "abstract": "Cassidy tests how academic self-efficacy, a person's perception of their own capabilities, relates to academic resilience by exposing 435 undergraduates to a case vignette of either personal or vicarious academic adversity. Self efficacy was measured before exposure and resilience after, and self-efficacy was both correlated with and a significant predictor of academic resilience. Students also showed greater resilience when responding to vicarious adversity than to personal adversity, which points toward how interventions might be designed.",
+   "abstract": "Cassidy tests how academic self-efficacy, a person's perception of their own capabilities, relates to academic resilience by exposing 435 undergraduates to a case vignette of either personal or vicarious academic adversity. Self-efficacy was measured before exposure and resilience after, and self-efficacy was both correlated with and a significant predictor of academic resilience. Students also showed greater resilience when responding to vicarious adversity than to personal adversity, which points toward how interventions might be designed.",
    "coreIdea": "Academic self-efficacy, the belief that one can do a specific task, predicts academic resilience and can be built deliberately as a protective factor.",
    "related": [
     "yeager-bryan-gross"
@@ -334,7 +334,7 @@ window.PSY355 = {
    "len": "~30 min read",
    "diff": 3,
    "week": 5,
-   "abstract": "Richardson explains resilience through his Metatheory of Resilience and Resiliency, presenting it as a process, a personal journey through disruption and reintegration that moves in a series of choices toward optimal health. He centres the trough of disruption, the chaos of leaving homeostasis, as the key stage where helping professionals can guide a person to discover an innate resilient drive. He describes the three waves of resiliency inquiry and how popular theories such as self determination, hardiness, and self-efficacy fit within the metatheory.",
+   "abstract": "Richardson explains resilience through his Metatheory of Resilience and Resiliency, presenting it as a process, a personal journey through disruption and reintegration that moves in a series of choices toward optimal health. He centres the trough of disruption, the chaos of leaving homeostasis, as the key stage where helping professionals can guide a person to discover an innate resilient drive. He describes the three waves of resiliency inquiry and how popular theories such as self-determination, hardiness, and self-efficacy fit within the metatheory.",
    "coreIdea": "Resilience is a process of disruption and reintegration moving toward growth, so a hard period is a stage to move through, not a verdict on a person.",
    "related": [],
    "url": "https://www.erudit.org/fr/revues/devhumain/2011-v19-n1-devhumain06851/1087261ar.pdf",
@@ -454,8 +454,8 @@ window.PSY355 = {
    "len": "~30 min read",
    "diff": 2,
    "week": 8,
-   "abstract": "Neff defines self-compassion through three components: self kindness rather than harsh self criticism in moments of pain or failure, common humanity that sees one's experience as part of the larger human experience rather than isolating, and mindfulness that holds painful thoughts in balanced awareness rather than over identifying with them. She presents it as an emotionally positive self attitude that protects against the costs of self judgment, isolation, and rumination. She offers it as an alternative to self esteem, which rests on evaluation, comparison, and judgments of self worth.",
-   "coreIdea": "Self compassion is a kind, connected, and clear sighted way of responding to one's own difficulty, and a healthier alternative to self esteem built on judgment.",
+   "abstract": "Neff defines self-compassion through three components: self kindness rather than harsh self criticism in moments of pain or failure, common humanity that sees one's experience as part of the larger human experience rather than isolating, and mindfulness that holds painful thoughts in balanced awareness rather than over identifying with them. She presents it as an emotionally positive self attitude that protects against the costs of self judgment, isolation, and rumination. She offers it as an alternative to self-esteem, which rests on evaluation, comparison, and judgments of self-worth.",
+   "coreIdea": "Self-compassion is a kind, connected, and clear sighted way of responding to one's own difficulty, and a healthier alternative to self-esteem built on judgment.",
    "related": [
     "stephenson2018"
    ],
@@ -477,8 +477,8 @@ window.PSY355 = {
    "len": "~25 min read",
    "diff": 3,
    "week": 8,
-   "abstract": "Drawing on Rational Emotive Behavior Therapy (REBT), this study of 184 university students predicted that self-compassion, but not self esteem, would be incompatible with irrational beliefs and the emotional disturbances they produce. Self compassion correlated negatively with irrationality, predicted better mental health, and explained the inverse links between self esteem and irrational beliefs, and low frustration tolerance partially mediated its relationship with anxiety. The authors conclude that self-compassion functions as part of what REBT would call an effective personal philosophy, while findings for self esteem revealed complexities for the REBT framework.",
-   "coreIdea": "Self compassion, more than self esteem, is incompatible with the irrational beliefs that drive emotional distress, making it part of a healthier personal philosophy.",
+   "abstract": "Drawing on Rational Emotive Behavior Therapy (REBT), this study of 184 university students predicted that self-compassion, but not self-esteem, would be incompatible with irrational beliefs and the emotional disturbances they produce. Self-compassion correlated negatively with irrationality, predicted better mental health, and explained the inverse links between self-esteem and irrational beliefs, and low frustration tolerance partially mediated its relationship with anxiety. The authors conclude that self-compassion functions as part of what REBT would call an effective personal philosophy, while findings for self-esteem revealed complexities for the REBT framework.",
+   "coreIdea": "Self-compassion, more than self-esteem, is incompatible with the irrational beliefs that drive emotional distress, making it part of a healthier personal philosophy.",
    "related": [
     "neff2003"
    ],
@@ -583,7 +583,7 @@ window.PSY355 = {
  "glossary": [
   {
    "term": "Well-Being",
-   "def": "Well being is a working state that helps a person cope, act, recover, and contribute, rather than a fixed mood or a private feeling. In this course it is treated as a capacity that shifts with conditions: rest, support, workload, and circumstance all move it. Naming well-being this way matters for students, because it reframes a hard week as a change in conditions to manage, not proof of a flaw in the person.",
+   "def": "Well-being is a working state that helps a person cope, act, recover, and contribute, rather than a fixed mood or a private feeling. In this course it is treated as a capacity that shifts with conditions: rest, support, workload, and circumstance all move it. Naming well-being this way matters for students, because it reframes a hard week as a change in conditions to manage, not proof of a flaw in the person.",
    "cite": "Owen, J. (2023). Psychological resilience: Connecting contemporary psychology to ancient practical philosophy.",
    "week": 1
   },
@@ -607,7 +607,7 @@ window.PSY355 = {
   },
   {
    "term": "Self-Regulated Learning",
-   "def": "Self regulated learning is the work of planning, monitoring, and adjusting one's own learning process rather than simply putting in hours and hoping. Panadero (2017) reviews several models of how learners set goals, choose strategies, track progress, and revise. The practical point for students is that learning is a cycle, not a single push: the plan starts it, monitoring checks it, and adjustment keeps effort pointed at what actually works.",
+   "def": "Self-regulated learning is the work of planning, monitoring, and adjusting one's own learning process rather than simply putting in hours and hoping. Panadero (2017) reviews several models of how learners set goals, choose strategies, track progress, and revise. The practical point for students is that learning is a cycle, not a single push: the plan starts it, monitoring checks it, and adjustment keeps effort pointed at what actually works.",
    "cite": "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research.",
    "week": 2
   },
@@ -655,7 +655,7 @@ window.PSY355 = {
   },
   {
    "term": "Self-Efficacy",
-   "def": "Self efficacy is the belief that one can take the actions needed for a specific task, rather than a general sense of being capable. Cassidy (2015) connects academic self-efficacy to resilience, showing that task specific confidence shapes how students approach difficulty. Because it is tied to a particular task, self-efficacy can be built deliberately: a student raises it by accumulating evidence that they can do the next concrete step, not by waiting to feel confident in general.",
+   "def": "Self-efficacy is the belief that one can take the actions needed for a specific task, rather than a general sense of being capable. Cassidy (2015) connects academic self-efficacy to resilience, showing that task specific confidence shapes how students approach difficulty. Because it is tied to a particular task, self-efficacy can be built deliberately: a student raises it by accumulating evidence that they can do the next concrete step, not by waiting to feel confident in general.",
    "cite": "Cassidy, S. (2015). Resilience building in students: The role of academic self-efficacy.",
    "week": 4
   },
@@ -751,13 +751,13 @@ window.PSY355 = {
   },
   {
    "term": "Self-Compassion",
-   "def": "Self compassion is a kind and accurate response to difficulty that supports learning and recovery, rather than indulgence or excuse making. Neff (2003) describes it as treating oneself with the same fairness one would offer a friend, while still seeing the situation clearly. For students, self-compassion is a working tool: it removes the insult from a setback so that attention can move to the next action, which is usually more productive than harsh self criticism.",
+   "def": "Self-compassion is a kind and accurate response to difficulty that supports learning and recovery, rather than indulgence or excuse making. Neff (2003) describes it as treating oneself with the same fairness one would offer a friend, while still seeing the situation clearly. For students, self-compassion is a working tool: it removes the insult from a setback so that attention can move to the next action, which is usually more productive than harsh self criticism.",
    "cite": "Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself.",
    "week": 8
   },
   {
    "term": "Self-Acceptance",
-   "def": "Self acceptance is recognizing one's current situation without turning it into a final identity. It allows a student to acknowledge a hard reality, a missed deadline or a weak grade, while keeping the door open to change. Drawing on Neff's (2003) account, self-acceptance is not resignation: it is the steadiness that lets a person face the truth of where they are without collapsing it into a fixed verdict about who they are.",
+   "def": "Self-acceptance is recognizing one's current situation without turning it into a final identity. It allows a student to acknowledge a hard reality, a missed deadline or a weak grade, while keeping the door open to change. Drawing on Neff's (2003) account, self-acceptance is not resignation: it is the steadiness that lets a person face the truth of where they are without collapsing it into a fixed verdict about who they are.",
    "cite": "Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself.",
    "week": 8
   },
