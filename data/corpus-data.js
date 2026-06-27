@@ -75,17 +75,17 @@ window.PSY355 = {
  },
  "weeks": {
   "1": "How Learning, Mindset, and Resilience Fit Together",
-  "2": "Self Regulated Learning and Study Strategy",
+  "2": "Self-Regulated Learning and Study Strategy",
   "3": "Growth Mindset, Evidence, and Limits",
-  "4": "Motivation, Self Efficacy, and Academic Confidence",
+  "4": "Motivation, Self-Efficacy, and Academic Confidence",
   "5": "Resilience as Process, Not Personality",
   "6": "Context, Culture, and the Social Ecology of Resilience",
   "7": "Stress, Adversity, and Recovery",
-  "8": "Self Compassion and Self Acceptance",
+  "8": "Self-Compassion and Self-Acceptance",
   "9": "Psychological Flexibility and Perseverance",
   "10": "Reflective Learning and Journaling",
   "11": "Problem Solving, Communication, and Help Seeking",
-  "12": "Holistic Well Being and Practical Philosophy",
+  "12": "Holistic Well-Being and Practical Philosophy",
   "13": "Personal Resilience Plan",
   "14": "Transfer, Closure, and Learning That Travels"
  },
@@ -606,7 +606,7 @@ window.PSY355 = {
    "week": 1
   },
   {
-   "term": "Self Regulated Learning",
+   "term": "Self-Regulated Learning",
    "def": "Self regulated learning is the work of planning, monitoring, and adjusting one's own learning process rather than simply putting in hours and hoping. Panadero (2017) reviews several models of how learners set goals, choose strategies, track progress, and revise. The practical point for students is that learning is a cycle, not a single push: the plan starts it, monitoring checks it, and adjustment keeps effort pointed at what actually works.",
    "cite": "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research.",
    "week": 2
