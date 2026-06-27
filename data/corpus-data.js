@@ -212,7 +212,9 @@ window.PSY355 = {
     "yeager-dweck2020",
     "ungar2011"
    ],
+   "doi": "10.3389/fpsyg.2017.00422",
    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5408091/",
+   "pdfUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00422/pdf",
    "fulltext": true
   },
   {
@@ -237,7 +239,9 @@ window.PSY355 = {
    "related": [
     "claro2016"
    ],
+   "doi": "10.1038/s41586-019-1466-y",
    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6786290/",
+   "pdfUrl": "https://www.nature.com/articles/s41586-019-1466-y.pdf",
    "fulltext": true
   },
   {
@@ -284,7 +288,9 @@ window.PSY355 = {
    "related": [
     "yeager-bryan-gross"
    ],
+   "doi": "10.3389/fpsyg.2015.01781",
    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4661232/",
+   "pdfUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.01781/pdf",
    "fulltext": true
   },
   {
@@ -308,7 +314,9 @@ window.PSY355 = {
    "related": [
     "cassidy2015"
    ],
+   "doi": "10.1038/s41586-022-04907-7",
    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9258473/",
+   "pdfUrl": "https://www.nature.com/articles/s41586-022-04907-7.pdf",
    "fulltext": true
   },
   {
@@ -425,7 +433,9 @@ window.PSY355 = {
    "abstract": "Guided by Richardson's resiliency theory, this qualitative study interviewed 215 former United States college athletes about the adversity they faced, with the most common themes being injury, time demands, and coach athlete tension. Athletes reported that this adversity promoted their resiliency and grit, improved teamwork and time management, and led to other forms of personal growth. The authors frame the findings as useful for administrators seeking to improve athlete experiences and reform the college sport model.",
    "coreIdea": "Common adversities in college sport, such as injury and time demands, can become sources of resilience and growth rather than only harm.",
    "related": [],
+   "doi": "10.17161/2fndtf13",
    "url": "https://journals.ku.edu/jis/article/view/21465",
+   "pdfUrl": "https://journals.ku.edu/jis/article/download/21465/20707",
    "fulltext": true
   },
   {
@@ -494,7 +504,9 @@ window.PSY355 = {
    "abstract": "This cross sectional study of 305 academics in Turkiye tests how perseverance relates to life satisfaction, with self compassion and psychological flexibility as parallel mediators. Correlational analyses found positive associations among all the variables, and structural equation modeling indicated that perseverance enhances self compassion, which in turn promotes psychological flexibility, ultimately raising life satisfaction. The authors frame this chain as evidence for how perseverance supports well being and as guidance for interventions to reduce stress and foster resilience among higher education professionals.",
    "coreIdea": "Perseverance supports life satisfaction in part because it builds self compassion and, through it, psychological flexibility.",
    "related": [],
+   "doi": "10.1186/s40359-025-03757-y",
    "url": "https://bmcpsychology.biomedcentral.com/articles/10.1186/s40359-025-03757-y",
+   "pdfUrl": "https://bmcpsychology.biomedcentral.com/counter/pdf/10.1186/s40359-025-03757-y.pdf",
    "fulltext": true
   },
   {
