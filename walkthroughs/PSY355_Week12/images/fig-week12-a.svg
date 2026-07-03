@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
   <rect width="680" height="440" fill="#ffffff"/>
-  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Holistic well being is connected</text>
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Holistic well-being is connected</text>
   <text x="40" y="74" font-size="16" fill="#666">A whole person view, not one technique or one assignment</text>
 
   <!-- Academic -->
@@ -26,7 +26,7 @@
   <!-- Center: Whole person -->
   <rect x="460" y="190" width="180" height="120" rx="12" fill="#DA291C"/>
   <text x="550" y="240" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Whole person</text>
-  <text x="550" y="266" text-anchor="middle" font-size="14" fill="#ffffff">well being</text>
+  <text x="550" y="266" text-anchor="middle" font-size="14" fill="#ffffff">well-being</text>
 
   <!-- connectors to center -->
   <line x1="220" y1="180" x2="460" y2="230" stroke="#8a909c" stroke-width="2.5"/>
@@ -34,5 +34,5 @@
   <line x1="220" y1="300" x2="460" y2="270" stroke="#8a909c" stroke-width="2.5"/>
   <line x1="420" y1="300" x2="460" y2="260" stroke="#8a909c" stroke-width="2.5"/>
 
-  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 12. Well being connects academic, work, family, and community life.</text>
+  <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 12. Well-being connects academic, work, family, and community life.</text>
 </svg>

@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
   <rect width="680" height="440" fill="#ffffff"/>
   <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">The three part class path</text>
-  <text x="40" y="74" font-size="16" fill="#666">From naming well being to choosing practices that last</text>
+  <text x="40" y="74" font-size="16" fill="#666">From naming well-being to choosing practices that last</text>
 
   <!-- Act I -->
   <rect x="40" y="150" width="170" height="120" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
   <text x="125" y="190" text-anchor="middle" font-size="18" font-weight="700" fill="#DA291C">Act I</text>
   <text x="125" y="218" text-anchor="middle" font-size="14" fill="#15171C">Introduce holistic</text>
-  <text x="125" y="238" text-anchor="middle" font-size="14" fill="#15171C">well being</text>
+  <text x="125" y="238" text-anchor="middle" font-size="14" fill="#15171C">well-being</text>
 
   <line x1="214" y1="210" x2="248" y2="210" stroke="#8a909c" stroke-width="3"/>
   <polygon points="248,202 262,210 248,218" fill="#8a909c"/>
@@ -27,6 +27,6 @@
   <text x="577" y="218" text-anchor="middle" font-size="14" fill="#ffffff">Choose two practices</text>
   <text x="577" y="238" text-anchor="middle" font-size="14" fill="#ffffff">that can travel</text>
 
-  <text x="351" y="330" text-anchor="middle" font-size="15" fill="#474C57">Self compassion and practical philosophy guide the choosing.</text>
+  <text x="351" y="330" text-anchor="middle" font-size="15" fill="#474C57">Self-compassion and practical philosophy guide the choosing.</text>
   <text x="40" y="404" font-size="13" fill="#666">PSY355 Week 12. Name it, test it, choose what lasts.</text>
 </svg>

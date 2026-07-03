@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
   <rect width="680" height="440" fill="#ffffff"/>
   <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">A discipline, not indulgence</text>
-  <text x="40" y="74" font-size="16" fill="#666">Self compassion keeps you learning after a setback</text>
+  <text x="40" y="74" font-size="16" fill="#666">Self-compassion keeps you learning after a setback</text>
 
   <!-- What it is NOT -->
   <rect x="40" y="120" width="280" height="240" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>
@@ -26,5 +26,5 @@
   <text x="396" y="312" font-size="15" fill="#ffffff">An accurate and</text>
   <text x="396" y="332" font-size="15" fill="#ffffff">humane response</text>
 
-  <text x="40" y="404" font-size="13" fill="#666">Neff (2003), self compassion as a teachable response to difficulty.</text>
+  <text x="40" y="404" font-size="13" fill="#666">Neff (2003), self-compassion as a teachable response to difficulty.</text>
 </svg>
