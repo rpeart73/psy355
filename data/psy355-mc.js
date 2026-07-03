@@ -910,5 +910,233 @@ window.PSY355_MC = {
    "why": "The abstract states the 45 undergraduates completed 135 journals across three intervals in a semester.",
    "skill": "context"
   }
+ ],
+ "bandura1997": [
+  {
+   "q": "What is perceived self-efficacy, in Bandura's definition?",
+   "options": [
+    "Your belief in your capability to organize and carry out the actions a situation requires",
+    "How much you like and approve of yourself overall",
+    "Your objectively measured skill level on a task"
+   ],
+   "answer": 0,
+   "why": "Bandura defines perceived self-efficacy as people's beliefs about their capabilities to produce designated levels of performance. It is a belief about capability, not self-esteem and not measured skill.",
+   "skill": "concepts"
+  },
+  {
+   "q": "Which source of self-efficacy does Bandura call the most effective way to build a strong sense of efficacy?",
+   "options": [
+    "Mastery experiences: succeeding through your own sustained effort",
+    "Verbal encouragement from people who believe in you",
+    "Watching highly skilled experts perform"
+   ],
+   "answer": 0,
+   "why": "Bandura names mastery experiences as the most effective source: successes build a robust belief in personal efficacy, and overcoming obstacles through perseverant effort makes that belief resilient.",
+   "skill": "concepts"
+  },
+  {
+   "q": "Why do only easy successes leave self-efficacy fragile, according to Bandura?",
+   "options": [
+    "People come to expect quick results and are easily discouraged when failure arrives",
+    "Easy tasks never count as real successes",
+    "Success only builds efficacy when other people witness it"
+   ],
+   "answer": 0,
+   "why": "Bandura argues that if people experience only easy successes they come to expect quick results, so setbacks discourage them. A resilient sense of efficacy requires overcoming obstacles through sustained effort.",
+   "skill": "argument"
+  },
+  {
+   "q": "What makes another person's success powerful as a source of your own self-efficacy?",
+   "options": [
+    "Perceived similarity: seeing someone like you succeed by sustained effort",
+    "The model's fame and social status",
+    "Watching as many different people as possible"
+   ],
+   "answer": 0,
+   "why": "The impact of vicarious experience depends strongly on perceived similarity to the model. The more similar the model, the more persuasive their success or failure is for your own efficacy beliefs.",
+   "skill": "concepts"
+  },
+  {
+   "q": "Why does the four-sources framework matter for a student whose confidence is currently low?",
+   "options": [
+    "It treats efficacy as something built through identifiable experiences, so confidence can be grown deliberately",
+    "It shows confidence is a fixed trait you either have or lack",
+    "It proves encouragement alone is enough to build lasting confidence"
+   ],
+   "answer": 0,
+   "why": "The framework treats self-efficacy as developed through mastery, models, persuasion, and how you interpret your own stress reactions. Bandura also notes persuasion alone is easier to undermine than to build, so encouragement by itself is not enough.",
+   "skill": "significance"
+  }
+ ],
+ "yeager-dweck2020": [
+  {
+   "q": "What overall conclusion do Yeager and Dweck draw from the growth mindset controversies?",
+   "options": [
+    "Large-scale studies, including pre-registered replications and third-party studies, justify confidence, while effects vary meaningfully across people and contexts",
+    "The controversies show that mindset effects are not real",
+    "The replication debates make the evidence impossible to evaluate"
+   ],
+   "answer": 0,
+   "why": "The article concludes that large-scale studies, including pre-registered replications and studies by third parties such as governmental agencies, justify confidence in growth mindset research, with effects that are meaningfully heterogeneous.",
+   "skill": "argument"
+  },
+  {
+   "q": "What does heterogeneity of mindset effects mean in this article?",
+   "options": [
+    "Effects differ meaningfully across individuals and contexts, and the field can learn from where they do not appear",
+    "Effects appear randomly and cannot be studied",
+    "Every student benefits equally from mindset interventions"
+   ],
+   "answer": 0,
+   "why": "Heterogeneity means the effects are real but vary by person and context. The authors describe advances built to learn from this, including studies designed specifically to identify where interventions do not work and why.",
+   "skill": "concepts"
+  },
+  {
+   "q": "In the National Study of Learning Mindsets, what did the short online intervention do?",
+   "options": [
+    "Improved grades for lower-achieving ninth graders and increased taking and staying in harder math courses",
+    "Raised every student's grades by a full letter grade",
+    "Worked only for the highest-achieving students"
+   ],
+   "answer": 0,
+   "why": "The NSLM evaluated an intervention of under an hour in a nationally representative sample of about 12,490 ninth graders. It improved grades for lower-achieving students and increased choosing and staying in harder math classes.",
+   "skill": "context"
+  },
+  {
+   "q": "What happened in the two recent mindset interventions delivered to and by classroom teachers?",
+   "options": [
+    "They had no discernible effects on achievement, raising the question of why coaching teachers to instill a growth mindset is hard",
+    "They produced stronger effects than student-focused programs",
+    "They proved teachers cannot influence student beliefs at all"
+   ],
+   "answer": 0,
+   "why": "Two teacher-focused interventions had no discernible effects on student achievement. The authors treat this as an open research question about how teachers can support a growth mindset, not as proof that teachers do not matter.",
+   "skill": "argument"
+  },
+  {
+   "q": "How do the authors respond to the claim that mindset effect sizes are too small to matter?",
+   "options": [
+    "By asking what benchmarks are appropriate for educational interventions and how moderators shape where effects appear",
+    "By conceding that small effects mean the theory has failed",
+    "By arguing that effect sizes are irrelevant to educational policy"
+   ],
+   "answer": 0,
+   "why": "Rather than accepting or dismissing the criticism, the article asks what the appropriate benchmarks are for educational interventions and how appreciating moderators of effects changes the interpretation.",
+   "skill": "significance"
+  }
+ ],
+ "claro2016": [
+  {
+   "q": "Who was in the sample for this study?",
+   "options": [
+    "All tenth-grade public school students in Chile, a nationwide sample",
+    "A small volunteer group at one American university",
+    "Teachers reporting on their students' attitudes"
+   ],
+   "answer": 0,
+   "why": "The study used a nationwide sample of high school students in Chile, covering virtually all schools and socioeconomic strata in the country.",
+   "skill": "context"
+  },
+  {
+   "q": "How strong was growth mindset as a predictor of achievement?",
+   "options": [
+    "Comparably strong to family income, with a positive relationship at every socioeconomic level",
+    "Far weaker than every structural factor measured",
+    "Predictive only for students from wealthy families"
+   ],
+   "answer": 0,
+   "why": "The study found family income is a strong predictor of achievement and that growth mindset is a comparably strong predictor, positive across all socioeconomic strata.",
+   "skill": "argument"
+  },
+  {
+   "q": "What relationship did the study find between family income and mindset?",
+   "options": [
+    "Students from the lowest-income families were twice as likely to hold a fixed mindset as students from the top-income families",
+    "Income and mindset were unrelated",
+    "Wealthier students were more likely to hold a fixed mindset"
+   ],
+   "answer": 0,
+   "why": "Mindset and family income were linked: at the extremes, students from the lowest-income families were twice as likely to endorse a fixed mindset as students from the top-income families and schools.",
+   "skill": "concepts"
+  },
+  {
+   "q": "What is the buffering finding in this study?",
+   "options": [
+    "Lowest-decile income students with a growth mindset scored comparably to fixed-mindset students from families earning about 13 times more",
+    "A growth mindset erased the effects of poverty entirely",
+    "Buffering appeared for attendance but not for test scores"
+   ],
+   "answer": 0,
+   "why": "Students from the lowest 10 percent of family income who held a growth mindset showed test scores comparable to fixed-mindset students from the 80th income percentile, whose families earned about 13 times more. Buffering, not erasure.",
+   "skill": "significance"
+  },
+  {
+   "q": "What do the authors suggest mindsets might be, in relation to poverty and achievement?",
+   "options": [
+    "One mechanism through which economic disadvantage can affect achievement",
+    "A replacement explanation that rules out structural factors",
+    "A fixed trait distributed randomly across income levels"
+   ],
+   "answer": 0,
+   "why": "The authors frame achievement as shaped by structural factors and psychological factors together, and suggest mindsets may be one mechanism through which economic disadvantage affects achievement.",
+   "skill": "argument"
+  }
+ ],
+ "wrench2020": [
+  {
+   "q": "How does the chapter distinguish a disagreement from a conflict?",
+   "options": [
+    "A disagreement is a difference of opinion, and an argument can turn into conflict when it becomes verbally aggressive",
+    "They are the same thing at different volumes",
+    "A conflict is any conversation about a difficult topic"
+   ],
+   "answer": 0,
+   "why": "The chapter defines a disagreement as a difference of opinion that often occurs during an argument, and notes arguments are not conflicts but can quickly become conflicts if they turn verbally aggressive.",
+   "skill": "concepts"
+  },
+  {
+   "q": "What two scholarly perspectives on conflict does the chapter present?",
+   "options": [
+    "Conflict as a disruption in a normally working system, and conflict as a normal part of human relationships",
+    "Conflict as always destructive, and conflict as always productive",
+    "Conflict as biological, and conflict as imaginary"
+   ],
+   "answer": 0,
+   "why": "The chapter contrasts scholars who see conflict as a negative disruption in a normal working system with scholars who view conflict as a normal and natural part of human relationships.",
+   "skill": "context"
+  },
+  {
+   "q": "What separates integrative from distributive approaches to conflict?",
+   "options": [
+    "Integrative seeks a win-win settlement that benefits both parties; distributive treats conflict as win-lose",
+    "Integrative avoids the issue; distributive confronts it",
+    "Integrative applies at work; distributive applies in families"
+   ],
+   "answer": 0,
+   "why": "Integrative conflict is a win-win approach where both parties seek a mutually beneficial agreement; distributive conflict is a win-lose approach where each side tries to win and make the other lose.",
+   "skill": "concepts"
+  },
+  {
+   "q": "What are the ABC's of conflict management styles?",
+   "options": [
+    "Avoiders, Battlers, and Collaborators",
+    "Anger, Blame, and Compromise",
+    "Agreement, Bargaining, and Capitulation"
+   ],
+   "answer": 0,
+   "why": "The chapter's ABC's of conflict management name three styles: avoiders, battlers, and collaborators, extending the original integrative and distributive pair with avoidance.",
+   "skill": "concepts"
+  },
+  {
+   "q": "Why does the STLC model of conflict begin with stop?",
+   "options": [
+    "Because people in conflict tend to say whatever enters their mind before processing it, so being present comes first",
+    "Because most conflicts end on their own if you wait",
+    "Because listening is impossible until the other person stops talking"
+   ],
+   "answer": 0,
+   "why": "STLC stands for stop, think, listen, and then communicate. Stopping comes first because people too often speak before they have processed the message and chosen the best way to respond.",
+   "skill": "argument"
+  }
  ]
 };
