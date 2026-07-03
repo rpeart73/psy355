@@ -87,7 +87,7 @@ window.PSY355_MC = {
     "The design of interventions for people in environments that inhibit resilience"
    ],
    "answer": 2,
-   "why": "He intends the framework to guide interventions that promote well being among populations in environments that inhibit resilience promoting processes.",
+   "why": "He intends the framework to guide interventions that promote well-being among populations in environments that inhibit resilience promoting processes.",
    "skill": "significance"
   },
   {
@@ -115,32 +115,32 @@ window.PSY355_MC = {
  ],
  "panadero2017": [
   {
-   "q": "How many models of self regulated learning does Panadero analyze and compare?",
+   "q": "How many models of self-regulated learning does Panadero analyze and compare?",
    "options": [
     "Six",
     "Twelve",
     "Two"
    ],
    "answer": 0,
-   "why": "The review analyzes and compares six models of self regulated learning.",
+   "why": "The review analyzes and compares six models of self-regulated learning.",
    "skill": "concepts"
   },
   {
-   "q": "What does the article say self regulated learning covers?",
+   "q": "What does the article say self-regulated learning covers?",
    "options": [
     "Only memorization of facts",
     "Cognitive, metacognitive, behavioral, motivational, and emotional aspects of learning",
     "Only the time a student spends studying"
    ],
    "answer": 1,
-   "why": "Panadero describes self regulated learning as an umbrella over the cognitive, metacognitive, behavioral, motivational, and emotional or affective aspects of learning.",
+   "why": "Panadero describes self-regulated learning as an umbrella over the cognitive, metacognitive, behavioral, motivational, and emotional or affective aspects of learning.",
    "skill": "concepts"
   },
   {
    "q": "What is one of the review's two main conclusions?",
    "options": [
     "The models are interchangeable and produce identical results for everyone",
-    "Self regulated learning cannot be taught",
+    "Self-regulated learning cannot be taught",
     "The effects of the models differ by students' developmental stage or educational level"
    ],
    "answer": 2,
@@ -229,32 +229,32 @@ window.PSY355_MC = {
  ],
  "cassidy2015": [
   {
-   "q": "What does academic self efficacy refer to in this study?",
+   "q": "What does academic self-efficacy refer to in this study?",
    "options": [
     "A person's perception of their own capabilities",
     "A fixed score a person is born with",
     "The number of hours spent in class"
    ],
    "answer": 0,
-   "why": "Cassidy defines self efficacy as relating to an individual's perception of their capabilities.",
+   "why": "Cassidy defines self-efficacy as relating to an individual's perception of their capabilities.",
    "skill": "concepts"
   },
   {
-   "q": "What relationship did the study find between self efficacy and academic resilience?",
+   "q": "What relationship did the study find between self-efficacy and academic resilience?",
    "options": [
-    "Self efficacy was unrelated to resilience",
-    "Self efficacy was a significant predictor of academic resilience",
-    "Higher self efficacy lowered resilience"
+    "Self-efficacy was unrelated to resilience",
+    "Self-efficacy was a significant predictor of academic resilience",
+    "Higher self-efficacy lowered resilience"
    ],
    "answer": 1,
-   "why": "Academic self efficacy was correlated with, and a significant predictor of, academic resilience.",
+   "why": "Academic self-efficacy was correlated with, and a significant predictor of, academic resilience.",
    "skill": "argument"
   },
   {
    "q": "When did students show greater academic resilience?",
    "options": [
     "Only when there was no adversity at all",
-    "When self efficacy was not measured first",
+    "When self-efficacy was not measured first",
     "When responding to vicarious adversity rather than personal adversity"
    ],
    "answer": 2,
@@ -266,21 +266,21 @@ window.PSY355_MC = {
    "options": [
     "Through a case vignette of either personal or vicarious academic adversity",
     "Through a physical endurance test",
-    "Through a long term observational diary"
+    "Through a long-term observational diary"
    ],
    "answer": 0,
    "why": "The abstract says students were exposed to a case vignette of either personal or vicarious academic adversity.",
    "skill": "concepts"
   },
   {
-   "q": "When was self efficacy measured relative to the adversity exposure?",
+   "q": "When was self-efficacy measured relative to the adversity exposure?",
    "options": [
     "At the same moment as the vignette ended",
     "Before exposure, with resilience measured after",
     "Only after the study was complete"
    ],
    "answer": 1,
-   "why": "The abstract states self efficacy was measured before exposure and resilience after.",
+   "why": "The abstract states self-efficacy was measured before exposure and resilience after.",
    "skill": "concepts"
   }
  ],
@@ -333,11 +333,11 @@ window.PSY355_MC = {
    "q": "Which outcomes did the intervention improve in the experiments?",
    "options": [
     "Only grades, with no effect on the body",
-    "Better stress cognitions, lower cardiovascular and cortisol reactivity, improved well being, and fewer anxiety symptoms",
+    "Better stress cognitions, lower cardiovascular and cortisol reactivity, improved well-being, and fewer anxiety symptoms",
     "Faster reading speed and better handwriting"
    ],
    "answer": 1,
-   "why": "The abstract lists better stress cognitions, lower cardiovascular and cortisol reactivity, improved well being, and fewer anxiety symptoms.",
+   "why": "The abstract lists better stress cognitions, lower cardiovascular and cortisol reactivity, improved well-being, and fewer anxiety symptoms.",
    "skill": "concepts"
   }
  ],
@@ -365,14 +365,14 @@ window.PSY355_MC = {
    "skill": "concepts"
   },
   {
-   "q": "What does the metatheory do with theories like self determination, hardiness, and self efficacy?",
+   "q": "What does the metatheory do with theories like self determination, hardiness, and self-efficacy?",
    "options": [
     "Claims they replace the need for resilience",
     "Rejects them as unrelated to resilience",
     "Houses them within the resilience and resiliency paradigms"
    ],
    "answer": 2,
-   "why": "Richardson says theories such as Self Determination Theory, Hardiness, and self efficacy can all find homes within the metatheory.",
+   "why": "Richardson says theories such as Self Determination Theory, Hardiness, and self-efficacy can all find homes within the metatheory.",
    "skill": "concepts"
   },
   {
@@ -493,7 +493,7 @@ window.PSY355_MC = {
    "q": "What kind of measures do the authors propose adding to the study of early adversity?",
    "options": [
     "Physiological measures such as hair cortisol concentrations",
-    "Only self reported mood ratings",
+    "Only self-reported mood ratings",
     "Standardized academic test scores alone"
    ],
    "answer": 0,
@@ -628,14 +628,14 @@ window.PSY355_MC = {
  ],
  "neff2003": [
   {
-   "q": "What are the three components of self compassion in Neff's account?",
+   "q": "What are the three components of self-compassion in Neff's account?",
    "options": [
-    "Self kindness, common humanity, and mindfulness",
+    "Self-kindness, common humanity, and mindfulness",
     "Confidence, competition, and control",
     "Discipline, denial, and detachment"
    ],
    "answer": 0,
-   "why": "Neff defines self compassion as self kindness, common humanity, and mindfulness.",
+   "why": "Neff defines self-compassion as self-kindness, common humanity, and mindfulness.",
    "skill": "concepts"
   },
   {
@@ -650,36 +650,36 @@ window.PSY355_MC = {
    "skill": "concepts"
   },
   {
-   "q": "How does Neff position self compassion in relation to self esteem?",
+   "q": "How does Neff position self-compassion in relation to self-esteem?",
    "options": [
-    "As identical to self esteem",
-    "As a way to raise self esteem through social comparison",
-    "As an alternative to self esteem, which rests on evaluation and comparison"
+    "As identical to self-esteem",
+    "As a way to raise self-esteem through social comparison",
+    "As an alternative to self-esteem, which rests on evaluation and comparison"
    ],
    "answer": 2,
-   "why": "Neff offers self compassion as an alternative to self esteem, which is constituted by judgments and comparisons of self worth.",
+   "why": "Neff offers self-compassion as an alternative to self-esteem, which is constituted by judgments and comparisons of self-worth.",
    "skill": "argument"
   },
   {
-   "q": "What does the mindfulness component of self compassion involve in Neff's account?",
+   "q": "What does the mindfulness component of self-compassion involve in Neff's account?",
    "options": [
-    "Holding painful thoughts in balanced awareness rather than over identifying with them",
+    "Holding painful thoughts in balanced awareness rather than over-identifying with them",
     "Pushing painful thoughts away as fast as possible",
     "Treating every painful thought as the whole truth"
    ],
    "answer": 0,
-   "why": "The abstract defines mindfulness as holding painful thoughts in balanced awareness rather than over identifying with them.",
+   "why": "The abstract defines mindfulness as holding painful thoughts in balanced awareness rather than over-identifying with them.",
    "skill": "concepts"
   },
   {
-   "q": "What costs does Neff say self compassion protects against?",
+   "q": "What costs does Neff say self-compassion protects against?",
    "options": [
     "The costs of asking other people for help",
-    "The costs of self judgment, isolation, and rumination",
+    "The costs of self-judgment, isolation, and rumination",
     "The costs of working too hard at a task"
    ],
    "answer": 1,
-   "why": "The abstract says self compassion protects against the costs of self judgment, isolation, and rumination.",
+   "why": "The abstract says self-compassion protects against the costs of self-judgment, isolation, and rumination.",
    "skill": "significance"
   }
  ],
@@ -696,25 +696,25 @@ window.PSY355_MC = {
    "skill": "context"
   },
   {
-   "q": "What did the study predict and find about self compassion and irrational beliefs?",
+   "q": "What did the study predict and find about self-compassion and irrational beliefs?",
    "options": [
-    "Self compassion was unrelated to irrational beliefs",
-    "Self compassion was incompatible with irrational beliefs and correlated negatively with irrationality",
-    "Self compassion increased irrational beliefs"
+    "Self-compassion was unrelated to irrational beliefs",
+    "Self-compassion was incompatible with irrational beliefs and correlated negatively with irrationality",
+    "Self-compassion increased irrational beliefs"
    ],
    "answer": 1,
-   "why": "As expected, self compassion correlated negatively with irrationality and was incompatible with irrational beliefs, unlike self esteem.",
+   "why": "As expected, self-compassion correlated negatively with irrationality and was incompatible with irrational beliefs, unlike self-esteem.",
    "skill": "argument"
   },
   {
-   "q": "How do the authors describe self compassion in REBT terms?",
+   "q": "How do the authors describe self-compassion in REBT terms?",
    "options": [
     "As a form of irrational thinking",
-    "As identical to high self esteem",
+    "As identical to high self-esteem",
     "As part of an effective personal philosophy"
    ],
    "answer": 2,
-   "why": "The data confirmed self compassion as part of what REBT would describe as an effective personal philosophy.",
+   "why": "The data confirmed self-compassion as part of what REBT would describe as an effective personal philosophy.",
    "skill": "concepts"
   },
   {
@@ -729,14 +729,14 @@ window.PSY355_MC = {
    "skill": "context"
   },
   {
-   "q": "What did the study find partially mediated self compassion's relationship with anxiety?",
+   "q": "What did the study find partially mediated self-compassion's relationship with anxiety?",
    "options": [
     "Time of day",
     "Low frustration tolerance",
     "Years of schooling"
    ],
    "answer": 1,
-   "why": "The abstract says low frustration tolerance partially mediated self compassion's relationship with anxiety.",
+   "why": "The abstract says low frustration tolerance partially mediated self-compassion's relationship with anxiety.",
    "skill": "concepts"
   }
  ],
@@ -744,23 +744,23 @@ window.PSY355_MC = {
   {
    "q": "What two factors does the study examine as mediators between perseverance and life satisfaction?",
    "options": [
-    "Self compassion and psychological flexibility",
+    "Self-compassion and psychological flexibility",
     "Income and job title",
     "Age and gender"
    ],
    "answer": 0,
-   "why": "The study highlights the role of self compassion and psychological flexibility as parallel mediators.",
+   "why": "The study highlights the role of self-compassion and psychological flexibility as parallel mediators.",
    "skill": "concepts"
   },
   {
    "q": "What chain did the structural equation modeling indicate?",
    "options": [
-    "Perseverance lowers self compassion and flexibility",
-    "Perseverance enhances self compassion, which promotes psychological flexibility, raising life satisfaction",
+    "Perseverance lowers self-compassion and flexibility",
+    "Perseverance enhances self-compassion, which promotes psychological flexibility, raising life satisfaction",
     "Life satisfaction has no link to perseverance"
    ],
    "answer": 1,
-   "why": "Modeling indicated perseverance enhances self compassion, which in turn promotes psychological flexibility, ultimately increasing life satisfaction.",
+   "why": "Modeling indicated perseverance enhances self-compassion, which in turn promotes psychological flexibility, ultimately increasing life satisfaction.",
    "skill": "argument"
   },
   {
@@ -778,7 +778,7 @@ window.PSY355_MC = {
    "q": "What study design did Nas and colleagues use with the academics?",
    "options": [
     "A cross sectional study with structural equation modeling",
-    "A long term laboratory experiment on animals",
+    "A long-term laboratory experiment on animals",
     "A single case study of one person"
    ],
    "answer": 0,
@@ -790,7 +790,7 @@ window.PSY355_MC = {
    "options": [
     "As a reason to stop studying life satisfaction",
     "As guidance for interventions to reduce stress and foster resilience among higher education professionals",
-    "As proof that perseverance harms well being"
+    "As proof that perseverance harms well-being"
    ],
    "answer": 1,
    "why": "The abstract says the authors frame the chain as guidance for interventions to reduce stress and foster resilience among higher education professionals.",
@@ -850,7 +850,7 @@ window.PSY355_MC = {
     "A fixed set of textbook answers"
    ],
    "answer": 1,
-   "why": "The abstract says constructivism had students draw on their prior clinical experiences as material for self reflection.",
+   "why": "The abstract says constructivism had students draw on their prior clinical experiences as material for self-reflection.",
    "skill": "concepts"
   }
  ],

@@ -71,7 +71,8 @@ window.PSY355 = {
  "levels": {
   "1": "Foundational",
   "2": "Intermediate",
-  "3": "Advanced"
+  "3": "Advanced",
+  "4": "Advanced (research article)"
  },
  "weeks": {
   "1": "How Learning, Mindset, and Resilience Fit Together",
@@ -107,10 +108,11 @@ window.PSY355 = {
   "cassidy2015|yeager-bryan-gross": "Cassidy connects academic self-efficacy to resilience, showing that task specific confidence shapes how students approach difficulty, while the Yeager and colleagues mindset work concerns the beliefs students carry into hard tasks. Read together, they sit at the same hinge between belief and action. Cassidy treats confidence as something built by doing the next concrete step, and the mindset research treats belief about ability as something that shapes effort. The difference is that self-efficacy is tied to a specific task while mindset is a more general view of ability. The shared lesson is that what a student believes they can do changes how they act under difficulty, and that this belief is most useful when it is grounded in real, reachable action.",
   "lopez2021|ungar2013": "Ungar shows that what counts as resilience and useful support varies across cultures and situations, while Lopez and colleagues describe early adversity through a social ecology lens. Read together, they deepen the contextual view of resilience. Both reject a one size fits all model: Ungar from the angle of cultural meaning, Lopez and colleagues from the angle of the surrounding environment that shapes whether a person can recover. The difference is emphasis, culture in one and ecological conditions in the other, but they converge on the same demand. Support has to fit the person's actual world, because a strategy that ignores context can miss the real barrier or even cause harm.",
   "antony2023|lopez2021": "Lopez and colleagues describe early adversity through a social ecology lens, locating its weight in environments and circumstances rather than in individual weakness. Read alongside the week's contextual material on childhood and culture, both treat difficulty as something shaped by the systems around a person. The shared move is to widen the frame from the individual to the family, school, and community that surround them. The difference is in focus, but the lesson is consistent: understanding adversity and recovery means looking at conditions and supports, not only at a person's effort, which keeps the response realistic and avoids blaming the learner for obstacles they did not create.",
-  "neff2003|stephenson2018": "Neff defines self-compassion as a kind and accurate response to difficulty, while Stephenson and colleagues link harsh self criticism to irrational beliefs and lower self-compassion. Read together, they describe the same inner terrain from opposite ends. Neff names the healthier response, and Stephenson and colleagues document the cost of its absence. The difference is direction: one builds the case for treating oneself fairly, the other shows what severe self judgment does to learning. The takeaway is that self-compassion is not indulgence but a working tool, because the harsh self talk Stephenson and colleagues study tends to constrict rather than motivate, while the accurate, humane response Neff describes frees attention for the next action."
+  "neff2003|stephenson2018": "Neff defines self-compassion as a kind and accurate response to difficulty, while Stephenson and colleagues link harsh self-criticism to irrational beliefs and lower self-compassion. Read together, they describe the same inner terrain from opposite ends. Neff names the healthier response, and Stephenson and colleagues document the cost of its absence. The difference is direction: one builds the case for treating oneself fairly, the other shows what severe self-judgment does to learning. The takeaway is that self-compassion is not indulgence but a working tool, because the harsh self-talk Stephenson and colleagues study tends to constrict rather than motivate, while the accurate, humane response Neff describes frees attention for the next action."
  },
  "records": [
-  {"id": "bandura1997", "eye": "western", "type": "Book", "access": "library", "title": "Self-efficacy: The exercise of control", "authors": "Albert Bandura", "year": 1997, "themes": ["self-efficacy", "motivation"], "origin": "United States", "len": "Book (read the assigned sections)", "diff": 4, "week": 4, "abstract": "Bandura's foundational account of self-efficacy: the belief in one's capacity to organize and carry out the actions a situation requires. He identifies four sources of self-efficacy, mastery experiences (past successes), vicarious experience (seeing others like you succeed), social persuasion (credible encouragement), and physiological and affective states, with mastery experiences the strongest. Self-efficacy shapes the goals people set, the effort they invest, and how long they persist when a task gets hard.", "coreIdea": "Self-efficacy, the belief in your capacity to carry out what a task needs, is built mainly through mastery experiences and shapes the effort and persistence you bring to a challenge.", "related": [], "url": "", "fulltext": false},
+  {"id": "bandura1997", "assigned": "Sources of self-efficacy: mastery experiences, vicarious experience, social persuasion, and physiological and affective states (excerpt posted on Blackboard)",
+   "eye": "western", "type": "Book", "access": "library", "title": "Self-efficacy: The exercise of control", "authors": "Albert Bandura", "year": 1997, "themes": ["motivation"], "origin": "United States", "len": "Book excerpt: Sources of self-efficacy (posted on Blackboard)", "diff": 4, "week": 4, "abstract": "Bandura's foundational account of self-efficacy: the belief in one's capacity to organize and carry out the actions a situation requires. He identifies four sources of self-efficacy, mastery experiences (past successes), vicarious experience (seeing others like you succeed), social persuasion (credible encouragement), and physiological and affective states, with mastery experiences the strongest. Self-efficacy shapes the goals people set, the effort they invest, and how long they persist when a task gets hard.", "coreIdea": "Self-efficacy, the belief in your capacity to carry out what a task needs, is built mainly through mastery experiences and shapes the effort and persistence you bring to a challenge.", "related": [], "url": "", "fulltext": false},
   {
    "id": "owen2023",
    "eye": "western",
@@ -135,6 +137,7 @@ window.PSY355 = {
     "panadero2017"
    ],
    "url": "https://ueaeprints.uea.ac.uk/id/eprint/90543/1/Psychological_Resilience_Accepted_Manuscript.pdf",
+   "doi": "10.1177/09593543231153820",
    "fulltext": true
   },
   {
@@ -389,6 +392,7 @@ window.PSY355 = {
     "antony2023"
    ],
    "url": "https://snaplab.stanford.edu/sites/g/files/sbiybj31146/files/media/file/social_ecology_of_childhood_0.pdf",
+   "doi": "10.1038/s41390-020-01264-x",
    "fulltext": true
   },
   {
@@ -455,8 +459,8 @@ window.PSY355 = {
    "len": "~30 min read",
    "diff": 2,
    "week": 8,
-   "abstract": "Neff defines self-compassion through three components: self kindness rather than harsh self criticism in moments of pain or failure, common humanity that sees one's experience as part of the larger human experience rather than isolating, and mindfulness that holds painful thoughts in balanced awareness rather than over identifying with them. She presents it as an emotionally positive self attitude that protects against the costs of self judgment, isolation, and rumination. She offers it as an alternative to self-esteem, which rests on evaluation, comparison, and judgments of self-worth.",
-   "coreIdea": "Self-compassion is a kind, connected, and clear sighted way of responding to one's own difficulty, and a healthier alternative to self-esteem built on judgment.",
+   "abstract": "Neff defines self-compassion through three components: self-kindness rather than harsh self-criticism in moments of pain or failure, common humanity that sees one's experience as part of the larger human experience rather than isolating, and mindfulness that holds painful thoughts in balanced awareness rather than over-identifying with them. She presents it as an emotionally positive self attitude that protects against the costs of self-judgment, isolation, and rumination. She offers it as an alternative to self-esteem, which rests on evaluation, comparison, and judgments of self-worth.",
+   "coreIdea": "Self-compassion is a kind, connected, and clear-sighted way of responding to one's own difficulty, and a healthier alternative to self-esteem built on judgment.",
    "related": [
     "stephenson2018"
    ],
@@ -484,6 +488,7 @@ window.PSY355 = {
     "neff2003"
    ],
    "url": "https://self-compassion.org/wp-content/uploads/2018/05/Stephenson2017.pdf",
+   "doi": "10.1007/s12144-017-9563-2",
    "fulltext": true
   },
   {
@@ -526,7 +531,7 @@ window.PSY355 = {
    "len": "~30 min read",
    "diff": 3,
    "week": 10,
-   "abstract": "Noting that most nursing students in Indonesia experience moderate stress in clinical settings, this quasi experimental one group pre test and post test study of 57 students used constructivist reflective writing workshops to build resilience. Constructivism treats knowledge as something a person builds from interpreting their own experiences, so the study had students draw on their prior clinical experiences as material for self reflection. Both the ability to write reflective journals and resilience rose significantly, and the two were strongly related, indicating that the reflective journaling supported students' resilience.",
+   "abstract": "Noting that most nursing students in Indonesia experience moderate stress in clinical settings, this quasi experimental one group pre test and post test study of 57 students used constructivist reflective writing workshops to build resilience. Constructivism treats knowledge as something a person builds from interpreting their own experiences, so the study had students draw on their prior clinical experiences as material for self-reflection. Both the ability to write reflective journals and resilience rose significantly, and the two were strongly related, indicating that the reflective journaling supported students' resilience.",
    "coreIdea": "Structured, constructivist reflective journaling can be taught and measurably raises nursing students' resilience by turning their own experience into learning.",
    "related": [
     "kamarulzaman2026"
@@ -734,7 +739,7 @@ window.PSY355 = {
   },
   {
    "term": "Adversity",
-   "def": "Adversity is a difficult condition or event that can disrupt learning and well-being. Lopez and colleagues (2021) frame adversity within social ecology, locating its weight in environments and circumstances rather than in individual weakness. For students, distinguishing adversity from the everyday pressure of a busy term helps keep responses proportionate, and it keeps the focus on the supports and adjustments a hard situation calls for rather than on self blame.",
+   "def": "Adversity is a difficult condition or event that can disrupt learning and well-being. Lopez and colleagues (2021) frame adversity within social ecology, locating its weight in environments and circumstances rather than in individual weakness. For students, distinguishing adversity from the everyday pressure of a busy term helps keep responses proportionate, and it keeps the focus on the supports and adjustments a hard situation calls for rather than on self-blame.",
    "cite": "Lopez, M., Ruiz, M. O., Rovnaghi, C. R., Tam, G. K. Y., Hiscox, J., Gotlib, I. H., Barr, D. A., Carrion, V. G., and Anand, K. J. S. (2021). The social ecology of childhood and early life adversity.",
    "week": 7
   },
@@ -752,7 +757,7 @@ window.PSY355 = {
   },
   {
    "term": "Self-Compassion",
-   "def": "Self-compassion is a kind and accurate response to difficulty that supports learning and recovery, rather than indulgence or excuse making. Neff (2003) describes it as treating oneself with the same fairness one would offer a friend, while still seeing the situation clearly. For students, self-compassion is a working tool: it removes the insult from a setback so that attention can move to the next action, which is usually more productive than harsh self criticism.",
+   "def": "Self-compassion is a kind and accurate response to difficulty that supports learning and recovery, rather than indulgence or excuse making. Neff (2003) describes it as treating oneself with the same fairness one would offer a friend, while still seeing the situation clearly. For students, self-compassion is a working tool: it removes the insult from a setback so that attention can move to the next action, which is usually more productive than harsh self-criticism.",
    "cite": "Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself.",
    "week": 8
   },
@@ -763,8 +768,8 @@ window.PSY355 = {
    "week": 8
   },
   {
-   "term": "Self Criticism",
-   "def": "Self criticism is an inner response that may feel motivating but often narrows learning. Stephenson and colleagues (2018) link harsh self judgment to irrational beliefs and lower self-compassion, suggesting that severe self talk tends to constrict rather than support. For students, the practical work is not to silence all self evaluation but to separate accurate, useful feedback from the insult layered on top of it, keeping the information and dropping the attack.",
+   "term": "Self-Criticism",
+   "def": "Self-criticism is an inner response that may feel motivating but often narrows learning. Stephenson and colleagues (2018) link harsh self-judgment to irrational beliefs and lower self-compassion, suggesting that severe self-talk tends to constrict rather than support. For students, the practical work is not to silence all self evaluation but to separate accurate, useful feedback from the insult layered on top of it, keeping the information and dropping the attack.",
    "cite": "Stephenson, E., Watson, P. J., Chen, Z. J., and Morris, R. J. (2018). Self-compassion, self-esteem, and irrational beliefs.",
    "week": 8
   },
@@ -889,8 +894,8 @@ window.PSY355 = {
    "week": 13
   },
   {
-   "term": "Evidence Based Practice",
-   "def": "Evidence based practice is a strategy connected to research or sound course reasoning, not just personal preference. It asks a student to support each part of a plan with a concept or finding rather than with a hunch. Neff's (2003) account of self-compassion is one example of the kind of grounded basis this calls for: building a plan on tested ideas makes it more trustworthy and gives a student a clear reason to rely on it when conditions get hard.",
+   "term": "Evidence-Based Practice",
+   "def": "Evidence-based practice is a strategy connected to research or sound course reasoning, not just personal preference. It asks a student to support each part of a plan with a concept or finding rather than with a hunch. Neff's (2003) account of self-compassion is one example of the kind of grounded basis this calls for: building a plan on tested ideas makes it more trustworthy and gives a student a clear reason to rely on it when conditions get hard.",
    "cite": "Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself.",
    "week": 13
   },
@@ -921,31 +926,31 @@ window.PSY355 = {
   {
    "term": "Carol Dweck",
    "def": "Psychologist whose work on growth and fixed mindsets shapes how this course thinks about ability and effort.",
-   "cite": null,
+   "cite": "Yeager, D. S., and Dweck, C. S. (2020). What can be learned from growth mindset controversies?",
    "week": 3
   },
   {
    "term": "David Yeager",
    "def": "Studies when mindset interventions actually help students, and when they do not.",
-   "cite": null,
+   "cite": "Yeager, D. S., and Dweck, C. S. (2020). What can be learned from growth mindset controversies?",
    "week": 3
   },
   {
    "term": "Ernesto Panadero",
    "def": "Reviewed the major models of self-regulated learning, the engine behind effective study.",
-   "cite": null,
+   "cite": "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research.",
    "week": 2
   },
   {
    "term": "Michael Ungar",
    "def": "Resilience researcher who reframed resilience as a social and ecological process rather than a personality trait.",
-   "cite": null,
+   "cite": "Ungar, M. (2011). The social ecology of resilience: Addressing contextual and cultural ambiguity of a nascent construct.",
    "week": 6
   },
   {
    "term": "Kristin Neff",
    "def": "Researcher who defined self-compassion as a healthier and more accurate alternative to harsh self-criticism.",
-   "cite": null,
+   "cite": "Neff, K. D. (2003). Self-Compassion: An Alternative Conceptualization of a Healthy Attitude Toward Oneself.",
    "week": 8
   }
  ]
