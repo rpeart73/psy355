@@ -132,12 +132,22 @@
     var k = [a.id, b.id].sort().join('|');
     return (D.syntheses && D.syntheses[k]) ? D.syntheses[k] : templatedSynthesis([a, b])[0];
   }
+  function surnameOf(r) {
+    var first = String(r.authors).replace(/\s*\([^)]*\)/g, '').split(',')[0].split(' and ')[0].split('&')[0].trim();
+    var parts = first.split(' ');
+    return parts.length > 3 ? first : parts[parts.length - 1];
+  }
+  function tripleLead(recs) {
+    var names = recs.map(surnameOf);
+    var listed = recs.map(function (r) { return r.title + ' (' + surnameOf(r) + ', Week ' + r.week + ')'; });
+    return 'Holding three at once: ' + listed[0] + '; ' + listed[1] + '; and ' + listed[2] + '. A three-way comparison is really three relationships, so each pairing is taken in turn below: ' + names[0] + ' with ' + names[1] + ', then ' + names[0] + ' with ' + names[2] + ', then ' + names[1] + ' with ' + names[2] + '. Notice what each pairing sharpens, and what only appears when all three are on the table.';
+  }
   function buildSynthesis(recs) {
     if (recs.length <= 2) {
       if (recs.length === 2) return { paras: [pairText(recs[0], recs[1])] };
       return { paras: templatedSynthesis(recs) };
     }
-    var paras = [];
+    var paras = [tripleLead(recs)];
     for (var i = 0; i < recs.length; i++) for (var j = i + 1; j < recs.length; j++) paras.push(pairText(recs[i], recs[j]));
     return { paras: paras };
   }
