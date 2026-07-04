@@ -1349,7 +1349,7 @@
     var kcR = kcSection(w);
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose &amp; outcomes'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions'], ['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
     return '<div class="rise wk-grid"><main>' + hero + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + sg + kc + navRow + '</main>' + rail + '</div>';
   }
