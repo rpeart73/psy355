@@ -1188,10 +1188,54 @@
       + (prev != null ? '<button onclick="SOC.station(' + prev + ')" style="flex:1;min-width:180px;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--ink-faint)">&larr; PREVIOUS</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + prev + ': ' + esc(weekTitle(prev)) + '</div></button>' : '')
       + (next != null ? '<button onclick="SOC.station(' + next + ')" style="flex:1;min-width:180px;text-align:right;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--red)">NEXT &rarr;</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button>' : '')
       + '</div>';
+    var kcOwn = [];
+    recordsForWeek(w).forEach(function (r) { if (MC[r.id]) kcOwn = kcOwn.concat(MC[r.id]); });
+    kcOwn = kcOwn.concat((window.PSY355_KC && window.PSY355_KC[w]) || []);
+    var kcItems = kcOwn.slice(0, 10);
+    /* snowball review: fill to 15 from earlier weeks, most recent first, two per week */
+    var kcSeen = {};
+    kcItems.forEach(function (m) { kcSeen[m.q] = 1; });
+    for (var pw = w - 1; pw >= 1 && kcItems.length < 15; pw--) {
+      var pool = [];
+      recordsForWeek(pw).forEach(function (r) { if (MC[r.id]) pool = pool.concat(MC[r.id]); });
+      pool = pool.concat((window.PSY355_KC && window.PSY355_KC[pw]) || []);
+      var took = 0;
+      for (var pi = 0; pi < pool.length && kcItems.length < 15 && took < 2; pi++) {
+        var cand = pool[(w + pi) % pool.length];
+        if (!kcSeen[cand.q]) {
+          kcSeen[cand.q] = 1; took++;
+          kcItems.push({ q: cand.q, options: cand.options, answer: cand.answer, why: cand.why, rw: pw });
+        }
+      }
+    }
+    var kc = '';
+    if (kcItems.length) {
+      var kAns = 0, kCor = 0;
+      var kRows = kcItems.map(function (m, mi) {
+        var mkey = 'wk' + w + '|kc|' + mi;
+        var sel = state.mcSel[mkey];
+        var done = (sel !== undefined && sel !== null);
+        if (done) { kAns++; if (sel === m.answer) kCor++; }
+        var opts = (m.options || []).map(function (o, oi) {
+          var isSel = (sel === oi), isCor = (oi === m.answer);
+          var bg = '#fff', bd = 'var(--border)', col = 'var(--ink)';
+          if (done && isCor) { bg = '#E9EFE7'; bd = '#50694C'; col = '#2c3b29'; }
+          else if (done && isSel) { bg = '#F6E3E1'; bd = 'var(--red)'; col = '#8f1b12'; }
+          var mark = (done && isCor) ? ' \u2713' : ((done && isSel) ? ' \u2717' : '');
+          return '<button onclick="SOC.mcPick(\'' + mkey + '\',' + oi + ')" style="display:block;width:100%;text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:8px;padding:9px 12px;margin-bottom:7px;font-size:.9rem;cursor:pointer">' + esc(o) + mark + '</button>';
+        }).join('');
+        var why = done ? '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (sel === m.answer ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (sel === m.answer ? '#9CC4A8' : '#E5B8B0') + ';font-size:.875rem;line-height:1.55">' + esc(m.why || '') + '</div>' : '';
+        var revTag = m.rw ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#6B7280;background:#EEF1F5;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">REVIEW \u00B7 WEEK ' + m.rw + '</span>' : '';
+        return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + (mi + 1) + '. ' + esc(m.q) + revTag + '</p>' + opts + why + '</div>';
+      }).join('');
+      kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check</h2>'
+        + '<p class="wk-hint">Optional and never scored. ' + kcItems.length + ' quick question' + (kcItems.length === 1 ? '' : 's') + ': this week\'s ideas plus a short review from earlier weeks, so the knowledge keeps building. Every answer explains itself from the readings.'
+        + (kAns ? ' So far: ' + kCor + ' of ' + kAns + ' answered.' : '') + '</p>' + kRows + '</section>';
+    }
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose &amp; outcomes'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose &amp; outcomes'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    return '<div class="rise wk-grid"><main>' + hero + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + navRow + '</main>' + rail + '</div>';
+    return '<div class="rise wk-grid"><main>' + hero + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + kc + navRow + '</main>' + rail + '</div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
