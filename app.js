@@ -1259,8 +1259,8 @@
           + (revisit ? '<div>' + revisit + '</div>' : '')
           + '</div>';
       }
-      kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check</h2>'
-        + '<p class="wk-hint">Optional and never scored. ' + kcItems.length + ' quick question' + (kcItems.length === 1 ? '' : 's') + ': this week\'s ideas plus a short review from earlier weeks, so the knowledge keeps building. Every answer explains itself from the readings.</p>'
+      kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check <span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span></h2>'
+        + '<p class="wk-hint">Nothing here counts toward your grade and nothing is recorded. ' + kcItems.length + ' quick question' + (kcItems.length === 1 ? '' : 's') + ': this week\'s ideas plus a short review from earlier weeks, so the knowledge keeps building. Every answer explains itself from the readings. Click your answer again to clear it, or pick a different option to change it.</p>'
         + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px">' + vers + retake + '</div>'
         + summary + kRows + '</section>';
     }
@@ -1530,7 +1530,7 @@
       senecaDoc('PSY355', 'Personal Resilience Plan', ['PSY355 Psychology of Learning: Mindset and Resilience', 'Built from your Resilience Ecology'], sections, 'PSY355_personal_resilience_plan');
     },
     rcReveal: function (k) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; state.revealed[k] = !state.revealed[k]; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
-    mcPick: function (k, i) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var wy = window.scrollY; state.mcSel[k] = i; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; window.scrollTo(0, wy); },
+    mcPick: function (k, i) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var wy = window.scrollY; if (state.mcSel[k] === i) { delete state.mcSel[k]; } else { state.mcSel[k] = i; } render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; window.scrollTo(0, wy); },
     kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; var wy = window.scrollY; render(); window.scrollTo(0, wy); },
     kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(pre) === 0) delete state.mcSel[k]; }); var wy = window.scrollY; render(); window.scrollTo(0, wy); },
     mcReset: function (id) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var keep = {}; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(id + '|mc|') !== 0) keep[k] = state.mcSel[k]; }); state.mcSel = keep; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
