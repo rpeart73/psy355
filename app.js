@@ -12,13 +12,15 @@
 
   var SKEY = 'psy355corpus.v2';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act })); } catch (e) {} }
   var saved0 = load();
 
   var state = {
     screen: 'journey',
     journeyWeek: saved0.journeyWeek || null,
     stationWeek: null,
+    sgNotes: (saved0.sgNotes || {}),
+    sgTick: (saved0.sgTick || {}),
     wkCheck: (saved0.wkCheck && typeof saved0.wkCheck === 'object') ? saved0.wkCheck : {},
     wkReflect: (saved0.wkReflect && typeof saved0.wkReflect === 'object') ? saved0.wkReflect : {},
     act: (saved0.act && typeof saved0.act === 'object') ? saved0.act : {},
@@ -1158,6 +1160,72 @@
     var reset = '<div class="wk-resetrow"><button onclick="SOC.wkClear(' + w + ',\'' + phase + '\')" class="wk-reset">Reset ' + label + ' ratings</button><span>Click a selected rating again to clear only that idea.</span></div>';
     return qs + reset + '<div id="wkmeter-' + phase + '-' + w + '">' + checkMeter(w, phase, d) + '</div>';
   }
+  function sgSection(w) {
+    var d = weekData(w);
+    if (!d || !d.concepts || !d.concepts.length) return { html: '' };
+    state.sgNotes = state.sgNotes || {}; state.sgShow = state.sgShow || {}; state.sgFlip = state.sgFlip || {}; state.sgTick = state.sgTick || {};
+    /* 1. spaced-recall warm-up: two terms from earlier weeks */
+    var warm = '';
+    var priorTerms = [];
+    for (var pw = w - 1; pw >= 1 && priorTerms.length < 2; pw--) {
+      var pd = weekData(pw);
+      if (pd && pd.terms && pd.terms.length) priorTerms.push({ t: pd.terms[(w + pw) % pd.terms.length], wk: pw });
+    }
+    if (priorTerms.length) {
+      warm = '<div style="margin:0 0 18px"><h3 style="font-size:1rem;margin:0 0 8px">Still got these?</h3><p class="wk-hint" style="margin:0 0 10px">Two ideas from earlier weeks. Say the meaning out loud, then flip to check yourself.</p>'
+        + priorTerms.map(function (x, xi) {
+          var fk = 'sg' + w + '|warm|' + xi;
+          var open = state.sgFlip[fk];
+          return '<button onclick="SOC.sgFlip(\'' + fk + '\',' + w + ')" aria-expanded="' + !!open + '" style="display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;margin-bottom:8px;cursor:pointer">'
+            + '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#6B7280">WEEK ' + x.wk + '</span>'
+            + '<div style="font-weight:700;margin-top:2px">' + esc(x.t.term) + '</div>'
+            + (open ? '<div style="margin-top:8px;font-size:.9rem;line-height:1.55;color:var(--ink-dim)">' + esc(x.t.def) + ' <span class="wk-cite">(' + esc(x.t.cite) + ')</span></div>' : '<div style="margin-top:6px;font-size:.8rem;color:var(--ink-faint)">Flip to check \u2192</div>')
+            + '</button>';
+        }).join('') + '</div>';
+    }
+    /* 2. explain-it-back tiles: one per key concept */
+    var tiles = '<div style="margin:0 0 18px"><h3 style="font-size:1rem;margin:0 0 8px">Explain it back</h3><p class="wk-hint" style="margin:0 0 10px">The real test of understanding: explain each idea to a classmate who missed the week, in your own words. Then compare with the reading\'s version. Nothing you type is recorded or graded.</p>'
+      + d.concepts.map(function (c, ci) {
+        var nk = 'sg' + w + '|c|' + ci;
+        var val = state.sgNotes[nk] || '';
+        var show = state.sgShow[nk];
+        return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px">'
+          + '<div style="font-weight:700;margin-bottom:8px">' + esc(c.h) + '</div>'
+          + '<textarea oninput="SOC.sgNote(\'' + nk + '\', this.value)" placeholder="Your explanation, one or two sentences..." style="width:100%;min-height:64px;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem;resize:vertical">' + esc(val) + '</textarea>'
+          + '<button onclick="SOC.sgCompare(\'' + nk + '\',' + w + ')" style="margin-top:8px;border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 12px;font-size:.82rem;cursor:pointer">' + (show ? 'Hide the reading\'s version' : 'Compare with the reading') + '</button>'
+          + (show ? '<div style="margin-top:9px;padding:10px 13px;border-radius:9px;background:#FBF8F3;border:1px solid var(--border);font-size:.875rem;line-height:1.55">' + esc(c.body) + ' <span class="wk-cite">(' + esc(c.cite) + ')</span></div>' : '')
+          + '</div>';
+      }).join('') + '</div>';
+    /* 3. the question ladder: guiding questions as rungs, recall -> connect -> apply */
+    var rungNames = ['Recall', 'Connect', 'Apply'];
+    var gqs = (d.guiding || []).slice(0, 3);
+    var ladder = '';
+    if (gqs.length) {
+      var rows = '';
+      for (var ri = 0; ri < gqs.length; ri++) {
+        var rk = 'sg' + w + '|r|' + ri;
+        var prevDone = ri === 0 || (state.sgTick[('sg' + w + '|r|' + (ri - 1))] && (state.sgNotes[('sg' + w + '|r|' + (ri - 1))] || '').length >= 20);
+        if (!prevDone) { rows += '<div style="border:1.5px dashed var(--border);border-radius:12px;padding:13px 16px;margin-bottom:10px;color:var(--ink-faint);font-size:.88rem">Rung ' + (ri + 1) + ' \u00B7 ' + rungNames[Math.min(ri, 2)] + ' unlocks when you finish the rung above.</div>'; continue; }
+        var rv = state.sgNotes[rk] || '';
+        var ticked = state.sgTick[rk] && rv.length >= 20;
+        rows += '<div style="background:#fff;border:1.5px solid ' + (ticked ? '#50694C' : 'var(--border)') + ';border-radius:12px;padding:14px 16px;margin-bottom:10px">'
+          + '<div class="mono" style="font-size:.62rem;letter-spacing:.06em;color:' + (ticked ? '#2c6b3f' : '#6B7280') + '">RUNG ' + (ri + 1) + ' \u00B7 ' + rungNames[Math.min(ri, 2)].toUpperCase() + (ticked ? ' \u2713' : '') + '</div>'
+          + '<div style="font-weight:600;margin:5px 0 8px;line-height:1.5">' + esc(gqs[ri]) + '</div>'
+          + '<textarea oninput="SOC.sgNote(\'' + rk + '\', this.value)" placeholder="Work it out here..." style="width:100%;min-height:56px;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem;resize:vertical">' + esc(rv) + '</textarea>'
+          + (ticked ? '' : '<button onclick="SOC.sgTickRung(\'' + rk + '\',' + w + ')" style="margin-top:8px;border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 12px;font-size:.82rem;cursor:pointer">Done, next rung</button>')
+          + '</div>';
+      }
+      var lastRk = 'sg' + w + '|r|' + (gqs.length - 1);
+      var ladderDone = state.sgTick[lastRk] && (state.sgNotes[lastRk] || '').length >= 20;
+      ladder = '<div><h3 style="font-size:1rem;margin:0 0 8px">The question ladder</h3><p class="wk-hint" style="margin:0 0 10px">This week\'s guiding questions, one rung at a time: remember it, connect it, apply it to your own world. Twenty words or more moves you up.</p>' + rows
+        + (ladderDone ? '<div style="background:#E9EFE7;border:1px solid #9CC4A8;border-radius:12px;padding:13px 16px;font-size:.92rem;font-weight:600;color:#2c3b29">You have worked the whole ladder. You are ready for the Knowledge Check below. <a href="#wk-kc" style="color:#2c6b3f">Go to it \u2193</a></div>' : '')
+        + '</div>';
+    }
+    var html = '<section id="wk-sg" class="node"><h2 class="wk-sec">Study Guide <span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span></h2>'
+      + '<p class="wk-hint">Your rehearsal space before the Knowledge Check. Nothing here is recorded or graded; it lives only in your browser.</p>'
+      + warm + tiles + ladder + '</section>';
+    return { html: html };
+  }
   function kcSection(w) {
     var kcVer = (state.kcVersion && state.kcVersion[w]) || 0;
     var kcTier = kcVer + 1;
@@ -1277,12 +1345,13 @@
       + (prev != null ? '<button onclick="SOC.station(' + prev + ')" style="flex:1;min-width:180px;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--ink-faint)">&larr; PREVIOUS</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + prev + ': ' + esc(weekTitle(prev)) + '</div></button>' : '')
       + (next != null ? '<button onclick="SOC.station(' + next + ')" style="flex:1;min-width:180px;text-align:right;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--red)">NEXT &rarr;</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button>' : '')
       + '</div>';
+    var sg = sgSection(w).html;
     var kcR = kcSection(w);
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose &amp; outcomes'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose &amp; outcomes'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    return '<div class="rise wk-grid"><main>' + hero + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + kc + navRow + '</main>' + rail + '</div>';
+    return '<div class="rise wk-grid"><main>' + hero + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + sg + kc + navRow + '</main>' + rail + '</div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -1545,6 +1614,10 @@
       senecaDoc('PSY355', 'Personal Resilience Plan', ['PSY355 Psychology of Learning: Mindset and Resilience', 'Built from your Resilience Ecology'], sections, 'PSY355_personal_resilience_plan');
     },
     rcReveal: function (k) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; state.revealed[k] = !state.revealed[k]; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    sgNote: function (k, v) { state.sgNotes = state.sgNotes || {}; state.sgNotes[k] = v; persist(); },
+    sgCompare: function (k, w) { state.sgShow = state.sgShow || {}; state.sgShow[k] = !state.sgShow[k]; var sec = document.getElementById('wk-sg'); if (sec) sec.outerHTML = sgSection(w).html; },
+    sgFlip: function (k, w) { state.sgFlip = state.sgFlip || {}; state.sgFlip[k] = !state.sgFlip[k]; var sec = document.getElementById('wk-sg'); if (sec) sec.outerHTML = sgSection(w).html; },
+    sgTickRung: function (k, w) { state.sgTick = state.sgTick || {}; state.sgTick[k] = true; persist(); var sec = document.getElementById('wk-sg'); if (sec) sec.outerHTML = sgSection(w).html; },
     mcPick: function (k, i) {
       if (state.mcSel[k] === i) { delete state.mcSel[k]; } else { state.mcSel[k] = i; }
       var kcm = /^wk(\d+)\|kc/.exec(k);
