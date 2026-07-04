@@ -1158,6 +1158,95 @@
     var reset = '<div class="wk-resetrow"><button onclick="SOC.wkClear(' + w + ',\'' + phase + '\')" class="wk-reset">Reset ' + label + ' ratings</button><span>Click a selected rating again to clear only that idea.</span></div>';
     return qs + reset + '<div id="wkmeter-' + phase + '-' + w + '">' + checkMeter(w, phase, d) + '</div>';
   }
+  function kcSection(w) {
+    var kcVer = (state.kcVersion && state.kcVersion[w]) || 0;
+    var kcTier = kcVer + 1;
+    function kcPool(week) {
+      var pool = [];
+      recordsForWeek(week).forEach(function (r) { if (MC[r.id]) pool = pool.concat(MC[r.id]); });
+      pool = pool.concat((window.PSY355_KC && window.PSY355_KC[week]) || []);
+      pool = pool.filter(function (m) { return (m.options || []).length >= 4; });
+      pool.sort(function (a, b) { return Math.abs((a.diff || 2) - kcTier) - Math.abs((b.diff || 2) - kcTier); });
+      return pool;
+    }
+    var kcOwnPool = kcPool(w);
+    var kcItems = [], kcSeen = {};
+    for (var oi2 = 0; oi2 < kcOwnPool.length && kcItems.length < 10; oi2++) {
+      var own = kcOwnPool[(oi2 + kcVer * 4) % kcOwnPool.length];
+      if (!kcSeen[own.q]) { kcSeen[own.q] = 1; kcItems.push(own); }
+    }
+    /* snowball review: fill to 15 from earlier weeks, most recent first, two per week */
+    for (var pw = w - 1; pw >= 1 && kcItems.length < 15; pw--) {
+      var pool = kcPool(pw);
+      var took = 0;
+      for (var pi = 0; pi < pool.length && kcItems.length < 15 && took < 2; pi++) {
+        var cand = pool[(w + pi + kcVer * 3) % pool.length];
+        if (!kcSeen[cand.q]) {
+          kcSeen[cand.q] = 1; took++;
+          kcItems.push({ q: cand.q, options: cand.options, answer: cand.answer, why: cand.why, diff: cand.diff, rw: pw });
+        }
+      }
+    }
+    var kc = '';
+    if (kcItems.length) {
+      var kAns = 0, kCor = 0, nT = 0, nC = 0, rT = 0, rC = 0, missWk = {};
+      kcItems.forEach(function (m, mi) {
+        var sel = state.mcSel['wk' + w + '|kc' + kcVer + '|' + mi];
+        if (sel !== undefined && sel !== null) {
+          kAns++; var right = (sel === m.answer); if (right) kCor++;
+          if (m.rw) { rT++; if (right) rC++; else missWk[m.rw] = 1; }
+          else { nT++; if (right) nC++; }
+        }
+      });
+      var reveal = (kAns === kcItems.length);
+      var kRows = kcItems.map(function (m, mi) {
+        var mkey = 'wk' + w + '|kc' + kcVer + '|' + mi;
+        var sel = state.mcSel[mkey];
+        var done = (sel !== undefined && sel !== null);
+        var opts = (m.options || []).map(function (o, oi) {
+          var isSel = (sel === oi), isCor = (oi === m.answer);
+          var bg = '#fff', bd = 'var(--border)', col = 'var(--ink)', mark = '';
+          if (reveal && isCor) { bg = '#E9EFE7'; bd = '#50694C'; col = '#2c3b29'; mark = ' \u2713'; }
+          else if (reveal && isSel && !isCor) { bg = '#F6E3E1'; bd = 'var(--red)'; col = '#8f1b12'; mark = ' \u2717'; }
+          else if (isSel) { bg = '#FDF0EE'; bd = 'var(--red)'; col = 'var(--ink)'; mark = ' \u25CF'; }
+          return '<button onclick="SOC.mcPick(\'' + mkey + '\',' + oi + ')" aria-pressed="' + isSel + '" style="display:block;width:100%;text-align:left;border:1.5px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:8px;padding:9px 12px;margin-bottom:7px;font-size:.9rem;cursor:pointer">' + esc(o) + mark + '</button>';
+        }).join('');
+        var why = (reveal && m.why) ? '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (sel === m.answer ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (sel === m.answer ? '#9CC4A8' : '#E5B8B0') + ';font-size:.875rem;line-height:1.55">' + esc(m.why) + '</div>' : '';
+        var revTag = m.rw ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#6B7280;background:#EEF1F5;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">REVIEW \u00B7 WEEK ' + m.rw + '</span>' : '';
+        return '<div id="kcq-' + mkey.replace(/[^a-zA-Z0-9]/g, '-') + '" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + (mi + 1) + '. ' + esc(m.q) + revTag + '</p>' + opts + why + '</div>';
+      }).join('');
+      var vers = [0, 1, 2].map(function (v) {
+        var on = (v === kcVer);
+        return '<button onclick="SOC.kcVer(' + w + ',' + v + ')" aria-pressed="' + on + '" style="border:1px solid ' + (on ? 'var(--red)' : 'var(--border)') + ';background:' + (on ? '#FDF0EE' : '#fff') + ';color:' + (on ? 'var(--red)' : 'var(--ink)') + ';font-weight:' + (on ? '700' : '500') + ';border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Set ' + String.fromCharCode(65 + v) + '</button>';
+      }).join('');
+      var retake = kAns ? '<button onclick="SOC.kcClear(' + w + ',' + kcVer + ')" style="border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Clear and retake this set</button>' : '';
+      var progress = reveal ? '' : '<p class="wk-hint" style="margin:0 0 12px">' + kAns + ' of ' + kcItems.length + ' answered. Your results and the explanations appear when you have answered them all.</p>';
+      var summary = '';
+      if (reveal) {
+        var pct = Math.round(100 * kCor / kcItems.length);
+        var head, body;
+        if (pct >= 93) { head = 'Command'; body = 'You are not just recognising these ideas, you can tell them apart under pressure, which is exactly what the course asks of you. Keep the habit: the review questions each week will keep this warm.'; }
+        else if (pct >= 80) { head = 'Solid'; body = 'You have the spine of this material. The few you missed are explained below; read those explanations once more and you are at full strength.'; }
+        else if (pct >= 60) { head = 'Developing'; body = 'A real start. You are recognising the ideas but some are still blurring together. Read the explanations below, then come back and try another set fresh.'; }
+        else { head = 'Starting point'; body = 'This tells you where you are starting from, and that is useful information, not a judgment. Work back through this week\'s key concepts and readings, then take Set ' + String.fromCharCode(65 + ((kcVer + 1) % 3)) + ' and watch the difference.'; }
+        var split = '';
+        if (nT && rT) split = '<p style="margin:8px 0 0;font-size:.9rem;line-height:1.55">On this week\'s new ideas you got ' + nC + ' of ' + nT + '. On review from earlier weeks you got ' + rC + ' of ' + rT + '.' + (rC < rT ? ' That earlier material fades fastest, which is normal; a short revisit brings it back.' : ' Your earlier weeks are holding, which is the whole point of the review questions.') + '</p>';
+        var revisit = Object.keys(missWk).map(function (n) { return '<button onclick="SOC.station(' + n + ')" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 13px;font-size:.85rem;margin:8px 8px 0 0;cursor:pointer">Revisit Week ' + n + ' \u2192</button>'; }).join('');
+        summary = '<div style="margin:6px 0 14px;background:#15171C;color:#fff;border-radius:12px;padding:17px 20px">'
+          + '<div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:#9aa3af">WHERE YOU STAND \u00B7 ' + kCor + ' OF ' + kcItems.length + '</div>'
+          + '<div style="font-size:1.05rem;font-weight:700;margin:6px 0 4px">' + head + '</div>'
+          + '<p style="margin:0;font-size:.9rem;line-height:1.6;color:#e5e7eb">' + body + '</p>'
+          + (split ? '<div style="color:#e5e7eb">' + split + '</div>' : '')
+          + (revisit ? '<div>' + revisit + '</div>' : '')
+          + '</div>';
+      }
+      kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check <span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span></h2>'
+        + '<p class="wk-hint">Nothing here counts toward your grade and nothing is recorded. ' + kcItems.length + ' quick question' + (kcItems.length === 1 ? '' : 's') + ': this week\'s ideas plus a short review from earlier weeks, so the knowledge keeps building. Pick one answer per question; click it again to clear it, or pick a different option to change it. Results and explanations appear once you have answered every question. Sets step up in difficulty from A to C.</p>'
+        + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px">' + vers + retake + '</div>'
+        + progress + summary + kRows + '</section>';
+    }
+    return { html: kc, items: kcItems };
+  }
   function weekPage(w, d) {
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var sec = function (id, title, inner) { return '<section id="wk-' + id + '" class="node"><h2 class="wk-sec">' + esc(title) + '</h2>' + inner + '</section>'; };
@@ -1188,82 +1277,8 @@
       + (prev != null ? '<button onclick="SOC.station(' + prev + ')" style="flex:1;min-width:180px;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--ink-faint)">&larr; PREVIOUS</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + prev + ': ' + esc(weekTitle(prev)) + '</div></button>' : '')
       + (next != null ? '<button onclick="SOC.station(' + next + ')" style="flex:1;min-width:180px;text-align:right;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--red)">NEXT &rarr;</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button>' : '')
       + '</div>';
-    var kcVer = (state.kcVersion && state.kcVersion[w]) || 0;
-    var kcOwnPool = [];
-    recordsForWeek(w).forEach(function (r) { if (MC[r.id]) kcOwnPool = kcOwnPool.concat(MC[r.id]); });
-    kcOwnPool = kcOwnPool.concat((window.PSY355_KC && window.PSY355_KC[w]) || []);
-    var kcItems = [], kcSeen = {};
-    for (var oi2 = 0; oi2 < kcOwnPool.length && kcItems.length < 10; oi2++) {
-      var own = kcOwnPool[(oi2 + kcVer * 4) % kcOwnPool.length];
-      if (!kcSeen[own.q]) { kcSeen[own.q] = 1; kcItems.push(own); }
-    }
-    /* snowball review: fill to 15 from earlier weeks, most recent first, two per week */
-    for (var pw = w - 1; pw >= 1 && kcItems.length < 15; pw--) {
-      var pool = [];
-      recordsForWeek(pw).forEach(function (r) { if (MC[r.id]) pool = pool.concat(MC[r.id]); });
-      pool = pool.concat((window.PSY355_KC && window.PSY355_KC[pw]) || []);
-      var took = 0;
-      for (var pi = 0; pi < pool.length && kcItems.length < 15 && took < 2; pi++) {
-        var cand = pool[(w + pi + kcVer * 3) % pool.length];
-        if (!kcSeen[cand.q]) {
-          kcSeen[cand.q] = 1; took++;
-          kcItems.push({ q: cand.q, options: cand.options, answer: cand.answer, why: cand.why, rw: pw });
-        }
-      }
-    }
-    var kc = '';
-    if (kcItems.length) {
-      var kAns = 0, kCor = 0, nT = 0, nC = 0, rT = 0, rC = 0, missWk = {};
-      var kRows = kcItems.map(function (m, mi) {
-        var mkey = 'wk' + w + '|kc' + kcVer + '|' + mi;
-        var sel = state.mcSel[mkey];
-        var done = (sel !== undefined && sel !== null);
-        if (done) {
-          kAns++; var right = (sel === m.answer); if (right) kCor++;
-          if (m.rw) { rT++; if (right) rC++; else missWk[m.rw] = 1; }
-          else { nT++; if (right) nC++; }
-        }
-        var opts = (m.options || []).map(function (o, oi) {
-          var isSel = (sel === oi), isCor = (oi === m.answer);
-          var bg = '#fff', bd = 'var(--border)', col = 'var(--ink)';
-          if (done && isCor) { bg = '#E9EFE7'; bd = '#50694C'; col = '#2c3b29'; }
-          else if (done && isSel) { bg = '#F6E3E1'; bd = 'var(--red)'; col = '#8f1b12'; }
-          var mark = (done && isCor) ? ' \u2713' : ((done && isSel) ? ' \u2717' : '');
-          return '<button onclick="SOC.mcPick(\'' + mkey + '\',' + oi + ')" style="display:block;width:100%;text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:8px;padding:9px 12px;margin-bottom:7px;font-size:.9rem;cursor:pointer">' + esc(o) + mark + '</button>';
-        }).join('');
-        var why = done ? '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (sel === m.answer ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (sel === m.answer ? '#9CC4A8' : '#E5B8B0') + ';font-size:.875rem;line-height:1.55">' + esc(m.why || '') + '</div>' : '';
-        var revTag = m.rw ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#6B7280;background:#EEF1F5;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">REVIEW \u00B7 WEEK ' + m.rw + '</span>' : '';
-        return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + (mi + 1) + '. ' + esc(m.q) + revTag + '</p>' + opts + why + '</div>';
-      }).join('');
-      var vers = [0, 1, 2].map(function (v) {
-        var on = (v === kcVer);
-        return '<button onclick="SOC.kcVer(' + w + ',' + v + ')" aria-pressed="' + on + '" style="border:1px solid ' + (on ? 'var(--red)' : 'var(--border)') + ';background:' + (on ? '#FDF0EE' : '#fff') + ';color:' + (on ? 'var(--red)' : 'var(--ink)') + ';font-weight:' + (on ? '700' : '500') + ';border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Set ' + String.fromCharCode(65 + v) + '</button>';
-      }).join('');
-      var retake = kAns ? '<button onclick="SOC.kcClear(' + w + ',' + kcVer + ')" style="border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Clear and retake this set</button>' : '';
-      var summary = '';
-      if (kAns === kcItems.length) {
-        var pct = Math.round(100 * kCor / kcItems.length);
-        var head, body;
-        if (pct >= 93) { head = 'Command'; body = 'You are not just recognising these ideas, you can tell them apart under pressure, which is exactly what the course asks of you. Keep the habit: the review questions each week will keep this warm.'; }
-        else if (pct >= 80) { head = 'Solid'; body = 'You have the spine of this material. The few you missed are explained above; read those explanations once more and you are at full strength.'; }
-        else if (pct >= 60) { head = 'Developing'; body = 'A real start. You are recognising the ideas but some are still blurring together. Reread the key concepts on this page, then come back and try another set fresh.'; }
-        else { head = 'Starting point'; body = 'This tells you where you are starting from, and that is useful information, not a judgment. Work back through this week\'s key concepts and readings, then take Set ' + String.fromCharCode(65 + ((kcVer + 1) % 3)) + ' and watch the difference.'; }
-        var split = '';
-        if (nT && rT) split = '<p style="margin:8px 0 0;font-size:.9rem;line-height:1.55">On this week\'s new ideas you got ' + nC + ' of ' + nT + '. On review from earlier weeks you got ' + rC + ' of ' + rT + '.' + (rC < rT ? ' That earlier material fades fastest, which is normal; a short revisit brings it back.' : ' Your earlier weeks are holding, which is the whole point of the review questions.') + '</p>';
-        var revisit = Object.keys(missWk).map(function (n) { return '<button onclick="SOC.station(' + n + ')" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 13px;font-size:.85rem;margin:8px 8px 0 0;cursor:pointer">Revisit Week ' + n + ' \u2192</button>'; }).join('');
-        summary = '<div style="margin:6px 0 14px;background:#15171C;color:#fff;border-radius:12px;padding:17px 20px">'
-          + '<div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:#9aa3af">WHERE YOU STAND \u00B7 ' + kCor + ' OF ' + kcItems.length + '</div>'
-          + '<div style="font-size:1.05rem;font-weight:700;margin:6px 0 4px">' + head + '</div>'
-          + '<p style="margin:0;font-size:.9rem;line-height:1.6;color:#e5e7eb">' + body + '</p>'
-          + (split ? '<div style="color:#e5e7eb">' + split + '</div>' : '')
-          + (revisit ? '<div>' + revisit + '</div>' : '')
-          + '</div>';
-      }
-      kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check <span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span></h2>'
-        + '<p class="wk-hint">Nothing here counts toward your grade and nothing is recorded. ' + kcItems.length + ' quick question' + (kcItems.length === 1 ? '' : 's') + ': this week\'s ideas plus a short review from earlier weeks, so the knowledge keeps building. Every answer explains itself from the readings. Click your answer again to clear it, or pick a different option to change it.</p>'
-        + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px">' + vers + retake + '</div>'
-        + summary + kRows + '</section>';
-    }
+    var kcR = kcSection(w);
+    var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose &amp; outcomes'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
@@ -1530,9 +1545,20 @@
       senecaDoc('PSY355', 'Personal Resilience Plan', ['PSY355 Psychology of Learning: Mindset and Resilience', 'Built from your Resilience Ecology'], sections, 'PSY355_personal_resilience_plan');
     },
     rcReveal: function (k) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; state.revealed[k] = !state.revealed[k]; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
-    mcPick: function (k, i) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var wy = window.scrollY; if (state.mcSel[k] === i) { delete state.mcSel[k]; } else { state.mcSel[k] = i; } render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; window.scrollTo(0, wy); },
-    kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; var wy = window.scrollY; render(); window.scrollTo(0, wy); },
-    kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(pre) === 0) delete state.mcSel[k]; }); var wy = window.scrollY; render(); window.scrollTo(0, wy); },
+    mcPick: function (k, i) {
+      if (state.mcSel[k] === i) { delete state.mcSel[k]; } else { state.mcSel[k] = i; }
+      var kcm = /^wk(\d+)\|kc/.exec(k);
+      if (kcm) {
+        var sec = document.getElementById('wk-kc');
+        if (sec) { sec.outerHTML = kcSection(Number(kcm[1])).html; return; }
+      }
+      var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var wy = window.scrollY;
+      render();
+      var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top;
+      window.scrollTo(0, wy);
+    },
+    kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(w).html; } },
+    kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(pre) === 0) delete state.mcSel[k]; }); var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(w).html; } },
     mcReset: function (id) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var keep = {}; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(id + '|mc|') !== 0) keep[k] = state.mcSel[k]; }); state.mcSel = keep; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     saveReadingNotes: function () {
       var r = state.rcReading && rec(state.rcReading); if (!r) { flash('Pick a reading first.'); return; }
