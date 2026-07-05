@@ -12,7 +12,7 @@
 
   var SKEY = 'psy355corpus.v2';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist })); } catch (e) {} }
   var saved0 = load();
 
   var state = {
@@ -46,6 +46,12 @@
     ecoLayer: 'you',
     revealed: {},
     mcSel: {},
+    mcConf: {},
+    kcReveal: {},
+    kcShort: (saved0.kcShort && typeof saved0.kcShort === 'object') ? saved0.kcShort : {},
+    kcShortShown: {},
+    kcShortRate: (saved0.kcShortRate && typeof saved0.kcShortRate === 'object') ? saved0.kcShortRate : {},
+    kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
     libScroll: 0,
     toast: null,
     cardWeek: null,
@@ -1234,102 +1240,199 @@
       + warm + tiles + ladder + '</section>';
     return { html: html };
   }
+  function kcHashKey(s) { var h = 0, str = String(s || ''); for (var i = 0; i < str.length; i++) { h = ((h << 5) - h + str.charCodeAt(i)) | 0; } return 'q' + (h >>> 0).toString(36); }
   function kcSection(w, reviewOnly) {
-    var kcVer = (state.kcVersion && state.kcVersion[w]) || 0;
+    var kcVer = (state.kcVersion && state.kcVersion[w]) || 0;   /* 0 = Set A, 1 = Set B, 2 = Set C */
+    var isC = (kcVer === 2);
+    var revKey = w + '|' + kcVer;
     var kcTier = kcVer + 1;
-    function kcPool(week) {
+    var KB = window.PSY355_KC || {};
+    var hist = state.kcHist || {};
+    function bank(week) { return KB[week] || []; }
+    function isShort(m) { return !!(m && m.type === 'short'); }
+    function isMatch(m) { return !!(m && m.kind === 'match'); }
+    function isScenario(m) { return !!(m && m.kind === 'scenario'); }
+    /* Sets A and B: plain multiple choice, from the readings and the plain-MC bank */
+    function mcPool(week) {
       var pool = [];
       recordsForWeek(week).forEach(function (r) { if (MC[r.id]) pool = pool.concat(MC[r.id]); });
-      pool = pool.concat((window.PSY355_KC && window.PSY355_KC[week]) || []);
+      pool = pool.concat(bank(week).filter(function (m) { return !m.kind && !isShort(m); }));
       pool = pool.filter(function (m) { return (m.options || []).length >= 4; });
       pool.sort(function (a, b) { return Math.abs((a.diff || 2) - kcTier) - Math.abs((b.diff || 2) - kcTier); });
       return pool;
     }
-    var kcOwnPool = kcPool(w);
-    /* gather the review pool first: up to two per earlier week, most recent first */
-    var reviewPool = [];
-    for (var pw = w - 1; pw >= 1; pw--) {
-      var pool = kcPool(pw), took = 0, rseen = {};
-      for (var pi = 0; pi < pool.length && took < 2; pi++) {
-        var cand = pool[(w + pi + kcVer * 3) % pool.length];
-        if (!rseen[cand.q]) {
-          rseen[cand.q] = 1; took++;
-          reviewPool.push({ q: cand.q, options: cand.options, answer: cand.answer, why: cand.why, diff: cand.diff, rw: pw });
+    /* Set C: something different, scenario + matching (both auto-scored) */
+    function scoredCPool(week) { return bank(week).filter(function (m) { return (isScenario(m) || isMatch(m)) && (m.options || []).length >= 4; }); }
+    function shortCPool(week) { return bank(week).filter(isShort); }
+
+    var kcItems = [], kcSeen = {}, shortItems = [];
+    if (isC) {
+      var cp = scoredCPool(w);
+      for (var ci = 0; ci < cp.length && kcItems.length < 15; ci++) { if (!kcSeen[cp[ci].q]) { kcSeen[cp[ci].q] = 1; kcItems.push(cp[ci]); } }
+      shortItems = shortCPool(w).slice(0, 3);
+    } else {
+      var kcOwnPool = mcPool(w);
+      /* adaptive review: gather up to two per earlier week, weighting ideas missed before to the front */
+      var reviewPool = [];
+      for (var pw = w - 1; pw >= 1; pw--) {
+        var pool = mcPool(pw).slice();
+        pool.sort(function (a, b) { var ha = hist[kcHashKey(a.q)], hb = hist[kcHashKey(b.q)]; var wa = (ha && ha.n && ha.right < ha.n) ? 0 : 1, wb = (hb && hb.n && hb.right < hb.n) ? 0 : 1; return wa - wb; });
+        var took = 0, rseen = {};
+        for (var pi = 0; pi < pool.length && took < 2; pi++) {
+          var cand = pool[pi];
+          if (!rseen[cand.q]) { rseen[cand.q] = 1; took++; reviewPool.push({ q: cand.q, options: cand.options, answer: cand.answer, why: cand.why, whyWrong: cand.whyWrong, diff: cand.diff, rw: pw }); }
         }
       }
+      var reserve = Math.min(5, reviewPool.length);
+      var ownTarget = Math.min(kcOwnPool.length, 15 - reserve);
+      for (var oi2 = 0; oi2 < kcOwnPool.length && kcItems.length < ownTarget; oi2++) { var own = kcOwnPool[(oi2 + kcVer * 4) % kcOwnPool.length]; if (!kcSeen[own.q]) { kcSeen[own.q] = 1; kcItems.push(own); } }
+      for (var ri = 0; ri < reviewPool.length && kcItems.length < 15; ri++) { if (!kcSeen[reviewPool[ri].q]) { kcSeen[reviewPool[ri].q] = 1; kcItems.push(reviewPool[ri]); } }
     }
-    /* target 15 total: keep up to 5 review slots when review exists, but take more
-       own questions when earlier weeks are thin (so early weeks still reach 15) */
-    var reserve = Math.min(5, reviewPool.length);
-    var ownTarget = Math.min(kcOwnPool.length, 15 - reserve);
-    var kcItems = [], kcSeen = {};
-    for (var oi2 = 0; oi2 < kcOwnPool.length && kcItems.length < ownTarget; oi2++) {
-      var own = kcOwnPool[(oi2 + kcVer * 4) % kcOwnPool.length];
-      if (!kcSeen[own.q]) { kcSeen[own.q] = 1; kcItems.push(own); }
-    }
-    for (var ri = 0; ri < reviewPool.length && kcItems.length < 15; ri++) {
-      if (!kcSeen[reviewPool[ri].q]) { kcSeen[reviewPool[ri].q] = 1; kcItems.push(reviewPool[ri]); }
-    }
-    var kc = '';
-    if (kcItems.length) {
-      var kAns = 0, kCor = 0, nT = 0, nC = 0, rT = 0, rC = 0, missWk = {};
-      kcItems.forEach(function (m, mi) {
-        var sel = state.mcSel['wk' + w + '|kc' + kcVer + '|' + mi];
-        if (sel !== undefined && sel !== null) {
-          kAns++; var right = (sel === m.answer); if (right) kCor++;
-          if (m.rw) { rT++; if (right) rC++; else missWk[m.rw] = 1; }
-          else { nT++; if (right) nC++; }
+
+    if (!kcItems.length && !shortItems.length) return { html: '', items: [] };
+
+    /* score + calibration pass */
+    var kAns = 0, kCor = 0, nT = 0, nC = 0, rT = 0, rC = 0, missWk = {};
+    var mastered = 0, fragile = 0, misc = [], edge = 0, confSet = 0;
+    kcItems.forEach(function (m, mi) {
+      var key = 'wk' + w + '|kc' + kcVer + '|' + mi;
+      var sel = state.mcSel[key];
+      if (sel !== undefined && sel !== null) {
+        kAns++; var right = (sel === m.answer); if (right) kCor++;
+        if (m.rw) { rT++; if (right) rC++; else missWk[m.rw] = 1; }
+        else { nT++; if (right) nC++; }
+        var conf = state.mcConf && state.mcConf[key];
+        if (conf) {
+          confSet++;
+          if (right && conf === 'sure') mastered++;
+          else if (right && conf !== 'sure') fragile++;
+          else if (!right && conf === 'sure') misc.push({ q: m.q, rw: m.rw, mi: mi });
+          else edge++;
         }
+      }
+    });
+    var allAns = kcItems.length ? (kAns === kcItems.length) : false;
+    var reveal = allAns && !!(state.kcReveal && state.kcReveal[revKey]);
+    /* record outcomes to the on-device history once a set is fully answered */
+    if (reveal) {
+      state.kcHist = state.kcHist || {};
+      kcItems.forEach(function (m, mi) {
+        var sel = state.mcSel['wk' + w + '|kc' + kcVer + '|' + mi]; if (sel === undefined || sel === null) return;
+        var hk = kcHashKey(m.q), h = state.kcHist[hk] || { n: 0, right: 0 };
+        if (!h._seen || h._seen !== (kcVer + 1)) { h.n = (h.n || 0) + 1; if (sel === m.answer) h.right = (h.right || 0) + 1; h._seen = kcVer + 1; state.kcHist[hk] = h; }
       });
-      var reveal = (kAns === kcItems.length);
-      var kRows = kcItems.map(function (m, mi) {
-        var mkey = 'wk' + w + '|kc' + kcVer + '|' + mi;
-        var sel = state.mcSel[mkey];
-        var done = (sel !== undefined && sel !== null);
-        var opts = (m.options || []).map(function (o, oi) {
-          var isSel = (sel === oi), isCor = (oi === m.answer);
-          var bg = '#fff', bd = 'var(--border)', col = 'var(--ink)', mark = '';
-          if (reveal && isCor) { bg = '#E9EFE7'; bd = '#50694C'; col = '#2c3b29'; mark = ' \u2713'; }
-          else if (reveal && isSel && !isCor) { bg = '#F6E3E1'; bd = 'var(--red)'; col = '#8f1b12'; mark = ' \u2717'; }
-          else if (isSel) { bg = '#FDF0EE'; bd = 'var(--red)'; col = 'var(--ink)'; mark = ' \u25CF'; }
-          return '<button onclick="SOC.mcPick(\'' + mkey + '\',' + oi + ')" aria-pressed="' + isSel + '" style="display:block;width:100%;text-align:left;border:1.5px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:8px;padding:9px 12px;margin-bottom:7px;font-size:.9rem;cursor:pointer">' + esc(o) + mark + '</button>';
-        }).join('');
-        var why = (reveal && m.why) ? '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (sel === m.answer ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (sel === m.answer ? '#9CC4A8' : '#E5B8B0') + ';font-size:.875rem;line-height:1.55">' + esc(m.why) + '</div>' : '';
-        var revTag = m.rw ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#6B7280;background:#EEF1F5;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">REVIEW \u00B7 WEEK ' + m.rw + '</span>' : '';
-        return '<div id="kcq-' + mkey.replace(/[^a-zA-Z0-9]/g, '-') + '" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + (mi + 1) + '. ' + esc(m.q) + revTag + '</p>' + opts + why + '</div>';
+      persist();
+    }
+
+    var lastGroup = null;
+    var kRows = kcItems.map(function (m, mi) {
+      var mkey = 'wk' + w + '|kc' + kcVer + '|' + mi;
+      var sel = state.mcSel[mkey];
+      var done = (sel !== undefined && sel !== null);
+      var conf = state.mcConf && state.mcConf[mkey];
+      var groupHead = '';
+      if (isMatch(m)) { if (m.mgroup !== lastGroup) { lastGroup = m.mgroup; groupHead = '<p style="margin:6px 0 9px;font-size:.92rem;font-weight:600;color:var(--ink)">' + esc(m.mlabel || 'Match each item to the best fit.') + '</p>'; } }
+      else { lastGroup = null; }
+
+      /* matching row: compact dropdown, same scoring key as an MC item */
+      if (isMatch(m)) {
+        var optHtml = '<option value="-1"' + (!done ? ' selected' : '') + '>Choose...</option>' + (m.options || []).map(function (o, oi) { return '<option value="' + oi + '"' + (sel === oi ? ' selected' : '') + '>' + esc(o) + '</option>'; }).join('');
+        var rowMark = '', bd = 'var(--border)';
+        if (reveal) { if (sel === m.answer) { rowMark = '<span style="color:#2c6b3f;font-weight:700;margin-left:8px">✓</span>'; bd = '#50694C'; } else { rowMark = '<span style="color:var(--red);font-weight:600;margin-left:8px;font-size:.85rem">✗ ' + esc(m.options[m.answer] || '') + '</span>'; bd = 'var(--red)'; } }
+        var whyM = (reveal && sel !== m.answer && m.why) ? '<div style="margin:7px 0 0;font-size:.83rem;color:var(--ink-dim);line-height:1.5">' + esc(m.why) + '</div>' : '';
+        return groupHead + '<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 15px;margin-bottom:9px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:.92rem;font-weight:600;flex:1;min-width:130px">' + esc(m.q) + '</span><select onchange="SOC.mcPickSel(\'' + mkey + '\',this.value)" style="font:inherit;font-size:.88rem;padding:7px 10px;border:1.5px solid ' + bd + ';border-radius:8px;background:#fff;color:var(--ink);max-width:100%">' + optHtml + '</select>' + rowMark + '</div>' + whyM + '</div>';
+      }
+
+      /* standard / scenario multiple choice */
+      var opts = (m.options || []).map(function (o, oi) {
+        var isSel = (sel === oi), isCor = (oi === m.answer);
+        var bg = '#fff', bd = 'var(--border)', col = 'var(--ink)', mark = '';
+        if (reveal && isCor) { bg = '#E9EFE7'; bd = '#50694C'; col = '#2c3b29'; mark = ' ✓'; }
+        else if (reveal && isSel && !isCor) { bg = '#F6E3E1'; bd = 'var(--red)'; col = '#8f1b12'; mark = ' ✗'; }
+        else if (isSel) { bg = '#FDF0EE'; bd = 'var(--red)'; col = 'var(--ink)'; mark = ' ●'; }
+        return '<button onclick="SOC.mcPick(\'' + mkey + '\',' + oi + ')" aria-pressed="' + isSel + '" style="display:block;width:100%;text-align:left;border:1.5px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:8px;padding:9px 12px;margin-bottom:7px;font-size:.9rem;cursor:pointer">' + esc(o) + mark + '</button>';
       }).join('');
-      var vers = [0, 1, 2].map(function (v) {
-        var on = (v === kcVer);
-        return '<button onclick="SOC.kcVer(' + w + ',' + v + ')" aria-pressed="' + on + '" style="border:1px solid ' + (on ? 'var(--red)' : 'var(--border)') + ';background:' + (on ? '#FDF0EE' : '#fff') + ';color:' + (on ? 'var(--red)' : 'var(--ink)') + ';font-weight:' + (on ? '700' : '500') + ';border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Set ' + String.fromCharCode(65 + v) + '</button>';
-      }).join('');
-      var retake = kAns ? '<button onclick="SOC.kcClear(' + w + ',' + kcVer + ')" style="border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Clear and retake this set</button>' : '';
-      var progress = reveal ? '' : '<p class="wk-hint" style="margin:0 0 12px">' + kAns + ' of ' + kcItems.length + ' answered. Your results and the explanations appear when you have answered them all.</p>';
-      var summary = '';
+      /* confidence prompt appears once answered, before the whole set is revealed */
+      var confRow = (done && !reveal) ? '<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:2px 0 2px"><span style="font-size:.78rem;color:var(--ink-faint)">How sure?</span>' + [['sure', 'Sure'], ['mid', 'Think so'], ['guess', 'Guessing']].map(function (c) { var on = conf === c[0]; return '<button onclick="SOC.mcConf(\'' + mkey + '\',\'' + c[0] + '\',' + w + ')" aria-pressed="' + on + '" style="border:1px solid ' + (on ? 'var(--red)' : 'var(--border)') + ';background:' + (on ? '#FDF0EE' : '#fff') + ';color:' + (on ? 'var(--red)' : 'var(--ink-dim)') + ';border-radius:999px;padding:4px 11px;font-size:.76rem;font-weight:' + (on ? '700' : '500') + ';cursor:pointer">' + c[1] + '</button>'; }).join('') + '</div>' : '';
+      /* diagnostic on reveal: distractor-specific note for a wrong pick, else the general why */
+      var diag = '';
       if (reveal) {
-        var pct = Math.round(100 * kCor / kcItems.length);
-        var head, body;
-        if (pct >= 93) { head = 'Command'; body = 'You are not just recognising these ideas, you can tell them apart under pressure, which is exactly what the course asks of you. Keep the habit: the review questions each week will keep this warm.'; }
-        else if (pct >= 80) { head = 'Solid'; body = 'You have the spine of this material. The few you missed are explained below; read those explanations once more and you are at full strength.'; }
-        else if (pct >= 60) { head = 'Developing'; body = 'A real start. You are recognising the ideas but some are still blurring together. Read the explanations below, then come back and try another set fresh.'; }
-        else { head = 'Starting point'; body = 'This tells you where you are starting from, and that is useful information, not a judgment. Work back through this week\'s key concepts and readings, then take Set ' + String.fromCharCode(65 + ((kcVer + 1) % 3)) + ' and watch the difference.'; }
-        var split = '';
-        if (nT && rT) split = '<p style="margin:8px 0 0;font-size:.9rem;line-height:1.55">On this week\'s new ideas you got ' + nC + ' of ' + nT + '. On review from earlier weeks you got ' + rC + ' of ' + rT + '.' + (rC < rT ? ' That earlier material fades fastest, which is normal; a short revisit brings it back.' : ' Your earlier weeks are holding, which is the whole point of the review questions.') + '</p>';
-        var revisit = Object.keys(missWk).map(function (n) { return '<button onclick="SOC.station(' + n + ')" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 13px;font-size:.85rem;margin:8px 8px 0 0;cursor:pointer">Revisit Week ' + n + ' \u2192</button>'; }).join('');
-        summary = '<div style="margin:6px 0 14px;background:#15171C;color:#fff;border-radius:12px;padding:17px 20px">'
-          + '<div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:#9aa3af">WHERE YOU STAND \u00B7 ' + kCor + ' OF ' + kcItems.length + '</div>'
-          + '<div style="font-size:1.05rem;font-weight:700;margin:6px 0 4px">' + head + '</div>'
-          + '<p style="margin:0;font-size:.9rem;line-height:1.6;color:#e5e7eb">' + body + '</p>'
-          + (split ? '<div style="color:#e5e7eb">' + split + '</div>' : '')
-          + (revisit ? '<div>' + revisit + '</div>' : '')
+        var wrongNote = (sel !== m.answer && m.whyWrong && m.whyWrong[sel]) ? m.whyWrong[sel] : '';
+        var body = wrongNote || m.why;
+        if (body) { var okBg = (sel === m.answer); var confTag = (conf === 'sure' && sel !== m.answer) ? '<div style="font-size:.72rem;font-weight:700;letter-spacing:.03em;color:#8f1b12;margin-bottom:5px">A CONFIDENT MISS — WORTH UNLEARNING</div>' : ''; diag = '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (okBg ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (okBg ? '#9CC4A8' : '#E5B8B0') + ';font-size:.875rem;line-height:1.55">' + confTag + esc(body) + '</div>'; }
+      }
+      var revTag = m.rw ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#6B7280;background:#EEF1F5;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">REVIEW · WEEK ' + m.rw + '</span>' : (isScenario(m) ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#8a5a1a;background:#FBEFD9;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">SCENARIO</span>' : '');
+      return groupHead + '<div id="kcq-' + mkey.replace(/[^a-zA-Z0-9]/g, '-') + '" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + (mi + 1) + '. ' + esc(m.q) + revTag + '</p>' + opts + confRow + diag + '</div>';
+    }).join('');
+
+    /* Set C short-answer: write first, then reveal a model to compare against, then self-rate */
+    var shortHtml = '';
+    if (shortItems.length) {
+      var srows = shortItems.map(function (m, si) {
+        var skey = 'wk' + w + '|kc' + kcVer + '|short' + si;
+        var txt = (state.kcShort && state.kcShort[skey]) || '';
+        var shown = state.kcShortShown && state.kcShortShown[skey];
+        var rated = state.kcShortRate && state.kcShortRate[skey];
+        var model = shown
+          ? '<div style="background:#15171C;color:#fff;border-radius:12px;padding:15px 18px;margin-top:11px"><div class="mono" style="font-size:.68rem;letter-spacing:.05em;color:#9aa3b2;margin-bottom:8px">A MODEL ANSWER</div><p style="margin:0;font-size:.92rem;line-height:1.6;color:rgba(255,255,255,.94)">' + esc(m.model || '') + '</p><p style="font-size:.8rem;margin:9px 0 0;color:#9aa3b2">One strong answer. Compare it with yours, do not copy it. How close were you?</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:11px">' + [['got', 'I had this'], ['part', 'Partly there'], ['not', 'Not yet']].map(function (r) { var on = rated === r[0]; return '<button onclick="SOC.kcShortRate(\'' + skey + '\',\'' + r[0] + '\',' + w + ')" aria-pressed="' + on + '" style="border:1px solid ' + (on ? '#fff' : 'rgba(255,255,255,.35)') + ';background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#15171C' : '#fff') + ';border-radius:999px;padding:6px 13px;font-size:.82rem;font-weight:600;cursor:pointer">' + r[1] + '</button>'; }).join('') + '</div></div>'
+          : '<button onclick="SOC.kcShortReveal(\'' + skey + '\',' + w + ')" style="margin-top:10px;background:none;border:1px solid #15171C;color:#15171C;border-radius:9px;padding:9px 15px;font-size:.88rem;font-weight:600;cursor:pointer">Reveal a model answer</button>';
+        var ratedLine = (shown && rated) ? '<p style="margin:9px 0 0;font-size:.82rem;color:var(--ink-faint)">You rated yourself: ' + (rated === 'got' ? 'I had this.' : rated === 'part' ? 'Partly there.' : 'Not yet, and that is fine — that is what the reading is for.') + '</p>' : '';
+        return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + esc(m.q) + '</p><textarea oninput="SOC.kcShortText(\'' + skey + '\',this.value)" class="wk-ta" placeholder="Write your answer, then reveal a model to compare..." style="min-height:80px">' + esc(txt) + '</textarea>' + model + ratedLine + '</div>';
+      }).join('');
+      shortHtml = '<div style="margin-top:6px"><h3 style="margin:14px 0 4px;font-size:1.05rem">Reflect and compare</h3><p class="wk-hint" style="margin-bottom:11px">Not scored, nothing recorded. Write your own answer first, then reveal a model answer and rate how close you were. The point is the comparison, not a mark.</p>' + srows + '</div>';
+    }
+
+    var setMeta = [['A', 'multiple choice'], ['B', 'more multiple choice'], ['C', 'applied and different']];
+    var vers = [0, 1, 2].map(function (v) { var on = (v === kcVer); return '<button onclick="SOC.kcVer(' + w + ',' + v + ')" aria-pressed="' + on + '" style="border:1px solid ' + (on ? 'var(--red)' : 'var(--border)') + ';background:' + (on ? '#FDF0EE' : '#fff') + ';color:' + (on ? 'var(--red)' : 'var(--ink)') + ';font-weight:' + (on ? '700' : '500') + ';border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Set ' + setMeta[v][0] + '</button>'; }).join('');
+    var setNote = '<p class="wk-hint" style="margin:0 0 12px;font-size:.82rem">Set ' + setMeta[kcVer][0] + ': ' + setMeta[kcVer][1] + '. ' + (isC ? 'Scenarios and matching are scored; the short written reflections at the end are for you to compare against a model.' : 'Fresh multiple choice, ' + (kcVer === 0 ? 'foundational' : 'a step harder') + ', from this week plus a short review of earlier weeks that leans on ideas you have missed before.') + '</p>';
+    var retake = kAns ? '<button onclick="SOC.kcClear(' + w + ',' + kcVer + ')" style="border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer">Clear and retake this set</button>' : '';
+    var progress = (kcItems.length && !allAns) ? '<p class="wk-hint" style="margin:0 0 12px">' + kAns + ' of ' + kcItems.length + ' answered. Mark how sure you were as you go.</p>' : '';
+    var revealCta = (allAns && !reveal) ? '<button onclick="SOC.kcShow(' + w + ')" class="wk-cta" style="margin:2px 0 14px">See how I did →</button>' : '';
+
+    var summary = '';
+    if (reveal && kcItems.length) {
+      var pct = Math.round(100 * kCor / kcItems.length);
+      var head, body;
+      if (pct >= 93) { head = 'Command'; body = 'You are not just recognising these ideas, you can tell them apart under pressure, which is exactly what the course asks of you.'; }
+      else if (pct >= 80) { head = 'Solid'; body = 'You have the spine of this material. The few you missed are explained below; read those once more and you are at full strength.'; }
+      else if (pct >= 60) { head = 'Developing'; body = 'A real start. You are recognising the ideas but some are still blurring together. Read the explanations below, then take another set fresh.'; }
+      else { head = 'Starting point'; body = 'This tells you where you are starting from, and that is useful information, not a judgment. Work back through this week\'s key concepts and readings, then take another set and watch the difference.'; }
+      /* calibration read-out leads with confident misses */
+      var calib = '';
+      if (confSet) {
+        var mlist = misc.map(function (x) { return '<li style="margin:3px 0;font-size:.88rem;line-height:1.5;color:#f3d3ce">' + esc(x.q) + (x.rw ? ' <span style="color:#9aa3b2">(review, Week ' + x.rw + ')</span>' : '') + '</li>'; }).join('');
+        calib = '<div style="margin:12px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.16)">'
+          + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:#9aa3af;margin-bottom:7px">HOW SURE YOU WERE vs HOW IT WENT</div>'
+          + '<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem">'
+          + '<span style="color:#bfe3c8">● Mastered ' + mastered + '</span>'
+          + '<span style="color:#e7dca6">● Right but unsure ' + fragile + '</span>'
+          + '<span style="color:#f3b1a8">● Confident miss ' + misc.length + '</span>'
+          + '<span style="color:#c8cdd6">● Still finding it ' + edge + '</span></div>'
+          + (misc.length ? '<p style="margin:10px 0 4px;font-size:.88rem;line-height:1.55;color:#f3d3ce">Start here. You were sure on these and they did not land — a confident wrong belief is the one that costs you later:</p><ul style="margin:0;padding-left:18px">' + mlist + '</ul>' : (mastered ? '<p style="margin:9px 0 0;font-size:.88rem;color:#bfe3c8">No confident misses — what you are sure of, you have right. That is the calibration you want.</p>' : ''))
+          + (fragile ? '<p style="margin:9px 0 0;font-size:.85rem;color:#e7dca6">' + fragile + ' you got right but were not sure about. You know more than you trust; name why the answer is right and it becomes solid.</p>' : '')
           + '</div>';
       }
-      kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check <span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span></h2>'
-        + '<p class="wk-hint">Nothing here counts toward your grade and nothing is recorded. ' + kcItems.length + ' quick question' + (kcItems.length === 1 ? '' : 's') + (reviewOnly ? ': a mixed review drawn from the weeks so far, to keep the ideas warm over the break. ' : ': this week\'s ideas plus a short review from earlier weeks, so the knowledge keeps building. ') + 'Pick one answer per question; click it again to clear it, or pick a different option to change it. Results and explanations appear once you have answered every question. Sets step up in difficulty from A to C.</p>'
-        + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px">' + vers + retake + '</div>'
-        + progress + summary + kRows + '</section>';
+      var split = '';
+      if (nT && rT) split = '<p style="margin:8px 0 0;font-size:.9rem;line-height:1.55">On this week\'s new ideas you got ' + nC + ' of ' + nT + '. On review from earlier weeks you got ' + rC + ' of ' + rT + '.' + (rC < rT ? ' Earlier material fades fastest; a short revisit brings it back.' : ' Your earlier weeks are holding, which is the whole point of the review.') + '</p>';
+      var revisit = Object.keys(missWk).map(function (n) { return '<button onclick="SOC.station(' + n + ')" style="border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;border-radius:8px;padding:7px 13px;font-size:.85rem;margin:10px 8px 0 0;cursor:pointer">Revisit Week ' + n + ' →</button>'; }).join('');
+      var refLine = shortItems.length ? '<p style="margin:8px 0 0;font-size:.88rem;color:#e5e7eb">Then there ' + (shortItems.length === 1 ? 'is 1 short reflection' : 'are ' + shortItems.length + ' short reflections') + ' below to compare against a model, not scored.</p>' : '';
+      summary = '<div style="margin:6px 0 14px;background:#15171C;color:#fff;border-radius:12px;padding:17px 20px">'
+        + '<div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:#9aa3af">WHERE YOU STAND · ' + kCor + ' OF ' + kcItems.length + '</div>'
+        + '<div style="font-size:1.05rem;font-weight:700;margin:6px 0 4px">' + head + '</div>'
+        + '<p style="margin:0;font-size:.9rem;line-height:1.6;color:#e5e7eb">' + body + '</p>'
+        + (split ? '<div style="color:#e5e7eb">' + split + '</div>' : '')
+        + calib + refLine + (revisit ? '<div>' + revisit + '</div>' : '')
+        + '</div>';
     }
-    return { html: kc, items: kcItems };
+
+    var badge = '<span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span>';
+    var kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check ' + badge + '</h2>'
+      + '<p class="wk-hint">Nothing here counts toward your grade and nothing is recorded. Three sets: Set A and Set B are multiple choice; Set C brings scenarios, matching, and short written reflections. Answer, say how sure you were, and the check shows you not just what you got right but where a confident answer was actually wrong — the thing most worth fixing.</p>'
+      + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px">' + vers + retake + '</div>'
+      + setNote + progress + revealCta + summary + kRows + shortHtml + '</section>';
+    return { html: kc, items: kcItems.concat(shortItems) };
   }
+
   function weekPage(w, d) {
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var sec = function (id, title, inner) { return '<section id="wk-' + id + '" class="node"><h2 class="wk-sec">' + esc(title) + '</h2>' + inner + '</section>'; };
@@ -1719,7 +1822,13 @@
       window.scrollTo(0, wy);
     },
     kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(w).html; } },
-    kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(pre) === 0) delete state.mcSel[k]; }); var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(w).html; } },
+    kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; [state.mcSel, state.mcConf].forEach(function (map) { if (!map) return; Object.keys(map).forEach(function (k) { if (k.indexOf(pre) === 0) delete map[k]; }); }); if (state.kcReveal) delete state.kcReveal[w + '|' + v]; var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(w).html; } },
+    mcConf: function (k, c, w) { state.mcConf = state.mcConf || {}; if (state.mcConf[k] === c) delete state.mcConf[k]; else state.mcConf[k] = c; var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
+    mcPickSel: function (k, v) { v = Number(v); if (isNaN(v) || v < 0) delete state.mcSel[k]; else state.mcSel[k] = v; var kcm = /^wk(\d+)\|kc/.exec(k); if (kcm) { var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(Number(kcm[1])).html; return; } } render(); },
+    kcShow: function (w) { var v = (state.kcVersion && state.kcVersion[w]) || 0; state.kcReveal = state.kcReveal || {}; state.kcReveal[w + '|' + v] = true; var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
+    kcShortText: function (k, v) { state.kcShort = state.kcShort || {}; state.kcShort[k] = v; persist(); },
+    kcShortReveal: function (k, w) { state.kcShortShown = state.kcShortShown || {}; state.kcShortShown[k] = !state.kcShortShown[k]; var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
+    kcShortRate: function (k, r, w) { state.kcShortRate = state.kcShortRate || {}; state.kcShortRate[k] = r; persist(); var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
     mcReset: function (id) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var keep = {}; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(id + '|mc|') !== 0) keep[k] = state.mcSel[k]; }); state.mcSel = keep; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     saveReadingNotes: function () {
       var r = state.rcReading && rec(state.rcReading); if (!r) { flash('Pick a reading first.'); return; }

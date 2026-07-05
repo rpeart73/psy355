@@ -295,28 +295,28 @@ window.PSY355_MC = {
    "diff": 1
   },
   {
-   "q": "When did students show greater academic resilience?",
+   "q": "What does Cassidy identify as a protective factor for academic resilience?",
    "options": [
-    "When responding to vicarious adversity rather than personal adversity",
-    "When responding to personal adversity rather than vicarious adversity",
-    "When self-efficacy was not measured first",
-    "Only when there was no adversity at all"
+    "Academic self-efficacy, the belief that you can accomplish a specific task",
+    "A fixed level of natural intelligence",
+    "Avoiding difficult courses entirely",
+    "The absence of any academic challenge"
    ],
    "answer": 0,
-   "why": "Students exhibited greater academic resilience when responding to vicarious adversity compared with personal adversity.",
+   "why": "Cassidy identifies academic self-efficacy, the belief that one can accomplish a specific task, as a protective factor that predicts academic resilience.",
    "skill": "concepts",
    "diff": 2
   },
   {
-   "q": "How did Cassidy expose the 435 undergraduates to adversity in the study?",
+   "q": "In Cassidy's account, what does academic self-efficacy mean?",
    "options": [
-    "Through a long-term observational diary",
-    "Through recalling their own worst academic failure",
-    "Through a case vignette of either personal or vicarious academic adversity",
-    "Through a physical endurance test"
+    "The average grade of your class",
+    "Your actual measured intelligence",
+    "The belief that you can accomplish a specific academic task",
+    "How much you enjoy school"
    ],
    "answer": 2,
-   "why": "The abstract says students were exposed to a case vignette of either personal or vicarious academic adversity.",
+   "why": "Academic self-efficacy is the belief that one can accomplish a specific task, which Cassidy links to academic resilience and treats as something that can be built.",
    "skill": "concepts",
    "diff": 1
   },
