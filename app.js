@@ -1696,7 +1696,7 @@
     return '<div style="background:#FDF0EE;border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:0 0 18px">'
       + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:5px">FOR YOUR FIELD &middot; ' + esc(L.label.toUpperCase()) + '</div>'
       + '<p style="margin:0;font-size:.97rem;line-height:1.6;color:var(--ink)">' + esc(hook) + '</p>'
-      + '<div style="margin-top:7px;font-size:.72rem;color:var(--ink-faint)">A lens on this week. The readings and the work below are the same for everyone.</div>'
+      + '<div style="margin-top:7px;font-size:.72rem;color:var(--ink-dim)">A lens on this week. The readings and the work below are the same for everyone.</div>'
       + '</div>';
   }
   function homeBar() {
