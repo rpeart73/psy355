@@ -1449,11 +1449,12 @@
     var purpose = '<section id="wk-learn" class="node"><h2 class="wk-sec">Purpose</h2><p style="margin:0">' + esc(d.purpose) + '</p></section>';
     var outcomes = sec('out', 'Learning outcomes', '<p style="margin:0 0 8px;font-size:.9rem">By the end of this week, you will be able to:</p>' + d.outcomes.map(function (o) { return '<div class="wk-oc"><span class="b"></span>' + esc(o) + '</div>'; }).join(''));
     var guiding = sec('gq', 'Guiding questions', '<p style="margin:0 0 8px;font-size:.9rem">Hold these in mind as you work:</p>' + d.guiding.map(function (q) { return '<div class="wk-gq"><span class="q">+</span>' + esc(q) + '</div>'; }).join(''));
+    var programLens = lensProgramSection(w, d);
     var concepts = sec('con', 'Key concepts', d.concepts.map(function (c) { return '<div class="wk-concept"><h3>' + esc(c.h) + '</h3><p>' + esc(c.body) + ' <span class="wk-cite">(' + esc(c.cite) + ')</span></p></div>'; }).join(''));
     var terms = sec('term', 'Key terms', d.terms.map(function (t) { return '<div class="wk-term"><b>' + esc(t.term) + '</b>: ' + esc(t.def) + ' <span class="wk-cite">(' + esc(t.cite) + ')</span></div>'; }).join(''));
     var readings = sec('read', 'Readings', d.readings.map(function (r) { var resolves = (typeof rec === 'function') && r.id && rec(r.id); var tail = resolves ? '<button onclick="SOC.read(\'' + r.id + '\')" class="wk-scope">' + esc(r.scope || 'Open the reading') + ' &#8599;</button>' : (r.scope ? '<div class="wk-scope" style="background:none;border:none;color:var(--ink-faint);padding:6px 0;cursor:default">' + esc(r.scope) + '</div>' : ''); return '<div class="wk-read"><div class="ref">' + r.apa + '</div>' + tail + '</div>'; }).join(''));
     var watch = d.deck ? '<section id="wk-watch" class="node"><h2 class="wk-sec">Walkthrough</h2><p style="margin:0 0 12px;font-size:.92rem">Watch this week\'s narrated walkthrough.</p><div class="wk-deck"><iframe src="./walkthroughs/' + d.deck + '/index.html?v=5" title="Week ' + w + ' walkthrough" loading="lazy" allowfullscreen></iframe></div><a href="./walkthroughs/' + d.deck + '/index.html?v=5" target="_blank" rel="noopener" class="wk-fs">Open the walkthrough fullscreen &#8599;</a></section>' : '';
-    var act = '<section id="wk-do" class="node interactive"><h2 class="wk-sec">The activity: ' + esc(d.activity.title) + '</h2><div class="wk-whatwhy"><b>What this is:</b> ' + esc(d.activity.what) + '<br><br><b>Why you are doing it:</b> ' + esc(d.activity.why) + '</div><button onclick="SOC.startActivity(\'' + d.activity.screen + '\',' + w + ')" class="wk-cta">Start the activity' + ic('chevron', 17, 2.4) + '</button><p style="margin:10px 0 0;font-size:.74rem;color:var(--ink-faint)">Every activity works the same way: predict, then do it, then see the result, then name it with the reading.</p></section>';
+    var act = '<section id="wk-do" class="node interactive"><h2 class="wk-sec">The activity: ' + esc(d.activity.title) + '</h2><div class="wk-whatwhy"><b>What this is:</b> ' + esc(d.activity.what) + '<br><br><b>Why you are doing it:</b> ' + esc(d.activity.why) + '</div>' + lensActivityBlock(w, d.activity, false) + '<button onclick="SOC.startActivity(\'' + d.activity.screen + '\',' + w + ')" class="wk-cta">Start the activity' + ic('chevron', 17, 2.4) + '</button><p style="margin:10px 0 0;font-size:.74rem;color:var(--ink-faint)">Every activity works the same way: predict, then do it, then see the result, then name it with the reading.</p></section>';
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Reflection</h2>'
       + '<div class="wk-ocheck"><div class="mono" style="font-size:.78rem;font-weight:700;color:var(--ink-faint);margin-bottom:7px">YOU CAN NOW</div>' + d.youcan.map(function (y) { return '<div class="wk-row"><span class="t">' + ic('check', 14, 2.6) + '</span>' + esc(y) + '</div>'; }).join('') + '</div>'
       + '<h3 style="margin:16px 0 4px">Now, what do you think?</h3><p class="wk-hint" style="margin-bottom:8px">The same ideas from the start. Rate them again to see where your understanding sits now, and how far it moved.</p>' + wkChecks(w, 'post', d)
@@ -1469,9 +1470,9 @@
     var kcR = kcSection(w);
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions'], ['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + sg + kc + navRow + '</main>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + act + reflect + sg + kc + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -1547,7 +1548,7 @@
     var w = state.activityReturn, d = weekData(w);
     if (!d || !d.activity) return '<div style="padding:30px 0;color:var(--ink-dim)">No activity here. <button onclick="SOC.go(\'journey\')" style="background:none;border:none;color:var(--red);font-weight:600;cursor:pointer">Back to your journey</button></div>';
     var a = d.activity;
-    var head = '<section class="jhero" style="margin:0 0 18px;padding:26px 28px"><div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">WEEK ' + w + ' ACTIVITY</div><h1 style="font-size:1.7rem;line-height:1.15;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(a.title) + '</h1><div class="wk-whatwhy" style="margin:0"><b>What this is:</b> ' + esc(a.what) + '<br><br><b>Why you are doing it:</b> ' + esc(a.why) + '</div></section>';
+    var head = '<section class="jhero" style="margin:0 0 18px;padding:26px 28px"><div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">WEEK ' + w + ' ACTIVITY</div><h1 style="font-size:1.7rem;line-height:1.15;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(a.title) + '</h1><div class="wk-whatwhy" style="margin:0"><b>What this is:</b> ' + esc(a.what) + '<br><br><b>Why you are doing it:</b> ' + esc(a.why) + '</div></section>' + lensActivityBlock(w, a, true);
     var inner = '';
     switch (a.archetype) { case 'match': inner = actMatch(w, a); break; case 'scenario': inner = actScenario(w, a); break; case 'toggle': inner = actToggle(w, a); break; case 'assemble': inner = actAssemble(w, a); break; case 'lab': inner = actLab(w, a); break; case 'capstone': inner = actCapstone(w, a); break; default: inner = '<p style="color:var(--ink-dim)">This activity is not set up yet.</p>'; }
     var foot = '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:.86rem;color:var(--ink-dim)">When you are done, go back to the week to answer the reflection and save your work.</div><button onclick="SOC.station(' + w + ')" class="wk-cta" style="margin:0">Back to Week ' + w + ' ' + ic('chevron', 16, 2.4) + '</button></div>';
@@ -1675,7 +1676,7 @@
   function lensProgramOpts(raw, placeholder) {
     var C = window[(D.course && D.course.code) + '_CAREER'] || {};
     var PROG = window.SENECA_PROGRAMS || null;
-    var opts = '<option value="">' + esc(placeholder) + '</option>';
+    var opts = '<option value=""' + (!raw ? ' selected' : '') + '>General stream / no program</option>';
     if (PROG) {
       (C.fields || []).forEach(function (fld) {
         var progs = PROG[fld] || [];
@@ -1732,6 +1733,237 @@
       + '<span class="mono" style="color:var(--red);flex:none;font-weight:700;font-size:.62rem;letter-spacing:.04em;padding-top:2px">FOR YOUR FIELD</span>'
       + '<span style="font-size:.82rem;line-height:1.5;color:var(--ink)">' + esc(hook) + '</span></div>';
   }
+  function lensPracticeLine(L) {
+    if (!L) return '';
+    var label = L.program || L.area;
+    var byArea = {
+      "Aviation": "For {program}, put this beside flight planning, crew decisions, passenger screening, safety checks, and handoff logs. Ask who the procedure protects, who it delays, and who can challenge a bad flag.",
+      "Business": "For {program}, put this beside hiring, pricing, credit, customer data, vendor tools, and performance targets. Ask who the metric rewards, who it filters out, and who gets a human explanation.",
+      "Creative Arts, Animation and Design": "For {program}, put this beside briefs, references, style defaults, image tools, platform rules, and audience testing. Ask whose face, body, story, or culture the tool treats as normal.",
+      "Education, Community and Social Services": "For {program}, put this beside intake forms, placement decisions, risk notes, referrals, and family records. Ask which clients get seen clearly, which get watched harder, and who has voice in the file.",
+      "Engineering Technology": "For {program}, put this beside specs, drawings, materials, site measurements, safety margins, and infrastructure defaults. Ask who is protected by the standard, who is left out, and who gets to challenge the decision when the built system fails them.",
+      "Fashion and Esthetics": "For {program}, put this beside shade ranges, skin analysis, client records, product matching, trend tools, and service scripts. Ask whose body and beauty the system is built to recognize.",
+      "Health and Wellness": "For {program}, put this beside triage, assessment tools, patient records, risk scores, referrals, and care plans. Ask who the tool reads accurately, who it misses, and who carries the cost of a wrong screen.",
+      "Hospitality and Tourism": "For {program}, put this beside booking systems, guest screening, service recovery, ratings, staffing, and travel access. Ask who feels welcomed, who gets treated as risk, and who can contest the decision.",
+      "Information Technology": "For {program}, put this beside requirements, data models, access controls, logs, tests, releases, and support tickets. Ask where bias can enter the stack and what evidence would prove the system is fairer.",
+      "Law, Administration and Public Safety": "For {program}, put this beside case notes, incident reports, policy thresholds, discretion, risk tools, and public safety decisions. Ask who gets flagged, who gets believed, and who has a path to appeal.",
+      "Liberal Arts and University Transfers": "For {program}, put this beside source reading, seminar debate, research methods, writing choices, and the discipline you move into next. Ask what each field counts as evidence and whose experience it leaves out.",
+      "Media and Communications": "For {program}, put this beside story angles, audience data, platform ranking, moderation, public messaging, and crisis response. Ask who gets framed as credible, who gets flattened, and who controls the narrative.",
+      "Science": "For {program}, put this beside sampling, instruments, lab protocols, data cleaning, thresholds, and peer review. Ask whose data fits the method, whose results look like noise, and who gets to question the model."
+    };
+    var template = byArea[L.area] || "For {program}, connect this week to the decisions, tools, records, clients, and standards you will work with. Ask who benefits, who carries risk, and who can challenge a bad outcome.";
+    return template.replace(/\{program\}/g, label);
+  }
+  function lensChangeLine() {
+    return 'What changes: your program filter changes the expanded week hook, field diagram, case study, activity map, home field panel, key-week badges, and Career Choices write-up. What stays the same: readings, assessments, and outcomes.';
+  }
+  function lensFieldContext(L) {
+    var label = (L && (L.program || L.area)) || 'your field';
+    var byArea = {
+      "Aviation": { place: 'flight plans, crew calls, maintenance logs, passenger screening, safety checks, and handoff records', decision: 'a procedure, threshold, route, checklist, or risk flag', people: 'passengers, crew, dispatchers, maintenance teams, and people delayed or flagged by the system', pressure: 'a changed route, weather call, failed check, passenger issue, or crew handoff', setting: 'an airport, aircraft, dispatch desk, security line, or maintenance bay' },
+      "Business": { place: 'hiring screens, customer data, pricing tools, credit checks, vendor dashboards, and performance targets', decision: 'a metric, approval rule, pricing choice, ranking, or vendor recommendation', people: 'customers, applicants, staff, suppliers, and people filtered out by the metric', pressure: 'a missed target, client complaint, hiring decision, cash-flow problem, or team deadline', setting: 'a store, office, client file, sales funnel, HR process, or financial decision' },
+      "Creative Arts, Animation and Design": { place: 'briefs, references, style defaults, image tools, platform rules, audience tests, and production pipelines', decision: 'a visual default, character choice, dataset, crop, lighting setup, or platform rule', people: 'viewers, clients, creators, performers, and people represented or erased by the work', pressure: 'a critique, rejected draft, changing brief, technical failure, or production deadline', setting: 'a studio, editing bay, platform feed, client presentation, or production pipeline' },
+      "Education, Community and Social Services": { place: 'intake forms, risk notes, placement decisions, referrals, classroom records, and family files', decision: 'a screening question, risk label, placement rule, referral, or eligibility threshold', people: 'children, families, clients, frontline workers, teachers, and communities named in the record', pressure: 'a difficult placement, crisis call, family meeting, behaviour concern, or referral decision', setting: 'a classroom, agency, intake desk, program meeting, or family support plan' },
+      "Engineering Technology": { place: 'specs, drawings, site measurements, safety margins, materials, drainage, access, and infrastructure defaults', decision: 'a standard, threshold, material, layout, measurement, or access choice', people: 'residents, workers, commuters, inspectors, and communities using the built space', pressure: 'a failed test, changed site condition, deadline, inspection issue, or team handoff', setting: 'a project site, public space, transport route, utility system, or housing development' },
+      "Fashion and Esthetics": { place: 'shade ranges, skin analysis, product matching, client records, trend tools, portfolios, and service scripts', decision: 'a shade, image, service recommendation, product match, style default, or client note', people: 'clients, models, stylists, estheticians, and people whose bodies or skin are misread by the tool', pressure: 'a difficult client service, critique, trend shift, product mismatch, or event deadline', setting: 'a salon, studio, treatment room, runway, retail floor, or client consultation' },
+      "Health and Wellness": { place: 'triage notes, patient records, assessment tools, care plans, referrals, devices, and risk scores', decision: 'a screen, score, referral, treatment priority, device reading, or care-plan choice', people: 'patients, families, practitioners, caregivers, and people missed by the tool', pressure: 'a high-stress placement, patient concern, difficult assessment, shift handoff, or care decision', setting: 'a clinic, hospital unit, treatment room, wellness program, or patient chart' },
+      "Hospitality and Tourism": { place: 'booking systems, guest profiles, ratings, staffing, service recovery, travel access, and event plans', decision: 'a booking approval, room assignment, service script, rating, staffing call, or guest-risk flag', people: 'guests, workers, hosts, families, travellers, and people treated as risk by the system', pressure: 'a difficult guest, busy service, bad review, changed itinerary, or event problem', setting: 'a hotel, restaurant, event, booking desk, tour route, or guest-service counter' },
+      "Information Technology": { place: 'requirements, data models, access controls, logs, tests, releases, dashboards, and support tickets', decision: 'a data field, default, permission, model output, test case, or release choice', people: 'users, clients, admins, support staff, and people denied access or misread by the system', pressure: 'a broken build, outage, new requirement, security issue, or support escalation', setting: 'a codebase, help desk, database, deployment pipeline, app screen, or security review' },
+      "Law, Administration and Public Safety": { place: 'case notes, incident reports, policy thresholds, forms, discretion points, risk tools, and public safety records', decision: 'a flag, file note, eligibility rule, enforcement choice, priority level, or appeal path', people: 'clients, residents, officers, staff, witnesses, and people subject to the decision', pressure: 'a tense interaction, urgent file, policy conflict, client appeal, or public safety decision', setting: 'a counter, case file, dispatch desk, hearing room, patrol context, or public office' },
+      "Liberal Arts and University Transfers": { place: 'source reading, seminar debate, research questions, evidence standards, writing choices, and disciplinary methods', decision: 'a definition, source choice, theory, evidence rule, research question, or argument structure', people: 'readers, communities studied, classmates, researchers, and people left out of the frame', pressure: 'a difficult reading, seminar debate, research pivot, writing block, or transfer decision', setting: 'a seminar, essay, research file, library search, or future discipline' },
+      "Media and Communications": { place: 'story angles, audience data, platform ranking, public messaging, moderation, campaigns, and crisis response', decision: 'a headline, frame, edit, platform rule, source choice, or message priority', people: 'audiences, sources, communities in the story, clients, and people flattened by the narrative', pressure: 'a fast deadline, public response, client change, source conflict, or platform issue', setting: 'a newsroom, campaign room, social feed, client brief, podcast, or crisis channel' },
+      "Science": { place: 'sampling, instruments, lab protocols, data cleaning, thresholds, models, and peer review', decision: 'a sample, measure, control, cutoff, instrument setting, or model assumption', people: 'participants, lab teams, patients, communities, and people whose data the method misses', pressure: 'a failed trial, lab error, uncertain result, deadline, or protocol change', setting: 'a lab, field site, dataset, protocol, instrument, or research report' }
+    };
+    var ctx = byArea[L && L.area] || { place: 'tools, records, standards, clients, decisions, and everyday work in the field', decision: 'a rule, threshold, tool, or professional judgment', people: 'clients, coworkers, communities, and people affected by the decision', pressure: 'a hard task, deadline, failed attempt, or team problem', setting: 'a workplace, client file, project, service, or public decision' };
+    ctx.label = label;
+    return ctx;
+  }
+  function lensActivityProfile(w, a, L) {
+    var ctx = lensFieldContext(L);
+    var code = (D.course && D.course.code) || '';
+    var title = a && a.title ? a.title : 'this activity';
+    if (code === 'PSY355') {
+      return {
+        flow: [
+          ['Course skill', title],
+          ['Field pressure', ctx.pressure],
+          ['Recovery move', 'plan, practise, ask, adjust, and try again'],
+          ['Who depends on it', ctx.people]
+        ],
+        use: 'Use the activity as a rehearsal for how you learn under pressure in ' + ctx.label + ': what you try first, what support you use, and how you recover when the first attempt does not work.',
+        check: 'The custom question: what would keep your judgment steady in ' + ctx.setting + '?'
+      };
+    }
+    if (code === 'SOC122') {
+      return {
+        flow: [
+          ['Course lens', title],
+          ['Field setting', ctx.setting],
+          ['People and power', ctx.people],
+          ['Respectful action', 'listen, compare perspectives, and let affected communities lead']
+        ],
+        use: 'Use the activity to translate the course idea into ' + ctx.label + ': who is present, who has power, whose knowledge is trusted, and what respectful action would look like.',
+        check: 'The custom question: what would this activity make visible in ' + ctx.setting + '?'
+      };
+    }
+    return {
+      flow: [
+        ['Course idea', title],
+        ['Field system', ctx.place],
+        ['Decision point', ctx.decision],
+        ['People affected', ctx.people]
+      ],
+      use: 'Use the activity to test one field decision in ' + ctx.label + ': who benefits, who carries risk, what evidence you would need, and what would make the system more accountable.',
+      check: 'The custom question: where could this same pattern appear in ' + ctx.setting + '?'
+    };
+  }
+  function lensActivityBlock(w, a, inScreen) {
+    var L = lensParse();
+    if (!L || !a) return '';
+    var profile = lensActivityProfile(w, a, L);
+    var cells = profile.flow.map(function (x, i) {
+      return '<div style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 12px;min-height:74px">'
+        + '<div class="mono" style="font-size:.6rem;letter-spacing:.05em;color:var(--red);font-weight:700;margin-bottom:5px">STEP ' + (i + 1) + '</div>'
+        + '<div style="font-size:.83rem;font-weight:700;color:var(--ink);margin-bottom:4px">' + esc(x[0]) + '</div>'
+        + '<div style="font-size:.78rem;line-height:1.35;color:var(--ink-dim)">' + esc(x[1]) + '</div></div>';
+    }).join('');
+    return '<div style="background:#F7F8FA;border:1px solid var(--border);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:14px 16px;margin:' + (inScreen ? '0 0 18px' : '14px 0 16px') + '">'
+      + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">ACTIVITY MAP FOR ' + esc((L.program || L.area).toUpperCase()) + '</div>'
+      + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px">' + cells + '</div>'
+      + '<p style="margin:0 0 6px;font-size:.9rem;line-height:1.5;color:var(--ink)">' + esc(profile.use) + '</p>'
+      + '<p style="margin:0;font-size:.78rem;line-height:1.45;color:var(--ink-dim)">' + esc(profile.check) + ' The activity itself stays the same for everyone.</p></div>';
+  }
+  function lensProgramFocus(L) {
+    var p = ((L && L.program) || '').toLowerCase();
+    if (/civil|building|construction/.test(p)) return 'For this program, pay special attention to public infrastructure, site drawings, grading, drainage, accessibility, inspection records, and the people who rely on the built environment every day.';
+    if (/fire/.test(p)) return 'For this program, pay special attention to life-safety systems, emergency access, alarms, codes, inspection records, and the people who depend on fast, clear decisions.';
+    if (/mechanical|manufacturing|mechatronic|tool|cnc/.test(p)) return 'For this program, pay special attention to tolerances, machine settings, maintenance logs, safety guards, production defaults, and the workers affected by every technical choice.';
+    if (/electrical|electronics|energy/.test(p)) return 'For this program, pay special attention to circuits, sensors, controls, power access, failure modes, and who is protected or exposed when a system behaves badly.';
+    if (/environment|water|chemical|biotech|bio/.test(p)) return 'For this program, pay special attention to samples, lab thresholds, environmental monitoring, compliance records, and communities affected by technical evidence.';
+    if (/computer|software|cyber|informatics|data|programming/.test(p)) return 'For this program, pay special attention to data fields, defaults, permissions, logs, testing, release decisions, and users who cannot see or challenge the system.';
+    if (/nursing|health|fitness|therapeutic|pharmacy|optician|veterinary/.test(p)) return 'For this program, pay special attention to assessment tools, patient records, devices, care plans, referrals, and who carries the cost when a screen is wrong.';
+    if (/early childhood|social service|child|youth|community|mental health|behaviour/.test(p)) return 'For this program, pay special attention to intake forms, family records, risk notes, referrals, placements, and how families are represented in the file.';
+    if (/aviation|flight/.test(p)) return 'For this program, pay special attention to checklists, crew handoffs, dispatch records, screening tools, safety margins, and who can challenge a bad flag.';
+    if (/account|finance|business|marketing|human resources|supply|project management/.test(p)) return 'For this program, pay special attention to metrics, dashboards, hiring screens, customer data, approvals, and who gets filtered before a person reviews the case.';
+    if (/law|paralegal|police|public safety|security|immigration|court/.test(p)) return 'For this program, pay special attention to case notes, policy thresholds, discretion points, risk tools, records, and appeal paths.';
+    if (/journalism|media|communication|public relations|broadcast/.test(p)) return 'For this program, pay special attention to story frames, source choices, platform ranking, audience data, moderation, and who controls the public narrative.';
+    if (/animation|design|visual|fashion|esthetic|cosmetic|art/.test(p)) return 'For this program, pay special attention to visual defaults, references, body and skin assumptions, client records, platform tools, and who gets represented well.';
+    if (/hospitality|tourism|event|culinary/.test(p)) return 'For this program, pay special attention to booking systems, guest profiles, ratings, staffing, service scripts, and who is welcomed or treated as risk.';
+    return 'For this program, pay special attention to the tools, records, standards, clients, and decisions that shape everyday work in the field.';
+  }
+  function lensTopicFocus(d) {
+    var c = d && d.concepts && d.concepts[0] ? d.concepts[0] : null;
+    var q = d && d.guiding && d.guiding[0] ? d.guiding[0] : '';
+    var r = d && d.readings && d.readings[0] ? d.readings[0] : null;
+    return {
+      concept: c && c.h ? c.h : (d && d.title ? d.title : 'This week\'s concept'),
+      explanation: c && c.body ? c.body : (d && d.purpose ? d.purpose : ''),
+      cite: c && c.cite ? c.cite : '',
+      question: q,
+      reading: r && r.apa ? r.apa : ''
+    };
+  }
+  function lensProgramCaseFrame(code, L, ctx, topic, profile, focus, w) {
+    var label = (L && (L.program || L.area)) || 'your program';
+    if (code === 'PSY355') {
+      return {
+        nodes: [
+          ['Week topic', topic.concept],
+          ['Program pressure', ctx.pressure],
+          ['Learning move', 'notice, practise, ask for feedback, and recover'],
+          ['Who depends on it', ctx.people],
+          ['Activity test', profile.check.replace(/^The custom question: /, '')]
+        ],
+        intro: 'Imagine this week\'s psychology concept showing up inside ' + ctx.setting + '. The pressure is ' + ctx.pressure + ', and the professional move is not just knowing the concept. It is noticing how stress, feedback, bias, motivation, memory, or recovery can shape what you do next.',
+        concept: 'Use it to ask what the person is experiencing, what support would change the path, and how a small recovery move could prevent a bad first attempt from becoming a fixed story about ability.',
+        focus: focus,
+        questions: ['What pressure triggers the setback?', 'What support or feedback changes the outcome?', 'What recovery move keeps learning possible?', 'What would you try differently next time?']
+      };
+    }
+    if (code === 'SOC122') {
+      return {
+        nodes: [
+          ['Week topic', topic.concept],
+          ['Program setting', ctx.setting],
+          ['People and power', ctx.people],
+          ['Missing voices', 'who is not in the room, record, source, or decision'],
+          ['Respectful action', 'listen, compare perspectives, and let affected communities lead']
+        ],
+        intro: 'Imagine this week\'s sociology concept showing up inside ' + ctx.setting + '. The issue is not only what happened. It is who is present, who is missing, whose knowledge is trusted, and how the setting teaches people what counts as normal.',
+        concept: 'Use it to map people, place, power, representation, and responsibility before you decide what respectful action would look like in ' + label + '.',
+        focus: focus,
+        questions: ['Who is present and who is missing?', 'Whose knowledge is trusted?', 'What power relationship shapes the setting?', 'What would respectful action look like here?']
+      };
+    }
+    return {
+      nodes: [
+        ['Week topic', topic.concept],
+        ['Program setting', ctx.setting],
+        ['Field decision', ctx.decision],
+        ['Who feels it', ctx.people],
+        ['Activity test', profile.check.replace(/^The custom question: /, '')]
+      ],
+      intro: 'Imagine this week\'s concept showing up inside ' + ctx.setting + '. The decision is not abstract: it is ' + ctx.decision + '. In ' + label + ', that decision sits inside ' + ctx.place + '.',
+      concept: 'Use it to ask who the system sees clearly, who it treats as an exception, and what evidence would show the harm before it becomes normal practice.',
+      focus: focus,
+      questions: ['Who benefits from the default?', 'Who carries the risk if it fails?', 'What data or testimony is missing?', 'What would accountability look like here?']
+    };
+  }
+  function lensProgramSection(w, d) {
+    var L = lensParse();
+    if (!L || !d) return '';
+    var ctx = lensFieldContext(L);
+    var topic = lensTopicFocus(d);
+    var profile = lensActivityProfile(w, d.activity || {}, L);
+    var focus = lensProgramFocus(L);
+    var code = (D.course && D.course.code) || '';
+    var frame = lensProgramCaseFrame(code, L, ctx, topic, profile, focus, w);
+    var nodes = frame.nodes;
+    var diagram = nodes.map(function (n, i) {
+      return '<div style="position:relative;border:1px solid var(--border);background:#fff;border-radius:10px;padding:12px 13px;min-height:92px">'
+        + '<div class="mono" style="font-size:.6rem;letter-spacing:.05em;color:var(--red);font-weight:700;margin-bottom:6px">' + esc(n[0].toUpperCase()) + '</div>'
+        + '<div style="font-size:.86rem;line-height:1.4;color:var(--ink);font-weight:600">' + esc(n[1]) + '</div>'
+        + (i < nodes.length - 1 ? '<div aria-hidden="true" style="position:absolute;right:-14px;top:40%;font-size:1.1rem;color:var(--red);font-weight:700;z-index:2">&rarr;</div>' : '')
+        + '</div>';
+    }).join('');
+    var caseHtml = '<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-top:14px">'
+      + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">PROGRAM CASE STUDY</div>'
+      + '<h3 style="font-size:1.08rem;margin:0 0 8px;color:var(--ink)">' + esc((L.program || L.area) + ': a field case for Week ' + w) + '</h3>'
+      + '<p style="margin:0 0 10px;line-height:1.62;color:var(--ink)">' + esc(frame.intro) + '</p>'
+      + '<p style="margin:0 0 10px;line-height:1.62;color:var(--ink)"><b>' + esc(topic.concept) + '</b>' + (topic.cite ? ' (' + esc(topic.cite) + ')' : '') + ': ' + esc(frame.concept) + '</p>'
+      + '<p style="margin:0 0 10px;line-height:1.62;color:var(--ink)">' + esc(frame.focus) + '</p>'
+      + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px">'
+      + frame.questions.map(function (q) { return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:.86rem;line-height:1.45;color:var(--ink)">' + esc(q) + '</div>'; }).join('')
+      + '</div></div>';
+    return '<section id="wk-lens" class="node"><h2 class="wk-sec">For your program</h2>'
+      + '<p style="margin:0 0 12px;font-size:.95rem;line-height:1.55;color:var(--ink-dim)">This section changes with your selected program. It turns the week\'s topic into a field diagram and a case study while keeping the same readings, assessment, and outcomes for everyone.</p>'
+      + '<div style="background:#FDF0EE;border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:14px"><div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">TOPIC-AWARE FIELD DIAGRAM</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">' + diagram + '</div></div>'
+      + caseHtml + '</section>';
+  }
+  function lensHookExpansion(w) {
+    var L = lensParse();
+    var d = weekData(w);
+    if (!L || !d) return '';
+    var ctx = lensFieldContext(L);
+    var topic = lensTopicFocus(d);
+    var profile = lensActivityProfile(w, d.activity || {}, L);
+    var focus = lensProgramFocus(L);
+    var code = (D.course && D.course.code) || '';
+    var frame = lensProgramCaseFrame(code, L, ctx, topic, profile, focus, w);
+    var label = L.program || L.area;
+    var lead = 'Read this week as a field systems check. In ' + label + ', the week matters when ' + ctx.decision + ' becomes a default inside ' + ctx.place + '.';
+    if (code === 'PSY355') lead = 'Read this week as a field rehearsal, not a generic psychology unit. In ' + label + ', the week matters when ' + ctx.pressure + ' and the first interpretation of a client, learner, patient, teammate, or system problem starts to shape the response.';
+    if (code === 'SOC122') lead = 'Read this week as a field map. In ' + label + ', the week matters when a setting such as ' + ctx.setting + ' hides power relationships, missing voices, or inherited assumptions.';
+    var cells = frame.questions.slice(0, 3).map(function (q) {
+      return '<div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:.82rem;line-height:1.42;color:var(--ink)">' + esc(q) + '</div>';
+    }).join('');
+    return '<div style="margin-top:11px;padding-top:11px;border-top:1px solid rgba(177,23,34,.18)">'
+      + '<div class="mono" style="font-size:.6rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:6px">READ IT THROUGH ' + esc(label.toUpperCase()) + '</div>'
+      + '<p style="margin:0 0 8px;font-size:.9rem;line-height:1.55;color:var(--ink)">' + esc(lead) + '</p>'
+      + '<p style="margin:0 0 9px;font-size:.88rem;line-height:1.55;color:var(--ink-dim)">Carry the week\'s concept, ' + esc(topic.concept) + ', into the concrete tools, records, people, and pressures of the program. The goal is to notice where the course idea would change what you ask, document, design, recommend, or challenge.</p>'
+      + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px">' + cells + '</div>'
+      + '</div>';
+  }
   function lensHook(w) {
     var L = lensParse();
     if (!L) return '';
@@ -1739,10 +1971,14 @@
     if (!LENS || !LENS.byArea || !LENS.byArea[L.area]) return '';
     var hook = LENS.byArea[L.area][String(w)];
     if (!hook) return '';
+    var practice = lensPracticeLine(L);
+    var expanded = lensHookExpansion(w);
     return '<div style="background:#FDF0EE;border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:0 0 18px">'
       + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:5px">FOR YOUR FIELD &middot; ' + esc(L.label.toUpperCase()) + '</div>'
       + '<p style="margin:0;font-size:.97rem;line-height:1.6;color:var(--ink)">' + esc(hook) + '</p>'
-      + '<div style="margin-top:7px;font-size:.72rem;color:var(--ink-dim)">A lens on this week. The readings and the work below are the same for everyone.</div>'
+      + (practice ? '<p style="margin:8px 0 0;font-size:.92rem;line-height:1.55;color:var(--ink)">' + esc(practice) + '</p>' : '')
+      + expanded
+      + '<div style="margin-top:9px;font-size:.76rem;line-height:1.45;color:var(--ink-dim)">' + esc(lensChangeLine()) + '</div>'
       + '</div>';
   }
   function homeBar() {
@@ -1776,7 +2012,7 @@
     var PROG = window.SENECA_PROGRAMS || null;
     var opts;
     if (PROG) {
-      opts = '<option value="">Select your program or field...</option>';
+      opts = '<option value=""' + (!raw ? ' selected' : '') + '>General stream / no program</option>';
       (C.fields || []).forEach(function (fld) {
         var progs = PROG[fld] || [];
         opts += '<optgroup label="' + esc(fld) + '">';
@@ -1786,14 +2022,14 @@
       });
       opts += '<option value="__explore"' + (raw === '__explore' ? ' selected' : '') + '>Still exploring / undecided</option>';
     } else {
-      opts = '<option value="">Select your field of study...</option>'
+      opts = '<option value=""' + (!raw ? ' selected' : '') + '>General stream / no program</option>'
         + (C.fields || []).map(function (fld) { return '<option value="' + esc(fld) + '"' + (raw === fld ? ' selected' : '') + '>' + esc(fld) + '</option>'; }).join('')
         + '<option value="__explore"' + (raw === '__explore' ? ' selected' : '') + '>Still exploring / undecided</option>';
     }
     var picker = '<p style="font-size:.95rem;color:var(--ink-dim);margin:0 0 16px">' + esc(C.intro || '') + '</p>'
       + '<label for="career-sel" style="display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:6px">Your program or field of study</label>'
       + '<select id="career-sel" onchange="SOC.careerField(this.value)" aria-label="Select your program or field of study" style="font:inherit;font-size:1rem;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);width:100%;max-width:460px;margin-bottom:22px">' + opts + '</select>';
-    if (!raw) return wrap(picker + '<p style="color:var(--ink-dim);font-size:1rem">' + esc(C.prompt || '') + '</p>');
+    if (!raw) return wrap(picker + '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:18px 20px"><p style="margin:0 0 8px;font-size:1rem;line-height:1.7;color:var(--ink)">You are in the general stream. Keep going this way if you want the standard course path with no program-specific lens.</p><p style="margin:0;font-size:.92rem;line-height:1.6;color:var(--ink-dim)">Pick a program later if you want the field hook, diagram, case study, activity map, and Career Choices write-up to change around that program.</p></div>');
     if (raw === '__explore') return wrap(picker + '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:18px 20px"><p style="margin:0;font-size:1rem;line-height:1.7;color:var(--ink)">That is completely fine. Read the whole course with one question in mind. Wherever you end up, some system will make decisions about people in your field. Someone has to notice when it gets those decisions wrong. This course is practice at being that person. Come back and pick your program once you have one in mind.</p></div>');
     var f = (C.byField || {})[area];
     if (!f) return wrap(picker + '<p style="color:var(--ink-dim)">The write-up for ' + esc(area) + ' is being prepared.</p>');
