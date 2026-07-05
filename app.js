@@ -12,7 +12,7 @@
 
   var SKEY = 'psy355corpus.v2';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerField: state.careerField, careerReflect: state.careerReflect })); } catch (e) {} }
   var saved0 = load();
 
   var state = {
@@ -52,6 +52,8 @@
     kcShortShown: {},
     kcShortRate: (saved0.kcShortRate && typeof saved0.kcShortRate === 'object') ? saved0.kcShortRate : {},
     kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
+    careerField: saved0.careerField || '',
+    careerReflect: (saved0.careerReflect && typeof saved0.careerReflect === 'object') ? saved0.careerReflect : {},
     libScroll: 0,
     toast: null,
     cardWeek: null,
@@ -268,7 +270,7 @@
   }
   function sidebar() {
     var s = state;
-    var navDefs = [['journey', 'Home', 'gauge'], ['readings', 'Library of Readings', 'gallery'], ['compare', 'Compare Reading Concepts', 'columns'], ['reading', 'Build Your Reading Comprehension', 'book'], ['glossary', 'Glossary & Thinkers', 'book'], ['cards', 'Self-check', 'clipboard']];
+    var navDefs = [['journey', 'Home', 'gauge'], ['readings', 'Library of Readings', 'gallery'], ['compare', 'Compare Reading Concepts', 'columns'], ['reading', 'Build Your Reading Comprehension', 'book'], ['glossary', 'Glossary & Thinkers', 'book'], ['cards', 'Self-check', 'clipboard'], ['career', 'Career Choices', 'globe']];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || s.screen === key;
@@ -1678,10 +1680,43 @@
     if (state.screen === 'compare') return homeBar() + compare();
     if (state.screen === 'reading') return homeBar() + readingComp();
     if (state.screen === 'glossary') return homeBar() + glossaryScreen();
+    if (state.screen === 'career') return homeBar() + careerScreen();
     if (state.screen === 'cards') return homeBar() + cardsScreen();
     if (state.screen === 'activity') return backBar() + activityScreen();
     if (state.screen === 'ecology' && D.course && D.course.code === 'PSY355') return homeBar() + ecologyScreen();
     return journeyHome();
+  }
+  function careerScreen() {
+    var C = window[(D.course && D.course.code) + '_CAREER'] || null;
+    var wrap = function (inner) { return '<div class="rise"><div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:8px">CAREER CHOICES</div>'
+      + '<h1 style="font-size:1.75rem;font-weight:700;margin:0 0 8px;color:var(--ink)">How this course connects to your field</h1>' + inner + '</div>'; };
+    if (!C) return wrap('<p style="color:var(--ink-dim)">This section is being prepared.</p>');
+    var sel = state.careerField || '';
+    var opts = '<option value="">Select your field of study...</option>'
+      + (C.fields || []).map(function (f) { return '<option value="' + esc(f) + '"' + (sel === f ? ' selected' : '') + '>' + esc(f) + '</option>'; }).join('')
+      + '<option value="__explore"' + (sel === '__explore' ? ' selected' : '') + '>Still exploring / undecided</option>';
+    var picker = '<p style="font-size:.95rem;color:var(--ink-dim);margin:0 0 16px;max-width:68ch">' + esc(C.intro || '') + '</p>'
+      + '<label for="career-sel" style="display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:6px">Your field of study</label>'
+      + '<select id="career-sel" onchange="SOC.careerField(this.value)" aria-label="Select your field of study" style="font:inherit;font-size:1rem;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);width:100%;max-width:440px;margin-bottom:22px">' + opts + '</select>';
+    if (!sel) return wrap(picker + '<p style="color:var(--ink-dim);font-size:1rem;max-width:66ch">' + esc(C.prompt || '') + '</p>');
+    if (sel === '__explore') return wrap(picker + '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:18px 20px;max-width:70ch"><p style="margin:0;font-size:1rem;line-height:1.7;color:var(--ink)">That is completely fine. Read the whole course with one question in mind: wherever you land, some system will make decisions about people in your field, and someone will have to tell when it is quietly getting them wrong. This course is practice at being that someone. Come back and pick a field once you have one in view.</p></div>');
+    var f = (C.byField || {})[sel];
+    if (!f) return wrap(picker + '<p style="color:var(--ink-dim)">The write-up for ' + esc(sel) + ' is being prepared. In the meantime, every field here shares one lesson: a tool that looks neutral can still decide who is served and who is missed, and this course is practice at seeing it.</p>');
+    var box = function (label, inner, bg, bd) { return '<div style="background:' + (bg || '#F7F8FA') + ';border:1px solid ' + (bd || 'var(--border)') + ';border-radius:12px;padding:15px 18px;margin:0 0 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">' + label + '</div>' + inner + '</div>'; };
+    var out = '<h2 style="font-size:1.25rem;font-weight:700;color:var(--ink);margin:6px 0 14px">' + esc(sel) + '</h2>';
+    if (f.lens) out += '<div style="background:#15171C;color:#fff;border-radius:12px;padding:16px 20px;margin:0 0 18px"><div class="mono" style="font-size:.66rem;letter-spacing:.06em;color:#f3b1a8;font-weight:700;margin-bottom:7px">READ IT THIS WAY</div><p style="margin:0;font-size:1.02rem;line-height:1.6;font-weight:500">' + esc(f.lens) + '</p></div>';
+    (f.paras || []).forEach(function (p) { out += '<p style="font-size:1rem;line-height:1.7;color:var(--ink);margin:0 0 14px;max-width:72ch">' + esc(p) + '</p>'; });
+    if (f.scenario) out += box('IN YOUR FIELD', '<p style="margin:0;font-size:.97rem;line-height:1.65;color:var(--ink)">' + esc(f.scenario) + '</p>');
+    if (f.skills && f.skills.length) out += box('WHAT YOU WILL WALK AWAY ABLE TO DO', '<ul style="margin:0;padding-left:18px">' + f.skills.map(function (s) { return '<li style="font-size:.95rem;line-height:1.55;color:var(--ink);margin:3px 0">' + esc(s) + '</li>'; }).join('') + '</ul>');
+    if (f.weeks && f.weeks.length) {
+      var wl = f.weeks.map(function (w) { return '<button onclick="SOC.station(' + w + ')" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 13px;font-size:.85rem;font-weight:600;color:var(--ink);margin:0 8px 0 0;cursor:pointer">Week ' + w + ' &#8594;</button>'; }).join('');
+      out += box('ZOOM IN ON THESE WEEKS', (f.weeksWhy ? '<p style="margin:0 0 9px;font-size:.95rem;line-height:1.6;color:var(--ink)">' + esc(f.weeksWhy) + '</p>' : '') + '<div>' + wl + '</div>');
+    }
+    if (f.roles && f.roles.length) out += box('WHERE THIS SHOWS UP', '<p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--ink)">' + f.roles.map(esc).join(' &middot; ') + '</p>');
+    var rk = 'career|' + sel, rv = esc((state.careerReflect && state.careerReflect[rk]) || '');
+    out += '<div style="margin-top:6px"><h3 style="margin:10px 0 4px;font-size:1.02rem">Where might this land in your field?</h3><p class="wk-hint" style="margin-bottom:8px">A quick note to yourself, saved on your device. Nothing is submitted.</p>'
+      + '<textarea oninput="SOC.careerReflect(\'' + rk + '\',this.value)" class="wk-ta" placeholder="One place I can already picture this showing up in my field..." style="min-height:74px">' + rv + '</textarea></div>';
+    return wrap(picker + out);
   }
   function render() {
     if (state.screen !== 'compare' && render._prev !== undefined && render._prev !== state.screen && (state.compareIds.length || state.showSynthesis)) { state.compareIds = []; state.showSynthesis = false; }
@@ -1729,6 +1764,8 @@
   }
   window.SOC = {
     go: function (s) { if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (s === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
+    careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
+    careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
     station: function (w) { state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
     startActivity: function (s, w) { state.activityReturn = w; state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
     wkCheck: function (k, o) {
