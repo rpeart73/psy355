@@ -12,7 +12,7 @@
 
   var SKEY = 'psy355corpus.v2';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerField: state.careerField, careerReflect: state.careerReflect })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
   var saved0 = load();
 
   var state = {
@@ -52,7 +52,7 @@
     kcShortShown: {},
     kcShortRate: (saved0.kcShortRate && typeof saved0.kcShortRate === 'object') ? saved0.kcShortRate : {},
     kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
-    careerField: saved0.careerField || '',
+    careerField: '',
     careerReflect: (saved0.careerReflect && typeof saved0.careerReflect === 'object') ? saved0.careerReflect : {},
     libScroll: 0,
     toast: null,
@@ -1710,18 +1710,22 @@
         + (C.fields || []).map(function (fld) { return '<option value="' + esc(fld) + '"' + (raw === fld ? ' selected' : '') + '>' + esc(fld) + '</option>'; }).join('')
         + '<option value="__explore"' + (raw === '__explore' ? ' selected' : '') + '>Still exploring / undecided</option>';
     }
-    var picker = '<p style="font-size:.95rem;color:var(--ink-dim);margin:0 0 16px;max-width:68ch">' + esc(C.intro || '') + '</p>'
+    var picker = '<p style="font-size:.95rem;color:var(--ink-dim);margin:0 0 16px">' + esc(C.intro || '') + '</p>'
       + '<label for="career-sel" style="display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:6px">Your program or field of study</label>'
       + '<select id="career-sel" onchange="SOC.careerField(this.value)" aria-label="Select your program or field of study" style="font:inherit;font-size:1rem;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);width:100%;max-width:460px;margin-bottom:22px">' + opts + '</select>';
-    if (!raw) return wrap(picker + '<p style="color:var(--ink-dim);font-size:1rem;max-width:66ch">' + esc(C.prompt || '') + '</p>');
-    if (raw === '__explore') return wrap(picker + '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:18px 20px;max-width:70ch"><p style="margin:0;font-size:1rem;line-height:1.7;color:var(--ink)">That is completely fine. Read the whole course with one question in mind: wherever you land, some system will make decisions about people in your field, and someone will have to tell when it is quietly getting them wrong. This course is practice at being that someone. Come back and pick your program once you have one in view.</p></div>');
+    if (!raw) return wrap(picker + '<p style="color:var(--ink-dim);font-size:1rem">' + esc(C.prompt || '') + '</p>');
+    if (raw === '__explore') return wrap(picker + '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:18px 20px"><p style="margin:0;font-size:1rem;line-height:1.7;color:var(--ink)">That is completely fine. Read the whole course with one question in mind: wherever you land, some system will make decisions about people in your field, and someone will have to tell when it is quietly getting them wrong. This course is practice at being that someone. Come back and pick your program once you have one in view.</p></div>');
     var f = (C.byField || {})[area];
     if (!f) return wrap(picker + '<p style="color:var(--ink-dim)">The write-up for ' + esc(area) + ' is being prepared.</p>');
     var box = function (label, inner) { return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:15px 18px;margin:0 0 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">' + label + '</div>' + inner + '</div>'; };
     var out = '<h2 style="font-size:1.25rem;font-weight:700;color:var(--ink);margin:6px 0 12px">' + esc(area) + '</h2>';
-    if (program) out += '<p style="font-size:1rem;line-height:1.6;color:var(--ink);margin:0 0 16px;background:#FDF0EE;border-left:3px solid var(--red);padding:11px 15px;border-radius:0 8px 8px 0">You are in <b>' + esc(program) + '</b>, part of Seneca\'s ' + esc(area) + ' area. Here is how this course connects to where you are headed.</p>';
+    if (program) {
+      var pnote = (C.byProgram || {})[program];
+      if (pnote) out += '<div style="background:#FDF0EE;border-left:3px solid var(--red);padding:12px 16px;border-radius:0 8px 8px 0;margin:0 0 16px"><div class="mono" style="font-size:.64rem;letter-spacing:.05em;color:var(--red);font-weight:700;margin-bottom:6px">FOR ' + esc(program.toUpperCase()) + ' STUDENTS</div><p style="margin:0;font-size:1rem;line-height:1.65;color:var(--ink)">' + esc(pnote) + '</p></div>';
+      else out += '<p style="font-size:1rem;line-height:1.6;color:var(--ink);margin:0 0 16px;background:#FDF0EE;border-left:3px solid var(--red);padding:11px 15px;border-radius:0 8px 8px 0">You are in <b>' + esc(program) + '</b>, part of Seneca\'s ' + esc(area) + ' area. Here is how this course connects to where you are headed.</p>';
+    }
     if (f.lens) out += '<div style="background:#15171C;color:#fff;border-radius:12px;padding:16px 20px;margin:0 0 18px"><div class="mono" style="font-size:.66rem;letter-spacing:.06em;color:#f3b1a8;font-weight:700;margin-bottom:7px">READ IT THIS WAY</div><p style="margin:0;font-size:1.02rem;line-height:1.6;font-weight:500">' + esc(f.lens) + '</p></div>';
-    (f.paras || []).forEach(function (pp) { out += '<p style="font-size:1rem;line-height:1.7;color:var(--ink);margin:0 0 14px;max-width:72ch">' + esc(pp) + '</p>'; });
+    (f.paras || []).forEach(function (pp) { out += '<p style="font-size:1rem;line-height:1.7;color:var(--ink);margin:0 0 14px">' + esc(pp) + '</p>'; });
     if (f.scenario) out += box('IN YOUR FIELD', '<p style="margin:0;font-size:.97rem;line-height:1.65;color:var(--ink)">' + esc(f.scenario) + '</p>');
     if (f.skills && f.skills.length) out += box('WHAT YOU WILL WALK AWAY ABLE TO DO', '<ul style="margin:0;padding-left:18px">' + f.skills.map(function (sk) { return '<li style="font-size:.95rem;line-height:1.55;color:var(--ink);margin:3px 0">' + esc(sk) + '</li>'; }).join('') + '</ul>');
     if (f.weeks && f.weeks.length) {
@@ -1779,10 +1783,10 @@
     flash('Saved to your device (Seneca template).');
   }
   window.SOC = {
-    go: function (s) { if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (s === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
+    go: function (s) { if (s !== 'career') state.careerField = ''; if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (s === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
     careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
-    station: function (w) { state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
+    station: function (w) { state.careerField = ''; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
     startActivity: function (s, w) { state.activityReturn = w; state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
     wkCheck: function (k, o) {
       if (state.wkCheck[k] === o) delete state.wkCheck[k]; else state.wkCheck[k] = o;
