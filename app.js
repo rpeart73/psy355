@@ -1036,7 +1036,7 @@
       + (started ? '' : '<div style="margin-top:14px;font-size:.8125rem;color:var(--ink-faint)">' + ws.length + ' weeks in this course</div>')
       + '</div></section>';
     var spineHead = '<div style="display:flex;align-items:baseline;gap:12px;margin:0 0 16px;flex-wrap:wrap"><h2 style="font-size:1.375rem;font-weight:600;margin:0;color:var(--ink)">Your journey</h2><span style="font-size:.875rem;color:var(--ink-faint)">' + ws.length + ' weeks, in course order</span></div>';
-    return '<div class="rise">' + hero + spineHead + journeyStations(cur) + '</div>';
+    return '<div class="rise">' + hero + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
   }
   function journeyStations(cur) {
     var ws = journeyWeeks();
@@ -1051,9 +1051,9 @@
         + '<div style="display:flex;align-items:flex-start;gap:16px">'
         + '<span class="jdot" style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;flex:none;border-radius:12px;background:' + (isCur ? 'var(--red)' : '#1B2A4A') + ';color:#fff;font-family:var(--mono);font-size:1.0625rem;font-weight:600">' + w + '</span>'
         + '<div style="flex:1;min-width:0">'
-        + '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px">' + (isCur ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#B02318;background:#F6E3E1;padding:2px 8px;border-radius:999px">YOU ARE HERE</span>' : '') + '<span class="mono" style="font-size:.66rem;color:var(--ink-faint);letter-spacing:.03em">' + esc(weekDate(w)) + '</span></div>'
+        + '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px">' + (isCur ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#B02318;background:#F6E3E1;padding:2px 8px;border-radius:999px">YOU ARE HERE</span>' : '') + lensCardBadge(w) + '<span class="mono" style="font-size:.66rem;color:var(--ink-faint);letter-spacing:.03em">' + esc(weekDate(w)) + '</span></div>'
         + '<h3 style="font-size:1.0625rem;font-weight:600;margin:0 0 2px;color:var(--ink)">' + esc(weekTitle(w)) + '</h3>'
-        + '<p style="font-size:.9375rem;line-height:1.5;color:var(--ink-dim);margin:0 0 8px">' + esc(journeyQ(w)) + '</p>'
+        + '<p style="font-size:.9375rem;line-height:1.5;color:var(--ink-dim);margin:0 0 8px">' + esc(journeyQ(w)) + '</p>' + lensCardLine(w)
         + '<div style="display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--ink-faint)"><span style="display:inline-flex;color:#6B7280">' + ic('book', 13) + '</span>' + esc(note) + '<span style="margin:0 4px">&middot;</span><span style="color:var(--red);font-weight:600">Open &rarr;</span></div>'
         + '</div></div></button>';
       if (w === 7) { out += studyDivider; studyIn = true; }
@@ -1672,19 +1672,65 @@
     if (raw.indexOf('::') >= 0) { var p = raw.split('::'); return { area: p[0], program: p[1], label: p[1] }; }
     return { area: raw, program: null, label: 'All of ' + raw };
   }
+  function lensProgramOpts(raw, placeholder) {
+    var C = window[(D.course && D.course.code) + '_CAREER'] || {};
+    var PROG = window.SENECA_PROGRAMS || null;
+    var opts = '<option value="">' + esc(placeholder) + '</option>';
+    if (PROG) {
+      (C.fields || []).forEach(function (fld) {
+        var progs = PROG[fld] || [];
+        opts += '<optgroup label="' + esc(fld) + '">';
+        opts += '<option value="' + esc(fld) + '"' + (raw === fld ? ' selected' : '') + '>All of ' + esc(fld) + '</option>';
+        progs.forEach(function (pr) { var v = fld + '::' + pr; opts += '<option value="' + esc(v) + '"' + (raw === v ? ' selected' : '') + '>' + esc(pr) + '</option>'; });
+        opts += '</optgroup>';
+      });
+      opts += '<option value="__explore"' + (raw === '__explore' ? ' selected' : '') + '>Still exploring / undecided</option>';
+    } else {
+      (C.fields || []).forEach(function (fld) { opts += '<option value="' + esc(fld) + '"' + (raw === fld ? ' selected' : '') + '>' + esc(fld) + '</option>'; });
+    }
+    return opts;
+  }
   function lensChip() {
     var C = window[(D.course && D.course.code) + '_CAREER'] || null;
     if (!C) return '';
     var L = lensParse();
+    var raw = state.careerField || '';
+    var sel = '<select onchange="SOC.careerField(this.value)" aria-label="Choose your program to personalize this course" style="font:inherit;font-size:.82rem;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;color:var(--ink);max-width:260px">' + lensProgramOpts(raw, L ? 'Change program...' : 'See this course through your program...') + '</select>';
     if (!L) {
-      return '<button onclick="SOC.go(\'career\')" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px dashed var(--border);color:var(--ink-dim);border-radius:999px;padding:6px 14px;font-size:.82rem;font-weight:500;cursor:pointer;margin-bottom:16px"><span style="color:var(--red);display:inline-flex">' + ic('globe', 14, 2) + '</span>See this course through your program</button>';
+      return '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:16px"><span style="color:var(--red);display:inline-flex">' + ic('globe', 15, 2) + '</span><span style="font-size:.85rem;color:var(--ink-dim);font-weight:500">See this course through your program:</span>' + sel + '</div>';
     }
-    return '<div style="display:inline-flex;align-items:center;gap:9px;background:#FDF0EE;border:1px solid var(--red);color:var(--ink);border-radius:999px;padding:6px 8px 6px 14px;font-size:.82rem;font-weight:500;margin-bottom:16px;max-width:100%;flex-wrap:wrap">'
-      + '<span style="color:var(--red);display:inline-flex">' + ic('globe', 14, 2) + '</span>'
-      + '<span>Viewing as <b>' + esc(L.label) + '</b></span>'
-      + '<button onclick="SOC.go(\'career\')" style="background:#fff;border:1px solid var(--border);border-radius:999px;padding:3px 11px;font-size:.78rem;font-weight:600;color:var(--ink);cursor:pointer">change</button>'
-      + '<button onclick="SOC.lensOff()" aria-label="Turn off program personalization" style="background:transparent;border:none;color:var(--ink-dim);font-size:.78rem;font-weight:600;cursor:pointer;padding:3px 8px">off</button>'
-      + '</div>';
+    return '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;background:#FDF0EE;border:1px solid var(--red);border-radius:12px;padding:8px 8px 8px 14px"><span style="color:var(--red);display:inline-flex">' + ic('globe', 15, 2) + '</span><span style="font-size:.85rem;color:var(--ink);font-weight:500">Viewing as <b>' + esc(L.label) + '</b></span>' + sel + '<button onclick="SOC.lensOff()" aria-label="Turn off program personalization" style="background:#fff;border:1px solid var(--border);border-radius:8px;color:var(--ink-dim);font-size:.8rem;font-weight:600;cursor:pointer;padding:5px 11px">Turn off</button></div>';
+  }
+  function lensHomeIntro() {
+    var L = lensParse();
+    if (!L) return '';
+    var C = window[(D.course && D.course.code) + '_CAREER'];
+    var f = C && C.byField && C.byField[L.area];
+    var line = f && (f.lens || (f.paras && f.paras[0]));
+    if (!line) return '';
+    return '<section class="jfade" style="background:#15171C;color:#fff;border-radius:16px;padding:20px 24px;margin:0 0 24px">'
+      + '<div class="mono" style="font-size:.66rem;letter-spacing:.06em;color:#f3b1a8;font-weight:700;margin-bottom:8px">FOR YOUR FIELD &middot; ' + esc(L.label.toUpperCase()) + '</div>'
+      + '<p style="margin:0 0 9px;font-size:1.05rem;line-height:1.55;font-weight:500">' + esc(line) + '</p>'
+      + '<p style="margin:0;font-size:.8rem;color:#B9BEC8;line-height:1.5">This is a lens on the course. Every student does the same readings and the same assessments. <button onclick="SOC.go(\'career\')" style="background:none;border:none;color:#f3b1a8;font-weight:600;cursor:pointer;padding:0;font-size:.8rem;text-decoration:underline">See the full write-up for your field</button></p>'
+      + '</section>';
+  }
+  function lensCardBadge(w) {
+    var L = lensParse();
+    if (!L) return '';
+    var C = window[(D.course && D.course.code) + '_CAREER'];
+    var f = C && C.byField && C.byField[L.area];
+    if (f && f.weeks && f.weeks.indexOf(w) >= 0) return '<span class="mono" style="font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--red);background:#F6E3E1;padding:2px 8px;border-radius:999px">KEY FOR YOUR FIELD</span>';
+    return '';
+  }
+  function lensCardLine(w) {
+    var L = lensParse();
+    if (!L) return '';
+    var LENS = window[(D.course && D.course.code) + '_LENS'];
+    var hook = LENS && LENS.byArea && LENS.byArea[L.area] && LENS.byArea[L.area][String(w)];
+    if (!hook) return '';
+    return '<div style="display:flex;gap:8px;margin:0 0 9px;padding:8px 11px;background:#FDF0EE;border-radius:9px">'
+      + '<span class="mono" style="color:var(--red);flex:none;font-weight:700;font-size:.62rem;letter-spacing:.04em;padding-top:2px">FOR YOUR FIELD</span>'
+      + '<span style="font-size:.82rem;line-height:1.5;color:var(--ink)">' + esc(hook) + '</span></div>';
   }
   function lensHook(w) {
     var L = lensParse();
