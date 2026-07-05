@@ -1238,22 +1238,29 @@
       return pool;
     }
     var kcOwnPool = kcPool(w);
+    /* gather the review pool first: up to two per earlier week, most recent first */
+    var reviewPool = [];
+    for (var pw = w - 1; pw >= 1; pw--) {
+      var pool = kcPool(pw), took = 0, rseen = {};
+      for (var pi = 0; pi < pool.length && took < 2; pi++) {
+        var cand = pool[(w + pi + kcVer * 3) % pool.length];
+        if (!rseen[cand.q]) {
+          rseen[cand.q] = 1; took++;
+          reviewPool.push({ q: cand.q, options: cand.options, answer: cand.answer, why: cand.why, diff: cand.diff, rw: pw });
+        }
+      }
+    }
+    /* target 15 total: keep up to 5 review slots when review exists, but take more
+       own questions when earlier weeks are thin (so early weeks still reach 15) */
+    var reserve = Math.min(5, reviewPool.length);
+    var ownTarget = Math.min(kcOwnPool.length, 15 - reserve);
     var kcItems = [], kcSeen = {};
-    for (var oi2 = 0; oi2 < kcOwnPool.length && kcItems.length < 10; oi2++) {
+    for (var oi2 = 0; oi2 < kcOwnPool.length && kcItems.length < ownTarget; oi2++) {
       var own = kcOwnPool[(oi2 + kcVer * 4) % kcOwnPool.length];
       if (!kcSeen[own.q]) { kcSeen[own.q] = 1; kcItems.push(own); }
     }
-    /* snowball review: fill to 15 from earlier weeks, most recent first, two per week */
-    for (var pw = w - 1; pw >= 1 && kcItems.length < 15; pw--) {
-      var pool = kcPool(pw);
-      var took = 0;
-      for (var pi = 0; pi < pool.length && kcItems.length < 15 && took < 2; pi++) {
-        var cand = pool[(w + pi + kcVer * 3) % pool.length];
-        if (!kcSeen[cand.q]) {
-          kcSeen[cand.q] = 1; took++;
-          kcItems.push({ q: cand.q, options: cand.options, answer: cand.answer, why: cand.why, diff: cand.diff, rw: pw });
-        }
-      }
+    for (var ri = 0; ri < reviewPool.length && kcItems.length < 15; ri++) {
+      if (!kcSeen[reviewPool[ri].q]) { kcSeen[reviewPool[ri].q] = 1; kcItems.push(reviewPool[ri]); }
     }
     var kc = '';
     if (kcItems.length) {
