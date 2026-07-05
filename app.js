@@ -254,7 +254,7 @@
       + '<span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:' + tm.soft + ';color:' + tm.color + ';flex:none">' + ic(tm.icon, 18) + '</span>'
       + '<button onclick="SOC.open(\'' + r.id + '\')" style="flex:1;min-width:0;text-align:left;background:none;border:none;padding:0">'
       + '<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-size:1rem;font-weight:600;color:#15171C">' + esc(r.title) + '</span><span style="font-size:.8125rem;color:#474C57">' + esc(r.authors) + ' · ' + esc(String(r.year)) + '</span></div>'
-      + '<div style="font-size:.8125rem;color:#6B7280;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:64ch">' + esc(r.abstract) + '</div></button>'
+      + '<div style="font-size:.8125rem;color:#6B7280;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + esc(r.abstract) + '</div></button>'
       + eyePill(r)
       + '<span class="mono" style="font-size:.75rem;color:#6B7280;flex:none;width:64px;text-align:right">Week ' + r.week + '</span>'
       + '<button onclick="SOC.compare(\'' + r.id + '\')" aria-label="' + (inC ? 'In compare' : 'Add to compare') + '" style="' + cmpBtnStyle(inC) + '">' + ic('columns', 15) + '</button>'
@@ -313,7 +313,7 @@
         + '<div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;justify-content:space-between">'
         + '<div style="flex:1;min-width:280px"><div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--red);margin-bottom:10px;font-weight:600">THE COURSE CORPUS</div>'
         + '<h1 style="font-size:2.125rem;line-height:1.14;font-weight:600;margin:0 0 10px;color:var(--ink)">Every reading, week by week.</h1>'
-        + '<p style="font-size:1rem;line-height:1.6;color:#474C57;margin:0;max-width:62ch">These are the readings behind PSY355, in course order. Search them, hold two against each other, and follow the course as it moves.</p></div>'
+        + '<p style="font-size:1rem;line-height:1.6;color:#474C57;margin:0;">These are the readings behind PSY355, in course order. Search them, hold two against each other, and follow the course as it moves.</p></div>'
         + '<div style="display:flex;gap:10px;flex:none">' + stats.map(function (st) { return '<div style="background:#EEF1F5;border:1px solid #DEE3EA;border-radius:12px;padding:12px 16px;text-align:center;min-width:78px"><div class="mono" style="font-size:1.75rem;font-weight:600;line-height:1;color:var(--red)">' + st[1] + '</div><div style="font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:#474C57;margin-top:5px">' + st[0] + '</div></div>'; }).join('') + '</div></div>'
         + '<button onclick="SOC.dismissIntro()" aria-label="Dismiss" style="position:absolute;top:14px;right:14px;background:#EEF1F5;border:none;border-radius:8px;width:30px;height:30px;color:#474C57;display:flex;align-items:center;justify-content:center">' + ic('x', 16) + '</button></section>';
     }
@@ -437,7 +437,7 @@
       + '<div style="flex:1;min-width:280px">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:10px">LIBRARY OF READINGS</div>'
       + '<h1 style="font-size:2.125rem;line-height:1.14;font-weight:600;margin:0 0 10px;color:var(--ink)">Open every source online.</h1>'
-      + '<p style="font-size:1rem;line-height:1.6;color:#474C57;margin:0;max-width:62ch">Click any reading to open the full text in a new tab, watch the scholars speak, and filter the collection by week or by topic.</p></div>'
+      + '<p style="font-size:1rem;line-height:1.6;color:#474C57;margin:0;">Click any reading to open the full text in a new tab, watch the scholars speak, and filter the collection by week or by topic.</p></div>'
       + '<div style="display:flex;gap:10px;flex:none">'
       + stats.map(function (st) { return '<div style="background:#EEF1F5;border:1px solid #DEE3EA;border-radius:12px;padding:12px 16px;text-align:center;min-width:82px"><div class="mono" style="font-size:1.75rem;font-weight:600;line-height:1;color:var(--red)">' + st[1] + '</div><div style="font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:#474C57;margin-top:5px">' + st[0] + '</div></div>'; }).join('')
       + '</div></div></section>';
@@ -490,7 +490,7 @@
       + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:13px;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:7px;background:' + tm.soft + ';color:' + tm.color + ';font-size:.8125rem;font-weight:600;padding:5px 12px;border-radius:999px">' + ic(tm.icon, 15) + esc(r.type) + '</span>' + eyePill(r) + '<button onclick="SOC.week(' + r.week + ')" class="mono" style="font-size:.8125rem;color:#1B2A4A;background:#E6EAF1;border:none;padding:4px 10px;border-radius:999px">Week ' + r.week + '</button><span class="mono" style="font-size:.8125rem;color:#474C57">' + esc(String(r.year)) + ' · ' + esc(r.origin) + '</span></div>'
       + '<h1 style="font-size:2.125rem;line-height:1.15;font-weight:600;margin:0 0 8px">' + esc(r.title) + '</h1>'
       + '<div style="font-size:1.0625rem;color:#474C57;margin-bottom:24px">' + esc(r.authors) + '</div>'
-      + '<div class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#6B7280;margin-bottom:9px">ABSTRACT</div><p style="font-size:1.0625rem;line-height:1.62;color:#15171C;margin:0 0 26px;max-width:64ch">' + esc(r.abstract) + '</p>'
+      + '<div class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#6B7280;margin-bottom:9px">ABSTRACT</div><p style="font-size:1.0625rem;line-height:1.62;color:#15171C;margin:0 0 26px;">' + esc(r.abstract) + '</p>'
       + '<div style="background:' + tm.soft + ';border-radius:14px;padding:20px 22px;margin-bottom:26px;border:1px solid ' + tm.color + '33"><div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><span style="display:flex;color:' + tm.color + '">' + ic('sparkle', 17) + '</span><span style="font-size:.8125rem;font-weight:600;color:' + tm.color + ';letter-spacing:.02em">THE CORE IDEA</span></div><p style="font-size:1.1875rem;line-height:1.5;font-weight:500;color:#15171C;margin:0">' + esc(r.coreIdea) + '</p></div>'
       + (related ? '<div class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#6B7280;margin-bottom:12px">READ ALONGSIDE</div><div style="display:flex;flex-direction:column;gap:10px">' + related + '</div>' : '')
       + '</div>'
@@ -554,7 +554,7 @@
       : '<button onclick="SOC.revealModel()" style="background:none;border:1px solid #15171C;color:#15171C;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600">Reveal a model comparison</button>';
     return '<div style="margin-bottom:18px">'
       + '<h2 style="font-size:1.25rem;margin:0 0 4px">Compare them</h2>'
-      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 14px;max-width:72ch">Comparative reading goes past what each text says on its own. Read the two together and look for what they share, how they differ, and why those differences matter.</p>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 14px;">Comparative reading goes past what each text says on its own. Read the two together and look for what they share, how they differ, and why those differences matter.</p>'
       + ex
       + '<div style="font-size:.8125rem;font-weight:600;color:#15171C;margin-bottom:7px">Read them through a lens</div>'
       + '<div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px">' + chips + '</div>'
@@ -632,7 +632,7 @@
         var tm = typeMeta(rd.type);
         return '<button onclick="SOC.rcPick(\'' + rd.id + '\')" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:#fff;border:1px solid #DEE3EA;border-radius:10px;padding:12px 14px;margin-bottom:8px;color:#15171C"><span style="width:9px;height:9px;border-radius:50%;background:' + tm.color + ';flex:none"></span><span style="flex:1;min-width:0"><span style="display:block;font-weight:600;font-size:.95rem">' + esc(rd.title) + '</span><span style="font-size:.8125rem;color:#474C57">Week ' + rd.week + ' · ' + esc(rd.authors) + '</span></span><span style="color:#6B7280">' + ic('book', 16) + '</span></button>';
       }).join('');
-      return '<div class="rise"><h1 style="font-size:1.75rem;margin:0 0 6px">Build Your Reading Comprehension</h1><p class="lede" style="max-width:72ch;margin:0 0 18px">Pick one reading. You will work through questions that build your understanding of it. Switch the lens to change the kind of questions you answer. Your answers save to your notes.</p>' + practiceNote + picks + '</div>';
+      return '<div class="rise"><h1 style="font-size:1.75rem;margin:0 0 6px">Build Your Reading Comprehension</h1><p class="lede" style="margin:0 0 18px">Pick one reading. You will work through questions that build your understanding of it. Switch the lens to change the kind of questions you answer. Your answers save to your notes.</p>' + practiceNote + picks + '</div>';
     }
     var lens = LENSES[state.lens] || LENSES.thematic;
     var qs = RC_QUESTIONS[state.lens] || RC_QUESTIONS.thematic;
@@ -707,7 +707,7 @@
     var recs = state.compareIds.map(rec).filter(Boolean);
     var html = '<div class="rise"><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap"><h1 style="font-size:1.75rem;font-weight:600;margin:0">Hold them side by side</h1><span style="font-size:.9375rem;color:#474C57">' + (recs.length ? recs.length + ' of 3 selected' : 'choose 2 or 3') + '</span>'
       + (recs.length ? '<button onclick="SOC.clearCompare()" style="margin-left:auto;background:none;border:none;color:var(--red);font-size:.875rem;font-weight:600">Clear all</button>' : '') + '</div>'
-      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 22px;max-width:70ch">Choose readings from the list on the right, up to three, and they appear side by side here. Holding two readings together shows how they connect on the same topic.</p>';
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 22px;">Choose readings from the list on the right, up to three, and they appear side by side here. Holding two readings together shows how they connect on the same topic.</p>';
 
     var left;
     if (recs.length >= 1) {
@@ -776,7 +776,7 @@
     return '<div class="rise">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:#6B7280;margin-bottom:8px">REFERENCE</div>'
       + '<h1 style="font-size:1.75rem;font-weight:600;margin:0 0 8px">Glossary and Thinkers</h1>'
-      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;max-width:72ch">The course concepts in plain words, week by week, and the scholars behind the readings.</p>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;">The course concepts in plain words, week by week, and the scholars behind the readings.</p>'
       + '<label for="soc-gsearch" style="font-size:.8125rem;font-weight:600;color:#474C57;display:block;margin-bottom:6px">Search every concept</label>'
       + '<input id="soc-gsearch" oninput="SOC.glossSearch(this.value)" value="' + esc(state.glossSearch) + '" placeholder="Type a concept, for example: ways of knowing" autocomplete="off" style="width:100%;max-width:460px;padding:10px 13px;border:1px solid #DEE3EA;border-radius:9px;background:#fff;font-size:.9375rem;color:#15171C" />'
       + '<div id="soc-gsearchout" style="margin-top:12px">' + glossarySearchHTML(state.glossSearch) + '</div>'
@@ -835,7 +835,7 @@
     return '<section style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;padding:18px 18px 20px;margin:0 0 22px;box-shadow:0 1px 2px rgba(21,23,28,.04)">'
       + '<div class="mono" style="font-size:.6875rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:6px">SELF-CHECK STUDIO</div>'
       + '<h2 style="font-size:1.3125rem;line-height:1.25;margin:0 0 7px;color:#15171C">' + esc(title) + '</h2>'
-      + '<p style="font-size:.9375rem;line-height:1.55;color:#474C57;margin:0 0 15px;max-width:78ch">' + esc(intro) + '</p>' + inner + '</section>';
+      + '<p style="font-size:.9375rem;line-height:1.55;color:#474C57;margin:0 0 15px;">' + esc(intro) + '</p>' + inner + '</section>';
   }
   function socStudio(sel) {
     if (!HAS_EYE) return '';
@@ -914,7 +914,7 @@
     return '<div class="rise">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:#6B7280;margin-bottom:8px">SELF-CHECK</div>'
       + '<h1 style="font-size:1.75rem;font-weight:600;margin:0 0 8px">Recall the concepts</h1>'
-      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;max-width:70ch">Read the concept, define it in your own words, then flip the card to check yourself. Each card is one concept. Private study, never a test.</p>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;">Read the concept, define it in your own words, then flip the card to check yourself. Each card is one concept. Private study, never a test.</p>'
       + '<label for="soc-cardweek" style="font-size:.8125rem;font-weight:600;color:#474C57;display:block;margin-bottom:6px">Show concepts for</label>'
       + '<select id="soc-cardweek" onchange="SOC.cardWeek(this.value)" style="max-width:360px;padding:9px 12px;border:1px solid #DEE3EA;border-radius:9px;background:#fff;font-size:.9375rem;color:#15171C;margin-bottom:20px">' + opts + '</select>'
       + selfCheckStudio(sel)
@@ -971,8 +971,8 @@
     return '<div class="rise">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:8px">RESILIENCE ECOLOGY</div>'
       + '<h1 style="font-size:1.75rem;line-height:1.2;font-weight:600;margin:0 0 8px;color:#15171C">Build your resilience ecology.</h1>'
-      + '<p style="font-size:.9375rem;line-height:1.55;color:#474C57;margin:0 0 6px;max-width:80ch">Resilience is not grit at the centre. The course evidence says it is an ecology of resources across nested layers, and a process you move through. Pick a real challenge, then fill each layer with one resource you can actually reach.</p>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:#6b7280;margin:0 0 16px;max-width:80ch">A hard stretch is a stage to move through, not a verdict on who you are (Richardson, 2011).</p>'
+      + '<p style="font-size:.9375rem;line-height:1.55;color:#474C57;margin:0 0 6px;">Resilience is not grit at the centre. The course evidence says it is an ecology of resources across nested layers, and a process you move through. Pick a real challenge, then fill each layer with one resource you can actually reach.</p>'
+      + '<p style="font-size:.85rem;line-height:1.5;color:#6b7280;margin:0 0 16px;">A hard stretch is a stage to move through, not a verdict on who you are (Richardson, 2011).</p>'
       + challenge
       + '<div class="psy-ecogrid">'
       + '<div><div id="psy-ecorings">' + ecoRingsSVG() + '</div><div id="psy-ecochips">' + ecoChips() + '</div>' + count + '</div>'
@@ -1028,10 +1028,10 @@
     var title = (D.course && (D.course.name || D.course.code)) || 'Your course';
     var ctaLabel = started ? ('Resume Week ' + cur) : ('Start Week ' + (ws[0] || 1));
     var hero = '<section class="jhero jfade" style="margin-bottom:26px">' + heroArt()
-      + '<div style="position:relative;max-width:64ch">'
+      + '<div style="position:relative;">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.08em;color:var(--red);font-weight:600;margin-bottom:12px">SENECA POLYTECHNIC &middot; FALL 2026</div>'
       + '<h1 style="font-size:2.5rem;line-height:1.1;font-weight:600;margin:0 0 14px;letter-spacing:-.01em">' + esc(title) + '</h1>'
-      + '<p style="font-size:1.0625rem;line-height:1.6;color:var(--ink-dim);margin:0 0 24px;max-width:54ch">' + esc(journeyIntro()) + '</p>'
+      + '<p style="font-size:1.0625rem;line-height:1.6;color:var(--ink-dim);margin:0 0 24px;">' + esc(journeyIntro()) + '</p>'
       + '<button class="jhero-cta" onclick="SOC.station(' + (cur || (ws[0] || 1)) + ')">' + ctaLabel + ic('chevron', 18, 2.4) + '</button>'
       + (started ? '' : '<div style="margin-top:14px;font-size:.8125rem;color:var(--ink-faint)">' + ws.length + ' weeks in this course</div>')
       + '</div></section>';
@@ -1441,7 +1441,7 @@
     var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · ' + esc(weekDate(w)) + '</div>'
       + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(weekTitle(w)) + '</h1>'
-      + '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;max-width:64ch">' + esc(d.overview) + '</p>'
+      + '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">' + esc(d.overview) + '</p>'
       + '<div style="font-size:1.08rem;font-weight:600;color:var(--ink);border-left:3px solid var(--red);padding-left:14px;margin:16px 0">' + esc(journeyQ(w)) + '</div>'
       + '<div style="font-family:var(--mono);font-size:.74rem;color:var(--ink-faint)">' + ic('clock', 13) + ' ' + esc(d.time) + '</div>'
       + '</div></section>';
@@ -1471,7 +1471,7 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions'], ['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']].concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    return '<div class="rise wk-grid"><main>' + hero + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + sg + kc + navRow + '</main>' + rail + '</div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + concepts + terms + readings + watch + act + reflect + sg + kc + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -1551,7 +1551,7 @@
     var inner = '';
     switch (a.archetype) { case 'match': inner = actMatch(w, a); break; case 'scenario': inner = actScenario(w, a); break; case 'toggle': inner = actToggle(w, a); break; case 'assemble': inner = actAssemble(w, a); break; case 'lab': inner = actLab(w, a); break; case 'capstone': inner = actCapstone(w, a); break; default: inner = '<p style="color:var(--ink-dim)">This activity is not set up yet.</p>'; }
     var foot = '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:.86rem;color:var(--ink-dim)">When you are done, go back to the week to answer the reflection and save your work.</div><button onclick="SOC.station(' + w + ')" class="wk-cta" style="margin:0">Back to Week ' + w + ' ' + ic('chevron', 16, 2.4) + '</button></div>';
-    return '<div class="rise" style="max-width:840px;margin:0 auto">' + head + inner + foot + '</div>';
+    return '<div class="rise" style="margin:0 auto">' + head + inner + foot + '</div>';
   }
   function activitySummary(w, d) {
     var a = d.activity || {};
@@ -1579,7 +1579,7 @@
     var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · ' + esc(weekDate(w)) + ' · ' + (isFinal ? 'FINAL WEEK' : 'CAPSTONE WEEK') + '</div>'
       + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(weekTitle(w)) + '</h1>'
-      + (d.overview ? '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;max-width:64ch">' + esc(d.overview) + '</p>' : '')
+      + (d.overview ? '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">' + esc(d.overview) + '</p>' : '')
       + '<div style="font-size:1.02rem;font-weight:600;color:var(--ink);border-left:3px solid var(--red);padding-left:14px;margin:16px 0">No new readings or teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and close out the course. Nothing is due.' : '. Your capstone is due this week.') + '</div>'
       + '</div></section>';
     var act = d.activity ? '<section id="wk-do" class="node interactive"><h2 class="wk-sec">' + esc(d.activity.title) + '</h2><div class="wk-whatwhy"><b>What this is:</b> ' + esc(d.activity.what) + '<br><br><b>Why you are doing it:</b> ' + esc(d.activity.why) + '</div><button onclick="SOC.startActivity(\'' + d.activity.screen + '\',' + w + ')" class="wk-cta">Open your capstone' + ic('chevron', 17, 2.4) + '</button></section>' : '';
@@ -1594,7 +1594,7 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'This week']].concat(d.activity ? [['do', 'Your capstone']] : []).concat([['reflect', 'Reflection & save']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' No new material</div></div></aside>';
-    return '<div class="rise wk-grid"><section>' + hero + act + reflect + navRow + '</section>' + rail + '</div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + act + reflect + navRow + '</section>' + rail + '</div></div>';
   }
   var OVERVIEW_WEEK = 1;
   function overviewPage(w) {
@@ -1604,7 +1604,7 @@
     var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · ' + esc(weekDate(w)) + ' · COURSE OVERVIEW</div>'
       + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(cname) + '</h1>'
-      + (d.overview ? '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;max-width:64ch">' + esc(d.overview) + '</p>' : '')
+      + (d.overview ? '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">' + esc(d.overview) + '</p>' : '')
       + '</div></section>';
     var how = '<section id="wk-how" class="node"><h2 class="wk-sec">How this course works</h2>'
       + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">Each teaching week opens a module with its readings, a short interactive activity, and optional practice, a study guide and a knowledge check, that are never graded and never recorded. You work through the week at your own pace. A Study Week (October 26 to 30) falls between Weeks 7 and 8, a break with no new work, and nothing is due in the final week.</p>'
@@ -1613,7 +1613,7 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['how', 'How this course works']].map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' Overview, no readings</div></div></aside>';
-    return '<div class="rise wk-grid"><section>' + hero + how + beginRow + '</section>' + rail + '</div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + how + beginRow + '</section>' + rail + '</div></div>';
   }
   var STUDY_WEEK = 7;
   function studyWeekPage(w) {
@@ -1622,7 +1622,7 @@
     var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · STUDY WEEK</div>'
       + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">Study Week</h1>'
-      + '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;max-width:64ch">Seneca is open but there are no classes this week (October 26 to 30). There are no new readings, no new content, and nothing is due. Use the week to rest, catch up on anything still open, and let the first half of the course settle.</p>'
+      + '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">Seneca is open but there are no classes this week (October 26 to 30). There are no new readings, no new content, and nothing is due. Use the week to rest, catch up on anything still open, and let the first half of the course settle.</p>'
       + '<div style="font-size:1.02rem;font-weight:600;color:var(--ink);border-left:3px solid var(--red);padding-left:14px;margin:16px 0">Nothing here is graded or required. Everything below is optional, and only for your own review.</div>'
       + '</div></section>';
     var catchup = priors.length ? '<section id="wk-catch" class="node"><h2 class="wk-sec">Catch up and review</h2>'
@@ -1637,7 +1637,7 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Study Week']].concat(priors.length ? [['catch', 'Catch up and review']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' No classes this week</div></div></aside>';
-    return '<div class="rise wk-grid"><section>' + hero + catchup + kc + navRow + '</section>' + rail + '</div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + catchup + kc + navRow + '</section>' + rail + '</div></div>';
   }
   function weekStation(w) {
     if (w === OVERVIEW_WEEK) return overviewPage(w);
@@ -1650,9 +1650,9 @@
       + '<div style="position:relative">'
       + '<div class="mono" style="font-size:.6875rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:9px">WEEK ' + w + ' OF YOUR JOURNEY</div>'
       + '<h1 style="font-size:1.875rem;line-height:1.16;font-weight:600;margin:0 0 12px">' + esc(weekTitle(w)) + '</h1>'
-      + '<p style="font-size:1.0625rem;line-height:1.5;color:var(--ink);font-weight:500;margin:0;max-width:60ch">' + esc(journeyQ(w)) + '</p>'
+      + '<p style="font-size:1.0625rem;line-height:1.5;color:var(--ink);font-weight:500;margin:0;">' + esc(journeyQ(w)) + '</p>'
       + '</div></section>';
-    var framing = '<p style="font-size:1rem;line-height:1.65;color:var(--ink-dim);margin:0 0 22px;max-width:72ch">' + esc(stationFraming(w, recs)) + '</p>';
+    var framing = '<p style="font-size:1rem;line-height:1.65;color:var(--ink-dim);margin:0 0 22px;">' + esc(stationFraming(w, recs)) + '</p>';
     var readBlocks = '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">';
     recs.forEach(function (r, i) { readBlocks += stationReading(r, i === 0 ? 'This week\'s reading' : 'Also this week'); });
     readBlocks += '</div>';
@@ -1825,7 +1825,7 @@
     document.getElementById('app').innerHTML =
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="max-width:' + (state.screen === 'career' ? 'none' : '1180px') + ';margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + '</div></main>'
+      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + '</div></main>'
       + '</div>' + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
