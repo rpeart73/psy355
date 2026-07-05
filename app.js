@@ -12,7 +12,7 @@
 
   var SKEY = 'psy355corpus.v2';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerField: state.careerField, careerReflect: state.careerReflect })); } catch (e) {} }
   var saved0 = load();
 
   var state = {
@@ -52,7 +52,7 @@
     kcShortShown: {},
     kcShortRate: (saved0.kcShortRate && typeof saved0.kcShortRate === 'object') ? saved0.kcShortRate : {},
     kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
-    careerField: '',
+    careerField: saved0.careerField || '',
     careerReflect: (saved0.careerReflect && typeof saved0.careerReflect === 'object') ? saved0.careerReflect : {},
     libScroll: 0,
     toast: null,
@@ -1665,6 +1665,40 @@
   }
 
   /* ---------- render ---------- */
+  /* ---------- Field Lens: persistent, visible, optional program personalization ---------- */
+  function lensParse() {
+    var raw = state.careerField || '';
+    if (!raw || raw === '__explore') return null;
+    if (raw.indexOf('::') >= 0) { var p = raw.split('::'); return { area: p[0], program: p[1], label: p[1] }; }
+    return { area: raw, program: null, label: 'All of ' + raw };
+  }
+  function lensChip() {
+    var C = window[(D.course && D.course.code) + '_CAREER'] || null;
+    if (!C) return '';
+    var L = lensParse();
+    if (!L) {
+      return '<button onclick="SOC.go(\'career\')" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px dashed var(--border);color:var(--ink-dim);border-radius:999px;padding:6px 14px;font-size:.82rem;font-weight:500;cursor:pointer;margin-bottom:16px"><span style="color:var(--red);display:inline-flex">' + ic('globe', 14, 2) + '</span>See this course through your program</button>';
+    }
+    return '<div style="display:inline-flex;align-items:center;gap:9px;background:#FDF0EE;border:1px solid var(--red);color:var(--ink);border-radius:999px;padding:6px 8px 6px 14px;font-size:.82rem;font-weight:500;margin-bottom:16px;max-width:100%;flex-wrap:wrap">'
+      + '<span style="color:var(--red);display:inline-flex">' + ic('globe', 14, 2) + '</span>'
+      + '<span>Viewing as <b>' + esc(L.label) + '</b></span>'
+      + '<button onclick="SOC.go(\'career\')" style="background:#fff;border:1px solid var(--border);border-radius:999px;padding:3px 11px;font-size:.78rem;font-weight:600;color:var(--ink);cursor:pointer">change</button>'
+      + '<button onclick="SOC.lensOff()" aria-label="Turn off program personalization" style="background:transparent;border:none;color:var(--ink-dim);font-size:.78rem;font-weight:600;cursor:pointer;padding:3px 8px">off</button>'
+      + '</div>';
+  }
+  function lensHook(w) {
+    var L = lensParse();
+    if (!L) return '';
+    var LENS = window[(D.course && D.course.code) + '_LENS'];
+    if (!LENS || !LENS.byArea || !LENS.byArea[L.area]) return '';
+    var hook = LENS.byArea[L.area][String(w)];
+    if (!hook) return '';
+    return '<div style="background:#FDF0EE;border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:0 0 18px">'
+      + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:5px">FOR YOUR FIELD &middot; ' + esc(L.label.toUpperCase()) + '</div>'
+      + '<p style="margin:0;font-size:.97rem;line-height:1.6;color:var(--ink)">' + esc(hook) + '</p>'
+      + '<div style="margin-top:7px;font-size:.72rem;color:var(--ink-faint)">A lens on this week. The readings and the work below are the same for everyone.</div>'
+      + '</div>';
+  }
   function homeBar() {
     return '<button onclick="SOC.go(\'journey\')" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #DEE3EA;border-radius:8px;padding:8px 14px;font-size:.875rem;font-weight:600;color:#15171C;margin-bottom:18px;cursor:pointer">&#8592; Back to your journey</button>';
   }
@@ -1674,7 +1708,7 @@
   }
   function body() {
     if (state.screen === 'journey' || state.screen === 'library') return journeyHome();
-    if (state.screen === 'station') return homeBar() + weekStation(state.stationWeek || currentJourneyWeek());
+    if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + lensHook(_sw) + weekStation(_sw); }
     if (state.screen === 'detail') return homeBar() + detail();
     if (state.screen === 'readings') return homeBar() + readingsGallery();
     if (state.screen === 'compare') return homeBar() + compare();
@@ -1745,7 +1779,7 @@
     document.getElementById('app').innerHTML =
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="max-width:' + (state.screen === 'career' ? 'none' : '1180px') + ';margin:0 auto;padding:30px 30px 110px">' + body() + '</div></main>'
+      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="max-width:' + (state.screen === 'career' ? 'none' : '1180px') + ';margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + '</div></main>'
       + '</div>' + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
@@ -1783,10 +1817,11 @@
     flash('Saved to your device (Seneca template).');
   }
   window.SOC = {
-    go: function (s) { if (s !== 'career') state.careerField = ''; if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (s === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
+    go: function (s) { if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (s === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
+    lensOff: function () { state.careerField = ''; persist(); render(); },
     careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
-    station: function (w) { state.careerField = ''; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
+    station: function (w) { state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
     startActivity: function (s, w) { state.activityReturn = w; state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
     wkCheck: function (k, o) {
       if (state.wkCheck[k] === o) delete state.wkCheck[k]; else state.wkCheck[k] = o;
