@@ -183,7 +183,7 @@ window.PSY355_KC = {
       "diff": 3
     }
   ],
-  "7": [
+  "8": [
     {
       "q": "For whom did Weight and colleagues say their findings would be useful?",
       "options": [
@@ -304,8 +304,7 @@ window.PSY355_KC = {
       "why": "Naming protective factors gives students something concrete to build, so they can strengthen supports and skills rather than only removing stressors.",
       "diff": 3
     }
-  ],
-  "8": [
+  ,
     {
       "q": "What does the component of self-kindness involve in Neff's account of self-compassion?",
       "options": [
