@@ -1714,7 +1714,7 @@
       + '<label for="career-sel" style="display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:6px">Your program or field of study</label>'
       + '<select id="career-sel" onchange="SOC.careerField(this.value)" aria-label="Select your program or field of study" style="font:inherit;font-size:1rem;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);width:100%;max-width:460px;margin-bottom:22px">' + opts + '</select>';
     if (!raw) return wrap(picker + '<p style="color:var(--ink-dim);font-size:1rem">' + esc(C.prompt || '') + '</p>');
-    if (raw === '__explore') return wrap(picker + '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:18px 20px"><p style="margin:0;font-size:1rem;line-height:1.7;color:var(--ink)">That is completely fine. Read the whole course with one question in mind: wherever you land, some system will make decisions about people in your field, and someone will have to tell when it is quietly getting them wrong. This course is practice at being that someone. Come back and pick your program once you have one in view.</p></div>');
+    if (raw === '__explore') return wrap(picker + '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:18px 20px"><p style="margin:0;font-size:1rem;line-height:1.7;color:var(--ink)">That is completely fine. Read the whole course with one question in mind. Wherever you end up, some system will make decisions about people in your field. Someone has to notice when it gets those decisions wrong. This course is practice at being that person. Come back and pick your program once you have one in mind.</p></div>');
     var f = (C.byField || {})[area];
     if (!f) return wrap(picker + '<p style="color:var(--ink-dim)">The write-up for ' + esc(area) + ' is being prepared.</p>');
     var box = function (label, inner) { return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:15px 18px;margin:0 0 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">' + label + '</div>' + inner + '</div>'; };
@@ -1745,7 +1745,7 @@
     document.getElementById('app').innerHTML =
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="max-width:1180px;margin:0 auto;padding:30px 30px 110px">' + body() + '</div></main>'
+      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="max-width:' + (state.screen === 'career' ? 'none' : '1180px') + ';margin:0 auto;padding:30px 30px 110px">' + body() + '</div></main>'
       + '</div>' + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
