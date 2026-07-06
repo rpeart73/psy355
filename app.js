@@ -12,7 +12,7 @@
 
   var SKEY = 'psy355corpus.v2';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerField: state.careerField, careerReflect: state.careerReflect })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
   var saved0 = load();
 
   var state = {
@@ -52,7 +52,7 @@
     kcShortShown: {},
     kcShortRate: (saved0.kcShortRate && typeof saved0.kcShortRate === 'object') ? saved0.kcShortRate : {},
     kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
-    careerField: saved0.careerField || '',
+    careerField: '',
     careerReflect: (saved0.careerReflect && typeof saved0.careerReflect === 'object') ? saved0.careerReflect : {},
     libScroll: 0,
     toast: null,
