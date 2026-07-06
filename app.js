@@ -12,19 +12,19 @@
 
   var SKEY = 'psy355corpus.v2';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, layout: state.layout, introOpen: state.introOpen, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, journeyWeek: state.journeyWeek, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
   var saved0 = load();
 
   var state = {
     screen: 'journey',
-    journeyWeek: saved0.journeyWeek || null,
+    journeyWeek: null,
     stationWeek: null,
     sgNotes: (saved0.sgNotes || {}),
     sgTick: (saved0.sgTick || {}),
     wkCheck: (saved0.wkCheck && typeof saved0.wkCheck === 'object') ? saved0.wkCheck : {},
     wkReflect: (saved0.wkReflect && typeof saved0.wkReflect === 'object') ? saved0.wkReflect : {},
     act: (saved0.act && typeof saved0.act === 'object') ? saved0.act : {},
-    layout: saved0.layout || 'byweek',
+    layout: 'byweek',
     search: '',
     activeTypes: [],
     activeWeek: null,
@@ -32,7 +32,7 @@
     detailId: null,
     compareIds: [],
     saved: Array.isArray(saved0.saved) ? saved0.saved : [],
-    introOpen: saved0.introOpen !== false,
+    introOpen: true,
     savedView: false,
     showSynthesis: false,
     lens: 'thematic',
