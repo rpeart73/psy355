@@ -1450,6 +1450,7 @@
     var outcomes = sec('out', 'Learning outcomes', '<p style="margin:0 0 8px;font-size:.9rem">By the end of this week, you will be able to:</p>' + d.outcomes.map(function (o) { return '<div class="wk-oc"><span class="b"></span>' + esc(o) + '</div>'; }).join(''));
     var guiding = sec('gq', 'Guiding questions', '<p style="margin:0 0 8px;font-size:.9rem">Hold these in mind as you work:</p>' + d.guiding.map(function (q) { return '<div class="wk-gq"><span class="q">+</span>' + esc(q) + '</div>'; }).join(''));
     var programLens = lensProgramSection(w, d);
+    var programCase = lensCaseStudySection(w, d);
     var concepts = sec('con', 'Key concepts', d.concepts.map(function (c) { return '<div class="wk-concept"><h3>' + esc(c.h) + '</h3><p>' + esc(c.body) + ' <span class="wk-cite">(' + esc(c.cite) + ')</span></p></div>'; }).join(''));
     var terms = sec('term', 'Key terms', d.terms.map(function (t) { return '<div class="wk-term"><b>' + esc(t.term) + '</b>: ' + esc(t.def) + ' <span class="wk-cite">(' + esc(t.cite) + ')</span></div>'; }).join(''));
     var readings = sec('read', 'Readings', d.readings.map(function (r) { var resolves = (typeof rec === 'function') && r.id && rec(r.id); var tail = resolves ? '<button onclick="SOC.read(\'' + r.id + '\')" class="wk-scope">' + esc(r.scope || 'Open the reading') + ' &#8599;</button>' : (r.scope ? '<div class="wk-scope" style="background:none;border:none;color:var(--ink-faint);padding:6px 0;cursor:default">' + esc(r.scope) + '</div>' : ''); return '<div class="wk-read"><div class="ref">' + r.apa + '</div>' + tail + '</div>'; }).join(''));
@@ -1470,9 +1471,9 @@
     var kcR = kcSection(w);
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + act + reflect + sg + kc + navRow + '</main>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -1863,6 +1864,103 @@
       reading: r && r.apa ? r.apa : ''
     };
   }
+  function lensProgramCaseQuestions(code, L, ctx) {
+    var p = ((L && L.program) || '').toLowerCase();
+    if (/mental health|behaviour|behavior|social service|child|youth|community|early childhood/.test(p)) {
+      return [
+        'Which intake field, risk note, referral rule, or placement label would shape how this client is first understood?',
+        'What family, culture, disability, housing, trauma, or community context might be flattened by that record?',
+        'Who can challenge the risk score or placement recommendation before it follows the client into the next service?',
+        'How would you document strengths, consent, and client voice so the file does not become only a deficit story?'
+      ];
+    }
+    if (/civil|building|construction/.test(p)) {
+      return [
+        'Which drawing, site measurement, code requirement, drainage assumption, or access standard would drive the first design choice?',
+        'Who uses this space in ways the default spec might not imagine, including disabled users, shift workers, children, elders, or transit riders?',
+        'What field evidence would show that the design works for the people most likely to be overlooked?',
+        'Where would you build in a review point before the technical choice becomes concrete, steel, traffic flow, or permanent access?'
+      ];
+    }
+    if (/computer|software|cyber|informatics|data|programming/.test(p)) {
+      return [
+        'Which data field, permission level, model output, log, test case, or default setting would shape the user experience first?',
+        'Which users are missing from the test set, support tickets, access review, or release decision?',
+        'How would someone discover, contest, or appeal a wrong system decision?',
+        'What evidence would prove that the fix works for the user group most likely to be misread?'
+      ];
+    }
+    if (/nursing|health|fitness|therapeutic|pharmacy|optician|veterinary/.test(p)) {
+      return [
+        'Which screen, device reading, chart note, referral rule, or care-plan default would shape the first response?',
+        'Whose pain, risk, communication style, body, or history might the tool read poorly?',
+        'What patient, family, or practitioner evidence should sit beside the score before a decision is made?',
+        'How would you create a check-back so a wrong first screen does not become the whole care pathway?'
+      ];
+    }
+    if (/law|paralegal|police|public safety|security|immigration|court/.test(p)) {
+      return [
+        'Which policy threshold, report field, risk flag, discretion point, or file note would shape the first decision?',
+        'Who gets treated as credible, risky, compliant, or suspicious before they can explain their own context?',
+        'What appeal path, review step, or documentation practice would let a person challenge the decision?',
+        'How would you record uncertainty so the file does not make a contested judgment look final?'
+      ];
+    }
+    if (/account|finance|business|marketing|human resources|supply|project management/.test(p)) {
+      return [
+        'Which metric, dashboard, hiring screen, credit rule, price model, or approval threshold would drive the decision?',
+        'Who is filtered out before a person reviews the case, and what proxy variable might be doing that work?',
+        'What human explanation, audit trail, or exception process would make the decision answerable?',
+        'How would you test whether the rule rewards the same people it was already built around?'
+      ];
+    }
+    if (/aviation|flight/.test(p)) {
+      return [
+        'Which checklist, screening tool, dispatch note, maintenance log, weather call, or safety margin would shape the decision?',
+        'Who is delayed, flagged, rerouted, or silenced by the procedure when the pressure is high?',
+        'What crew, passenger, maintenance, or operations evidence would challenge a bad flag?',
+        'Where does the handoff need a second look so safety does not become unequal treatment?'
+      ];
+    }
+    if (/animation|design|visual|fashion|esthetic|cosmetic|art/.test(p)) {
+      return [
+        'Which reference, visual default, shade range, body assumption, image crop, style guide, or platform tool shapes what looks normal?',
+        'Who is represented accurately, who is made invisible, and who is treated as an exception to the design?',
+        'What client, audience, model, or community feedback would change the creative decision?',
+        'How would you document the choice so representation is part of the work, not a late correction?'
+      ];
+    }
+    if (/hospitality|tourism|event|culinary/.test(p)) {
+      return [
+        'Which booking rule, guest profile, rating, staffing call, service script, or event plan shapes the first response?',
+        'Who is welcomed, who is treated as a risk, and who has trouble getting the same level of service?',
+        'What worker, guest, or accessibility evidence should change the service decision?',
+        'How would you build a recovery step that fixes the harm without blaming the guest or front-line worker?'
+      ];
+    }
+    if (/journalism|media|communication|public relations|broadcast/.test(p)) {
+      return [
+        'Which headline, source list, edit, platform rule, audience metric, or campaign frame shapes what the public sees first?',
+        'Who becomes credible, who becomes a problem, and who is missing from the story or message?',
+        'What source, community review, or audience evidence would complicate the first frame?',
+        'How would you revise the message so speed does not flatten people into a single story?'
+      ];
+    }
+    if (/science|environment|water|chemical|biotech|bio/.test(p)) {
+      return [
+        'Which sample, instrument setting, threshold, lab protocol, model assumption, or compliance record shapes the finding?',
+        'Whose data fits the method, whose results are treated as noise, and who lives with the consequence?',
+        'What field, lab, participant, or community evidence would test the assumption?',
+        'How would you report uncertainty so the method does not hide its limits?'
+      ];
+    }
+    return [
+      'Which tool, record, standard, client interaction, or professional judgment would shape the first decision in ' + ctx.label + '?',
+      'Who is easiest for that process to see, and who becomes an exception, a delay, or a problem to manage?',
+      'What evidence from affected people would change the decision before it becomes routine?',
+      'How would you make the decision reviewable by someone who was harmed by it?'
+    ];
+  }
   function lensProgramCaseFrame(code, L, ctx, topic, profile, focus, w) {
     var label = (L && (L.program || L.area)) || 'your program';
     if (code === 'PSY355') {
@@ -1877,7 +1975,8 @@
         intro: 'Imagine this week\'s psychology concept showing up inside ' + ctx.setting + '. The pressure is ' + ctx.pressure + ', and the professional move is not just knowing the concept. It is noticing how stress, feedback, bias, motivation, memory, or recovery can shape what you do next.',
         concept: 'Use it to ask what the person is experiencing, what support would change the path, and how a small recovery move could prevent a bad first attempt from becoming a fixed story about ability.',
         focus: focus,
-        questions: ['What pressure triggers the setback?', 'What support or feedback changes the outcome?', 'What recovery move keeps learning possible?', 'What would you try differently next time?']
+        questions: lensProgramCaseQuestions(code, L, ctx),
+        lensQuestions: ['What pressure triggers the setback?', 'What support or feedback changes the outcome?', 'What recovery move keeps learning possible?', 'What would you try differently next time?']
       };
     }
     if (code === 'SOC122') {
@@ -1892,7 +1991,8 @@
         intro: 'Imagine this week\'s sociology concept showing up inside ' + ctx.setting + '. The issue is not only what happened. It is who is present, who is missing, whose knowledge is trusted, and how the setting teaches people what counts as normal.',
         concept: 'Use it to map people, place, power, representation, and responsibility before you decide what respectful action would look like in ' + label + '.',
         focus: focus,
-        questions: ['Who is present and who is missing?', 'Whose knowledge is trusted?', 'What power relationship shapes the setting?', 'What would respectful action look like here?']
+        questions: lensProgramCaseQuestions(code, L, ctx),
+        lensQuestions: ['Who is present and who is missing?', 'Whose knowledge is trusted?', 'What power relationship shapes the setting?', 'What would respectful action look like here?']
       };
     }
     return {
@@ -1906,7 +2006,8 @@
       intro: 'Imagine this week\'s concept showing up inside ' + ctx.setting + '. The decision is not abstract: it is ' + ctx.decision + '. In ' + label + ', that decision sits inside ' + ctx.place + '.',
       concept: 'Use it to ask who the system sees clearly, who it treats as an exception, and what evidence would show the harm before it becomes normal practice.',
       focus: focus,
-      questions: ['Who benefits from the default?', 'Who carries the risk if it fails?', 'What data or testimony is missing?', 'What would accountability look like here?']
+      questions: lensProgramCaseQuestions(code, L, ctx),
+      lensQuestions: ['Who benefits from the default?', 'Who carries the risk if it fails?', 'What data or testimony is missing?', 'What would accountability look like here?']
     };
   }
   function lensProgramSection(w, d) {
@@ -1919,6 +2020,7 @@
     var code = (D.course && D.course.code) || '';
     var frame = lensProgramCaseFrame(code, L, ctx, topic, profile, focus, w);
     var nodes = frame.nodes;
+    var label = L.program || L.area;
     var diagram = nodes.map(function (n, i) {
       return '<div style="position:relative;border:1px solid var(--border);background:#fff;border-radius:10px;padding:12px 13px;min-height:92px">'
         + '<div class="mono" style="font-size:.6rem;letter-spacing:.05em;color:var(--red);font-weight:700;margin-bottom:6px">' + esc(n[0].toUpperCase()) + '</div>'
@@ -1926,19 +2028,36 @@
         + (i < nodes.length - 1 ? '<div aria-hidden="true" style="position:absolute;right:-14px;top:40%;font-size:1.1rem;color:var(--red);font-weight:700;z-index:2">&rarr;</div>' : '')
         + '</div>';
     }).join('');
-    var caseHtml = '<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-top:14px">'
-      + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">PROGRAM CASE STUDY</div>'
-      + '<h3 style="font-size:1.08rem;margin:0 0 8px;color:var(--ink)">' + esc((L.program || L.area) + ': a field case for Week ' + w) + '</h3>'
+    return '<section id="wk-lens" class="node"><h2 class="wk-sec">For your program</h2>'
+      + '<p style="margin:0 0 12px;font-size:.95rem;line-height:1.55;color:var(--ink-dim)">This section changes with your selected program. It turns the week\'s topic into a field diagram while keeping the same readings, assessment, and outcomes for everyone.</p>'
+      + '<div style="background:#FDF0EE;border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:14px"><div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">TOPIC-AWARE FIELD DIAGRAM: ' + esc(label.toUpperCase()) + '</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">' + diagram + '</div></div>'
+      + '</section>';
+  }
+  function lensCaseStudySection(w, d) {
+    var L = lensParse();
+    if (!L || !d) return '';
+    var ctx = lensFieldContext(L);
+    var topic = lensTopicFocus(d);
+    var profile = lensActivityProfile(w, d.activity || {}, L);
+    var focus = lensProgramFocus(L);
+    var code = (D.course && D.course.code) || '';
+    var frame = lensProgramCaseFrame(code, L, ctx, topic, profile, focus, w);
+    var label = L.program || L.area;
+    var qGrid = function (title, questions) {
+      return '<div style="margin-top:14px"><div class="mono" style="font-size:.62rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:8px">' + title + '</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">'
+        + (questions || []).map(function (q) { return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:8px;padding:11px 13px;font-size:.86rem;line-height:1.48;color:var(--ink)">' + esc(q) + '</div>'; }).join('')
+        + '</div></div>';
+    };
+    return '<section id="wk-case" class="node"><h2 class="wk-sec">Case study</h2>'
+      + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">IN-DEPTH PROGRAM CASE STUDY</div>'
+      + '<h3 style="font-size:1.08rem;margin:0 0 8px;color:var(--ink)">' + esc(label + ': a field case for Week ' + w) + '</h3>'
       + '<p style="margin:0 0 10px;line-height:1.62;color:var(--ink)">' + esc(frame.intro) + '</p>'
       + '<p style="margin:0 0 10px;line-height:1.62;color:var(--ink)"><b>' + esc(topic.concept) + '</b>' + (topic.cite ? ' (' + esc(topic.cite) + ')' : '') + ': ' + esc(frame.concept) + '</p>'
       + '<p style="margin:0 0 10px;line-height:1.62;color:var(--ink)">' + esc(frame.focus) + '</p>'
-      + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px">'
-      + frame.questions.map(function (q) { return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:.86rem;line-height:1.45;color:var(--ink)">' + esc(q) + '</div>'; }).join('')
-      + '</div></div>';
-    return '<section id="wk-lens" class="node"><h2 class="wk-sec">For your program</h2>'
-      + '<p style="margin:0 0 12px;font-size:.95rem;line-height:1.55;color:var(--ink-dim)">This section changes with your selected program. It turns the week\'s topic into a field diagram and a case study while keeping the same readings, assessment, and outcomes for everyone.</p>'
-      + '<div style="background:#FDF0EE;border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:14px"><div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">TOPIC-AWARE FIELD DIAGRAM</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">' + diagram + '</div></div>'
-      + caseHtml + '</section>';
+      + '<p style="margin:0 0 10px;line-height:1.62;color:var(--ink)">Work the case in two passes. First, trace the program-specific tool, record, standard, or professional judgment that would shape the decision. Then bring the course concept back in and ask what the case reveals that routine practice might miss.</p>'
+      + qGrid('PROGRAM TRACE QUESTIONS', frame.questions)
+      + qGrid('COURSE LENS QUESTIONS', frame.lensQuestions)
+      + '</section>';
   }
   function lensHookExpansion(w) {
     var L = lensParse();
