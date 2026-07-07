@@ -11,20 +11,54 @@
   var HAS_EYE = !!(D.course && D.course.frame);
 
   var SKEY = 'psy355corpus.v2';
+  var VKEY = SKEY + '.view.v1';
+  var HKEY = SKEY + '.hardResetNext';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, act: state.act, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
+  function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+  function clearView() { try { sessionStorage.removeItem(VKEY); sessionStorage.removeItem(HKEY); } catch (e) {} }
+  function shouldResumeView(v) {
+    var hard = false;
+    try { hard = sessionStorage.getItem(HKEY) === '1'; sessionStorage.removeItem(HKEY); } catch (e) {}
+    if (hard) { clearView(); return false; }
+    return !!(v && v.screen);
+  }
+  function cleanScreen(s) {
+    return ['journey', 'library', 'station', 'detail', 'readings', 'compare', 'reading', 'glossary', 'career', 'cards', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
+  }
+  function cleanWeek(w) {
+    w = Number(w);
+    return (isFinite(w) && w >= 1 && w <= 20) ? w : null;
+  }
+  function cleanWeekPart(part) {
+    part = String(part || '');
+    return ['ov', 'pre', 'learn', 'out', 'gq', 'lens', 'con', 'term', 'read', 'watch', 'case', 'do', 'reflect', 'sg', 'kc', 'notes', 'how', 'catch'].indexOf(part) >= 0 ? part : null;
+  }
+  function initialRoute() {
+    try {
+      var p = new URLSearchParams(location.search || '');
+      var w = cleanWeek(p.get('week') || p.get('w'));
+      if (w) return { screen: 'station', week: w, part: cleanWeekPart(p.get('part')) };
+    } catch (e) {}
+    return null;
+  }
   var saved0 = load();
+  var view0 = loadView();
+  var route0 = initialRoute();
+  var resumeView0 = shouldResumeView(view0);
+  var routePart0 = route0 && route0.part;
 
   var state = {
-    screen: 'journey',
+    screen: route0 ? route0.screen : (resumeView0 ? cleanScreen(view0.screen) : 'journey'),
     navOpen: false,
-    journeyWeek: null,
-    stationWeek: null,
+    journeyWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.journeyWeek) : null),
+    stationWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.stationWeek) : null),
     sgNotes: (saved0.sgNotes || {}),
     sgTick: (saved0.sgTick || {}),
     wkCheck: (saved0.wkCheck && typeof saved0.wkCheck === 'object') ? saved0.wkCheck : {},
     wkReflect: (saved0.wkReflect && typeof saved0.wkReflect === 'object') ? saved0.wkReflect : {},
-    act: (saved0.act && typeof saved0.act === 'object') ? saved0.act : {},
+    act: (resumeView0 && view0.act && typeof view0.act === 'object') ? view0.act : {},
+    actResult: (saved0.actResult && typeof saved0.actResult === 'object') ? saved0.actResult : {},
     layout: 'byweek',
     search: '',
     activeTypes: [],
@@ -46,21 +80,71 @@
     ecoNotes: (saved0.ecoNotes && typeof saved0.ecoNotes === 'object') ? saved0.ecoNotes : {},
     ecoLayer: 'you',
     revealed: {},
-    mcSel: {},
-    mcConf: {},
+    mcSel: (saved0.mcSel && typeof saved0.mcSel === 'object') ? saved0.mcSel : {},
+    mcConf: (saved0.mcConf && typeof saved0.mcConf === 'object') ? saved0.mcConf : {},
     kcReveal: {},
     kcShort: (saved0.kcShort && typeof saved0.kcShort === 'object') ? saved0.kcShort : {},
     kcShortShown: {},
     kcShortRate: (saved0.kcShortRate && typeof saved0.kcShortRate === 'object') ? saved0.kcShortRate : {},
     kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
-    careerField: '',
+    careerField: resumeView0 ? (view0.careerField || '') : '',
     careerReflect: (saved0.careerReflect && typeof saved0.careerReflect === 'object') ? saved0.careerReflect : {},
     libScroll: 0,
     toast: null,
-    cardWeek: null,
-    glossWeek: 'all',
-    glossSearch: '',
+    cardWeek: resumeView0 ? cleanWeek(view0.cardWeek) : null,
+    glossWeek: resumeView0 ? (view0.glossWeek || 'all') : 'all',
+    glossSearch: resumeView0 ? (view0.glossSearch || '') : '',
   };
+  if (resumeView0) {
+    state.activityReturn = cleanWeek(view0.activityReturn);
+    state.detailId = view0.detailId || null;
+    state.activeTypes = Array.isArray(view0.activeTypes) ? view0.activeTypes : [];
+    state.activeWeek = cleanWeek(view0.activeWeek);
+    state.search = view0.search || '';
+    state.savedView = !!view0.savedView;
+    state.rcReading = view0.rcReading || null;
+    state.lens = view0.lens || state.lens || 'thematic';
+    state.compareIds = Array.isArray(view0.compareIds) ? view0.compareIds : [];
+    state.showSynthesis = !!view0.showSynthesis;
+    state.galWeek = cleanWeek(view0.galWeek);
+    state.galTopic = view0.galTopic || null;
+    state.ecoLayer = view0.ecoLayer || state.ecoLayer || 'you';
+  }
+  function saveView() {
+    try {
+      sessionStorage.setItem(VKEY, JSON.stringify({
+        screen: state.screen,
+        journeyWeek: state.journeyWeek,
+        stationWeek: state.stationWeek,
+        activityReturn: state.activityReturn,
+        detailId: state.detailId,
+        cardWeek: state.cardWeek,
+        careerField: state.careerField,
+        activeTypes: state.activeTypes || [],
+        activeWeek: state.activeWeek,
+        search: state.search || '',
+        savedView: !!state.savedView,
+        rcReading: state.rcReading,
+        lens: state.lens || 'thematic',
+        compareIds: state.compareIds || [],
+        showSynthesis: !!state.showSynthesis,
+        galWeek: state.galWeek,
+        galTopic: state.galTopic,
+        glossWeek: state.glossWeek || 'all',
+        glossSearch: state.glossSearch || '',
+        ecoLayer: state.ecoLayer || 'you',
+        act: state.act || {}
+      }));
+    } catch (e) {}
+  }
+  window.addEventListener('pagehide', saveView);
+  window.addEventListener('beforeunload', saveView);
+  window.addEventListener('keydown', function (e) {
+    var k = String(e.key || '').toLowerCase();
+    if (((e.ctrlKey || e.metaKey) && e.shiftKey && k === 'r') || (e.ctrlKey && k === 'f5')) {
+      try { sessionStorage.setItem(HKEY, '1'); sessionStorage.removeItem(VKEY); } catch (err) {}
+    }
+  }, true);
   var refocusSearch = false, focusTarget = null, toastTimer = null;
 
   /* ---------- helpers ---------- */
@@ -1465,7 +1549,9 @@
       + '<h3 style="margin:16px 0 4px">Now, what do you think?</h3><p class="wk-hint" style="margin-bottom:8px">The same ideas from the start. Rate them again to see where your understanding sits now, and how far it moved.</p>' + wkChecks(w, 'post', d)
       + '<h3 style="margin:16px 0 4px">Your reflection</h3><p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt) + '</p>'
       + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" class="wk-ta" placeholder="Your reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
-      + '<div class="wk-savebox"><h3>Save your work for this week</h3><p style="margin:0 0 4px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead, your record of the week and what you hand in on Blackboard. It contains:</p><ul><li>your before-and-after answers to the five check questions</li><li>a summary of what you did in this week\'s activity</li><li>your answer to the reflection question</li></ul><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Save my work for this week (.docx)</button></div>'
+      + '</section>';
+    var notes = '<section id="wk-notes" class="node"><h2 class="wk-sec">Generate Your Weekly Notes</h2>'
+      + '<div class="wk-savebox" style="margin-top:0"><h3>Your organized Week ' + w + ' record</h3><p style="margin:0 0 4px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead. It organizes your private weekly check answers, activity summary, and reflection for review before Blackboard work.</p><ul><li>your before-and-after answers to the five check questions</li><li>a summary of what you did in this week\'s activity</li><li>your answer to the reflection question</li></ul><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Generate Your Weekly Notes</button></div>'
       + '</section>';
     var navRow = '<div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">'
       + (prev != null ? '<button onclick="SOC.station(' + prev + ')" style="flex:1;min-width:180px;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--ink-faint)">&larr; PREVIOUS</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + prev + ': ' + esc(weekTitle(prev)) + '</div></button>' : '')
@@ -1475,9 +1561,9 @@
     var kcR = kcSection(w);
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection &amp; save']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + navRow + '</main>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -1492,7 +1578,7 @@
       var btns = uniq.map(function (o, oi) {
         var picked = (sel === oi), correct = (o === p.match), bg = '#fff', bd = 'var(--border)', col = 'var(--ink)';
         if (sel != null) { if (correct) { bg = '#E7F3EC'; bd = '#1C7A43'; col = '#155f34'; } else if (picked) { bg = '#FBE9EA'; bd = '#B11722'; col = '#8f1119'; } }
-        return '<button onclick="SOC.actPick(\'' + key + '\',' + oi + ')" style="text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:9px;padding:8px 12px;font-size:.86rem;font-weight:600;cursor:pointer;margin:0 6px 6px 0">' + esc(o) + '</button>';
+        return '<button onclick="SOC.actPick(\'' + key + '\',' + oi + ')" aria-pressed="' + picked + '" style="text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:9px;padding:8px 12px;font-size:.86rem;font-weight:600;cursor:pointer;margin:0 6px 6px 0">' + esc(o) + '</button>';
       }).join('');
       var fb = (sel != null) ? '<div style="margin-top:8px;font-size:.86rem;color:var(--ink-dim)">' + (uniq[sel] === p.match ? '<b style="color:#1C7A43">Yes. </b>' : '<b style="color:#B11722">Not quite. </b>') + esc(p.why) + actCite(p.cite) + '</div>' : '';
       return actCard('<div style="font-size:.7rem;font-weight:700;color:var(--red);margin-bottom:5px">EXAMPLE ' + (i + 1) + '</div><div style="font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:10px">' + esc(p.item) + '</div><div style="font-size:.78rem;color:var(--ink-faint);margin-bottom:6px">Which mechanism does this show?</div>' + btns + fb);
@@ -1561,17 +1647,18 @@
   }
   function activitySummary(w, d) {
     var a = d.activity || {};
+    var actMap = (state.actResult && typeof state.actResult === 'object') ? state.actResult : (state.act || {});
     if (a.screen === 'sandbox' || a.archetype == null) {
       var audited = Object.keys(state.auditedSystems || {});
       return audited.length ? ('You audited ' + audited.length + ' of 3 systems. Every system you tested failed darker-skinned women the most (up to 34.7 percent), against near-zero error for lighter-skinned men. The disparity was hidden by overall accuracy and only an intersectional cut revealed it.') : '(activity not run yet)';
     }
     var data = a.data || {};
-    if (a.archetype === 'match') { var pairs = data.pairs || [], uniq = [], seen = {}, done = 0, correct = 0; pairs.forEach(function (q) { if (!seen[q.match]) { seen[q.match] = 1; uniq.push(q.match); } }); pairs.forEach(function (p, i) { var s = state.act['a|' + w + '|m|' + i]; if (s != null) { done++; if (uniq[s] === p.match) correct++; } }); return done ? ('You matched ' + correct + ' of ' + pairs.length + ' examples to the mechanism each one shows.') : '(activity not started yet)'; }
-    if (a.archetype === 'scenario') { var steps = data.steps || [], n = 0; steps.forEach(function (st, i) { if (state.act['a|' + w + '|s|' + i] != null) n++; }); return n ? ('You worked through ' + n + ' of ' + steps.length + ' decision points and saw which design choices lead to harm.') : '(activity not started yet)'; }
-    if (a.archetype === 'toggle') { var tgs = data.toggles || [], n2 = 0; tgs.forEach(function (t, i) { if (state.act['a|' + w + '|t|' + i]) n2++; }); return 'You explored the system defaults and saw who each one harms (' + n2 + ' of ' + tgs.length + ' turned on).'; }
-    if (a.archetype === 'assemble') { var comps = data.components || [], added = (state.act['a|' + w + '|asm'] || []).length; return added ? ('You assembled ' + added + ' of ' + comps.length + ' parts and saw how they work together as a system.') : '(activity not started yet)'; }
-    if (a.archetype === 'lab') { var levers = data.levers || [], ch = state.act['a|' + w + '|lab'] || []; if (!ch.length) return '(activity not started yet)'; var names = ch.map(function (i) { return levers[i] ? levers[i].label : ''; }).filter(Boolean); return 'For the case, you chose: ' + names.join(', ') + '. Each lever buys something and costs something.'; }
-    if (a.archetype === 'capstone') { var citems = data.items || [], cn = 0; citems.forEach(function (it, i) { if (state.act['a|' + w + '|cap|' + i]) cn++; }); return cn ? ('You revisited ' + cn + ' of ' + citems.length + ' dimensions of your cartography across the term.') : '(revisit not started yet)'; }
+    if (a.archetype === 'match') { var pairs = data.pairs || [], uniq = [], seen = {}, done = 0, correct = 0; pairs.forEach(function (q) { if (!seen[q.match]) { seen[q.match] = 1; uniq.push(q.match); } }); pairs.forEach(function (p, i) { var s = actMap['a|' + w + '|m|' + i]; if (s != null) { done++; if (uniq[s] === p.match) correct++; } }); return done ? ('You matched ' + correct + ' of ' + pairs.length + ' examples to the mechanism each one shows.') : '(activity not started yet)'; }
+    if (a.archetype === 'scenario') { var steps = data.steps || [], n = 0; steps.forEach(function (st, i) { if (actMap['a|' + w + '|s|' + i] != null) n++; }); return n ? ('You worked through ' + n + ' of ' + steps.length + ' decision points and saw which design choices lead to harm.') : '(activity not started yet)'; }
+    if (a.archetype === 'toggle') { var tgs = data.toggles || [], n2 = 0; tgs.forEach(function (t, i) { if (actMap['a|' + w + '|t|' + i]) n2++; }); return 'You explored the system defaults and saw who each one harms (' + n2 + ' of ' + tgs.length + ' turned on).'; }
+    if (a.archetype === 'assemble') { var comps = data.components || [], added = (actMap['a|' + w + '|asm'] || []).length; return added ? ('You assembled ' + added + ' of ' + comps.length + ' parts and saw how they work together as a system.') : '(activity not started yet)'; }
+    if (a.archetype === 'lab') { var levers = data.levers || [], ch = actMap['a|' + w + '|lab'] || []; if (!ch.length) return '(activity not started yet)'; var names = ch.map(function (i) { return levers[i] ? levers[i].label : ''; }).filter(Boolean); return 'For the case, you chose: ' + names.join(', ') + '. Each lever buys something and costs something.'; }
+    if (a.archetype === 'capstone') { var citems = data.items || [], cn = 0; citems.forEach(function (it, i) { if (actMap['a|' + w + '|cap|' + i]) cn++; }); return cn ? ('You revisited ' + cn + ' of ' + citems.length + ' dimensions of your cartography across the term.') : '(revisit not started yet)'; }
     return '(activity not started yet)';
   }
   var WEEK_DATES = { 1: 'Week of Sept 8', 2: 'Week of Sept 14', 3: 'Week of Sept 21', 4: 'Week of Sept 28', 5: 'Week of Oct 5', 6: 'Week of Oct 13', 7: 'Week of Oct 19', 8: 'Week of Nov 2', 9: 'Week of Nov 9', 10: 'Week of Nov 16', 11: 'Week of Nov 23', 12: 'Week of Nov 30', 13: 'Week of Dec 7', 14: 'Week of Dec 14' };
@@ -1592,15 +1679,17 @@
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Your reflection</h2>'
       + (d.reflectPrompt ? '<p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt) + '</p>' : '')
       + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" class="wk-ta" placeholder="Your reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
-      + '<div class="wk-savebox"><h3>Save your work for this week</h3><p style="margin:0 0 6px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead, your record of this week.</p><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Save my work for this week (.docx)</button></div></section>';
+      + '</section>';
+    var notes = '<section id="wk-notes" class="node"><h2 class="wk-sec">Generate Your Weekly Notes</h2>'
+      + '<div class="wk-savebox" style="margin-top:0"><h3>Your organized Week ' + w + ' record</h3><p style="margin:0 0 6px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead, your organized weekly record.</p><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Generate Your Weekly Notes</button></div></section>';
     var navRow = '<div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">'
       + (prev != null ? '<button onclick="SOC.station(' + prev + ')" style="flex:1;min-width:180px;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--ink-faint)">&larr; PREVIOUS</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + prev + ': ' + esc(weekTitle(prev)) + '</div></button>' : '')
       + (next != null ? '<button onclick="SOC.station(' + next + ')" style="flex:1;min-width:180px;text-align:right;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--red)">NEXT &rarr;</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button>' : '')
       + '</div>';
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'This week']].concat(d.activity ? [['do', 'Your capstone']] : []).concat([['reflect', 'Reflection & save']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'This week']].concat(d.activity ? [['do', 'Your capstone']] : []).concat([['reflect', 'Reflection'], ['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' No new material</div></div></aside>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + act + reflect + navRow + '</section>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + act + reflect + notes + navRow + '</section>' + rail + '</div></div>';
   }
   var OVERVIEW_WEEK = 1;
   function overviewPage(w) {
@@ -2111,9 +2200,33 @@
     if (state.activityReturn != null) return '<button onclick="SOC.station(' + state.activityReturn + ')" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #DEE3EA;border-radius:8px;padding:8px 14px;font-size:.875rem;font-weight:600;color:#15171C;margin-bottom:18px;cursor:pointer">&#8592; Back to Week ' + state.activityReturn + '</button>';
     return homeBar();
   }
+  function mobileJumpItem(label, action, primary) {
+    return '<button type="button" class="' + (primary ? 'primary' : '') + '" onclick="' + action + '">' + esc(label) + '</button>';
+  }
+  function mobileWeekActions(w, d) {
+    d = d || {};
+    var items = [
+      mobileJumpItem('Menu', 'SOC.openNav()', true),
+      mobileJumpItem('Home', "SOC.go('journey')", false)
+    ];
+    if (d.activity) items.push(mobileJumpItem('Activity', "SOC.jumpWeek(" + w + ",'do')", false));
+    items.push(mobileJumpItem('Reflect', "SOC.jumpWeek(" + w + ",'reflect')", false));
+    items.push(mobileJumpItem('Notes', "SOC.jumpWeek(" + w + ",'notes')", false));
+    return '<nav class="soc-mobile-jump" aria-label="Mobile week shortcuts">' + items.join('') + '</nav>';
+  }
+  function mobileActivityActions(w) {
+    var items = [
+      mobileJumpItem('Menu', 'SOC.openNav()', true),
+      mobileJumpItem('Week ' + w, 'SOC.station(' + w + ')', false),
+      mobileJumpItem('Home', "SOC.go('journey')", false),
+      mobileJumpItem('Reflect', "SOC.jumpWeek(" + w + ",'reflect')", false),
+      mobileJumpItem('Notes', "SOC.jumpWeek(" + w + ",'notes')", false)
+    ];
+    return '<nav class="soc-mobile-jump" aria-label="Mobile activity shortcuts">' + items.join('') + '</nav>';
+  }
   function body() {
     if (state.screen === 'journey' || state.screen === 'library') return journeyHome();
-    if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + lensHook(_sw) + weekStation(_sw); }
+    if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + mobileWeekActions(_sw, weekData(_sw)) + lensHook(_sw) + weekStation(_sw); }
     if (state.screen === 'detail') return homeBar() + detail();
     if (state.screen === 'readings') return homeBar() + readingsGallery();
     if (state.screen === 'compare') return homeBar() + compare();
@@ -2121,7 +2234,7 @@
     if (state.screen === 'glossary') return homeBar() + glossaryScreen();
     if (state.screen === 'career') return homeBar() + careerScreen();
     if (state.screen === 'cards') return homeBar() + cardsScreen();
-    if (state.screen === 'activity') return backBar() + activityScreen();
+    if (state.screen === 'activity') { var _aw = state.activityReturn || state.stationWeek || currentJourneyWeek(); return backBar() + mobileActivityActions(_aw) + activityScreen(); }
     if (state.screen === 'ecology' && D.course && D.course.code === 'PSY355') return homeBar() + ecologyScreen();
     return journeyHome();
   }
@@ -2197,18 +2310,42 @@
       if (ft) { if (!ft.hasAttribute('tabindex')) ft.setAttribute('tabindex', '-1'); ft.focus(); }
       focusTarget = null;
     }
+    saveView();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
+  function scrollWeekPart(part) {
+    if (!part) { topScroll(); return; }
+    setTimeout(function () {
+      var el = document.getElementById('wk-' + part);
+      var m = document.getElementById('soc-main');
+      if (el && m) m.scrollTop = Math.max(0, el.offsetTop - 10);
+      else if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+    }, 20);
+  }
 
   /* ---------- actions ---------- */
   function flash(msg) { clearTimeout(toastTimer); var lr = document.getElementById('soc-live'); if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = msg; }, 30); } state.toast = msg; render(); toastTimer = setTimeout(function () { state.toast = null; render(); }, 2200); }
   /* ---- real .docx (OOXML, dependency-free) ---- */
+  var DX_FONT = 'IBM Plex Sans';
+  var DX_BODY_SIZE = 22;
   function dxEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]; }); }
-  function dxRun(text, opt) { opt = opt || {}; var rpr = '<w:rPr>'; if (opt.bold) rpr += '<w:b/>'; if (opt.color) rpr += '<w:color w:val="' + opt.color + '"/>'; if (opt.size) rpr += '<w:sz w:val="' + opt.size + '"/><w:szCs w:val="' + opt.size + '"/>'; rpr += '<w:rFonts w:ascii="IBM Plex Sans" w:hAnsi="IBM Plex Sans" w:cs="IBM Plex Sans"/></w:rPr>'; var parts = String(text == null ? '' : text).split('\n'), t = ''; for (var i = 0; i < parts.length; i++) { if (i > 0) t += '<w:br/>'; t += '<w:t xml:space="preserve">' + dxEsc(parts[i]) + '</w:t>'; } return '<w:r>' + rpr + t + '</w:r>'; }
-  function dxPara(runsXml, opt) { opt = opt || {}; var ppr = '<w:pPr><w:spacing w:before="' + (opt.before || 0) + '" w:after="' + (opt.after || 120) + '"/>'; if (opt.border) ppr += '<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="6" w:color="DEE3EA"/></w:pBdr>'; ppr += '</w:pPr>'; return '<w:p>' + ppr + runsXml + '</w:p>'; }
-  function dxDoc(course, title, subLines, sections) { var body = ''; body += dxPara(dxRun('SENECA POLYTECHNIC · ' + course, { bold: true, color: 'DA291C', size: 18 }), { after: 40 }); body += dxPara(dxRun(title, { bold: true, color: 'DA291C', size: 36 }), { after: 60 }); (subLines || []).forEach(function (line, i) { body += dxPara(dxRun(line, { color: '474C57', size: 20 }), { after: (i === subLines.length - 1 ? 160 : 40), border: (i === subLines.length - 1) }); }); (sections || []).forEach(function (sec) { body += dxPara(dxRun(sec.h, { bold: true, color: 'DA291C', size: 22 }), { before: 160, after: 30 }); if (sec.t !== undefined && sec.t !== null) { var t = (String(sec.t).trim()) ? sec.t : '(not written yet)'; body += dxPara(dxRun(t, { color: '15171C', size: 22 }), { after: 80 }); } }); return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + body + '<w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>'; }
-  var DX_CT = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
-  var DX_RELS = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
+  function dxRun(text, opt) { opt = opt || {}; var size = opt.size || DX_BODY_SIZE; var rpr = '<w:rPr>'; if (opt.bold) rpr += '<w:b/>'; if (opt.italic) rpr += '<w:i/>'; if (opt.color) rpr += '<w:color w:val="' + opt.color + '"/>'; rpr += '<w:sz w:val="' + size + '"/><w:szCs w:val="' + size + '"/><w:rFonts w:ascii="' + DX_FONT + '" w:hAnsi="' + DX_FONT + '" w:cs="' + DX_FONT + '"/></w:rPr>'; var parts = String(text == null ? '' : text).split('\n'), t = ''; for (var i = 0; i < parts.length; i++) { if (i > 0) t += '<w:br/>'; t += '<w:t xml:space="preserve">' + dxEsc(parts[i]) + '</w:t>'; } return '<w:r>' + rpr + t + '</w:r>'; }
+  function dxPara(runsXml, opt) { opt = opt || {}; var ppr = '<w:pPr>'; if (opt.style) ppr += '<w:pStyle w:val="' + opt.style + '"/>'; if (opt.keep) ppr += '<w:keepNext/><w:keepLines/>'; if (opt.align) ppr += '<w:jc w:val="' + opt.align + '"/>'; ppr += '<w:spacing w:before="' + (opt.before || 0) + '" w:after="' + (opt.after || 120) + '" w:line="300" w:lineRule="auto"/>'; if (opt.border) ppr += '<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="6" w:color="DEE3EA"/></w:pBdr>'; ppr += '</w:pPr>'; return '<w:p>' + ppr + runsXml + '</w:p>'; }
+  function dxLogoRun(rid, id, cx, cy) { return '<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="' + cx + '" cy="' + cy + '"/><wp:docPr id="' + id + '" name="Seneca logo"/><wp:cNvGraphicFramePr><a:graphicFrameLocks noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="' + (id + 1) + '" name="seneca-logo.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="' + rid + '"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="' + cx + '" cy="' + cy + '"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>'; }
+  function dxLogoPara(rid) { return dxPara(dxLogoRun(rid, 1, 1760000, 360000), { align: 'left', after: 180 }); }
+  function dxTc(inner, opt) { opt = opt || {}; var props = '<w:tcPr>'; if (opt.w) props += '<w:tcW w:w="' + opt.w + '" w:type="dxa"/>'; if (opt.shade) props += '<w:shd w:fill="' + opt.shade + '"/>'; props += '<w:tcMar><w:top w:w="110" w:type="dxa"/><w:left w:w="120" w:type="dxa"/><w:bottom w:w="110" w:type="dxa"/><w:right w:w="120" w:type="dxa"/></w:tcMar></w:tcPr>'; return '<w:tc>' + props + inner + '</w:tc>'; }
+  function dxCellText(text, opt) { opt = opt || {}; return dxPara(dxRun(text, { bold: opt.bold, color: opt.color || '15171C', size: opt.size || DX_BODY_SIZE }), { after: opt.after == null ? 60 : opt.after }); }
+  function dxTable(rows, opt) { opt = opt || {}; var out = '<w:tbl><w:tblPr><w:tblW w:w="0" w:type="auto"/><w:tblBorders><w:top w:val="single" w:sz="6" w:color="DEE3EA"/><w:left w:val="single" w:sz="6" w:color="DEE3EA"/><w:bottom w:val="single" w:sz="6" w:color="DEE3EA"/><w:right w:val="single" w:sz="6" w:color="DEE3EA"/><w:insideH w:val="single" w:sz="4" w:color="DEE3EA"/><w:insideV w:val="single" w:sz="4" w:color="DEE3EA"/></w:tblBorders></w:tblPr>'; rows.forEach(function (row, ri) { out += '<w:tr><w:trPr><w:cantSplit/>' + (ri === 0 && opt.header ? '<w:tblHeader/>' : '') + '</w:trPr>'; row.forEach(function (cell) { var obj = (cell && typeof cell === 'object') ? cell : { text: cell }; var shade = obj.shade || (ri === 0 && opt.header ? '1B2A4A' : null); var color = obj.color || (ri === 0 && opt.header ? 'FFFFFF' : '15171C'); out += dxTc(dxCellText(obj.text || '', { bold: obj.bold || (ri === 0 && opt.header), color: color }), { shade: shade, w: obj.w || opt.w }); }); out += '</w:tr>'; }); return out + '</w:tbl>'; }
+  function dxList(items) { return (items || []).map(function (item) { return dxPara(dxRun(String(item || ''), { color: '15171C' }), { after: 50 }); }).join(''); }
+  function dxHeaderXml() { return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:hdr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' + dxPara(dxLogoRun('rIdLogoHeader', 10, 1320000, 270000), { align: 'right', after: 40 }) + '</w:hdr>'; }
+  function dxFooterXml(label) { return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/><w:pBdr><w:top w:val="single" w:sz="4" w:space="6" w:color="DEE3EA"/></w:pBdr></w:pPr>' + dxRun(label + ' | Page ', { color: '474C57', size: 20 }) + '<w:fldSimple w:instr="PAGE"><w:r><w:rPr><w:rFonts w:ascii="' + DX_FONT + '" w:hAnsi="' + DX_FONT + '"/><w:sz w:val="20"/></w:rPr><w:t>1</w:t></w:r></w:fldSimple>' + dxRun(' of ', { color: '474C57', size: 20 }) + '<w:fldSimple w:instr="NUMPAGES"><w:r><w:rPr><w:rFonts w:ascii="' + DX_FONT + '" w:hAnsi="' + DX_FONT + '"/><w:sz w:val="20"/></w:rPr><w:t>1</w:t></w:r></w:fldSimple></w:p></w:ftr>'; }
+  function dxDoc(course, title, subLines, sections) { var body = ''; body += dxLogoPara('rIdLogo'); body += dxPara(dxRun('SENECA POLYTECHNIC | ' + course, { bold: true, color: 'DA291C', size: 20 }), { after: 40, keep: true }); body += dxPara(dxRun(title, { bold: true, color: '15171C', size: 32 }), { style: 'Title', after: 60, keep: true }); (subLines || []).forEach(function (line, i) { body += dxPara(dxRun(line, { color: '474C57' }), { after: (i === subLines.length - 1 ? 160 : 40), border: (i === subLines.length - 1) }); }); (sections || []).forEach(function (sec) { body += dxPara(dxRun(sec.h, { bold: true, color: 'DA291C', size: 26 }), { style: 'Heading1', before: 170, after: 60, keep: true }); if (sec.type === 'table') body += dxTable(sec.rows || [], { header: true }); else if (sec.type === 'list') body += dxList(sec.items || []); else if (sec.t !== undefined && sec.t !== null) { var t = (String(sec.t).trim()) ? sec.t : '(not written yet)'; body += dxPara(dxRun(t, { color: '15171C' }), { after: 80 }); } }); return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>' + body + '<w:sectPr><w:headerReference w:type="default" r:id="rIdHeader"/><w:footerReference w:type="default" r:id="rIdFooter"/><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>'; }
+  function dxStylesXml() { return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:rPr><w:rFonts w:ascii="' + DX_FONT + '" w:hAnsi="' + DX_FONT + '" w:cs="' + DX_FONT + '"/><w:sz w:val="' + DX_BODY_SIZE + '"/><w:szCs w:val="' + DX_BODY_SIZE + '"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:rPr><w:b/><w:rFonts w:ascii="' + DX_FONT + '" w:hAnsi="' + DX_FONT + '"/><w:sz w:val="32"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:keepLines/></w:pPr><w:rPr><w:b/><w:color w:val="DA291C"/><w:rFonts w:ascii="' + DX_FONT + '" w:hAnsi="' + DX_FONT + '"/><w:sz w:val="26"/></w:rPr></w:style></w:styles>'; }
+  function dxCoreXml() { var now = new Date().toISOString(); return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>PSY355 Student Notes Document</dc:title><dc:creator>Raymond Peart</dc:creator><cp:lastModifiedBy>Raymond Peart</cp:lastModifiedBy><dcterms:created xsi:type="dcterms:W3CDTF">' + now + '</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">' + now + '</dcterms:modified></cp:coreProperties>'; }
+  var DX_CT = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/header1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>';
+  var DX_RELS = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>';
+  var DX_DOC_RELS = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdLogo" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/seneca-logo.png"/><Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdHeader" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="header1.xml"/><Relationship Id="rIdFooter" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>';
+  var DX_HEADER_RELS = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdLogoHeader" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/seneca-logo.png"/></Relationships>';
   var dxCrcT = null;
   function dxCrc(bytes) { if (!dxCrcT) { dxCrcT = []; for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); dxCrcT[n] = c >>> 0; } } var crc = 0xFFFFFFFF; for (var i = 0; i < bytes.length; i++) crc = (crc >>> 8) ^ dxCrcT[(crc ^ bytes[i]) & 0xFF]; return (crc ^ 0xFFFFFFFF) >>> 0; }
   function dxCat(arrs) { var len = 0, i; for (i = 0; i < arrs.length; i++) len += arrs[i].length; var out = new Uint8Array(len), off = 0; for (i = 0; i < arrs.length; i++) { out.set(arrs[i], off); off += arrs[i].length; } return out; }
@@ -2216,13 +2353,33 @@
   function dxU32(n) { return new Uint8Array([n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255]); }
   function dxZip(files) { var enc = new TextEncoder(); var chunks = [], central = [], offset = 0; files.forEach(function (f) { var nameB = enc.encode(f.name); var data = (f.data instanceof Uint8Array) ? f.data : enc.encode(f.data); var crc = dxCrc(data), size = data.length; var lfh = dxCat([dxU32(0x04034b50), dxU16(20), dxU16(0), dxU16(0), dxU16(0), dxU16(0), dxU32(crc), dxU32(size), dxU32(size), dxU16(nameB.length), dxU16(0), nameB, data]); chunks.push(lfh); central.push(dxCat([dxU32(0x02014b50), dxU16(20), dxU16(20), dxU16(0), dxU16(0), dxU16(0), dxU16(0), dxU32(crc), dxU32(size), dxU32(size), dxU16(nameB.length), dxU16(0), dxU16(0), dxU16(0), dxU16(0), dxU32(0), dxU32(offset), nameB])); offset += lfh.length; }); var centralB = dxCat(central); var eocd = dxCat([dxU32(0x06054b50), dxU16(0), dxU16(0), dxU16(files.length), dxU16(files.length), dxU32(centralB.length), dxU32(offset), dxU16(0)]); return dxCat([dxCat(chunks), centralB, eocd]); }
   function senecaDoc(course, title, subLines, sections, fn) {
-    var bytes = dxZip([{ name: '[Content_Types].xml', data: DX_CT }, { name: '_rels/.rels', data: DX_RELS }, { name: 'word/document.xml', data: dxDoc(course, title, subLines, sections) }]);
-    var blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fn + '.docx';
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
-    flash('Saved to your device (Seneca template).');
+    return fetch('./seneca-logo.png').then(function (r) {
+      if (!r.ok) throw new Error('Seneca logo could not be loaded.');
+      return r.arrayBuffer();
+    }).then(function (buf) {
+      var logoBytes = new Uint8Array(buf);
+      var bytes = dxZip([
+        { name: '[Content_Types].xml', data: DX_CT },
+        { name: '_rels/.rels', data: DX_RELS },
+        { name: 'docProps/core.xml', data: dxCoreXml() },
+        { name: 'word/_rels/document.xml.rels', data: DX_DOC_RELS },
+        { name: 'word/_rels/header1.xml.rels', data: DX_HEADER_RELS },
+        { name: 'word/media/seneca-logo.png', data: logoBytes },
+        { name: 'word/styles.xml', data: dxStylesXml() },
+        { name: 'word/header1.xml', data: dxHeaderXml() },
+        { name: 'word/footer1.xml', data: dxFooterXml(title) },
+        { name: 'word/document.xml', data: dxDoc(course, title, subLines, sections) }
+      ]);
+      var blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fn + '.docx';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+      flash('Saved to your device as a Seneca branded document.');
+    }).catch(function () {
+      flash('Export stopped: the Seneca logo could not be embedded.');
+    });
   }
   window.SOC = {
+    openNav: function () { state.navOpen = true; render(); },
     toggleNav: function () { state.navOpen = !state.navOpen; render(); },
     closeNav: function () { state.navOpen = false; render(); },
     go: function (s) { state.navOpen = false; if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (s === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
@@ -2230,6 +2387,7 @@
     lensOff: function () { state.careerField = ''; persist(); render(); },
     careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
     station: function (w) { state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
+    jumpWeek: function (w, part) { state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
     startActivity: function (s, w) { state.activityReturn = w; state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
     wkCheck: function (k, o) {
       if (state.wkCheck[k] === o) delete state.wkCheck[k]; else state.wkCheck[k] = o;
@@ -2244,10 +2402,10 @@
       d.checks.forEach(function (c, i) { delete state.wkCheck[phase + '|' + w + '|' + i]; });
       persist(); refreshWeekChecks(w, d);
     },
-    actPick: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; state.act[key] = idx; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
-    actToggle: function (key) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; state.act[key] = !state.act[key]; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
-    actAdd: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || []; if (arr.indexOf(idx) < 0) arr.push(idx); state.act[key] = arr; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
-    actLabPick: function (key, idx, max) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || [], p = arr.indexOf(idx); if (p >= 0) arr.splice(p, 1); else { if (arr.length >= max) arr.shift(); arr.push(idx); } state.act[key] = arr; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actPick: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; state.act[key] = idx; state.actResult = state.actResult || {}; state.actResult[key] = idx; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actToggle: function (key) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var val = !state.act[key]; state.act[key] = val; state.actResult = state.actResult || {}; state.actResult[key] = val; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actAdd: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || []; if (arr.indexOf(idx) < 0) arr.push(idx); state.act[key] = arr; state.actResult = state.actResult || {}; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actLabPick: function (key, idx, max) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || [], p = arr.indexOf(idx); if (p >= 0) arr.splice(p, 1); else { if (arr.length >= max) arr.shift(); arr.push(idx); } state.act[key] = arr; state.actResult = state.actResult || {}; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     saveWeek: function (w) {
       var d = weekData(w); if (!d) { flash('Open a week first.'); return; }
       var lab = ['New to me', 'Getting it', 'I can'];
@@ -2400,4 +2558,5 @@
   };
 
   render();
+  if (routePart0) scrollWeekPart(routePart0);
 })();

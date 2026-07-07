@@ -28,6 +28,7 @@
   .vh{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   .soc-weekstrip{display:none}
   .soc-mobile-menu{display:none!important}
+  .soc-mobile-jump{display:none}
   .soc-mobile-scrim{display:none}
   @keyframes riseUp{from{transform:translateY(8px);opacity:.4}to{transform:translateY(0);opacity:1}}
   .rise{animation:riseUp .26s ease both}
@@ -61,6 +62,9 @@
     .soc-sidebar.soc-sidebar-open [style*="flex:1"]{min-width:0!important;overflow-wrap:anywhere}
     .soc-mobile-menu{display:inline-flex!important}
     .soc-mobile-scrim{display:block!important;position:fixed;left:0;right:0;top:62px;bottom:0;z-index:65;background:rgba(21,23,28,.38);border:0;padding:0}
+    .soc-mobile-jump{display:flex;position:relative;z-index:1;gap:8px;align-items:center;overflow-x:auto;overscroll-behavior-x:contain;margin:-8px -8px 16px;padding:8px;background:#F7F8FA;border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 18px rgba(27,42,74,.1)}
+    .soc-mobile-jump button,.soc-mobile-jump a{display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:0 0 auto;min-height:40px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--ink);padding:8px 12px;font-size:.82rem;font-weight:800;text-decoration:none;white-space:nowrap}
+    .soc-mobile-jump .primary{border-color:var(--red);background:var(--red);color:#fff}
     .soc-head-brand{flex:1 1 auto!important;min-width:0!important}
     .soc-head-title{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
     .soc-head-mode{display:none!important}
@@ -135,6 +139,6 @@
 <script src="./data/psy355-career.js?v=4"></script>
 <script src="./data/seneca-programs.js?v=3"></script>
 <script src="./data/psy355-lens.js?v=1"></script>
-<script src="./app.js?v=68"></script>
+<script src="./app.js?v=71"></script>
 </body>
 </html>
