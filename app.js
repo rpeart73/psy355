@@ -24,7 +24,7 @@
     return !!(v && v.screen);
   }
   function cleanScreen(s) {
-    return ['journey', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
+    return ['journey', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'review', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
     w = Number(w);
@@ -363,7 +363,7 @@
   }
   function sidebar() {
     var s = state;
-    var navDefs = [['journey', 'Home', 'gauge'], ['pathways', 'Course Pathways', 'map'], ['readings', 'Readings Library', 'gallery'], ['compare', 'Compare Readings', 'columns'], ['reading', 'Reading Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
+    var navDefs = [['journey', 'Home', 'gauge'], ['pathways', 'Course Pathways', 'map'], ['readings', 'Readings Library', 'gallery'], ['compare', 'Compare Readings', 'columns'], ['reading', 'Reading Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe'], ['review', 'Chair Review Notes', 'file']];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || s.screen === key;
@@ -374,8 +374,7 @@
         + '<span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (active ? 'var(--red)' : '#6B7280') + '">' + ic(d[2], 19) + '</span><span style="flex:1;text-align:left">' + d[1] + '</span>' + badge + '</button>';
     });
     var walk = '<a href="./walkthroughs/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:11px;width:100%;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;color:#474C57;text-decoration:none"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('layers', 19) + '</span><span style="flex:1">Weekly Walkthroughs</span><span style="color:#6B7280">↗</span></a>';
-    var guidePdf = './guide/PSY355_Companion_Site_Guide.pdf';
-    var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online version <span aria-hidden="true">&#8599;</span></a><a href="' + guidePdf + '" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">PDF <span aria-hidden="true">&#8599;</span></a></div></div>';
+    var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a></div></div>';
     var nav = btns[0] + btns[1] + walk + btns.slice(2).join('') + guide;
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
     var navWeeks = [];
@@ -900,6 +899,56 @@
       + '</span></button>';
   }
   function courseCode() { return (D.course && D.course.code) || ''; }
+  function courseTitle() { return (D.course && (D.course.name || D.course.title)) || courseCode() || 'this course'; }
+  function siteCard(kicker, title, text) {
+    return '<article style="border:1px solid #DEE3EA;border-radius:12px;background:#fff;padding:15px 16px"><div class="mono" style="font-size:.64rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:6px">' + esc(kicker) + '</div><h3 style="font-size:1rem;line-height:1.25;margin:0 0 6px;color:var(--ink)">' + esc(title) + '</h3><p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0">' + esc(text) + '</p></article>';
+  }
+  function institutionalNoticeHtml() {
+    var code = courseCode() || 'this course';
+    return '<section class="node" aria-label="Companion website and Blackboard relationship" style="border-left:4px solid var(--red);border-radius:0 14px 14px 0;margin-bottom:18px">'
+      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">COMPANION WEBSITE</div>'
+      + '<h2 class="wk-sec" style="margin-bottom:10px">What this site is for</h2>'
+      + '<p style="font-size:1rem;line-height:1.62;color:var(--ink);margin:0 0 10px">This instructor-created companion website supports weekly learning in ' + esc(code) + '. Students use this site for weekly learning pathways, readings, key concepts, walkthroughs, and study supports. Blackboard remains the official Seneca course platform for announcements, assignment submission, grades, discussions, course records, and required administrative functions.</p>'
+      + '<p style="font-size:.92rem;line-height:1.55;color:var(--ink-dim);margin:0">Use this site to learn and prepare. Use Blackboard for official instructions, submissions, grades, announcements, discussions, and course records.</p>'
+      + '</section>';
+  }
+  function howToUseSiteHtml() {
+    var steps = [
+      'Start with the current week\'s learning pathway.',
+      'Review the guiding questions and key concepts.',
+      'Open the assigned readings and media.',
+      'Use the walkthroughs and self-checks to prepare for class and assessments.',
+      'Use Blackboard for official announcements, assignment submission, discussions, grades, and course records.'
+    ];
+    return '<section class="node" aria-labelledby="how-site-title"><h2 id="how-site-title" class="wk-sec">How to Use This Site</h2><ol style="display:grid;gap:9px;margin:0;padding-left:22px">'
+      + steps.map(function (s) { return '<li style="font-size:.96rem;line-height:1.55;color:var(--ink-dim);padding-left:4px">' + esc(s) + '</li>'; }).join('')
+      + '</ol></section>';
+  }
+  function reviewPage() {
+    var code = courseCode() || 'Course', title = courseTitle();
+    var cards = [
+      ['PURPOSE', 'Purpose of the companion website', 'This companion website is designed to support student navigation, accessibility, and engagement in ' + code + '. It provides weekly learning pathways, key concepts, linked readings, walkthroughs, glossary materials, and study supports.'],
+      ['BLACKBOARD', 'What Blackboard still does', 'Blackboard remains the official Seneca course platform for announcements, assignment submissions, discussions, grades, course records, and required administrative functions.'],
+      ['PRIVACY', 'Privacy posture', 'The companion website does not require an account, collect student work, store grades, request student numbers, or process private student information. Notes and check answers stay in the student browser unless the student exports them.'],
+      ['ACCESSIBILITY', 'Accessibility posture', 'The site uses landmarks, keyboard-accessible navigation, visible focus states, responsive layouts, alt text for meaningful images, reduced-motion support, and clear link and button labels. Students who experience barriers should use Blackboard and contact the instructor so access can be supported.'],
+      ['COPYRIGHT', 'Copyright posture', 'Course readings and media are linked for educational use. Copyright remains with the original creators and publishers. Students should access readings through the provided links, Seneca library access, or Blackboard where applicable.'],
+      ['DATA', 'Student data posture', 'There are no logins, comment systems, analytics scripts, advertising scripts, student submissions, grades, or behavioural tracking tools in this static site. External media players load only when selected and may be subject to the host platform privacy practices.'],
+      ['TECHNICAL', 'Technical structure', 'The site is a static GitHub Pages instructional resource built from local HTML, CSS, JavaScript, self-hosted fonts, local course data, and local assets. It has no server-side database and no third-party analytics dependency.'],
+      ['MAINTENANCE', 'Maintenance plan and known limitations', 'Course content should be checked before each term against Blackboard, the active course outline, current assessment files, reading links, accessibility checks, and copyright permissions. The Seneca logo identifies the course context; the page text identifies the site as instructor-created and not a replacement for Blackboard.']
+    ];
+    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">CHAIR REVIEW NOTES</div><h1>Institutional Review Notes</h1><p>This page summarizes the approval-facing posture of the ' + esc(code) + ' companion website for ' + esc(title) + '.</p></div><div class="path-compass" aria-label="Companion website relationship"><span>SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
+      + '<section class="node" style="border-left:4px solid var(--red);border-radius:0 14px 14px 0"><p style="font-size:1rem;line-height:1.65;color:var(--ink);margin:0 0 12px">This companion website is designed to support student navigation, accessibility, and engagement in ' + esc(code) + '. It provides weekly learning pathways, key concepts, linked readings, walkthroughs, glossary materials, and study supports.</p><p style="font-size:1rem;line-height:1.65;color:var(--ink);margin:0 0 12px">Blackboard remains the official Seneca course platform for announcements, assignment submissions, discussions, grades, course records, and required administrative functions.</p><p style="font-size:1rem;line-height:1.65;color:var(--ink);margin:0">The companion website does not collect student work, store grades, require accounts, request student numbers, or process private student information. The site is built as a static instructional resource and is intended to reduce navigation barriers while preserving Seneca official course administration in Blackboard.</p></section>'
+      + '<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0">' + cards.map(function (c) { return siteCard(c[0], c[1], c[2]); }).join('') + '</section>'
+      + '<section class="node"><h2 class="wk-sec">Student-Facing Notes</h2>' + institutionalNoticeHtml() + howToUseSiteHtml() + '</section></div>';
+  }
+  function siteFooter() {
+    var code = courseCode() || 'Course';
+    return '<footer role="contentinfo" style="margin:28px 0 0;padding:18px 20px;border:1px solid #DEE3EA;border-top:4px solid var(--red);border-radius:14px;background:#fff;color:var(--ink-dim)">'
+      + '<p style="font-size:.9rem;line-height:1.55;margin:0 0 8px"><strong style="color:var(--ink)">' + esc(code) + ' companion website.</strong> Blackboard remains the official course platform for submissions, grades, announcements, discussions, and course records.</p>'
+      + '<p style="font-size:.84rem;line-height:1.55;margin:0 0 8px">This site does not require an account, does not collect student submissions, does not store grades, and does not request personal student information. Notes and check answers stay in this browser unless you export them. External media players may be subject to the privacy practices of the host platform.</p>'
+      + '<p style="font-size:.84rem;line-height:1.55;margin:0">This site is designed to support accessible course navigation. Students who experience barriers using the site should use Blackboard and contact the instructor so access can be supported. <button type="button" onclick="SOC.go(\'review\')" style="border:0;background:none;color:#1552D8;font:inherit;font-weight:700;padding:0;cursor:pointer">Chair Review Notes</button></p>'
+      + '</footer>';
+  }
   function focusWeek(sel) { var ws = weeksWithReadings(); return sel == null ? (ws[0] || 1) : sel; }
   function recordsForWeek(w) { return D.records.filter(function (r) { return r.week === w; }); }
   function firstWhere(list, fn) { for (var i = 0; i < list.length; i++) if (fn(list[i])) return list[i]; return null; }
@@ -1133,7 +1182,7 @@
       + (started ? '' : '<div style="margin-top:14px;font-size:.8125rem;color:var(--ink-faint)">' + ws.length + ' weeks in this course</div>')
       + '</div></section>';
     var spineHead = '<div style="display:flex;align-items:baseline;gap:12px;margin:0 0 16px;flex-wrap:wrap"><h2 style="font-size:1.375rem;font-weight:600;margin:0;color:var(--ink)">Your journey</h2><span style="font-size:.875rem;color:var(--ink-faint)">' + ws.length + ' weeks, in course order</span></div>';
-    return '<div class="rise">' + hero + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
+    return '<div class="rise">' + hero + institutionalNoticeHtml() + howToUseSiteHtml() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
   }
   function journeyStations(cur) {
     var ws = journeyWeeks();
@@ -1730,7 +1779,7 @@
       time: 'Overview, no readings'
     });
     var how = '<section id="wk-how" class="node"><h2 class="wk-sec">How this course works</h2>'
-      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">Each teaching week opens a module with its readings, a short interactive activity, and optional practice, a study guide and a knowledge check, that are never graded and never recorded. You work through the week at your own pace. A Study Week (October 26 to 30) falls between Weeks 7 and 8, a break with no new work, and nothing is due in the final week.</p>'
+      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">Each teaching week opens a module with its readings, a short interactive activity, and optional practice, a study guide and a knowledge check, that are never graded and never recorded. You work through the week at your own pace. A Study Week (October 26 to 30) falls between Weeks 7 and 8, a break with no new work, and nothing is due in the final week. Blackboard remains the official Seneca course platform for announcements, submissions, discussions, grades, course records, and administrative functions.</p>'
       + '<p style="margin:0;font-size:1rem;line-height:1.6">This week is your orientation. There are no readings and nothing to submit. When you are ready, begin with Week ' + (next != null ? next : 2) + '.</p></section>';
     var beginRow = (next != null) ? '<div style="margin-top:18px"><button onclick="SOC.station(' + next + ')" style="border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 18px;cursor:pointer;text-align:left;min-width:220px"><div class="mono" style="font-size:.66rem;color:var(--red)">BEGIN &rarr;</div><div style="font-size:.95rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button></div>' : '';
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
@@ -2354,6 +2403,7 @@
     if (state.screen === 'cards') return homeBar() + cardsScreen();
     if (state.screen === 'assignments') return homeBar() + assignmentsPage();
     if (state.screen === 'career') return homeBar() + careerScreen();
+    if (state.screen === 'review') return homeBar() + reviewPage();
     if (state.screen === 'activity') { var _aw = state.activityReturn || state.stationWeek || currentJourneyWeek(); return backBar() + mobileActivityActions(_aw) + activityScreen(); }
     if (state.screen === 'ecology' && D.course && D.course.code === 'PSY355') return homeBar() + ecologyScreen();
     return journeyHome();
@@ -2429,7 +2479,7 @@
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + '</div></main>'
+      + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + siteFooter() + '</div></main>'
       + '</div>' + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
