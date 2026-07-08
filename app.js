@@ -24,7 +24,7 @@
     return !!(v && v.screen);
   }
   function cleanScreen(s) {
-    return ['journey', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'review', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
+    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
     w = Number(w);
@@ -52,6 +52,9 @@
     screen: route0 ? route0.screen : (resumeView0 ? cleanScreen(view0.screen) : 'journey'),
     prevView: (resumeView0 && view0.prevView && typeof view0.prevView === 'object') ? view0.prevView : null,
     navOpen: false,
+    readerLensOpen: false,
+    readerLensX: 84,
+    readerLensY: 86,
     journeyWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.journeyWeek) : null),
     stationWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.stationWeek) : null),
     sgNotes: (saved0.sgNotes || {}),
@@ -287,6 +290,76 @@
     return out + '</svg>';
   }
 
+  var readerLensDrag = null;
+  function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+  function announce(msg) {
+    var lr = document.getElementById('soc-live');
+    if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = msg; }, 30); }
+  }
+  function readerLensButton() {
+    var on = !!state.readerLensOpen;
+    return '<button type="button" class="reader-lens-btn' + (on ? ' on' : '') + '" onclick="SOC.toggleReaderLens()" aria-pressed="' + (on ? 'true' : 'false') + '" aria-label="' + (on ? 'Turn Reading Lens off' : 'Turn Reading Lens on') + '" title="Reading Lens">' + ic('search', 17, 2) + '<span class="reader-lens-label">Reading Lens</span></button>';
+  }
+  function readerLensOverlay() {
+    if (!state.readerLensOpen) return '';
+    var x = clamp(Number(state.readerLensX) || 84, 8, Math.max(8, window.innerWidth - 340));
+    var y = clamp(Number(state.readerLensY) || 86, 70, Math.max(70, window.innerHeight - 210));
+    return '<section id="reader-lens" class="reader-lens" style="left:' + x + 'px;top:' + y + 'px" tabindex="0" role="region" aria-label="Reading Lens text magnifier" aria-describedby="reader-lens-help" onkeydown="SOC.readerLensKey(event)">'
+      + '<div class="reader-lens-glass" aria-hidden="true">' + ic('search', 27, 2.1) + '</div>'
+      + '<div class="reader-lens-head" onpointerdown="SOC.readerLensPointerDown(event)"><span>' + ic('search', 16, 2) + '</span><strong>Reading Lens</strong><button type="button" onpointerdown="event.stopPropagation()" onclick="SOC.closeReaderLens()" aria-label="Close Reading Lens">' + ic('x', 16, 2) + '</button></div>'
+      + '<div id="reader-lens-copy" class="reader-lens-copy" aria-hidden="true">Move the lens over text to magnify it here.</div>'
+      + '<p id="reader-lens-help" class="reader-lens-help">Drag the lens over text. Keyboard: arrow keys move it; Shift plus arrow moves faster; Escape closes it.</p>'
+      + '</section>';
+  }
+  function readerLensTextAt(x, y) {
+    var lens = document.getElementById('reader-lens'), oldPointer = '';
+    if (lens) { oldPointer = lens.style.pointerEvents; lens.style.pointerEvents = 'none'; }
+    var el = document.elementFromPoint(x, y);
+    if (lens) lens.style.pointerEvents = oldPointer;
+    var node = el;
+    while (node && node !== document.body) {
+      var tag = String(node.tagName || '').toLowerCase();
+      if (/^(p|li|h1|h2|h3|h4|h5|h6|blockquote|td|th|figcaption|label|button|a|summary)$/.test(tag)) break;
+      node = node.parentElement;
+    }
+    var text = (node && node.textContent ? node.textContent : '').replace(/\s+/g, ' ').trim();
+    if (!text && el && el.textContent) text = el.textContent.replace(/\s+/g, ' ').trim();
+    if (!text) return 'Move the lens over text to magnify it here.';
+    return text.length > 430 ? text.slice(0, 427) + '...' : text;
+  }
+  function updateReaderLens() {
+    var lens = document.getElementById('reader-lens'), out = document.getElementById('reader-lens-copy');
+    if (!lens || !out) return;
+    var r = lens.getBoundingClientRect();
+    out.textContent = readerLensTextAt(r.left + (r.width / 2), r.top + (r.height / 2));
+  }
+  function setReaderLensPos(x, y) {
+    var w = Math.min(380, Math.max(300, window.innerWidth - 24));
+    state.readerLensX = clamp(Math.round(x), 8, Math.max(8, window.innerWidth - w - 8));
+    state.readerLensY = clamp(Math.round(y), 70, Math.max(70, window.innerHeight - 210));
+    var lens = document.getElementById('reader-lens');
+    if (lens) { lens.style.left = state.readerLensX + 'px'; lens.style.top = state.readerLensY + 'px'; updateReaderLens(); }
+  }
+  function readerLensMove(e) {
+    if (!readerLensDrag) return;
+    e.preventDefault();
+    setReaderLensPos(e.clientX - readerLensDrag.dx, e.clientY - readerLensDrag.dy);
+  }
+  function readerLensStopDrag() {
+    readerLensDrag = null;
+    document.removeEventListener('pointermove', readerLensMove, true);
+    document.removeEventListener('pointerup', readerLensStopDrag, true);
+  }
+  function startReaderLensDrag(e) {
+    var lens = document.getElementById('reader-lens');
+    if (!lens) return;
+    e.preventDefault();
+    var r = lens.getBoundingClientRect();
+    readerLensDrag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+    document.addEventListener('pointermove', readerLensMove, true);
+    document.addEventListener('pointerup', readerLensStopDrag, true);
+  }
+
   /* ---------- filtering + sorting ---------- */
   function filtered() {
     var q = state.search.trim().toLowerCase();
@@ -358,12 +431,13 @@
     return '<header style="position:sticky;top:0;z-index:40;height:62px;background:#fff;border-bottom:2px solid var(--red);display:flex;align-items:center;padding:0 22px;gap:14px;flex:none">'
       + '<button class="soc-mobile-menu" onclick="SOC.toggleNav()" aria-label="' + (state.navOpen ? 'Close course navigation' : 'Open course navigation') + '" aria-expanded="' + (state.navOpen ? 'true' : 'false') + '" style="align-items:center;justify-content:center;width:38px;height:38px;border:1px solid #DEE3EA;border-radius:10px;background:#fff;color:#474C57;flex:none">' + ic(state.navOpen ? 'x' : 'list', 18) + '</button>'
       + '<div class="soc-head-brand" style="display:flex;align-items:center;gap:10px;flex:none;min-width:0"><img src="./seneca-logo.png" alt="Seneca Polytechnic" style="height:34px;width:auto;display:block"><span class="soc-head-title" style="font-weight:600;font-size:1.0625rem;color:var(--ink);letter-spacing:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">PSY355 Companion</span></div>'
-      + '<span class="mono soc-head-term" style="margin-left:auto;font-size:.75rem;font-weight:600;color:var(--red);background:#F6E3E1;padding:5px 10px;border-radius:6px;flex:none">FALL 2026</span>'
+      + readerLensButton()
+      + '<span class="mono soc-head-term" style="font-size:.75rem;font-weight:600;color:var(--red);background:#F6E3E1;padding:5px 10px;border-radius:6px;flex:none">FALL 2026</span>'
       + '</header>';
   }
   function sidebar() {
     var s = state;
-    var navDefs = [['journey', 'Home', 'gauge'], ['pathways', 'Course Pathways', 'map'], ['readings', 'Readings Library', 'gallery'], ['compare', 'Compare Readings', 'columns'], ['reading', 'Reading Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe'], ['review', 'Chair Review Notes', 'file']];
+    var navDefs = [['journey', 'Home', 'gauge'], ['site', 'How This Site Works', 'file'], ['pathways', 'Course Pathways', 'map'], ['readings', 'Readings Library', 'gallery'], ['compare', 'Compare Readings', 'columns'], ['reading', 'Reading Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || s.screen === key;
@@ -375,7 +449,7 @@
     });
     var walk = '<a href="./walkthroughs/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:11px;width:100%;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;color:#474C57;text-decoration:none"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('layers', 19) + '</span><span style="flex:1">Weekly Walkthroughs</span><span style="color:#6B7280">↗</span></a>';
     var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a></div></div>';
-    var nav = btns[0] + btns[1] + walk + btns.slice(2).join('') + guide;
+    var nav = btns[0] + btns[1] + guide + walk + btns.slice(2).join('');
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
     var navWeeks = [];
     for (var nw = 1; nw <= 14; nw++) navWeeks.push(nw);
@@ -924,29 +998,47 @@
       + steps.map(function (s) { return '<li style="font-size:.96rem;line-height:1.55;color:var(--ink-dim);padding-left:4px">' + esc(s) + '</li>'; }).join('')
       + '</ol></section>';
   }
-  function reviewPage() {
-    var code = courseCode() || 'Course', title = courseTitle();
+  function siteInfoPage() {
+    var code = courseCode() || 'this course';
+    var title = courseTitle();
     var cards = [
-      ['PURPOSE', 'Purpose of the companion website', 'This companion website is designed to support student navigation, accessibility, and engagement in ' + code + '. It provides weekly learning pathways, key concepts, linked readings, walkthroughs, glossary materials, and study supports.'],
-      ['BLACKBOARD', 'What Blackboard still does', 'Blackboard remains the official Seneca course platform for announcements, assignment submissions, discussions, grades, course records, and required administrative functions.'],
-      ['PRIVACY', 'Privacy posture', 'The companion website does not require an account, collect student work, store grades, request student numbers, or process private student information. Notes and check answers stay in the student browser unless the student exports them.'],
-      ['ACCESSIBILITY', 'Accessibility posture', 'The site uses landmarks, keyboard-accessible navigation, visible focus states, responsive layouts, alt text for meaningful images, reduced-motion support, and clear link and button labels. Students who experience barriers should use Blackboard and contact the instructor so access can be supported.'],
-      ['COPYRIGHT', 'Copyright posture', 'Course readings and media are linked for educational use. Copyright remains with the original creators and publishers. Students should access readings through the provided links, Seneca library access, or Blackboard where applicable.'],
-      ['DATA', 'Student data posture', 'There are no logins, comment systems, analytics scripts, advertising scripts, student submissions, grades, or behavioural tracking tools in this static site. External media players load only when selected and may be subject to the host platform privacy practices.'],
-      ['TECHNICAL', 'Technical structure', 'The site is a static GitHub Pages instructional resource built from local HTML, CSS, JavaScript, self-hosted fonts, local course data, and local assets. It has no server-side database and no third-party analytics dependency.'],
-      ['MAINTENANCE', 'Maintenance plan and known limitations', 'Course content should be checked before each term against Blackboard, the active course outline, current assessment files, reading links, accessibility checks, and copyright permissions. The Seneca logo identifies the course context; the page text identifies the site as instructor-created and not a replacement for Blackboard.']
+      ['BLACKBOARD', 'Where official course work happens', 'Blackboard remains the official Seneca course platform for announcements, assignment submission, discussions, grades, course records, and required administrative functions.'],
+      ['PRIVACY', 'What this site does not collect', 'This site does not require an account, does not collect student submissions, does not store grades, and does not request personal student information. Notes and check answers stay in this browser unless you export them.'],
+      ['COPYRIGHT', 'How readings and media are used', 'Course readings and media are linked for educational use. Copyright remains with the original creators and publishers. Access readings through the provided links, Seneca library access, or Blackboard where applicable.'],
+      ['MEDIA', 'External media', 'Some videos or media players may load from external platforms only when you choose to open or play them. Those platforms may have their own privacy practices.'],
+      ['ACCESS', 'Accessibility support', 'This site is designed to support accessible course navigation. If you experience a barrier, use Blackboard and contact the instructor so access can be supported.'],
+      ['STUDY', 'What this site is for', 'Use this companion website for weekly learning pathways, readings, key concepts, walkthroughs, self-checks, glossary materials, and study supports.']
     ];
-    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">CHAIR REVIEW NOTES</div><h1>Institutional Review Notes</h1><p>This page summarizes the approval-facing posture of the ' + esc(code) + ' companion website for ' + esc(title) + '.</p></div><div class="path-compass" aria-label="Companion website relationship"><span>SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
-      + '<section class="node" style="border-left:4px solid var(--red);border-radius:0 14px 14px 0"><p style="font-size:1rem;line-height:1.65;color:var(--ink);margin:0 0 12px">This companion website is designed to support student navigation, accessibility, and engagement in ' + esc(code) + '. It provides weekly learning pathways, key concepts, linked readings, walkthroughs, glossary materials, and study supports.</p><p style="font-size:1rem;line-height:1.65;color:var(--ink);margin:0 0 12px">Blackboard remains the official Seneca course platform for announcements, assignment submissions, discussions, grades, course records, and required administrative functions.</p><p style="font-size:1rem;line-height:1.65;color:var(--ink);margin:0">The companion website does not collect student work, store grades, require accounts, request student numbers, or process private student information. The site is built as a static instructional resource and is intended to reduce navigation barriers while preserving Seneca official course administration in Blackboard.</p></section>'
+    return '<div class="rise path-page">'
+      + '<section class="path-hero"><div><div class="mono">COMPANION WEBSITE</div><h1>How This Site Works</h1><p>This page explains how the ' + esc(code) + ' companion website supports ' + esc(title) + ', what belongs on Blackboard, and how readings, privacy, accessibility, and media are handled.</p></div><div class="path-compass" aria-label="Companion website and Blackboard relationship"><span>THIS SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
+      + institutionalNoticeHtml()
+      + howToUseSiteHtml()
       + '<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0">' + cards.map(function (c) { return siteCard(c[0], c[1], c[2]); }).join('') + '</section>'
-      + '<section class="node"><h2 class="wk-sec">Student-Facing Notes</h2>' + institutionalNoticeHtml() + howToUseSiteHtml() + '</section></div>';
+      + '</div>';
+  }
+  function screenAnnounceText() {
+    if (state.screen === 'station') return 'Week ' + state.stationWeek + ': ' + weekTitle(state.stationWeek);
+    if (state.screen === 'site') return 'How This Site Works';
+    if (state.screen === 'pathways') return 'Course Pathways';
+    if (state.screen === 'readings') return 'Readings Library';
+    if (state.screen === 'compare') return 'Compare Readings';
+    if (state.screen === 'reading') return 'Reading Practice';
+    if (state.screen === 'videos') return 'Videos and Podcasts';
+    if (state.screen === 'glossary') return 'Glossary';
+    if (state.screen === 'cards') return 'Concept Flashcards';
+    if (state.screen === 'assignments') return 'Starting Your Assignment';
+    if (state.screen === 'career') return 'Career Choices';
+    if (state.screen === 'ecology') return 'Resilience Ecology';
+    if (state.screen === 'activity') return 'Activity';
+    if (state.screen === 'detail') return 'Reading Details';
+    return 'Home';
   }
   function siteFooter() {
     var code = courseCode() || 'Course';
     return '<footer role="contentinfo" style="margin:28px 0 0;padding:18px 20px;border:1px solid #DEE3EA;border-top:4px solid var(--red);border-radius:14px;background:#fff;color:var(--ink-dim)">'
       + '<p style="font-size:.9rem;line-height:1.55;margin:0 0 8px"><strong style="color:var(--ink)">' + esc(code) + ' companion website.</strong> Blackboard remains the official course platform for submissions, grades, announcements, discussions, and course records.</p>'
       + '<p style="font-size:.84rem;line-height:1.55;margin:0 0 8px">This site does not require an account, does not collect student submissions, does not store grades, and does not request personal student information. Notes and check answers stay in this browser unless you export them. External media players may be subject to the privacy practices of the host platform.</p>'
-      + '<p style="font-size:.84rem;line-height:1.55;margin:0">This site is designed to support accessible course navigation. Students who experience barriers using the site should use Blackboard and contact the instructor so access can be supported. <button type="button" onclick="SOC.go(\'review\')" style="border:0;background:none;color:#1552D8;font:inherit;font-weight:700;padding:0;cursor:pointer">Chair Review Notes</button></p>'
+      + '<p style="font-size:.84rem;line-height:1.55;margin:0">This site is designed to support accessible course navigation. Students who experience barriers using the site should use Blackboard and contact the instructor so access can be supported.</p>'
       + '</footer>';
   }
   function focusWeek(sel) { var ws = weeksWithReadings(); return sel == null ? (ws[0] || 1) : sel; }
@@ -2395,6 +2487,7 @@
     if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + mobileWeekActions(_sw, weekData(_sw)) + lensHook(_sw) + weekStation(_sw); }
     if (state.screen === 'detail') return homeBar() + detail();
     if (state.screen === 'pathways') return homeBar() + pathwaysPage();
+    if (state.screen === 'site') return homeBar() + siteInfoPage();
     if (state.screen === 'videos') return homeBar() + videosPage();
     if (state.screen === 'readings') return homeBar() + readingsGallery();
     if (state.screen === 'compare') return homeBar() + compare();
@@ -2403,7 +2496,6 @@
     if (state.screen === 'cards') return homeBar() + cardsScreen();
     if (state.screen === 'assignments') return homeBar() + assignmentsPage();
     if (state.screen === 'career') return homeBar() + careerScreen();
-    if (state.screen === 'review') return homeBar() + reviewPage();
     if (state.screen === 'activity') { var _aw = state.activityReturn || state.stationWeek || currentJourneyWeek(); return backBar() + mobileActivityActions(_aw) + activityScreen(); }
     if (state.screen === 'ecology' && D.course && D.course.code === 'PSY355') return homeBar() + ecologyScreen();
     return journeyHome();
@@ -2480,7 +2572,7 @@
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
       + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + siteFooter() + '</div></main>'
-      + '</div>' + toast + '</div>';
+      + '</div>' + readerLensOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
       if (el) { el.focus(); var v = el.value; el.setSelectionRange(v.length, v.length); }
@@ -2491,6 +2583,14 @@
       if (ft) { if (!ft.hasAttribute('tabindex')) ft.setAttribute('tabindex', '-1'); ft.focus(); }
       focusTarget = null;
     }
+    var ann = screenAnnounceText();
+    if (ann && render._announced !== ann) {
+      render._announced = ann;
+      document.title = ann + ' | ' + (courseCode() || 'Course') + ' Companion';
+      var lr = document.getElementById('soc-live');
+      if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = 'Loaded ' + ann; }, 30); }
+    }
+    if (state.readerLensOpen) setTimeout(updateReaderLens, 0);
     saveView();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
@@ -2654,6 +2754,27 @@
     openNav: function () { state.navOpen = true; renderKeepScroll(); },
     toggleNav: function () { state.navOpen = !state.navOpen; renderKeepScroll(); },
     closeNav: function () { state.navOpen = false; renderKeepScroll(); },
+    toggleReaderLens: function () {
+      state.readerLensOpen = !state.readerLensOpen;
+      if (state.readerLensOpen) { state.readerLensX = state.readerLensX || 84; state.readerLensY = state.readerLensY || 86; }
+      else readerLensStopDrag();
+      renderKeepScroll();
+      setTimeout(function () {
+        var el = document.getElementById('reader-lens');
+        if (state.readerLensOpen && el) { el.focus(); updateReaderLens(); announce('Reading Lens on. Drag it over text or use the arrow keys.'); }
+        else announce('Reading Lens off.');
+      }, 40);
+    },
+    closeReaderLens: function () { state.readerLensOpen = false; readerLensStopDrag(); renderKeepScroll(); announce('Reading Lens closed.'); },
+    readerLensPointerDown: function (e) { startReaderLensDrag(e); },
+    readerLensKey: function (e) {
+      var step = e.shiftKey ? 42 : 16, x = Number(state.readerLensX) || 84, y = Number(state.readerLensY) || 86;
+      if (e.key === 'Escape') { e.preventDefault(); window.SOC.closeReaderLens(); return; }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); setReaderLensPos(x - step, y); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); setReaderLensPos(x + step, y); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setReaderLensPos(x, y - step); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); setReaderLensPos(x, y + step); }
+    },
     prev: goPrevious,
     go: function (s) { var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },

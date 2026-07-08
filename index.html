@@ -54,6 +54,15 @@
   .addtile:hover{border-color:var(--navy)!important;color:var(--navy)!important}
   .pickchip:hover{border-color:var(--navy)!important}
   .removebtn:hover{color:var(--red)!important}
+  .reader-lens-btn{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);padding:8px 12px;font-size:.84rem;font-weight:800;box-shadow:0 3px 10px rgba(27,42,74,.06)}
+  .reader-lens-btn.on{border-color:var(--red);background:#FBF4F3;color:var(--red)}
+  .reader-lens{position:fixed;z-index:95;width:min(380px,calc(100vw - 24px));border:1px solid rgba(27,42,74,.22);border-radius:16px;background:rgba(255,255,255,.97);box-shadow:0 18px 42px rgba(21,23,28,.28);overflow:hidden;touch-action:none}
+  .reader-lens-glass{position:absolute;left:-24px;top:-24px;width:82px;height:82px;border:4px solid var(--red);border-radius:50%;background:rgba(255,255,255,.18);color:var(--red);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(218,41,28,.24);pointer-events:none}
+  .reader-lens-head{display:flex;align-items:center;gap:9px;padding:10px 12px 10px 58px;background:#1B2A4A;color:#fff;cursor:grab;user-select:none}
+  .reader-lens-head span{display:flex;color:#F9B4AE}.reader-lens-head strong{font-size:.9rem;line-height:1;flex:1}.reader-lens-head button{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.24);border-radius:8px;background:rgba(255,255,255,.1);color:#fff}
+  .reader-lens-copy{font-size:1.32rem;line-height:1.65;font-weight:650;color:var(--ink);padding:15px 17px 8px;max-height:178px;overflow:auto}
+  .reader-lens-help{margin:0;padding:0 17px 15px;font-size:.78rem;line-height:1.45;color:var(--ink-dim)}
+  @media (max-width:760px){.reader-lens-btn{margin-left:auto;padding:8px 10px;min-width:40px}.reader-lens-label{display:none}.reader-lens{width:calc(100vw - 24px)}}
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
   @media (max-width:760px){
     .soc-sidebar{display:none!important}
@@ -154,6 +163,6 @@
 <script src="./data/psy355-career.js?v=4"></script>
 <script src="./data/seneca-programs.js?v=3"></script>
 <script src="./data/psy355-lens.js?v=1"></script>
-<script src="./app.js?v=78"></script>
+<script src="./app.js?v=80"></script>
 </body>
 </html>
