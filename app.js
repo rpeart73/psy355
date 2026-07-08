@@ -14,7 +14,7 @@
   var VKEY = SKEY + '.view.v1';
   var HKEY = SKEY + '.hardResetNext';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, rl: state.rl })); } catch (e) {} }
   function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function clearView() { try { sessionStorage.removeItem(VKEY); sessionStorage.removeItem(HKEY); } catch (e) {} }
   function shouldResumeView(v) {
@@ -290,92 +290,209 @@
     return out + '</svg>';
   }
 
-  var readerLensDrag = null;
   function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
   function announce(msg) {
     var lr = document.getElementById('soc-live');
     if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = msg; }, 30); }
   }
   function readerLensButton() {
-    var on = !!state.readerLensOpen;
-    return '<button type="button" class="reader-lens-btn' + (on ? ' on' : '') + '" onclick="SOC.toggleReaderLens()" aria-pressed="' + (on ? 'true' : 'false') + '" aria-label="' + (on ? 'Turn Reading Lens off' : 'Turn Reading Lens on') + '" title="Reading Lens">' + ic('search', 17, 2) + '<span class="reader-lens-label">Reading Lens</span></button>';
+    var on = !!state.rlPanelOpen;
+    return '<button type="button" class="reader-lens-btn' + (on ? ' on' : '') + '" onclick="SOC.rlPanel()" aria-pressed="' + (on ? 'true' : 'false') + '" aria-expanded="' + (on ? 'true' : 'false') + '" aria-label="Reading Lens: open reading supports" title="Reading Lens: text size, spacing, font, tint, ruler, magnifier, read aloud">' + ic('search', 17, 2) + '<span class="reader-lens-label">Reading Lens</span></button>';
   }
   function readerLensOverlay() {
     if (!state.readerLensOpen) return '';
-    var x = clamp(Number(state.readerLensX) || 84, 8, Math.max(8, window.innerWidth - 340));
-    var y = clamp(Number(state.readerLensY) || 86, 70, Math.max(70, window.innerHeight - 210));
-    return '<section id="reader-lens" class="reader-lens" style="left:' + x + 'px;top:' + y + 'px" tabindex="0" role="region" aria-label="Reading Lens text magnifier" aria-describedby="reader-lens-help" onpointerdown="SOC.readerLensPointerDown(event)" onkeydown="SOC.readerLensKey(event)">'
-      + '<div class="reader-lens-head"><span>' + ic('search', 16, 2) + '</span><strong>Reading Lens</strong><button type="button" onpointerdown="event.stopPropagation()" onclick="SOC.closeReaderLens()" aria-label="Close Reading Lens">' + ic('x', 16, 2) + '</button></div>'
-      + '<div class="reader-lens-target" aria-hidden="true">' + ic('search', 24, 2.1) + '</div>'
-      + '<div id="reader-lens-copy" class="reader-lens-copy" aria-hidden="true">Drag the centre of this lens over text to magnify it here.</div>'
-      + '<p id="reader-lens-help" class="reader-lens-help">Drag any part of the lens over text. Keyboard: arrow keys move it; Shift plus arrow moves faster; Escape closes it.</p>'
+    return '<section id="reader-lens-dock" class="rl-dock" role="region" aria-label="Reading magnifier">'
+      + '<div class="rl-dock-head"><strong>' + ic('search', 15, 2) + ' Magnifier</strong>'
+      + '<span class="rl-dock-hint">Shows the text under your pointer in large print. Keyboard: Tab to any item and it appears here. Escape turns it off.</span>'
+      + '<button type="button" class="rl-btn rl-close" onclick="SOC.toggleReaderLens()" aria-label="Turn magnifier off">' + ic('x', 15, 2) + '</button></div>'
+      + '<div id="reader-lens-copy" class="rl-dock-copy" aria-hidden="true">Move your pointer over any text, or Tab through the page.</div>'
       + '</section>';
   }
+  var rlDockRaf = 0;
   function readerLensTextAt(x, y) {
-    var lens = document.getElementById('reader-lens'), oldPointer = '';
-    if (lens) { oldPointer = lens.style.pointerEvents; lens.style.pointerEvents = 'none'; }
+    var dock = document.getElementById('reader-lens-dock');
     var stack = document.elementsFromPoint ? document.elementsFromPoint(x, y) : [document.elementFromPoint(x, y)];
-    if (lens) lens.style.pointerEvents = oldPointer;
     var allowed = /^(p|li|h1|h2|h3|h4|h5|h6|blockquote|td|th|figcaption|label|button|a|summary|small|strong|b)$/;
-    function cleanText(el) {
-      var text = (el && el.textContent ? el.textContent : '').replace(/\s+/g, ' ').trim();
-      if (!text) return '';
-      return text.length > 430 ? text.slice(0, 427) + '...' : text;
-    }
     for (var i = 0; i < stack.length; i++) {
       var node = stack[i];
+      if (dock && dock.contains(node)) continue;
       while (node && node !== document.body) {
+        if (dock && dock.contains(node)) break;
         var tag = String(node.tagName || '').toLowerCase();
         if (allowed.test(tag)) {
-          var direct = cleanText(node);
-          if (direct) return direct;
+          var text = (node.textContent || '').replace(/\\s+/g, ' ').trim();
+          if (text) return text.length > 700 ? text.slice(0, 697) + '...' : text;
         }
         node = node.parentElement;
       }
     }
-    var blocks = document.querySelectorAll('#soc-main h1,#soc-main h2,#soc-main h3,#soc-main h4,#soc-main p,#soc-main li,#soc-main button,#soc-main a,#soc-main label,#soc-main small,#soc-main strong,#soc-main b');
-    var best = null, bestScore = 3600;
-    for (var b = 0; b < blocks.length; b++) {
-      var r = blocks[b].getBoundingClientRect();
-      if (!r.width || !r.height) continue;
-      var dx = x < r.left ? r.left - x : x > r.right ? x - r.right : 0;
-      var dy = y < r.top ? r.top - y : y > r.bottom ? y - r.bottom : 0;
-      var score = dx * dx + dy * dy;
-      if (score < bestScore) { bestScore = score; best = blocks[b]; }
+    return '';
+  }
+  function rlDockShow(text) {
+    var out = document.getElementById('reader-lens-copy');
+    if (out && text) out.textContent = text;
+  }
+  function rlDockPointer(e) {
+    if (rlDockRaf) return;
+    var x = e.clientX, y = e.clientY;
+    rlDockRaf = requestAnimationFrame(function () {
+      rlDockRaf = 0;
+      rlDockShow(readerLensTextAt(x, y));
+    });
+  }
+  function rlDockFocus(e) {
+    var dock = document.getElementById('reader-lens-dock');
+    if (!e.target || (dock && dock.contains(e.target))) return;
+    var text = (e.target.textContent || e.target.getAttribute && e.target.getAttribute('aria-label') || '').replace(/\\s+/g, ' ').trim();
+    if (text) rlDockShow(text.length > 700 ? text.slice(0, 697) + '...' : text);
+  }
+  function rlDockKey(e) {
+    if (e.key === 'Escape' && state.readerLensOpen) { SOC.toggleReaderLens(); }
+  }
+  function rlDockWire(on) {
+    if (on) {
+      document.addEventListener('pointermove', rlDockPointer, true);
+      document.addEventListener('focusin', rlDockFocus, true);
+      document.addEventListener('keydown', rlDockKey, true);
+    } else {
+      document.removeEventListener('pointermove', rlDockPointer, true);
+      document.removeEventListener('focusin', rlDockFocus, true);
+      document.removeEventListener('keydown', rlDockKey, true);
     }
-    return cleanText(best) || 'Drag the centre of this lens over text to magnify it here.';
   }
-  function updateReaderLens() {
-    var lens = document.getElementById('reader-lens'), out = document.getElementById('reader-lens-copy');
-    if (!lens || !out) return;
-    var r = lens.getBoundingClientRect();
-    out.textContent = readerLensTextAt(r.left + (r.width / 2), r.top + (r.height / 2));
+
+  /* ---------- Reading Supports (Reading Lens v2) ---------- */
+  function rlState() {
+    if (!state.rl || typeof state.rl !== 'object') state.rl = {};
+    var r = state.rl;
+    if ([100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
+    if (['none', 'cream', 'blue', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
+    r.space = !!r.space; r.font = !!r.font; r.ruler = !!r.ruler;
+    if ([85, 100, 115].indexOf(r.rate) < 0) r.rate = 100;
+    return r;
   }
-  function setReaderLensPos(x, y) {
-    var w = Math.min(380, Math.max(300, window.innerWidth - 24));
-    state.readerLensX = clamp(Math.round(x), 8, Math.max(8, window.innerWidth - w - 8));
-    state.readerLensY = clamp(Math.round(y), 70, Math.max(70, window.innerHeight - 210));
-    var lens = document.getElementById('reader-lens');
-    if (lens) { lens.style.left = state.readerLensX + 'px'; lens.style.top = state.readerLensY + 'px'; updateReaderLens(); }
+  var rlRulerY = 220, rlRulerRaf = 0, rlSpeaking = false, rlSpeakIdx = -1, rlSpeakBlocks = [];
+  function rlApply() {
+    var r = rlState(), root = document.documentElement;
+    ['rl-z115', 'rl-z130', 'rl-z150', 'rl-z175'].forEach(function (c) { root.classList.remove(c); });
+    if (r.zoom !== 100) root.classList.add('rl-z' + r.zoom);
+    root.classList.toggle('rl-space', r.space);
+    root.classList.toggle('rl-font', r.font);
+    var tint = document.getElementById('rl-tint');
+    if (r.tint !== 'none') {
+      if (!tint) { tint = document.createElement('div'); tint.id = 'rl-tint'; document.body.appendChild(tint); }
+      tint.style.background = r.tint === 'cream' ? 'rgba(255,236,190,.34)' : r.tint === 'blue' ? 'rgba(199,222,255,.34)' : 'rgba(214,219,227,.4)';
+    } else if (tint) { tint.remove(); }
+    rlRulerApply();
   }
-  function readerLensMove(e) {
-    if (!readerLensDrag) return;
+  function rlRulerParts() {
+    return { top: document.getElementById('rl-ruler-top'), band: document.getElementById('rl-ruler-band'), bot: document.getElementById('rl-ruler-bot') };
+  }
+  function rlRulerApply() {
+    var r = rlState(), p = rlRulerParts();
+    if (r.ruler) {
+      if (!p.top) {
+        ['rl-ruler-top', 'rl-ruler-band', 'rl-ruler-bot'].forEach(function (id) {
+          var d = document.createElement('div'); d.id = id; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d);
+        });
+        document.addEventListener('pointermove', rlRulerFollow, true);
+        document.addEventListener('keydown', rlRulerKeys, true);
+      }
+      rlRulerPosition();
+    } else if (p.top) {
+      p.top.remove(); p.band.remove(); p.bot.remove();
+      document.removeEventListener('pointermove', rlRulerFollow, true);
+      document.removeEventListener('keydown', rlRulerKeys, true);
+    }
+  }
+  function rlRulerPosition() {
+    var p = rlRulerParts();
+    if (!p.top) return;
+    var fs = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var half = Math.round(fs * 1.6);
+    var y = Math.max(70, Math.min(window.innerHeight - 40, rlRulerY));
+    p.top.style.cssText = 'position:fixed;left:0;right:0;top:0;height:' + Math.max(0, y - half) + 'px;pointer-events:none;z-index:61;background:rgba(27,42,74,.32)';
+    p.band.style.cssText = 'position:fixed;left:0;right:0;top:' + (y - half) + 'px;height:' + (half * 2) + 'px;pointer-events:none;z-index:62;border-top:2px solid rgba(218,41,28,.7);border-bottom:2px solid rgba(218,41,28,.7)';
+    p.bot.style.cssText = 'position:fixed;left:0;right:0;top:' + (y + half) + 'px;bottom:0;pointer-events:none;z-index:61;background:rgba(27,42,74,.32)';
+  }
+  function rlRulerFollow(e) {
+    rlRulerY = e.clientY;
+    if (!rlRulerRaf) rlRulerRaf = requestAnimationFrame(function () { rlRulerRaf = 0; rlRulerPosition(); });
+  }
+  function rlRulerKeys(e) {
+    if (!e.altKey || (e.key !== 'ArrowDown' && e.key !== 'ArrowUp')) return;
     e.preventDefault();
-    setReaderLensPos(e.clientX - readerLensDrag.dx, e.clientY - readerLensDrag.dy);
+    rlRulerY += (e.key === 'ArrowDown' ? 34 : -34);
+    rlRulerPosition();
   }
-  function readerLensStopDrag() {
-    readerLensDrag = null;
-    document.removeEventListener('pointermove', readerLensMove, true);
-    document.removeEventListener('pointerup', readerLensStopDrag, true);
+  function rlSpeakStop() {
+    try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {}
+    rlSpeaking = false; rlSpeakIdx = -1;
+    var cur = document.querySelector('.rl-reading-now');
+    if (cur) cur.classList.remove('rl-reading-now');
+    var b = document.getElementById('rl-speak-btn');
+    if (b) { b.setAttribute('aria-pressed', 'false'); b.textContent = 'Read this page aloud'; }
   }
-  function startReaderLensDrag(e) {
-    var lens = document.getElementById('reader-lens');
-    if (!lens) return;
-    e.preventDefault();
-    var r = lens.getBoundingClientRect();
-    readerLensDrag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
-    document.addEventListener('pointermove', readerLensMove, true);
-    document.addEventListener('pointerup', readerLensStopDrag, true);
+  function rlSpeakNext() {
+    if (!rlSpeaking) return;
+    rlSpeakIdx++;
+    var prev = document.querySelector('.rl-reading-now');
+    if (prev) prev.classList.remove('rl-reading-now');
+    if (rlSpeakIdx >= rlSpeakBlocks.length) { rlSpeakStop(); announce('Finished reading the page aloud.'); return; }
+    var el = rlSpeakBlocks[rlSpeakIdx];
+    if (!el || !el.isConnected) { rlSpeakNext(); return; }
+    el.classList.add('rl-reading-now');
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    try { el.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' }); } catch (e) {}
+    var u = new SpeechSynthesisUtterance(el.textContent.replace(/\s+/g, ' ').trim().slice(0, 2000));
+    u.rate = rlState().rate / 100;
+    u.onend = function () { setTimeout(rlSpeakNext, 120); };
+    u.onerror = function () { rlSpeakStop(); };
+    try { window.speechSynthesis.speak(u); } catch (e) { rlSpeakStop(); }
+  }
+  function rlSpeakToggle() {
+    if (!('speechSynthesis' in window)) { announce('Read aloud is not available in this browser.'); return; }
+    if (rlSpeaking) { rlSpeakStop(); announce('Stopped reading aloud.'); return; }
+    var main = document.getElementById('soc-main');
+    if (!main) return;
+    rlSpeakBlocks = Array.prototype.slice.call(main.querySelectorAll('h1, h2, h3, h4, p, li'))
+      .filter(function (el) { return el.offsetParent !== null && el.textContent.replace(/\s+/g, ' ').trim().length > 2; });
+    if (!rlSpeakBlocks.length) { announce('Nothing to read on this page.'); return; }
+    rlSpeaking = true; rlSpeakIdx = -1;
+    var b = document.getElementById('rl-speak-btn');
+    if (b) { b.setAttribute('aria-pressed', 'true'); b.textContent = 'Stop reading aloud'; }
+    announce('Reading the page aloud from the top.');
+    rlSpeakNext();
+  }
+  function rlBtn(id, label, pressed, handler, extra) {
+    return '<button type="button" id="' + (id || '') + '" class="rl-btn" aria-pressed="' + (pressed ? 'true' : 'false') + '" onclick="' + handler + '"' + (extra || '') + '>' + label + '</button>';
+  }
+  function rlPanelOverlay() {
+    if (!state.rlPanelOpen) return '';
+    var r = rlState();
+    var zoomBtns = [100, 115, 130, 150, 175].map(function (z) {
+      return rlBtn('', z === 100 ? 'Default' : z + '%', r.zoom === z, "SOC.rlZoom(" + z + ")");
+    }).join('');
+    var tintBtns = [['none', 'None'], ['cream', 'Cream'], ['blue', 'Blue'], ['grey', 'Grey']].map(function (t) {
+      return rlBtn('', t[1], r.tint === t[0], "SOC.rlTint('" + t[0] + "')");
+    }).join('');
+    var speech = ('speechSynthesis' in window)
+      ? '<div class="rl-row"><b>Listen</b>' + rlBtn('rl-speak-btn', rlSpeaking ? 'Stop reading aloud' : 'Read this page aloud', rlSpeaking, 'SOC.rlSpeak()')
+        + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
+      : '';
+    return '<section id="rl-panel" class="rl-panel" role="dialog" aria-label="Reading Lens: reading supports" tabindex="-1" onkeydown="SOC.rlPanelKey(event)">'
+      + '<div class="rl-head"><strong>Reading Lens</strong><button type="button" class="rl-btn rl-close" onclick="SOC.rlPanel()" aria-label="Close Reading Lens panel">' + ic('x', 16, 2) + '</button></div>'
+      + '<p class="rl-sub">Reading supports for this site. Your choices apply everywhere here and save only in this browser.</p>'
+      + '<div class="rl-row"><b>Text size</b>' + zoomBtns + '</div>'
+      + '<div class="rl-row"><b>Comfortable spacing</b>' + rlBtn('', r.space ? 'On' : 'Off', r.space, 'SOC.rlSpace()') + '</div>'
+      + '<div class="rl-row"><b>High-legibility font</b>' + rlBtn('', r.font ? 'On' : 'Off', r.font, 'SOC.rlFont()') + '</div>'
+      + '<div class="rl-row"><b>Page tint</b>' + tintBtns + '</div>'
+      + '<div class="rl-row"><b>Reading ruler</b>' + rlBtn('', r.ruler ? 'On' : 'Off', r.ruler, 'SOC.rlRuler()') + '<span class="rl-hint">Follows your pointer. Keyboard: Alt plus Up or Down arrow.</span></div>'
+      + '<div class="rl-row"><b>Magnifier</b>' + rlBtn('', state.readerLensOpen ? 'On' : 'Off', !!state.readerLensOpen, 'SOC.toggleReaderLens()') + '<span class="rl-hint">A movable lens that repeats the text under it in large print.</span></div>'
+      + speech
+      + '<p class="rl-hint" style="margin:10px 0 0">Escape closes this panel. If any part of the site is still hard to use, use Blackboard and contact the instructor so access can be supported.</p>'
+      + '</section>';
   }
 
   /* ---------- filtering + sorting ---------- */
@@ -1024,8 +1141,11 @@
       ['PRIVACY', 'What this site does not collect', 'This site does not require an account, does not collect student submissions, does not store grades, and does not request personal student information. Notes and check answers stay in this browser unless you export them.'],
       ['COPYRIGHT', 'How readings and media are used', 'Course readings and media are linked for educational use. Copyright remains with the original creators and publishers. Access readings through the provided links, Seneca library access, or Blackboard where applicable.'],
       ['MEDIA', 'External media', 'Some videos or media players may load from external platforms only when you choose to open or play them. Those platforms may have their own privacy practices.'],
-      ['ACCESS', 'Accessibility support', 'This site is designed to support accessible course navigation. If you experience a barrier, use Blackboard and contact the instructor so access can be supported.'],
-      ['STUDY', 'What this site is for', 'Use this companion website for weekly learning pathways, readings, key concepts, walkthroughs, self-checks, glossary materials, and study supports.']
+      ['ACCESS', 'Accessibility support', 'This site is designed to support accessible course navigation. The Reading Lens button at the top of every page offers text size, spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. If you experience a barrier, use Blackboard and contact the instructor so access can be supported.'],
+      ['STUDY', 'What this site is for', 'Use this companion website for weekly learning pathways, readings, key concepts, walkthroughs, self-checks, glossary materials, and study supports.'],
+      ['TECHNICAL', 'How this site is built', 'This is a static website: plain HTML, CSS, and JavaScript served from GitHub Pages, with no server, no database, no accounts, and no third-party trackers or analytics. All fonts and scripts load from this site itself.'],
+      ['MAINTENANCE', 'How this site is maintained', 'The instructor maintains this site and updates it alongside Blackboard postings each term. If anything here ever looks out of date, Blackboard is the source of truth, and the instructor can be reached through Blackboard.'],
+      ['LIMITS', 'Known limits', 'Saved notes and check answers live only in this browser on this device: clearing browser data removes them, and they do not move between devices. Some week videos may not yet have captions; their full scripts are posted in Blackboard. This site needs JavaScript; everything required for the course also remains available through Blackboard.']
     ];
     return '<div class="rise path-page">'
       + '<section class="path-hero"><div><div class="mono">COMPANION WEBSITE</div><h1>How This Site Works</h1><p>This page explains how the ' + esc(code) + ' companion website supports ' + esc(title) + ', what belongs on Blackboard, and how readings, privacy, accessibility, and media are handled.</p></div><div class="path-compass" aria-label="Companion website and Blackboard relationship"><span>THIS SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
@@ -2590,7 +2710,7 @@
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
       + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + siteFooter() + '</div></main>'
-      + '</div>' + readerLensOverlay() + toast + '</div>';
+      + '</div>' + readerLensOverlay() + rlPanelOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
       if (el) { el.focus(); var v = el.value; el.setSelectionRange(v.length, v.length); }
@@ -2608,7 +2728,6 @@
       var lr = document.getElementById('soc-live');
       if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = 'Loaded ' + ann; }, 30); }
     }
-    if (state.readerLensOpen) setTimeout(updateReaderLens, 0);
     saveView();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
@@ -2774,29 +2893,22 @@
     closeNav: function () { state.navOpen = false; renderKeepScroll(); },
     toggleReaderLens: function () {
       state.readerLensOpen = !state.readerLensOpen;
-      if (state.readerLensOpen) { state.readerLensX = state.readerLensX || 84; state.readerLensY = state.readerLensY || 86; }
-      else readerLensStopDrag();
+      rlDockWire(state.readerLensOpen);
       renderKeepScroll();
-      setTimeout(function () {
-        var el = document.getElementById('reader-lens');
-        if (state.readerLensOpen && el) { el.focus(); updateReaderLens(); announce('Reading Lens on. Drag it over text or use the arrow keys.'); }
-        else announce('Reading Lens off.');
-      }, 40);
+      announce(state.readerLensOpen ? 'Magnifier on. Text under your pointer or keyboard focus appears in large print at the bottom of the screen.' : 'Magnifier off.');
     },
-    closeReaderLens: function () { state.readerLensOpen = false; readerLensStopDrag(); renderKeepScroll(); announce('Reading Lens closed.'); },
-    readerLensPointerDown: function (e) {
-      var tag = String((e.target && e.target.tagName) || '').toLowerCase();
-      if (/^(button|a|input|textarea|select|option)$/.test(tag)) return;
-      startReaderLensDrag(e);
-    },
-    readerLensKey: function (e) {
-      var step = e.shiftKey ? 42 : 16, x = Number(state.readerLensX) || 84, y = Number(state.readerLensY) || 86;
-      if (e.key === 'Escape') { e.preventDefault(); window.SOC.closeReaderLens(); return; }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); setReaderLensPos(x - step, y); }
-      else if (e.key === 'ArrowRight') { e.preventDefault(); setReaderLensPos(x + step, y); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); setReaderLensPos(x, y - step); }
-      else if (e.key === 'ArrowDown') { e.preventDefault(); setReaderLensPos(x, y + step); }
-    },
+    rlPanel: function () { state.rlPanelOpen = !state.rlPanelOpen; renderKeepScroll(); announce(state.rlPanelOpen ? 'Reading Lens panel open.' : 'Reading Lens panel closed.'); if (state.rlPanelOpen) { var p = document.getElementById('rl-panel'); if (p) p.focus(); } },
+    rlPanelKey: function (e) { if (e.key === 'Escape') { e.stopPropagation(); SOC.rlPanel(); } },
+    rlZoom: function (v) { rlState().zoom = v; persist(); rlApply(); renderKeepScroll(); announce('Text size ' + (v === 100 ? 'default.' : v + ' percent.')); },
+    rlSpace: function () { var r = rlState(); r.space = !r.space; persist(); rlApply(); renderKeepScroll(); announce(r.space ? 'Comfortable spacing on.' : 'Comfortable spacing off.'); },
+    rlFont: function () { var r = rlState(); r.font = !r.font; persist(); rlApply(); renderKeepScroll(); announce(r.font ? 'High-legibility font on.' : 'High-legibility font off.'); },
+    rlTint: function (v) { rlState().tint = v; persist(); rlApply(); renderKeepScroll(); announce(v === 'none' ? 'Page tint off.' : v + ' page tint on.'); },
+    rlRuler: function () { var r = rlState(); r.ruler = !r.ruler; persist(); rlApply(); renderKeepScroll(); announce(r.ruler ? 'Reading ruler on. Move your pointer, or hold Alt and press the up or down arrows.' : 'Reading ruler off.'); },
+    rlSpeak: function () { rlSpeakToggle(); },
+    rlRate: function (v) { rlState().rate = v; persist(); renderKeepScroll(); announce('Reading speed set.'); },
+    closeReaderLens: function () { if (state.readerLensOpen) SOC.toggleReaderLens(); },
+    readerLensPointerDown: function () {},
+    readerLensKey: function () {},
     prev: goPrevious,
     go: function (s) { var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
@@ -2980,4 +3092,17 @@
 
   render();
   if (routePart0) scrollWeekPart(routePart0);
+
+  /* Reading Supports boot: apply saved settings, keep them across renders, stop speech on navigation */
+  try {
+    var rlSaved = load();
+    if (rlSaved && rlSaved.rl && typeof rlSaved.rl === 'object') state.rl = rlSaved.rl;
+    rlApply();
+    var rlMo = new MutationObserver(function () {
+      if (rlSpeaking) rlSpeakStop();
+      rlApply();
+    });
+    var rlMain = document.getElementById('soc-main');
+    if (rlMain && rlMain.parentElement) rlMo.observe(rlMain.parentElement, { childList: true, subtree: false });
+  } catch (e) {}
 })();
