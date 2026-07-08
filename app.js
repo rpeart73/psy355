@@ -14,7 +14,7 @@
   var VKEY = SKEY + '.view.v1';
   var HKEY = SKEY + '.hardResetNext';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, careerReflect: state.careerReflect })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect })); } catch (e) {} }
   function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function clearView() { try { sessionStorage.removeItem(VKEY); sessionStorage.removeItem(HKEY); } catch (e) {} }
   function shouldResumeView(v) {
@@ -24,7 +24,7 @@
     return !!(v && v.screen);
   }
   function cleanScreen(s) {
-    return ['journey', 'library', 'station', 'detail', 'readings', 'compare', 'reading', 'glossary', 'career', 'cards', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
+    return ['journey', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
     w = Number(w);
@@ -50,6 +50,7 @@
 
   var state = {
     screen: route0 ? route0.screen : (resumeView0 ? cleanScreen(view0.screen) : 'journey'),
+    prevView: (resumeView0 && view0.prevView && typeof view0.prevView === 'object') ? view0.prevView : null,
     navOpen: false,
     journeyWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.journeyWeek) : null),
     stationWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.stationWeek) : null),
@@ -89,11 +90,14 @@
     kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
     careerField: resumeView0 ? (view0.careerField || '') : '',
     careerReflect: (saved0.careerReflect && typeof saved0.careerReflect === 'object') ? saved0.careerReflect : {},
+    mediaNotes: (saved0.mediaNotes && typeof saved0.mediaNotes === 'object') ? saved0.mediaNotes : {},
     libScroll: 0,
     toast: null,
     cardWeek: resumeView0 ? cleanWeek(view0.cardWeek) : null,
     glossWeek: resumeView0 ? (view0.glossWeek || 'all') : 'all',
     glossSearch: resumeView0 ? (view0.glossSearch || '') : '',
+    videoWeek: resumeView0 ? (view0.videoWeek || 'all') : 'all',
+    mediaKind: resumeView0 ? (view0.mediaKind || 'all') : 'all',
   };
   if (resumeView0) {
     state.activityReturn = cleanWeek(view0.activityReturn);
@@ -114,6 +118,7 @@
     try {
       sessionStorage.setItem(VKEY, JSON.stringify({
         screen: state.screen,
+        prevView: state.prevView || null,
         journeyWeek: state.journeyWeek,
         stationWeek: state.stationWeek,
         activityReturn: state.activityReturn,
@@ -133,7 +138,9 @@
         glossWeek: state.glossWeek || 'all',
         glossSearch: state.glossSearch || '',
         ecoLayer: state.ecoLayer || 'you',
-        act: state.act || {}
+        act: state.act || {},
+        videoWeek: state.videoWeek || 'all',
+        mediaKind: state.mediaKind || 'all'
       }));
     } catch (e) {}
   }
@@ -356,7 +363,7 @@
   }
   function sidebar() {
     var s = state;
-    var navDefs = [['journey', 'Home', 'gauge'], ['readings', 'Library of Readings', 'gallery'], ['compare', 'Compare Reading Concepts', 'columns'], ['reading', 'Build Your Reading Comprehension', 'book'], ['glossary', 'Glossary & Thinkers', 'book'], ['cards', 'Self-check', 'clipboard'], ['career', 'Career Choices', 'globe']];
+    var navDefs = [['journey', 'Home', 'gauge'], ['pathways', 'Course Pathways', 'map'], ['readings', 'Readings Library', 'gallery'], ['compare', 'Compare Readings', 'columns'], ['reading', 'Reading Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || s.screen === key;
@@ -369,7 +376,7 @@
     var walk = '<a href="./walkthroughs/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:11px;width:100%;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;color:#474C57;text-decoration:none"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('layers', 19) + '</span><span style="flex:1">Weekly Walkthroughs</span><span style="color:#6B7280">↗</span></a>';
     var guidePdf = './guide/PSY355_Companion_Site_Guide.pdf';
     var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online version <span aria-hidden="true">&#8599;</span></a><a href="' + guidePdf + '" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">PDF <span aria-hidden="true">&#8599;</span></a></div></div>';
-    var nav = btns[0] + walk + btns.slice(1).join('') + guide;
+    var nav = btns[0] + btns[1] + walk + btns.slice(2).join('') + guide;
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
     var navWeeks = [];
     for (var nw = 1; nw <= 14; nw++) navWeeks.push(nw);
@@ -1120,7 +1127,7 @@
     var hero = '<section class="jhero jfade" style="margin-bottom:26px">' + heroArt()
       + '<div style="position:relative;">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.08em;color:var(--red);font-weight:600;margin-bottom:12px">SENECA POLYTECHNIC &middot; FALL 2026</div>'
-      + '<h1 style="font-size:2.5rem;line-height:1.1;font-weight:600;margin:0 0 14px;letter-spacing:-.01em">' + esc(title) + '</h1>'
+      + '<h1 class="jhero-title" style="font-size:2.5rem;line-height:1.1;font-weight:600;margin:0 0 14px;letter-spacing:0">' + esc(title) + '</h1>'
       + '<p style="font-size:1.0625rem;line-height:1.6;color:var(--ink-dim);margin:0 0 24px;">' + esc(journeyIntro()) + '</p>'
       + '<button class="jhero-cta" onclick="SOC.station(' + (cur || (ws[0] || 1)) + ')">' + ctaLabel + ic('chevron', 18, 2.4) + '</button>'
       + (started ? '' : '<div style="margin-top:14px;font-size:.8125rem;color:var(--ink-faint)">' + ws.length + ' weeks in this course</div>')
@@ -1525,16 +1532,29 @@
     return { html: kc, items: kcItems.concat(shortItems) };
   }
 
+  function weekHero(w, d, opt) {
+    d = d || {};
+    opt = opt || {};
+    var route = opt.route || ['Read', 'See', 'Try', 'Reflect'];
+    var routeHtml = route.map(function (x, i) { return '<span><b>' + (i + 1) + '</b>' + esc(x) + '</span>'; }).join('');
+    var startPart = opt.startPart || 'pre';
+    var startLabel = opt.startLabel || 'Start this week';
+    var sub = opt.sub || d.overview || '';
+    var q = opt.question === false ? '' : (opt.question || journeyQ(w));
+    return '<section id="wk-ov" class="node jhero jfade wk-hero2">'
+      + '<div class="wk-hero-main"><div class="mono wk-hero-kicker">WEEK ' + w + ' | ' + esc(weekDate(w)) + ' | ' + esc(opt.label || 'WEEKLY MODULE') + '</div>'
+      + '<h1>' + esc(opt.title || weekTitle(w)) + '</h1>'
+      + (sub ? '<p>' + esc(sub) + '</p>' : '')
+      + (q ? '<div class="wk-hero-question">' + esc(q) + '</div>' : '')
+      + '<div class="wk-hero-actions"><button type="button" onclick="SOC.jumpWeek(' + w + ',\'' + startPart + '\')">' + esc(startLabel) + '</button><span>' + ic('clock', 13) + ' ' + esc((d.time || opt.time || 'Work at your own pace')) + '</span></div></div>'
+      + '<aside class="wk-hero-route" aria-label="Weekly route"><div class="mono">MODULE ROUTE</div>' + routeHtml + '</aside>'
+      + '</section>';
+  }
+
   function weekPage(w, d) {
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var sec = function (id, title, inner) { return '<section id="wk-' + id + '" class="node"><h2 class="wk-sec">' + esc(title) + '</h2>' + inner + '</section>'; };
-    var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
-      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · ' + esc(weekDate(w)) + '</div>'
-      + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(weekTitle(w)) + '</h1>'
-      + '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">' + esc(d.overview) + '</p>'
-      + '<div style="font-size:1.08rem;font-weight:600;color:var(--ink);border-left:3px solid var(--red);padding-left:14px;margin:16px 0">' + esc(journeyQ(w)) + '</div>'
-      + '<div style="font-family:var(--mono);font-size:.74rem;color:var(--ink-faint)">' + ic('clock', 13) + ' ' + esc(d.time) + '</div>'
-      + '</div></section>';
+    var hero = weekHero(w, d, { startPart: 'pre', startLabel: 'Start this week', label: 'WEEKLY MODULE' });
     var pre = sec('pre', 'Before you begin', '<p class="wk-hint">A quick read on where your understanding sits right now, no grade. Rate each idea, then meet them again at the end to see how far your thinking moves.</p>' + wkChecks(w, 'pre', d));
     var purpose = '<section id="wk-learn" class="node"><h2 class="wk-sec">Purpose</h2><p style="margin:0">' + esc(d.purpose) + '</p></section>';
     var outcomes = sec('out', 'Learning outcomes', '<p style="margin:0 0 8px;font-size:.9rem">By the end of this week, you will be able to:</p>' + d.outcomes.map(function (o) { return '<div class="wk-oc"><span class="b"></span>' + esc(o) + '</div>'; }).join(''));
@@ -1671,12 +1691,14 @@
     var d = weekData(w) || {};
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var isFinal = (next == null);
-    var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
-      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · ' + esc(weekDate(w)) + ' · ' + (isFinal ? 'FINAL WEEK' : 'CAPSTONE WEEK') + '</div>'
-      + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(weekTitle(w)) + '</h1>'
-      + (d.overview ? '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">' + esc(d.overview) + '</p>' : '')
-      + '<div style="font-size:1.02rem;font-weight:600;color:var(--ink);border-left:3px solid var(--red);padding-left:14px;margin:16px 0">No new readings or teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and close out the course. Nothing is due.' : '. Your capstone is due this week.') + '</div>'
-      + '</div></section>';
+    var hero = weekHero(w, d, {
+      label: isFinal ? 'FINAL WEEK' : 'CAPSTONE WEEK',
+      route: d.activity ? ['Capstone', 'Reflect', 'Save notes'] : ['Reflect', 'Save notes'],
+      startPart: d.activity ? 'do' : 'reflect',
+      startLabel: d.activity ? 'Open capstone' : 'Start reflection',
+      question: 'No new readings or teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and close out the course. Nothing is due.' : '. Your capstone is due this week.'),
+      time: 'No new material'
+    });
     var act = d.activity ? '<section id="wk-do" class="node interactive"><h2 class="wk-sec">' + esc(d.activity.title) + '</h2><div class="wk-whatwhy"><b>What this is:</b> ' + esc(d.activity.what) + '<br><br><b>Why you are doing it:</b> ' + esc(d.activity.why) + '</div><button onclick="SOC.startActivity(\'' + d.activity.screen + '\',' + w + ')" class="wk-cta">Open your capstone' + ic('chevron', 17, 2.4) + '</button></section>' : '';
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Your reflection</h2>'
       + (d.reflectPrompt ? '<p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt) + '</p>' : '')
@@ -1698,11 +1720,15 @@
     var d = weekData(w) || {};
     var ws = journeyWeeks(), idx = ws.indexOf(w), next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var cname = (D.course && (D.course.name || D.course.title)) || weekTitle(w);
-    var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
-      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · ' + esc(weekDate(w)) + ' · COURSE OVERVIEW</div>'
-      + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(cname) + '</h1>'
-      + (d.overview ? '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">' + esc(d.overview) + '</p>' : '')
-      + '</div></section>';
+    var hero = weekHero(w, d, {
+      label: 'COURSE OVERVIEW',
+      title: cname,
+      question: false,
+      route: ['Orient', 'Open Week ' + (next != null ? next : 2), 'Use the tools'],
+      startPart: 'how',
+      startLabel: 'How this course works',
+      time: 'Overview, no readings'
+    });
     var how = '<section id="wk-how" class="node"><h2 class="wk-sec">How this course works</h2>'
       + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">Each teaching week opens a module with its readings, a short interactive activity, and optional practice, a study guide and a knowledge check, that are never graded and never recorded. You work through the week at your own pace. A Study Week (October 26 to 30) falls between Weeks 7 and 8, a break with no new work, and nothing is due in the final week.</p>'
       + '<p style="margin:0;font-size:1rem;line-height:1.6">This week is your orientation. There are no readings and nothing to submit. When you are ready, begin with Week ' + (next != null ? next : 2) + '.</p></section>';
@@ -1716,12 +1742,15 @@
   function studyWeekPage(w) {
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var priors = ws.filter(function (x) { return x < w; });
-    var hero = '<section id="wk-ov" class="node jhero jfade" style="margin:0 0 16px"><div style="position:relative">'
-      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">WEEK ' + w + ' · STUDY WEEK</div>'
-      + '<h1 style="font-size:2rem;line-height:1.12;font-weight:700;margin:0 0 12px;color:var(--ink)">Study Week</h1>'
-      + '<p style="font-size:1.04rem;line-height:1.6;color:var(--ink);margin:0 0 4px;">Seneca is open but there are no classes this week (October 26 to 30). There are no new readings, no new content, and nothing is due. Use the week to rest, catch up on anything still open, and let the first half of the course settle.</p>'
-      + '<div style="font-size:1.02rem;font-weight:600;color:var(--ink);border-left:3px solid var(--red);padding-left:14px;margin:16px 0">Nothing here is graded or required. Everything below is optional, and only for your own review.</div>'
-      + '</div></section>';
+    var hero = weekHero(w, { time: 'No classes this week' }, {
+      label: 'STUDY WEEK',
+      title: 'Study Week',
+      sub: 'Seneca is open but there are no classes this week (October 26 to 30). There are no new readings, no new content, and nothing is due. Use the week to rest, catch up on anything still open, and let the first half of the course settle.',
+      question: 'Nothing here is graded or required. Everything below is optional, and only for your own review.',
+      route: priors.length ? ['Rest', 'Review', 'Optional check'] : ['Rest', 'Optional check'],
+      startPart: priors.length ? 'catch' : 'kc',
+      startLabel: priors.length ? 'Review earlier weeks' : 'Open optional check'
+    });
     var catchup = priors.length ? '<section id="wk-catch" class="node"><h2 class="wk-sec">Catch up and review</h2>'
       + '<p style="margin:0 0 12px;font-size:.95rem;color:var(--ink-dim)">If you want to use the week to consolidate, revisit any earlier week. Nothing new to read, only what you have already met.</p>'
       + '<div style="display:flex;flex-wrap:wrap;gap:8px">' + priors.map(function (n) { return '<button onclick="SOC.station(' + n + ')" style="border:1px solid var(--border);background:#fff;border-radius:9px;padding:9px 13px;font-size:.86rem;font-weight:600;color:var(--ink);cursor:pointer;text-align:left">Week ' + n + ': ' + esc(weekTitle(n)) + '</button>'; }).join('') + '</div></section>' : '';
@@ -1743,13 +1772,8 @@
     if (d) return weekPage(w, d);
     var ws = journeyWeeks(), idx = ws.indexOf(w), recs = recordsForWeek(w);
     if (idx < 0 || !recs.length) return '<div style="padding:40px 0;color:var(--ink-dim);font-size:1rem">This week has no readings posted yet. <button onclick="SOC.go(\'journey\')" style="background:none;border:none;color:var(--red);font-weight:600;cursor:pointer">Back to your journey</button></div>';
-    var hero = '<section class="jfade jhero" style="margin-bottom:22px;padding:30px 32px 28px">' + heroArt()
-      + '<div style="position:relative">'
-      + '<div class="mono" style="font-size:.6875rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:9px">WEEK ' + w + ' OF YOUR JOURNEY</div>'
-      + '<h1 style="font-size:1.875rem;line-height:1.16;font-weight:600;margin:0 0 12px">' + esc(weekTitle(w)) + '</h1>'
-      + '<p style="font-size:1.0625rem;line-height:1.5;color:var(--ink);font-weight:500;margin:0;">' + esc(journeyQ(w)) + '</p>'
-      + '</div></section>';
-    var framing = '<p style="font-size:1rem;line-height:1.65;color:var(--ink-dim);margin:0 0 22px;">' + esc(stationFraming(w, recs)) + '</p>';
+    var hero = weekHero(w, { overview: stationFraming(w, recs), time: 'Work at your own pace' }, { label: 'READING WEEK', route: ['Read', 'Practise', 'Reflect'], startPart: 'do', startLabel: 'Use this week' });
+    var framing = '';
     var readBlocks = '<div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">';
     recs.forEach(function (r, i) { readBlocks += stationReading(r, i === 0 ? 'This week\'s reading' : 'Also this week'); });
     readBlocks += '</div>';
@@ -2195,11 +2219,92 @@
       + '<div style="margin-top:9px;font-size:.76rem;line-height:1.45;color:var(--ink-dim)">' + esc(lensChangeLine()) + '</div>'
       + '</div>';
   }
+  function pathwaysPage() {
+    var route = function (kind, title, subtitle, steps) {
+      return '<section class="path-route path-' + kind + '"><div class="path-route-head"><div class="mono">' + esc(kind === 'async' ? 'ASYNCHRONOUS COURSE USERS' : 'SYNCHRONOUS COURSE USERS') + '</div><h2>' + esc(title) + '</h2><p>' + esc(subtitle) + '</p></div>'
+        + '<ol>' + steps.map(function (s, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(s[0]) + '</b><em>' + esc(s[1]) + '</em><p>' + esc(s[2]) + '</p></div></li>'; }).join('') + '</ol></section>';
+    };
+    var asyncSteps = [
+      ['Start', 'Weekly page', 'Work through the module in order.'],
+      ['Learn', 'Walkthrough plus readings', 'Use the walkthrough as your class moment, then anchor it in the readings.'],
+      ['Practise', 'Activity and checks', 'Use the activity, Reading Practice, flashcards, and Knowledge Check as private rehearsal.'],
+      ['Capture', 'Notes as you go', 'Write in the note boxes while your thinking is fresh.'],
+      ['Finish', 'Generate notes', 'Download one organized weekly record for review and Blackboard preparation.']
+    ];
+    var syncSteps = [
+      ['Preview', 'Before class', 'Skim the weekly page and bring one question.'],
+      ['Discuss', 'Class time', 'Use the walkthrough, activity, and examples as shared discussion tools.'],
+      ['Return', 'After class', 'Finish the readings, activity notes, checks, and reflection.'],
+      ['Connect', 'Class plus site notes', 'Add classroom takeaways into the site note boxes.'],
+      ['Prepare', 'Blackboard work', 'Use the assignment guide, practice tools, and notes before submitting.']
+    ];
+    return '<div class="rise path-page">'
+      + '<section class="path-hero"><div><div class="mono">COURSE PATHWAYS</div><h1>Choose your weekly rhythm</h1><p>The work is the same. The pacing is different. Pick the route that matches how you are taking PSY355, then use it every week.</p></div><div class="path-compass" aria-label="Two pathway options"><span>ASYNC</span><b>self-paced learning room</b><i></i><span>SYNC</span><b>before, during, after class</b></div></section>'
+      + '<section class="path-summary"><div><b>Same course</b><span>Same readings, activities, assignments, and expectations.</span></div><div><b>Different rhythm</b><span>Async is self-paced. Sync is class-connected.</span></div><div><b>One weekly record</b><span>Both routes end with Generate Your Weekly Notes.</span></div></section>'
+      + '<div class="path-routes">' + route('async', 'Asynchronous route', 'Use the weekly page as the full learning room.', asyncSteps) + route('sync', 'Synchronous route', 'Use the site around class so class time goes deeper.', syncSteps) + '</div>'
+      + '<section class="path-close"><h2>Which route should you follow?</h2><p>No live weekly class? Use the asynchronous route. Scheduled class meetings? Use the synchronous route. Unsure? Start with the asynchronous route because it is the complete self-paced path.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Enter Week 2 Learning Room</b><small>Start the full module.</small></button><button type="button" onclick="SOC.go(\'videos\')"><b>Scholar Media</b><small>Use media as an on-ramp.</small></button><button type="button" onclick="SOC.careerChoices()"><b>Career Choices</b><small>Connect the course to your path.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Plan the graded work.</small></button></div></section>'
+      + '</div>';
+  }
+  function assignmentsPage() {
+    var items = [
+      ['Learning Practice Journal', 'Recurring preparation', 'Use weekly notes as low-stakes raw material for later reflection and planning.'],
+      ['Mindset Evidence Check 1', 'Week 5 window', 'Use readings and examples from the mindset weeks to keep the evidence precise.'],
+      ['Self-Regulated Learning Case Redesign', 'Week 8 window', 'Choose one real study routine and redesign it with course language and a short implementation log.'],
+      ['Mindset Evidence Check 2', 'Week 11 window', 'Use self-compassion, flexibility, and help-seeking without turning the work into a clinical account.'],
+      ['Personal Resilience Plan', 'Week 13 capstone', 'Build a forward plan grounded in course evidence and your own learning record.']
+    ];
+    var steps = items.map(function (x, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(x[0]) + '</b><em>' + esc(x[1]) + '</em><p>' + esc(x[2]) + '</p></div></li>'; }).join('');
+    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Use the site to prepare, then submit in Blackboard</h1><p>This page gives you the same starting pattern BFS218 uses: find the official assignment in Blackboard, use this site to gather concepts and evidence, then write and submit the final work yourself.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Use weekly notes</b><span>Generate notes from the weeks that feed the assignment before drafting.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section><section class="path-route"><div class="path-route-head"><div class="mono">ASSIGNMENT ROUTE</div><h2>Start from the active PSY355 package</h2><p>Use this as a planning map only. Always check Blackboard for the complete instructions before submitting.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then come back to this assignment map when you are ready to draft.</p><div class="path-actions"><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Mindset evidence.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>SRL case redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Evidence check 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Capstone planning.</small></button></div></section></div>';
+  }
+  function scholarMedia() {
+    var out = [];
+    function add(r, source, kind) {
+      if (!source) return;
+      var isYouTube = !!source.yt;
+      var mediaId = String(source.yt || source.platform || source.kind || kind || 'media').replace(/[^A-Za-z0-9_-]/g, '');
+      out.push({ key: r.id + '|' + mediaId, week: r.week, kind: source.kind || kind || (isYouTube ? 'Video' : 'Podcast'), title: source.title || r.title, scholar: source.scholar || r.authors, source: source.channel || source.source || (isYouTube ? 'YouTube' : 'Source site'), platform: source.platform || (isYouTube ? 'youtube' : 'source'), id: source.yt || '', embed: source.embed === false ? false : isYouTube, url: source.url || (isYouTube ? 'https://www.youtube.com/watch?v=' + source.yt : readUrl(r)), synopsis: r.coreIdea || r.abstract || 'Use this media item as an on-ramp into the assigned reading.', watchFor: [r.coreIdea || 'The central claim of the source', 'Where the media helps you enter the reading', 'What still needs evidence from the assigned text'], readNext: 'Then return to Week ' + r.week + ' and read the assigned source for evidence.', fieldPrompt: mediaFieldPrompt(r.week) });
+    }
+    D.records.forEach(function (r) { add(r, r.video, 'Video'); add(r, r.audio, 'Podcast'); });
+    return out.sort(function (a, b) { return (a.week - b.week) || a.scholar.localeCompare(b.scholar); });
+  }
+  function mediaFieldPrompt(w) {
+    var L = lensParse();
+    if (!L) return '';
+    var ctx = lensFieldContext(L);
+    return 'For ' + (L.program || L.area) + ', use this media item to notice one real pressure point in ' + ctx.place + '. Then return to the reading and name the course idea that explains it.';
+  }
+  function mediaWeekOptions(items) {
+    var weeks = [];
+    items.forEach(function (v) { if (weeks.indexOf(v.week) < 0) weeks.push(v.week); });
+    weeks.sort(function (a, b) { return a - b; });
+    return '<div class="vid-tabs" role="group" aria-label="Filter scholar media by week"><button type="button" onclick="SOC.videoWeek(\'all\')" class="' + (state.videoWeek === 'all' ? 'on' : '') + '">All weeks</button>' + weeks.map(function (w) { return '<button type="button" onclick="SOC.videoWeek(' + w + ')" class="' + (String(state.videoWeek) === String(w) ? 'on' : '') + '">Week ' + w + '</button>'; }).join('') + '</div>';
+  }
+  function mediaKindOptions(items) {
+    var kinds = [];
+    items.forEach(function (v) { var k = String(v.kind || 'Media'); if (kinds.indexOf(k) < 0) kinds.push(k); });
+    return '<div class="vid-tabs vid-kind-tabs" role="group" aria-label="Filter scholar media by type"><button type="button" onclick="SOC.mediaKind(\'all\')" class="' + (state.mediaKind === 'all' ? 'on' : '') + '">All media</button>' + kinds.map(function (k) { return '<button type="button" onclick="SOC.mediaKind(\'' + esc(k) + '\')" class="' + (String(state.mediaKind) === k ? 'on' : '') + '">' + esc(k) + '</button>'; }).join('') + '</div>';
+  }
+  function videoEmbed(v) {
+    if (v.platform === 'youtube' && v.embed) return '<button type="button" class="vid-load" onclick="SOC.playVideo(this,\'' + esc(v.id) + '\')" aria-label="Load video: ' + esc(v.title + ' - ' + v.scholar) + '"><span>' + esc(v.kind || 'Video') + '</span><b>Load official player</b><small>Loads YouTube only after you choose to play it.</small></button>';
+    return '<a class="vid-linkout" href="' + esc(v.url) + '" target="_blank" rel="noopener"><span>' + esc(v.kind || 'Media') + '</span><b>Open on source site</b><small>Playback stays with the official source. Nothing is downloaded or rehosted here.</small></a>';
+  }
+  function videoCard(v) {
+    var note = state.mediaNotes && state.mediaNotes[v.key] ? state.mediaNotes[v.key] : '';
+    return '<article class="vid-card"><div class="vid-frame">' + videoEmbed(v) + '</div><div class="vid-copy"><div class="mono">WEEK ' + v.week + ' &middot; ' + esc(v.kind || 'Media') + ' &middot; ' + esc(v.source) + '</div><h2>' + esc(v.title) + '</h2><h3>' + esc(v.scholar) + '</h3><p>' + esc(v.synopsis) + '</p><div class="vid-watch"><b>Watch for</b><ul>' + v.watchFor.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div><div class="vid-read"><b>Then read</b><span>' + esc(v.readNext) + '</span></div>' + (v.fieldPrompt ? '<div class="vid-field"><b>Use it in your program</b><span>' + esc(v.fieldPrompt) + '</span></div>' : '') + '<label class="vid-note"><b>Reading Rescue note</b><span>After the media, write one sentence you can prove from the reading.</span><textarea oninput="SOC.mediaNote(\'' + esc(v.key) + '\',this.value)" placeholder="One evidence-backed sentence...">' + esc(note) + '</textarea></label><a href="' + esc(v.url) + '" target="_blank" rel="noopener">Open source page <span aria-hidden="true">&#8599;</span></a></div></article>';
+  }
+  function videosPage() {
+    var items = scholarMedia();
+    var filter = state.videoWeek || 'all';
+    var kindFilter = state.mediaKind || 'all';
+    var shown = items.filter(function (v) { return (filter === 'all' || String(v.week) === String(filter)) && (kindFilter === 'all' || String(v.kind) === String(kindFilter)); });
+    var L = lensParse();
+    var field = L ? '<section class="vid-field-hero"><div><div class="mono">PROGRAM LENS IS ON</div><h2>' + esc(L.program || L.area) + '</h2><p>Each card now includes a field prompt. Use it to turn the media item into a concrete question about your future work, then return to the reading for evidence.</p></div><button type="button" onclick="SOC.go(\'career\')">Review my field notes</button></section>' : '';
+    return '<div class="rise vid-page"><section class="vid-hero"><div class="mono">CURATED SCHOLAR MEDIA</div><h1>Scholar Media Gallery</h1><p>Use these videos and podcasts as on-ramps into the readings, not replacements for them. Each card tells you what the item explains, what to watch or listen for, and which reading move to make next.</p></section><section class="vid-rule"><div><b>Watch or listen, then read</b><span>The media gives you a way in. Your assignments still need concepts and evidence from the readings.</span></div><div><b>Official sources only</b><span>Embeddable videos use official platform players. Podcasts and restricted media link out to the source site.</span></div><div><b>Use the program lens</b><span>If you choose a program, each card adds a field prompt without changing the required work.</span></div></section>' + field + mediaWeekOptions(items) + mediaKindOptions(items) + '<section class="vid-grid" aria-label="Scholar media cards">' + shown.map(videoCard).join('') + '</section>' + (shown.length ? '' : '<p class="vid-empty">No media items are currently curated for that filter.</p>') + '</div>';
+  }
   function homeBar() {
-    return '<button onclick="SOC.go(\'journey\')" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #DEE3EA;border-radius:8px;padding:8px 14px;font-size:.875rem;font-weight:600;color:#15171C;margin-bottom:18px;cursor:pointer">&#8592; Back to your journey</button>';
+    return '<div class="page-return-row" aria-label="Page navigation"><button type="button" onclick="SOC.prev()">&#8592; Return to Previous Screen</button><button type="button" onclick="SOC.go(\'journey\')">Home</button></div>';
   }
   function backBar() {
-    if (state.activityReturn != null) return '<button onclick="SOC.station(' + state.activityReturn + ')" style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #DEE3EA;border-radius:8px;padding:8px 14px;font-size:.875rem;font-weight:600;color:#15171C;margin-bottom:18px;cursor:pointer">&#8592; Back to Week ' + state.activityReturn + '</button>';
     return homeBar();
   }
   function mobileJumpItem(label, action, primary) {
@@ -2230,21 +2335,22 @@
     if (state.screen === 'journey' || state.screen === 'library') return journeyHome();
     if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + mobileWeekActions(_sw, weekData(_sw)) + lensHook(_sw) + weekStation(_sw); }
     if (state.screen === 'detail') return homeBar() + detail();
+    if (state.screen === 'pathways') return homeBar() + pathwaysPage();
+    if (state.screen === 'videos') return homeBar() + videosPage();
     if (state.screen === 'readings') return homeBar() + readingsGallery();
     if (state.screen === 'compare') return homeBar() + compare();
     if (state.screen === 'reading') return homeBar() + readingComp();
     if (state.screen === 'glossary') return homeBar() + glossaryScreen();
-    if (state.screen === 'career') return homeBar() + careerScreen();
     if (state.screen === 'cards') return homeBar() + cardsScreen();
+    if (state.screen === 'assignments') return homeBar() + assignmentsPage();
+    if (state.screen === 'career') return homeBar() + careerScreen();
     if (state.screen === 'activity') { var _aw = state.activityReturn || state.stationWeek || currentJourneyWeek(); return backBar() + mobileActivityActions(_aw) + activityScreen(); }
     if (state.screen === 'ecology' && D.course && D.course.code === 'PSY355') return homeBar() + ecologyScreen();
     return journeyHome();
   }
   function careerScreen() {
     var C = window[(D.course && D.course.code) + '_CAREER'] || null;
-    var wrap = function (inner) { return '<div class="rise"><div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:8px">CAREER CHOICES</div>'
-      + '<h1 style="font-size:1.75rem;font-weight:700;margin:0 0 8px;color:var(--ink)">See how PSY355 connects to your path</h1>' + inner + '</div>'; };
-    if (!C) return wrap('<p style="color:var(--ink-dim)">This section is being prepared.</p>');
+    if (!C) return '<div class="rise career-page"><section class="career-empty"><h2>Career Choices is being prepared.</h2><p>This section is not ready yet.</p></section></div>';
     var raw = state.careerField || '', area = raw, program = null;
     if (raw.indexOf('::') >= 0) { var parts = raw.split('::'); area = parts[0]; program = parts[1]; }
     var PROG = window.SENECA_PROGRAMS || null;
@@ -2264,45 +2370,46 @@
         + (C.fields || []).map(function (fld) { return '<option value="' + esc(fld) + '"' + (raw === fld ? ' selected' : '') + '>' + esc(fld) + '</option>'; }).join('')
         + '<option value="__explore"' + (raw === '__explore' ? ' selected' : '') + '>Still exploring / undecided</option>';
     }
-    var picker = '<p style="font-size:.95rem;color:var(--ink-dim);margin:0 0 16px">' + esc(C.intro || '') + '</p>'
-      + '<label for="career-sel" style="display:block;font-size:.85rem;font-weight:600;color:var(--ink);margin-bottom:6px">Your program or field of study</label>'
-      + '<select id="career-sel" onchange="SOC.careerField(this.value)" aria-label="Select your program or field of study" style="font:inherit;font-size:1rem;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);width:100%;max-width:460px;margin-bottom:22px">' + opts + '</select>';
+    var selected = raw ? (program || area || 'Selected lens') : 'No program lens selected yet';
+    var picker = '<aside class="career-picker"><label for="career-sel">Choose your program lens</label><select id="career-sel" onchange="SOC.careerField(this.value)" aria-label="Select your program or field of study">' + opts + '</select><p>Current lens: <b>' + esc(selected) + '</b>. You can change this any time. The assignments stay the same.</p></aside>';
+    var hero = '<section class="career-hero"><div><div class="mono">CAREER CHOICES</div><h1>Read PSY355 through your future work</h1><p>' + esc(C.intro || 'Choose a program lens to connect the course to your field.') + ' The lens does not change the required course. It changes the examples, prompts, and field questions that help the course feel closer to your world.</p></div>' + picker + '</section>';
+    var impact = '<section id="career-choices" class="career-impact" aria-label="What the program lens changes"><div><b>Weekly field hooks</b><span>The weekly page points to examples that feel closer to your program or field.</span></div><div><b>Stronger assignment choices</b><span>You get help finding course concepts and examples that fit the assignment prompt.</span></div><div><b>Same grading standard</b><span>Your work is still assessed on the same PSY355 expectations as everyone else.</span></div></section>';
+    var wrap = function (inner) { return '<div class="rise career-page">' + hero + impact + inner + '</div>'; };
     var card = function (k, h, inner, tint) {
-      return '<section style="background:' + (tint || '#fff') + ';border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:0 0 16px;box-shadow:0 10px 24px rgba(27,42,74,.05)">'
-        + '<div class="mono" style="font-size:.66rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">' + esc(k) + '</div>'
-        + '<h2 style="font-size:1.12rem;line-height:1.25;font-weight:800;color:var(--ink);margin:0 0 9px">' + esc(h) + '</h2>' + inner + '</section>';
+      return '<div class="career-box"' + (tint ? ' style="background:' + tint + '"' : '') + '><div class="mono">' + esc(k) + '</div><h3 style="font-size:1.05rem;line-height:1.25;font-weight:800;color:var(--ink);margin:0 0 9px">' + esc(h) + '</h3>' + inner + '</div>';
     };
-    var list = function (items) { return '<ul style="margin:0;padding-left:18px">' + (items || []).map(function (x) { return '<li style="font-size:.95rem;line-height:1.55;color:var(--ink);margin:4px 0">' + esc(x) + '</li>'; }).join('') + '</ul>'; };
-    if (!raw) return wrap(picker
+    var list = function (items) { return '<ul>' + (items || []).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; };
+    if (!raw) return wrap('<section id="career-main" class="career-field"><div class="mono">GENERAL STREAM</div><h2>Start general, or choose a lens now</h2>'
       + card('GENERAL STREAM', 'Use the course without choosing a program', '<p style="margin:0;font-size:1rem;line-height:1.65;color:var(--ink)">Stay with the general stream if you are undecided or if you want the standard PSY355 path. You will still build the same core skills: planning your learning, building confidence through practice, reading stress clearly, recovering after setbacks, and asking for help in useful ways.</p>', '#F7F8FA')
-      + card('HOW TO USE IT', 'Keep the question simple', '<p style="margin:0;font-size:.97rem;line-height:1.65;color:var(--ink)">As you move through the weeks, ask: what helps a person keep learning when the work gets hard? You can answer that question in any field, even before you know where you are headed.</p>'));
-    if (raw === '__explore') return wrap(picker
+      + card('HOW TO USE IT', 'Keep the question simple', '<p style="margin:0;font-size:.97rem;line-height:1.65;color:var(--ink)">As you move through the weeks, ask: what helps a person keep learning when the work gets hard? You can answer that question in any field, even before you know where you are headed.</p>') + '</section>');
+    if (raw === '__explore') return wrap('<section id="career-main" class="career-field"><div class="mono">STILL EXPLORING</div><h2>You do not need a final career plan to use PSY355</h2>'
       + card('STILL EXPLORING', 'You do not need a final career plan to use PSY355', '<p style="margin:0;font-size:1rem;line-height:1.65;color:var(--ink)">Use the course as a way to learn how you work under pressure. Notice what helps you start, keep going, recover, and ask for support. Those habits transfer into any program you choose later.</p>', '#F7F8FA')
-      + card('TRY THIS', 'Read each week as a rehearsal', '<p style="margin:0;font-size:.97rem;line-height:1.65;color:var(--ink)">When an activity asks you to practise a skill, imagine a real deadline, test, client, patient, guest, project, or team setting. The point is not to guess your future. It is to learn what keeps your judgment steady.</p>'));
+      + card('TRY THIS', 'Read each week as a rehearsal', '<p style="margin:0;font-size:.97rem;line-height:1.65;color:var(--ink)">When an activity asks you to practise a skill, imagine a real deadline, test, client, patient, guest, project, or team setting. The point is not to guess your future. It is to learn what keeps your judgment steady.</p>') + '</section>');
     var f = (C.byField || {})[area];
-    if (!f) return wrap(picker + '<p style="color:var(--ink-dim)">The write-up for ' + esc(area) + ' is being prepared.</p>');
+    if (!f) return wrap('<section id="career-main" class="career-empty"><h2>This lens is being prepared</h2><p>The write-up for ' + esc(area) + ' is being prepared.</p></section>');
     var L = { area: area, program: program, label: program || ('All of ' + area) };
     var ctx = lensFieldContext(L);
     var pnote = program && (C.byProgram || {})[program];
-    var out = '<h2 style="font-size:1.25rem;font-weight:800;color:var(--ink);margin:6px 0 12px">' + esc(program || area) + '</h2>';
+    var out = '<section id="career-main" class="career-field"><div class="mono">YOUR SELECTED FIELD</div><h2>' + esc(program || area) + '</h2>';
     out += card('SECTION 1', 'Program context', '<p style="margin:0 0 10px;font-size:1rem;line-height:1.65;color:var(--ink)">' + esc(pnote || ('You are looking at ' + (program || area) + ' through the larger ' + area + ' area. Use this page to connect course skills to the pressure, feedback, practice, and recovery that happen in this field.')) + '</p>'
-      + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px">'
+      + '<div class="career-mini-grid">'
       + '<div style="background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px"><b style="display:block;font-size:.82rem;color:var(--ink);margin-bottom:4px">Where to look</b><span style="font-size:.84rem;line-height:1.45;color:var(--ink-dim)">' + esc(ctx.place) + '</span></div>'
       + '<div style="background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px"><b style="display:block;font-size:.82rem;color:var(--ink);margin-bottom:4px">Pressure points</b><span style="font-size:.84rem;line-height:1.45;color:var(--ink-dim)">' + esc(ctx.pressure) + '</span></div>'
       + '<div style="background:#fff;border:1px solid var(--border);border-radius:9px;padding:11px"><b style="display:block;font-size:.82rem;color:var(--ink);margin-bottom:4px">People in the picture</b><span style="font-size:.84rem;line-height:1.45;color:var(--ink-dim)">' + esc(ctx.people) + '</span></div></div>', '#F7F8FA');
-    out += card('SECTION 2', 'How PSY355 connects', (f.lens ? '<p style="margin:0 0 10px;font-size:1rem;line-height:1.65;color:var(--ink);font-weight:700">' + esc(f.lens) + '</p>' : '') + '<p style="margin:0 0 10px;font-size:.97rem;line-height:1.65;color:var(--ink)">' + esc((f.paras && f.paras[0]) || '') + '</p>' + (f.skills && f.skills.length ? list(f.skills) : ''));
+    if (f.lens) out += '<div class="career-lens"><div class="mono">READ THE COURSE THIS WAY</div><p>' + esc(f.lens) + '</p></div>';
+    out += card('SECTION 2', 'How PSY355 connects', '<p style="margin:0 0 10px;font-size:.97rem;line-height:1.65;color:var(--ink)">' + esc((f.paras && f.paras[0]) || '') + '</p>' + (f.skills && f.skills.length ? list(f.skills) : ''));
     out += card('SECTION 3', 'How to use this in the course', '<p style="margin:0 0 10px;font-size:.97rem;line-height:1.65;color:var(--ink)">Do not turn this into career advice. Use your program to make the psychology concrete. The course question stays the same: how do people learn, stay motivated, recover from pressure, and keep going when the work is difficult?</p>'
       + list(['Name one real setting from ' + (program || area) + '.', 'Connect it to a PSY355 idea such as self-regulated learning, self-efficacy, stress and recovery, self-compassion, or help-seeking.', 'Explain what a student or worker could do next, in plain language, without pretending the course solves every problem.']));
     if (f.scenario) out += card('FIELD SCENARIO', 'Picture the idea in motion', '<p style="margin:0;font-size:.97rem;line-height:1.65;color:var(--ink)">' + esc(f.scenario) + '</p>', '#FBF4F3');
     if (f.weeks && f.weeks.length) {
       var wl = f.weeks.map(function (w) { return '<button onclick="SOC.station(' + w + ')" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:7px 13px;font-size:.85rem;font-weight:600;color:var(--ink);margin:0 8px 0 0;cursor:pointer">Week ' + w + ' &#8594;</button>'; }).join('');
-      out += card('KEY WEEKS', 'Start with these weeks', (f.weeksWhy ? '<p style="margin:0 0 9px;font-size:.95rem;line-height:1.6;color:var(--ink)">' + esc(f.weeksWhy) + '</p>' : '') + '<div style="display:flex;gap:8px;flex-wrap:wrap">' + wl + '</div>');
+      out += card('KEY WEEKS', 'Start with these weeks', (f.weeksWhy ? '<p style="margin:0 0 9px;font-size:.95rem;line-height:1.6;color:var(--ink)">' + esc(f.weeksWhy) + '</p>' : '') + '<div class="career-week-buttons">' + wl + '</div>');
     }
     if (f.roles && f.roles.length) out += card('WHERE THIS SHOWS UP', 'Possible roles and settings', '<p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--ink)">' + f.roles.map(esc).join(' | ') + '</p>');
     var rk = 'career|' + (program || area), rv = esc((state.careerReflect && state.careerReflect[rk]) || '');
-    out += '<div style="margin-top:6px"><h3 style="margin:10px 0 4px;font-size:1.02rem">What do you want to remember?</h3><p class="wk-hint" style="margin-bottom:8px">A quick note to yourself, saved on your device. Nothing is submitted.</p>'
-      + '<textarea oninput="SOC.careerReflect(\'' + rk + '\',this.value)" aria-label="Your reflection" class="wk-ta" placeholder="One place I can already picture this showing up in my field..." style="min-height:74px">' + rv + '</textarea></div>';
-    return wrap(picker + out);
+    out += '<div class="career-note"><h3 style="margin:10px 0 4px;font-size:1.02rem">What do you want to remember?</h3><p class="wk-hint" style="margin-bottom:8px">A quick note to yourself, saved on your device. Nothing is submitted.</p>'
+      + '<textarea oninput="SOC.careerReflect(\'' + rk + '\',this.value)" aria-label="Your reflection" class="wk-ta" placeholder="One place I can already picture this showing up in my field...">' + rv + '</textarea></div></section>';
+    return wrap(out);
   }
   function render() {
     if (state.screen !== 'compare' && render._prev !== undefined && render._prev !== state.screen && (state.compareIds.length || state.showSynthesis)) { state.compareIds = []; state.showSynthesis = false; }
@@ -2312,7 +2419,7 @@
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + '</div></main>'
+      + '<main id="soc-main" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + '</div></main>'
       + '</div>' + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
@@ -2327,6 +2434,12 @@
     saveView();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
+  function renderKeepScroll() {
+    var m = document.getElementById('soc-main'), y = m ? m.scrollTop : 0;
+    render();
+    var m2 = document.getElementById('soc-main');
+    if (m2) m2.scrollTop = y;
+  }
   function scrollWeekPart(part) {
     if (!part) { topScroll(); return; }
     setTimeout(function () {
@@ -2335,6 +2448,91 @@
       if (el && m) m.scrollTop = Math.max(0, el.offsetTop - 10);
       else if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
     }, 20);
+  }
+  function scrollToId(id) {
+    setTimeout(function () {
+      var el = document.getElementById(id);
+      var m = document.getElementById('soc-main');
+      if (el && m) m.scrollTop = Math.max(0, el.offsetTop - 12);
+      else if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+    }, 20);
+  }
+  function viewSnapshot() {
+    return {
+      screen: state.screen,
+      journeyWeek: state.journeyWeek,
+      stationWeek: state.stationWeek,
+      activityReturn: state.activityReturn,
+      detailId: state.detailId,
+      cardWeek: state.cardWeek,
+      activeTypes: (state.activeTypes || []).slice(),
+      activeWeek: state.activeWeek,
+      search: state.search || '',
+      savedView: !!state.savedView,
+      rcReading: state.rcReading,
+      lens: state.lens || 'thematic',
+      compareIds: (state.compareIds || []).slice(),
+      showSynthesis: !!state.showSynthesis,
+      galWeek: state.galWeek,
+      galTopic: state.galTopic,
+      glossWeek: state.glossWeek || 'all',
+      glossSearch: state.glossSearch || '',
+      ecoLayer: state.ecoLayer || 'you',
+      act: state.act || {},
+      videoWeek: state.videoWeek || 'all',
+      mediaKind: state.mediaKind || 'all'
+    };
+  }
+  function sameView(a, b) {
+    try { return JSON.stringify(a || {}) === JSON.stringify(b || {}); } catch (e) { return false; }
+  }
+  function rememberPrevious() {
+    var v = viewSnapshot();
+    if (!state.prevView || !sameView(v, state.prevView)) state.prevView = v;
+  }
+  function restoreView(v) {
+    v = v || { screen: 'journey' };
+    state.screen = cleanScreen(v.screen);
+    state.journeyWeek = cleanWeek(v.journeyWeek);
+    state.stationWeek = cleanWeek(v.stationWeek);
+    state.activityReturn = cleanWeek(v.activityReturn);
+    state.detailId = v.detailId || null;
+    state.cardWeek = cleanWeek(v.cardWeek);
+    state.activeTypes = Array.isArray(v.activeTypes) ? v.activeTypes.slice() : [];
+    state.activeWeek = cleanWeek(v.activeWeek);
+    state.search = v.search || '';
+    state.savedView = !!v.savedView;
+    state.rcReading = v.rcReading || null;
+    state.lens = v.lens || 'thematic';
+    state.compareIds = Array.isArray(v.compareIds) ? v.compareIds.slice() : [];
+    state.showSynthesis = !!v.showSynthesis;
+    state.galWeek = cleanWeek(v.galWeek);
+    state.galTopic = v.galTopic || null;
+    state.glossWeek = v.glossWeek || 'all';
+    state.glossSearch = v.glossSearch || '';
+    state.ecoLayer = v.ecoLayer || 'you';
+    state.act = (v.act && typeof v.act === 'object') ? v.act : (state.act || {});
+    state.videoWeek = v.videoWeek || 'all';
+    state.mediaKind = v.mediaKind || 'all';
+    state.navOpen = false;
+  }
+  function goPrevious() {
+    var current = viewSnapshot();
+    var prev = state.prevView;
+    if (prev && prev.screen && !sameView(prev, current)) {
+      restoreView(prev);
+      state.prevView = current;
+    } else if (state.activityReturn != null) {
+      restoreView({ screen: 'station', stationWeek: state.activityReturn, journeyWeek: state.activityReturn });
+      state.prevView = current;
+    } else {
+      restoreView({ screen: 'journey' });
+      state.prevView = current;
+    }
+    persist();
+    focusTarget = 'soc-main';
+    render();
+    topScroll();
   }
 
   /* ---------- actions ---------- */
@@ -2393,16 +2591,22 @@
     });
   }
   window.SOC = {
-    openNav: function () { state.navOpen = true; render(); },
-    toggleNav: function () { state.navOpen = !state.navOpen; render(); },
-    closeNav: function () { state.navOpen = false; render(); },
-    go: function (s) { state.navOpen = false; if (s === 'library') { state.savedView = false; } if (s === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (s === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
+    openNav: function () { state.navOpen = true; renderKeepScroll(); },
+    toggleNav: function () { state.navOpen = !state.navOpen; renderKeepScroll(); },
+    closeNav: function () { state.navOpen = false; renderKeepScroll(); },
+    prev: goPrevious,
+    go: function (s) { var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
     lensOff: function () { state.careerField = ''; persist(); render(); },
     careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
-    station: function (w) { state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
-    jumpWeek: function (w, part) { state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
-    startActivity: function (s, w) { state.activityReturn = w; state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
+    mediaNote: function (k, v) { state.mediaNotes = state.mediaNotes || {}; state.mediaNotes[k] = v; persist(); },
+    videoWeek: function (w) { state.videoWeek = w || 'all'; render(); topScroll(); },
+    mediaKind: function (k) { state.mediaKind = k || 'all'; render(); topScroll(); },
+    careerLens: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-sel'); },
+    careerChoices: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-choices'); },
+    station: function (w) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
+    jumpWeek: function (w, part) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
+    startActivity: function (s, w) { rememberPrevious(); state.activityReturn = cleanWeek(w) || w; state.screen = cleanScreen(s || 'activity'); focusTarget = 'soc-main'; render(); topScroll(); },
     wkCheck: function (k, o) {
       if (state.wkCheck[k] === o) delete state.wkCheck[k]; else state.wkCheck[k] = o;
       persist();
@@ -2440,19 +2644,19 @@
       ];
       senecaDoc((D.course && D.course.code) || '', weekTitle(w) + ' (Week ' + w + ')', ['Seneca ' + ((D.course && D.course.code) || ''), 'Your week record'], sections, ((D.course && D.course.code) || '') + '_Week' + w + '_my_work');
     },
-    goWeek: function (s, w) { state.cardWeek = w; state.screen = s; focusTarget = 'soc-main'; render(); topScroll(); },
+    goWeek: function (s, w) { if (state.screen !== cleanScreen(s) || state.cardWeek !== w) rememberPrevious(); state.cardWeek = w; state.screen = cleanScreen(s); focusTarget = 'soc-main'; render(); topScroll(); },
     galWeek: function (w) { var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galWeek = (state.galWeek === w) ? null : w; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
     galTopic: function (t) { var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galTopic = (state.galTopic === t) ? null : t; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
     galClear: function () { state.galWeek = null; state.galTopic = null; render(); },
-    playVideo: function (el, id) { var box = el.closest ? el.closest('.rgvideo') : el.parentNode; if (box) { box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1" title="Scholar talk" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; } },
-    back: function () { state.screen = 'library'; focusTarget = 'soc-main'; render(); var m = document.getElementById('soc-main'); if (m) m.scrollTop = state.libScroll || 0; },
-    open: function (id) { var m = document.getElementById('soc-main'); if (m) state.libScroll = m.scrollTop; state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); },
+    playVideo: function (el, id) { var box = el.closest ? el.closest('.rgvideo, .vid-frame') : el.parentNode; if (box) { box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1" title="Scholar talk" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; } },
+    back: function () { if (state.screen !== 'library') rememberPrevious(); state.screen = 'library'; focusTarget = 'soc-main'; render(); var m = document.getElementById('soc-main'); if (m) m.scrollTop = state.libScroll || 0; },
+    open: function (id) { rememberPrevious(); var m = document.getElementById('soc-main'); if (m) state.libScroll = m.scrollTop; state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); },
     layout: function (l) { state.layout = l; persist(); render(); },
     sort: function (s) { state.sort = s; render(); },
     search: function (v) { state.search = v; refocusSearch = true; render(); },
     clearSearch: function () { state.search = ''; render(); },
     type: function (t) { state.activeTypes = (state.activeTypes.length === 1 && state.activeTypes[0] === t) ? [] : [t]; render(); },
-    week: function (w) { state.activeWeek = (state.activeWeek === w) ? null : w; state.savedView = false; state.screen = 'library'; focusTarget = 'soc-main'; render(); topScroll(); },
+    week: function (w) { if (state.screen !== 'library' || state.activeWeek !== w) rememberPrevious(); state.activeWeek = (state.activeWeek === w) ? null : w; state.savedView = false; state.screen = 'library'; focusTarget = 'soc-main'; render(); topScroll(); },
     clearFilters: function () { state.activeTypes = []; state.activeWeek = null; state.search = ''; state.savedView = false; render(); },
     dismissIntro: function () { state.introOpen = false; persist(); render(); },
     save: function (id) { var a = state.saved, i = a.indexOf(id); var msg; if (i >= 0) { a.splice(i, 1); msg = 'Removed from saved.'; } else { a.push(id); msg = 'Saved to your shelf.'; } persist(); flash(msg); },
@@ -2561,9 +2765,9 @@
       if (sel !== undefined && sel !== null) sections.push({ h: 'Quick check', t: 'Q: ' + checkQ + '\nYour answer was ' + (sel === 0 ? 'the grounded one. Correct.' : 'not the grounded one. Look again at what the reading actually claims.') });
       senecaDoc(cc || 'Course', 'Self-Check Studio', sub, sections, (cc || 'Course') + '_self_check_studio');
     },
-    read: function (id) { var r = rec(id); var u = r && readUrl(r); if (u) { window.open(u, '_blank', 'noopener'); } else { state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); } },
+    read: function (id) { var r = rec(id); var u = r && readUrl(r); if (u) { window.open(u, '_blank', 'noopener'); } else { rememberPrevious(); state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); } },
     source: function (id) { var r = rec(id); var u = r && sourceUrl(r); if (u) window.open(u, '_blank', 'noopener'); },
-    openSaved: function () { state.screen = 'library'; state.activeTypes = []; state.activeWeek = null; state.search = ''; state.savedView = state.saved.length > 0; flash(state.saved.length ? 'Your saved shelf.' : 'Nothing saved yet. Tap the bookmark on any reading.'); topScroll(); },
+    openSaved: function () { if (state.screen !== 'library') rememberPrevious(); state.screen = 'library'; state.activeTypes = []; state.activeWeek = null; state.search = ''; state.savedView = state.saved.length > 0; flash(state.saved.length ? 'Your saved shelf.' : 'Nothing saved yet. Tap the bookmark on any reading.'); topScroll(); },
     cardWeek: function (v) { state.cardWeek = (v === '' ? null : parseInt(v, 10)); render(); },
     glossWeek: function (v) { state.glossWeek = v; var o = document.getElementById('soc-gout'); if (o) o.innerHTML = glossaryByWeek(v); },
     glossSearch: function (v) { state.glossSearch = v; var o = document.getElementById('soc-gsearchout'); if (o) o.innerHTML = glossarySearchHTML(v); },
