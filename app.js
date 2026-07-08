@@ -352,10 +352,12 @@
   function rlDockWire(on) {
     if (on) {
       document.addEventListener('pointermove', rlDockPointer, true);
+      document.addEventListener('pointerdown', rlDockPointer, true);
       document.addEventListener('focusin', rlDockFocus, true);
       document.addEventListener('keydown', rlDockKey, true);
     } else {
       document.removeEventListener('pointermove', rlDockPointer, true);
+      document.removeEventListener('pointerdown', rlDockPointer, true);
       document.removeEventListener('focusin', rlDockFocus, true);
       document.removeEventListener('keydown', rlDockKey, true);
     }
@@ -2906,6 +2908,7 @@
     closeNav: function () { state.navOpen = false; renderKeepScroll(); },
     toggleReaderLens: function () {
       state.readerLensOpen = !state.readerLensOpen;
+      if (state.readerLensOpen) state.rlPanelOpen = false;
       rlDockWire(state.readerLensOpen);
       renderKeepScroll();
       announce(state.readerLensOpen ? 'Magnifier on. Text under your pointer or keyboard focus appears in large print at the bottom of the screen.' : 'Magnifier off.');
