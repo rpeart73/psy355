@@ -304,28 +304,46 @@
     if (!state.readerLensOpen) return '';
     var x = clamp(Number(state.readerLensX) || 84, 8, Math.max(8, window.innerWidth - 340));
     var y = clamp(Number(state.readerLensY) || 86, 70, Math.max(70, window.innerHeight - 210));
-    return '<section id="reader-lens" class="reader-lens" style="left:' + x + 'px;top:' + y + 'px" tabindex="0" role="region" aria-label="Reading Lens text magnifier" aria-describedby="reader-lens-help" onkeydown="SOC.readerLensKey(event)">'
-      + '<div class="reader-lens-glass" aria-hidden="true">' + ic('search', 27, 2.1) + '</div>'
-      + '<div class="reader-lens-head" onpointerdown="SOC.readerLensPointerDown(event)"><span>' + ic('search', 16, 2) + '</span><strong>Reading Lens</strong><button type="button" onpointerdown="event.stopPropagation()" onclick="SOC.closeReaderLens()" aria-label="Close Reading Lens">' + ic('x', 16, 2) + '</button></div>'
-      + '<div id="reader-lens-copy" class="reader-lens-copy" aria-hidden="true">Move the lens over text to magnify it here.</div>'
-      + '<p id="reader-lens-help" class="reader-lens-help">Drag the lens over text. Keyboard: arrow keys move it; Shift plus arrow moves faster; Escape closes it.</p>'
+    return '<section id="reader-lens" class="reader-lens" style="left:' + x + 'px;top:' + y + 'px" tabindex="0" role="region" aria-label="Reading Lens text magnifier" aria-describedby="reader-lens-help" onpointerdown="SOC.readerLensPointerDown(event)" onkeydown="SOC.readerLensKey(event)">'
+      + '<div class="reader-lens-head"><span>' + ic('search', 16, 2) + '</span><strong>Reading Lens</strong><button type="button" onpointerdown="event.stopPropagation()" onclick="SOC.closeReaderLens()" aria-label="Close Reading Lens">' + ic('x', 16, 2) + '</button></div>'
+      + '<div class="reader-lens-target" aria-hidden="true">' + ic('search', 24, 2.1) + '</div>'
+      + '<div id="reader-lens-copy" class="reader-lens-copy" aria-hidden="true">Drag the centre of this lens over text to magnify it here.</div>'
+      + '<p id="reader-lens-help" class="reader-lens-help">Drag any part of the lens over text. Keyboard: arrow keys move it; Shift plus arrow moves faster; Escape closes it.</p>'
       + '</section>';
   }
   function readerLensTextAt(x, y) {
     var lens = document.getElementById('reader-lens'), oldPointer = '';
     if (lens) { oldPointer = lens.style.pointerEvents; lens.style.pointerEvents = 'none'; }
-    var el = document.elementFromPoint(x, y);
+    var stack = document.elementsFromPoint ? document.elementsFromPoint(x, y) : [document.elementFromPoint(x, y)];
     if (lens) lens.style.pointerEvents = oldPointer;
-    var node = el;
-    while (node && node !== document.body) {
-      var tag = String(node.tagName || '').toLowerCase();
-      if (/^(p|li|h1|h2|h3|h4|h5|h6|blockquote|td|th|figcaption|label|button|a|summary)$/.test(tag)) break;
-      node = node.parentElement;
+    var allowed = /^(p|li|h1|h2|h3|h4|h5|h6|blockquote|td|th|figcaption|label|button|a|summary|small|strong|b)$/;
+    function cleanText(el) {
+      var text = (el && el.textContent ? el.textContent : '').replace(/\s+/g, ' ').trim();
+      if (!text) return '';
+      return text.length > 430 ? text.slice(0, 427) + '...' : text;
     }
-    var text = (node && node.textContent ? node.textContent : '').replace(/\s+/g, ' ').trim();
-    if (!text && el && el.textContent) text = el.textContent.replace(/\s+/g, ' ').trim();
-    if (!text) return 'Move the lens over text to magnify it here.';
-    return text.length > 430 ? text.slice(0, 427) + '...' : text;
+    for (var i = 0; i < stack.length; i++) {
+      var node = stack[i];
+      while (node && node !== document.body) {
+        var tag = String(node.tagName || '').toLowerCase();
+        if (allowed.test(tag)) {
+          var direct = cleanText(node);
+          if (direct) return direct;
+        }
+        node = node.parentElement;
+      }
+    }
+    var blocks = document.querySelectorAll('#soc-main h1,#soc-main h2,#soc-main h3,#soc-main h4,#soc-main p,#soc-main li,#soc-main button,#soc-main a,#soc-main label,#soc-main small,#soc-main strong,#soc-main b');
+    var best = null, bestScore = 3600;
+    for (var b = 0; b < blocks.length; b++) {
+      var r = blocks[b].getBoundingClientRect();
+      if (!r.width || !r.height) continue;
+      var dx = x < r.left ? r.left - x : x > r.right ? x - r.right : 0;
+      var dy = y < r.top ? r.top - y : y > r.bottom ? y - r.bottom : 0;
+      var score = dx * dx + dy * dy;
+      if (score < bestScore) { bestScore = score; best = blocks[b]; }
+    }
+    return cleanText(best) || 'Drag the centre of this lens over text to magnify it here.';
   }
   function updateReaderLens() {
     var lens = document.getElementById('reader-lens'), out = document.getElementById('reader-lens-copy');
@@ -449,7 +467,7 @@
     });
     var walk = '<a href="./walkthroughs/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:11px;width:100%;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;color:#474C57;text-decoration:none"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('layers', 19) + '</span><span style="flex:1">Weekly Walkthroughs</span><span style="color:#6B7280">↗</span></a>';
     var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a></div></div>';
-    var nav = btns[0] + btns[1] + guide + walk + btns.slice(2).join('');
+    var nav = btns[0] + btns[1] + guide + btns[2] + walk + btns.slice(3).join('');
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
     var navWeeks = [];
     for (var nw = 1; nw <= 14; nw++) navWeeks.push(nw);
@@ -2766,7 +2784,11 @@
       }, 40);
     },
     closeReaderLens: function () { state.readerLensOpen = false; readerLensStopDrag(); renderKeepScroll(); announce('Reading Lens closed.'); },
-    readerLensPointerDown: function (e) { startReaderLensDrag(e); },
+    readerLensPointerDown: function (e) {
+      var tag = String((e.target && e.target.tagName) || '').toLowerCase();
+      if (/^(button|a|input|textarea|select|option)$/.test(tag)) return;
+      startReaderLensDrag(e);
+    },
     readerLensKey: function (e) {
       var step = e.shiftKey ? 42 : 16, x = Number(state.readerLensX) || 84, y = Number(state.readerLensY) || 86;
       if (e.key === 'Escape') { e.preventDefault(); window.SOC.closeReaderLens(); return; }
