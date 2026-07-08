@@ -2698,7 +2698,7 @@
     }
     if (f.roles && f.roles.length) out += card('WHERE THIS SHOWS UP', 'Possible roles and settings', '<p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--ink)">' + f.roles.map(esc).join(' | ') + '</p>');
     var rk = 'career|' + (program || area), rv = esc((state.careerReflect && state.careerReflect[rk]) || '');
-    out += '<div class="career-note"><h3 style="margin:10px 0 4px;font-size:1.02rem">What do you want to remember?</h3><p class="wk-hint" style="margin-bottom:8px">A quick note to yourself, saved on your device. Nothing is submitted.</p>'
+    out += '<div class="career-note"><h3 style="margin:10px 0 4px;font-size:1.02rem">What do you want to remember?</h3><p class="wk-hint" style="margin-bottom:8px">A quick note to yourself, saved in this browser on this device. Nothing is submitted, and it will be here when you come back in this browser. Use Generate Your Weekly Notes to keep a permanent copy.</p>'
       + '<textarea oninput="SOC.careerReflect(\'' + rk + '\',this.value)" aria-label="Your reflection" class="wk-ta" placeholder="One place I can already picture this showing up in my field...">' + rv + '</textarea></div></section>';
     return wrap(out);
   }
