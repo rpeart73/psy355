@@ -1,6 +1,6 @@
 window.PSY355 = {
  "course": {
-  "code": "PSY355", "mode": "Course Companion",
+  "code": "PSY355", "mode": "Instructor-Created Companion",
   "name": "Psychology of Learning: Mindset and Resilience",
   "frame": "",
   "blackboardNote": "A companion to Blackboard. Official records, discussion, and submission live in Blackboard."
