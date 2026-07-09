@@ -70,6 +70,32 @@
   .vid-cover-play{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.75);position:relative}
   .vid-cover-play:after{content:"";position:absolute;left:21px;top:15px;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
   .vid-cover-note{font-size:.72rem;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.85)}
+  .wk-coll-btn{float:right;margin-left:12px;min-width:30px;min-height:30px;border:1px solid #DEE3EA;background:#fff;color:#474C57;border-radius:8px;font-size:1.05rem;font-weight:600;line-height:1;cursor:pointer}
+  .wk-coll-btn:hover{background:#EEF1F5}
+  .wk-coll-btn:focus-visible{outline:3px solid #1B2A4A;outline-offset:2px}
+  section.wk-collapsed > :not(h2.wk-sec){display:none!important}
+  section.wk-collapsed h2.wk-sec{margin-bottom:0}
+  .wk-coll-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+  .wk-coll-bar button{border:1px solid #DEE3EA;background:#fff;color:#1B2A4A;border-radius:999px;font-size:.8125rem;font-weight:600;padding:7px 13px;cursor:pointer}
+  .wk-coll-bar button:hover{background:#EEF1F5}
+  .wk-coll-bar span{font-size:.75rem;color:#6B7280}
+  .sc-panel{border:1px solid #DEE3EA;border-radius:16px;background:#fff;padding:20px 22px;margin:0 0 26px}
+  .sc-stats{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 14px;font-size:.9rem;color:#474C57}
+  .sc-stats b{color:#141821;font-size:1.05rem}
+  .sc-rec{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #EEF1F5;border-radius:12px;padding:12px 14px;margin:0 0 10px}
+  .sc-rec b{font-size:.95rem;color:#141821}
+  .sc-rec p{margin:3px 0 0;font-size:.85rem;color:#474C57}
+  .sc-rec > button{flex:none;border:1px solid #1B2A4A;background:#1B2A4A;color:#fff;border-radius:999px;font-size:.8125rem;font-weight:600;padding:8px 14px;cursor:pointer}
+  .sc-rec > button:hover{background:#33456B}
+  .sc-nameform label{display:block;font-size:.85rem;font-weight:600;color:#141821;margin:8px 0 6px}
+  .sc-nameform div{display:flex;gap:8px}
+  .sc-nameform input{flex:1;max-width:260px;border:1px solid #DEE3EA;border-radius:9px;padding:8px 11px;font-size:.9rem}
+  .sc-nameform button{border:1px solid #1B2A4A;background:#fff;color:#1B2A4A;border-radius:9px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer}
+  .sc-nameform small,.sc-nameline{display:block;margin-top:7px;font-size:.75rem;color:#6B7280}
+  .sc-linkbtn{border:none;background:none;color:#1B2A4A;text-decoration:underline;font-size:.75rem;cursor:pointer;padding:0}
+  .sc-how{margin-top:10px}
+  .sc-how summary{font-size:.8125rem;font-weight:600;color:#474C57;cursor:pointer}
+  .sc-how p{font-size:.8125rem;color:#6B7280;margin:6px 0 0}
   .rl-panel{position:fixed;z-index:96;top:70px;right:12px;width:min(340px,calc(100vw - 20px));background:#fff;border:1px solid #DEE3EA;border-radius:14px;box-shadow:0 18px 42px rgba(21,23,28,.24);padding:12px 14px 14px;max-height:calc(100vh - 86px);overflow:auto}
   .rl-head{display:flex;align-items:center;gap:8px;margin:0 0 2px}.rl-head strong{font-size:.98rem;flex:1}
   .rl-sub{font-size:.75rem;color:#474C57;margin:0 0 8px;line-height:1.5}
@@ -195,6 +221,6 @@
 <script src="./data/psy355-career.js?v=4"></script>
 <script src="./data/seneca-programs.js?v=3"></script>
 <script src="./data/psy355-lens.js?v=1"></script>
-<script src="./app.js?v=88"></script>
+<script src="./app.js?v=89"></script>
 </body>
 </html>

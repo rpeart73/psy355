@@ -14,7 +14,7 @@
   var VKEY = SKEY + '.view.v1';
   var HKEY = SKEY + '.hardResetNext';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, rl: state.rl })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, rl: state.rl, wkColl: state.wkColl, studentName: state.studentName, visits: state.visits })); } catch (e) {} }
   function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function clearView() { try { sessionStorage.removeItem(VKEY); sessionStorage.removeItem(HKEY); } catch (e) {} }
   function shouldResumeView(v) {
@@ -61,6 +61,9 @@
     sgTick: (saved0.sgTick || {}),
     wkCheck: (saved0.wkCheck && typeof saved0.wkCheck === 'object') ? saved0.wkCheck : {},
     wkReflect: (saved0.wkReflect && typeof saved0.wkReflect === 'object') ? saved0.wkReflect : {},
+    wkColl: (saved0.wkColl && typeof saved0.wkColl === 'object') ? saved0.wkColl : {},
+    studentName: typeof saved0.studentName === 'string' ? saved0.studentName.slice(0, 40) : '',
+    visits: (saved0.visits && typeof saved0.visits === 'object') ? saved0.visits : {},
     act: (resumeView0 && view0.act && typeof view0.act === 'object') ? view0.act : {},
     actResult: (saved0.actResult && typeof saved0.actResult === 'object') ? saved0.actResult : {},
     layout: 'byweek',
@@ -1185,9 +1188,98 @@
       + '</footer>';
   }
   function focusWeek(sel) { var ws = weeksWithReadings(); return sel == null ? (ws[0] || 1) : sel; }
+  function trackVisit(w) {
+    try {
+      var d = new Date(), dk = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+      state.visits.days = state.visits.days || {};
+      state.visits.days[dk] = 1;
+      state.visits.weeks = state.visits.weeks || {};
+      var vw = state.visits.weeks[w] = state.visits.weeks[w] || { n: 0 };
+      vw.n++; vw.last = Date.now();
+    } catch (e) {}
+  }
+  function wkEnhanceSections() {
+    if (state.screen !== 'station') return;
+    var secs = document.querySelectorAll('#soc-main section[id^="wk-"]');
+    Array.prototype.forEach.call(secs, function (sec) {
+      var h = sec.querySelector('h2.wk-sec');
+      if (!h || h.parentElement !== sec || h.querySelector('.wk-coll-btn')) return;
+      var id = sec.id;
+      var collapsed = !!(state.wkColl && state.wkColl[id]);
+      if (collapsed) sec.classList.add('wk-collapsed');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'wk-coll-btn';
+      btn.setAttribute('aria-controls', id);
+      btn.setAttribute('aria-expanded', String(!collapsed));
+      btn.setAttribute('aria-label', collapsed ? 'Show this section' : 'Hide this section');
+      btn.textContent = collapsed ? '+' : '\u2212';
+      btn.onclick = function () { SOC.wkColl(id); };
+      h.appendChild(btn);
+    });
+  }
+  function compassRecs() {
+    var recs = [];
+    try {
+      var ws = journeyWeeks();
+      var vweeks = (state.visits && state.visits.weeks) || {};
+      var visited = ws.filter(function (w) { return vweeks[w]; });
+      if (!visited.length) {
+        recs.push({ t: 'Begin with Week ' + (ws[0] || 1), b: 'Open the first week and try one section. The site keeps your place on this device.', go: 'SOC.station(' + (ws[0] || 1) + ')', gl: 'Open Week ' + (ws[0] || 1) });
+        return recs;
+      }
+      var lastW = visited[visited.length - 1], lastTs = 0;
+      visited.forEach(function (w) { if (vweeks[w].last && vweeks[w].last > lastTs) lastTs = vweeks[w].last; });
+      if (lastTs && (Date.now() - lastTs) > 7 * 86400000) {
+        recs.push({ t: 'Ease back in', b: 'It has been more than a week since your last visit. Ten minutes back in your most recent week rebuilds momentum faster than starting something new.', go: 'SOC.station(' + lastW + ')', gl: 'Reopen Week ' + lastW });
+      }
+      var kcTried = state.kcHist && Object.keys(state.kcHist).length;
+      if (!kcTried && visited.length >= 1) {
+        recs.push({ t: 'Test yourself once', b: 'You have been reading but have not tried a Knowledge Check yet. One set tells you what actually stuck.', go: 'SOC.jumpWeek(' + lastW + ', \'kc\')', gl: 'Try a check' });
+      }
+      var sgUsed = state.sgTick && Object.keys(state.sgTick).length;
+      if (!sgUsed && visited.length >= 2 && recs.length < 3) {
+        recs.push({ t: 'Work through one Study Guide', b: 'You have visited ' + visited.length + ' weeks without ticking off study guide items. The guide turns reading into checkable progress.', go: 'SOC.jumpWeek(' + lastW + ', \'sg\')', gl: 'Open the guide' });
+      }
+      var refl = state.wkReflect && String(state.wkReflect[lastW] || '').trim();
+      if (!refl && recs.length < 3) {
+        recs.push({ t: 'Close the loop on Week ' + lastW, b: 'A one-minute written reflection is the difference between having seen an idea and being able to use it.', go: 'SOC.jumpWeek(' + lastW + ', \'reflect\')', gl: 'Write it' });
+      }
+      if (!recs.length) {
+        var nextW = null;
+        for (var j = 0; j < ws.length; j++) { if (!vweeks[ws[j]]) { nextW = ws[j]; break; } }
+        if (nextW) recs.push({ t: 'You are current. Week ' + nextW + ' is next', b: 'Everything you have opened has work in it. Starting the next week early beats cramming it later.', go: 'SOC.station(' + nextW + ')', gl: 'Open Week ' + nextW });
+        else recs.push({ t: 'All weeks visited', b: 'Use the Knowledge Checks and your notes to review the weeks you found hardest.', go: 'SOC.go(\'practice\')', gl: 'Practice' });
+      }
+    } catch (e) {}
+    return recs.slice(0, 3);
+  }
+  function compassPanel() {
+    var name = String(state.studentName || '').trim();
+    var days = Object.keys((state.visits && state.visits.days) || {}).length;
+    var vweeks = (state.visits && state.visits.weeks) || {};
+    var touched = Object.keys(vweeks).length;
+    var total = journeyWeeks().length;
+    var recs = compassRecs();
+    var greet = name ? ('Welcome back, ' + esc(name) + '.') : 'Your study compass';
+    var nameUi = name
+      ? '<small class="sc-nameline">Saved as ' + esc(name) + ' in this browser only. <button type="button" class="sc-linkbtn" onclick="SOC.nameClear()">Remove my name</button></small>'
+      : '<form class="sc-nameform" onsubmit="return SOC.nameSave(event)"><label for="sc-name">Add your first name (optional)</label><div><input id="sc-name" maxlength="40" autocomplete="off" placeholder="Your name"><button type="submit">Save</button></div><small>Stays in this browser on this device, is never sent anywhere, and Clear My Work removes it.</small></form>';
+    var stats = days
+      ? '<div class="sc-stats"><span><b>' + days + '</b> day' + (days === 1 ? '' : 's') + ' here</span><span><b>' + touched + '</b> of ' + total + ' weeks opened</span></div>'
+      : '';
+    var recHtml = recs.map(function (r) {
+      return '<div class="sc-rec"><div><b>' + r.t + '</b><p>' + r.b + '</p></div><button type="button" onclick="' + r.go + '">' + r.gl + '</button></div>';
+    }).join('');
+    return '<section class="node sc-panel jfade" aria-label="Your study compass">'
+      + '<h2 class="wk-sec" style="margin-top:0">' + greet + '</h2>'
+      + stats + recHtml + nameUi
+      + '<details class="sc-how"><summary>How these suggestions work</summary><p>No AI and no server. A few fixed rules run in your browser over what you have done on this device: which weeks you opened, whether you tried checks and guides, and whether you wrote reflections. None of it leaves this page, none of it is graded, and Clear My Work in How This Site Works erases all of it.</p></details>'
+      + '</section>';
+  }
   function weekHasWork(w) {
     try {
-      var pfx = 'wk|' + w + '|';
+      var pfx = w + '|';
       if (state.wkNotes) { for (var k in state.wkNotes) { if (k.indexOf(pfx) === 0 && String(state.wkNotes[k]).trim()) return true; } }
       if (state.wkReflect && String(state.wkReflect[w] || '').trim()) return true;
       if (state.kcHist) { for (var k2 in state.kcHist) { if (k2.indexOf(w + '|') === 0 || k2.indexOf('w' + w) === 0) return true; } }
@@ -1426,7 +1518,7 @@
       + (started ? '' : '<div style="margin-top:14px;font-size:.8125rem;color:var(--ink-faint)">' + ws.length + ' weeks in this course</div>')
       + '</div></section>';
     var spineHead = '<div style="display:flex;align-items:baseline;gap:12px;margin:0 0 16px;flex-wrap:wrap"><h2 style="font-size:1.375rem;font-weight:600;margin:0;color:var(--ink)">Your journey</h2><span style="font-size:.875rem;color:var(--ink-faint)">' + ws.length + ' weeks, in course order</span></div>';
-    return '<div class="rise">' + hero + institutionalNoticeHtml() + howToUseSiteHtml() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
+    return '<div class="rise">' + hero + compassPanel() + institutionalNoticeHtml() + howToUseSiteHtml() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
   }
   function journeyStations(cur) {
     var ws = journeyWeeks();
@@ -1879,7 +1971,8 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
+    var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><button type="button" onclick="SOC.wkCollAll(' + w + ',0)">Expand all</button><span>Hide sections you have finished. Headings stay put, and your choices are remembered on this device.</span></div>';
+    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -2744,6 +2837,7 @@
       if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = 'Loaded ' + ann; }, 30); }
     }
     saveView();
+    wkEnhanceSections();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
   function renderKeepScroll() {
@@ -2906,6 +3000,51 @@
     openNav: function () { state.navOpen = true; renderKeepScroll(); },
     toggleNav: function () { state.navOpen = !state.navOpen; renderKeepScroll(); },
     closeNav: function () { state.navOpen = false; renderKeepScroll(); },
+    wkColl: function (id) {
+      state.wkColl = state.wkColl || {};
+      var nowColl = !state.wkColl[id];
+      if (nowColl) state.wkColl[id] = 1; else delete state.wkColl[id];
+      persist();
+      var sec = document.getElementById(id);
+      if (sec) {
+        sec.classList.toggle('wk-collapsed', nowColl);
+        var b = sec.querySelector('.wk-coll-btn');
+        if (b) {
+          b.setAttribute('aria-expanded', String(!nowColl));
+          b.setAttribute('aria-label', nowColl ? 'Show this section' : 'Hide this section');
+          b.textContent = nowColl ? '+' : '\u2212';
+        }
+      }
+      announce(nowColl ? 'Section hidden. The heading stays so you can bring it back.' : 'Section shown.');
+    },
+    wkCollAll: function (w, mode) {
+      state.wkColl = state.wkColl || {};
+      var secs = document.querySelectorAll('#soc-main section[id^="wk-"]');
+      Array.prototype.forEach.call(secs, function (sec) {
+        if (sec.id === 'wk-ov' || !sec.querySelector('h2.wk-sec')) return;
+        if (mode) state.wkColl[sec.id] = 1; else delete state.wkColl[sec.id];
+      });
+      persist();
+      renderKeepScroll();
+      announce(mode ? 'All sections collapsed to their headings.' : 'All sections expanded.');
+    },
+    nameSave: function (ev) {
+      if (ev && ev.preventDefault) ev.preventDefault();
+      var el = document.getElementById('sc-name');
+      var v = el ? String(el.value || '').replace(/[<>&"]/g, '').trim().slice(0, 40) : '';
+      if (!v) { announce('Type a name first, or skip this. It is optional.'); return false; }
+      state.studentName = v;
+      persist();
+      render();
+      announce('Saved. Your name stays in this browser only.');
+      return false;
+    },
+    nameClear: function () {
+      state.studentName = '';
+      persist();
+      render();
+      announce('Name removed.');
+    },
     toggleReaderLens: function () {
       state.readerLensOpen = !state.readerLensOpen;
       if (state.readerLensOpen) state.rlPanelOpen = false;
@@ -2943,8 +3082,8 @@
     mediaKind: function (k) { state.mediaKind = k || 'all'; render(); topScroll(); },
     careerLens: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-sel'); },
     careerChoices: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-choices'); },
-    station: function (w) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); topScroll(); },
-    jumpWeek: function (w, part) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
+    station: function (w) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); topScroll(); },
+    jumpWeek: function (w, part) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
     startActivity: function (s, w) { rememberPrevious(); state.activityReturn = cleanWeek(w) || w; state.screen = cleanScreen(s || 'activity'); focusTarget = 'soc-main'; render(); topScroll(); },
     wkCheck: function (k, o) {
       if (state.wkCheck[k] === o) delete state.wkCheck[k]; else state.wkCheck[k] = o;
