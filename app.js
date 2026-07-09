@@ -3233,6 +3233,19 @@
       + '<textarea oninput="SOC.careerReflect(\'' + rk + '\',this.value)" aria-label="Your reflection" class="wk-ta" placeholder="One place I can already picture this showing up in my field...">' + rv + '</textarea></div></section>';
     return wrap(out);
   }
+  var __fromPop = false, __lastNavKey = null, __pushed = false;
+  function navKey() {
+    return [state.screen, state.stationWeek, state.journeyWeek, state.detailId, state.cardWeek, state.activeWeek, state.galWeek, state.galTopic, state.assignmentTab, state.assignmentFaq, state.rcReading, state.showSynthesis ? 1 : 0, (state.compareIds || []).length].join('~');
+  }
+  function navHistorySync() {
+    if (__fromPop) return;
+    var k = navKey();
+    try {
+      if (__lastNavKey === null) history.replaceState(viewSnapshot(), '');
+      else if (k !== __lastNavKey) { history.pushState(viewSnapshot(), ''); __pushed = true; }
+    } catch (e) {}
+    __lastNavKey = k;
+  }
   function render() {
     if (state.screen !== 'compare' && render._prev !== undefined && render._prev !== state.screen && (state.compareIds.length || state.showSynthesis)) { state.compareIds = []; state.showSynthesis = false; }
     render._prev = state.screen;
@@ -3262,6 +3275,7 @@
     }
     saveView();
     wkEnhanceSections();
+    navHistorySync();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
   function renderKeepScroll() {
@@ -3348,6 +3362,7 @@
     state.navOpen = false;
   }
   function goPrevious() {
+    if (__pushed) { try { history.back(); return; } catch (e) {} }
     var current = viewSnapshot();
     var prev = state.prevView;
     if (prev && prev.screen && !sameView(prev, current)) {
@@ -3764,7 +3779,16 @@
 
   state.wkOpen = {};
   render();
-  try { if (location.search) history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+  try { if (location.search) history.replaceState(viewSnapshot(), '', location.pathname + location.hash); } catch (e) {}
+  window.addEventListener('popstate', function (e) {
+    var __ov = document.getElementById('walk-overlay');
+    if (__ov) { try { walkCloseDom(); _walk = null; } catch (er) {} try { history.pushState(viewSnapshot(), ''); } catch (er) {} return; }
+    __fromPop = true;
+    try { restoreView(e.state && typeof e.state === 'object' && e.state.screen ? e.state : { screen: 'journey' }); } catch (er) {}
+    __lastNavKey = navKey();
+    render();
+    __fromPop = false;
+  });
   if (routePart0) scrollWeekPart(routePart0);
   try { var __wk = JSON.parse(sessionStorage.getItem(WKKEY) || 'null'); if (__wk && __wk.w) { walkOpen(cleanWeek(__wk.w) || __wk.w); if (_walk && __wk.i) { _walk.i = Math.max(0, Math.min(_walk.slides.length - 1, __wk.i)); walkMount(); } } } catch (e) {}
 
