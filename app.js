@@ -305,7 +305,7 @@
     var on = !!state.rlPanelOpen;
     var rn = rlActiveCount();
     return '<button type="button" class="reader-lens-btn' + (on ? ' on' : '') + '" onclick="SOC.rlPanel()" aria-pressed="' + (on ? 'true' : 'false') + '" aria-expanded="' + (on ? 'true' : 'false') + '" aria-label="Reading Lens: open reading supports' + (rn ? ', ' + rn + ' support' + (rn === 1 ? '' : 's') + ' active' : '') + '" title="Reading Lens: text size, spacing, font, tint, ruler, magnifier, read aloud">' + ic('search', 17, 2) + '<span class="reader-lens-label">Reading Lens</span>' + (rn ? '<span class="rl-count" aria-hidden="true">' + rn + '</span>' : '') + '</button>'
-      + (('speechSynthesis' in window) ? '<button type="button" class="reader-lens-btn listen-btn' + (rlSpeaking ? ' on' : '') + '" onclick="SOC.rlSpeak()" aria-pressed="' + (rlSpeaking ? 'true' : 'false') + '" aria-label="' + (rlSpeaking ? 'Stop reading this page aloud' : 'Listen: read this page aloud') + '"><span aria-hidden="true">' + (rlSpeaking ? '&#9632;' : '&#9654;') + '</span><span class="reader-lens-label">' + (rlSpeaking ? 'Stop' : 'Listen') + '</span></button>' : '');
+      + (('speechSynthesis' in window) ? '<button type="button" class="reader-lens-btn listen-btn' + (rlSpeaking ? ' on' : '') + '" onclick="SOC.listenMenu()" aria-pressed="' + (rlSpeaking ? 'true' : 'false') + '" aria-label="' + (rlSpeaking ? 'Stop reading this page aloud' : 'Listen: open the read aloud controls') + '"><span aria-hidden="true">' + (rlSpeaking ? '&#9632;' : '&#9654;') + '</span><span class="reader-lens-label">' + (rlSpeaking ? 'Stop' : 'Listen') + '</span></button>' : '');
   }
   function rlLangLabel(tag) {
     var t = String(tag || '').replace('_', '-');
@@ -1272,6 +1272,7 @@
       ['PRIVACY', 'What this site does not send', 'This site does not require an account, does not collect student submissions, does not store grades, and does not send personal student information to the instructor, Seneca, or any server. The optional first name, notes, and check answers stay in this browser unless you remove or export them.'],
       ['COPYRIGHT', 'How readings and media are used', 'Course readings and media are linked for educational use. Copyright remains with the original creators and publishers. Access readings through the provided links, Seneca library access, or Blackboard where applicable.'],
       ['MEDIA', 'External media', 'Nothing on this site contacts an external service until you choose to load or play a video. When you press a load button, that platform (YouTube in privacy-enhanced mode) applies its own privacy practices inside its player.'],
+      ['LANGUAGE', 'Reading in another language', 'Your browser can translate this whole site: right click the page and choose Translate (Chrome, Edge, and Safari all offer this, in more than one hundred languages). It is your choice and happens in your browser. One caution: machine translation can bend key course terms and citations, so check important ideas against the English original before you use them in graded work.'],
       ['ACCESS', 'Accessibility support', 'This site is designed to support accessible course navigation. The Reading Lens button at the top of every page offers text size, spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. If you experience a barrier, use Blackboard and contact the instructor so access can be supported.'],
       ['STUDY', 'What this site is for', 'Use this companion website for weekly learning pathways, readings, key concepts, walkthroughs, self-checks, glossary materials, and study supports.'],
       ['TECHNICAL', 'How this site is built', 'This is a static website: plain HTML, CSS, and JavaScript served from GitHub Pages, with no server, no database, no accounts, and no third-party trackers or analytics. All fonts and scripts load from this site itself.'],
@@ -1416,6 +1417,9 @@
       if (lastTs && (Date.now() - lastTs) > 7 * 86400000) {
         recs.push({ t: 'Ease back in', b: 'It has been more than a week since your last visit. Ten minutes back in your most recent week rebuilds momentum faster than starting something new.', go: 'SOC.station(' + lastW + ')', gl: 'Reopen Week ' + lastW });
       }
+      if (!(state.careerField || '')) {
+        recs.push({ t: 'See yourself in this course', b: 'Pick your program area and the course starts speaking your language: each week gains a lens, a scenario, and a career link written for your field. It shapes how the material reads, never what is graded.', go: 'SOC.go(\'career\')', gl: 'Choose your field' });
+      }
       var kcTried = state.kcHist && Object.keys(state.kcHist).length;
       if (!kcTried && visited.length >= 1) {
         recs.push({ t: 'Test yourself once', b: 'You have been reading but have not tried a Knowledge Check yet. One set tells you what actually stuck.', go: 'SOC.jumpWeek(' + lastW + ', \'kc\')', gl: 'Try a check' });
@@ -1448,8 +1452,9 @@
     var nameUi = name
       ? '<small class="sc-nameline">Saved as ' + esc(name) + ' in this browser only. <button type="button" class="sc-linkbtn" onclick="SOC.nameClear()">Remove my name</button></small>'
       : '<form class="sc-nameform" onsubmit="return SOC.nameSave(event)"><label for="sc-name">Add your first name (optional)</label><div><input id="sc-name" maxlength="40" autocomplete="off" placeholder="Your name"><button type="submit">Save</button></div><small>Stays in this browser on this device, is never sent anywhere, and Clear My Work removes it.</small></form>';
-    var stats = days
-      ? '<div class="sc-stats"><span><b>' + days + '</b> day' + (days === 1 ? '' : 's') + ' here</span><span><b>' + touched + '</b> of ' + total + ' weeks opened</span></div>'
+    var scField = String(state.careerField || '').trim();
+    var stats = (days || scField)
+      ? '<div class="sc-stats">' + (days ? '<span><b>' + days + '</b> day' + (days === 1 ? '' : 's') + ' here</span><span><b>' + touched + '</b> of ' + total + ' weeks opened</span>' : '') + (scField ? '<span>Your lens: <b>' + esc(scField) + '</b></span>' : '') + '</div>'
       : '';
     var recHtml = recs.map(function (r) {
       return '<div class="sc-rec"><div><b>' + r.t + '</b><p>' + r.b + '</p></div><button type="button" onclick="' + r.go + '">' + r.gl + '</button></div>';
@@ -3262,6 +3267,13 @@
     rlRulerPin: function () { var r = rlState(); r.rulerPin = !r.rulerPin; persist(); rlRulerPosition(); renderKeepScroll(); rlRefocus(); announce(r.rulerPin ? 'Ruler pinned. Drag the band by hand, or use Alt with the arrow keys.' : 'Ruler released. It follows your pointer again.'); },
     rlRuler: function () { var r = rlState(); r.ruler = !r.ruler; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.ruler ? 'Reading ruler on. Move your pointer, or hold Alt and press the up or down arrows.' : 'Reading ruler off.'); },
     rlSpeak: function () { rlSpeakToggle(); },
+    listenMenu: function () {
+      if (rlSpeaking) { rlSpeakToggle(); return; }
+      state.rlPanelOpen = true;
+      renderKeepScroll();
+      setTimeout(function () { var b = document.getElementById('rl-speak-btn'); if (b) b.focus(); }, 60);
+      announce('Listening controls open. Pick a voice and speed if you like, then press Read this page aloud.');
+    },
     rlVoicesRefresh: function () {
       try { window.speechSynthesis.getVoices(); } catch (e) {}
       setTimeout(function () { if (state.rlPanelOpen) renderKeepScroll(); }, 250);
