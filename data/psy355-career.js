@@ -1,4 +1,4 @@
-/* PSY355 Career Choices (plain-language; byField + grounded byProgram). */
+/* PSY355 Career Choices (clear; byField + grounded byProgram). */
 window.PSY355_CAREER = {
  "intro": "This course can feel personal, not professional. It can seem to be about you, not your job. It is about both. How you learn, stay motivated, and bounce back follows you into every field. Pick your field of study below. See how these ideas show up in your real work.",
  "prompt": "Pick your field of study above. This course shows how learning, motivation, and resilience follow you into the work.",

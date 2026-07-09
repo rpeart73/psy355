@@ -121,6 +121,22 @@
   .rl-voice{width:100%;max-width:none;margin-top:6px;border:1px solid #DEE3EA;border-radius:8px;padding:6px 8px;font-size:.8125rem;color:#15171C;background:#fff}
   .listen-btn span[aria-hidden]{font-size:.72rem}
   .rl-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:999px;background:#DA291C;color:#fff;font-size:.68rem;font-weight:700;margin-left:6px;padding:0 5px}
+  .walk-theme{position:absolute;top:18px;left:18px;z-index:3;height:44px;padding:0 16px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;border-radius:12px;font-size:.82rem;font-weight:600;cursor:pointer}
+  .walk-theme:hover{background:rgba(255,255,255,.2)}
+  .walk-fig{background:#fff;border-radius:14px;padding:14px;margin:0 0 22px;box-shadow:0 10px 30px rgba(0,0,0,.28);max-width:540px}
+  .walk-fig img{width:100%;height:auto;display:block;border-radius:8px}
+  #walk-overlay.walk-light{background:radial-gradient(120% 90% at 50% 0%,#fbfcfd 0%,#f2f4f7 60%,#e7ebf1 100%);color:#15171C}
+  .walk-light .walk-lead,.walk-light .walk-body,.walk-light .walk-qlist li,.walk-light .walk-can li,.walk-light .walk-q b,.walk-light .walk-reflect p{color:#1f2733}
+  .walk-light .walk-title,.walk-light .walk-h{color:#0f1520}
+  .walk-light .walk-cite,.walk-light .walk-q span,.walk-light .walk-reflect span,.walk-light .walk-count{color:#6b7280}
+  .walk-light .walk-kicker{color:#B02318}
+  .walk-light .walk-close,.walk-light .walk-theme,.walk-light .walk-prev,.walk-light .walk-next{border-color:#d3dae2;background:#fff;color:#1B2A4A}
+  .walk-light .walk-close:hover,.walk-light .walk-theme:hover,.walk-light .walk-prev:hover,.walk-light .walk-next:hover{background:#eef1f5}
+  .walk-light .walk-bar,.walk-light .walk-qlist li,.walk-light .walk-can li{border-color:#e2e6ec}
+  .walk-light .walk-reflect{background:#eef1f5}
+  .walk-light .walk-q{border-left-color:#B02318}
+  .walk-light .walk-fig{box-shadow:0 6px 20px rgba(21,23,28,.1);border:1px solid #e2e6ec}
+  @media (max-width:560px){.walk-theme{font-size:0;padding:0;width:44px}.walk-theme:before{content:"\25D0";font-size:1.15rem}}
   #walk-overlay{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;background:radial-gradient(120% 90% at 50% 0%,#1f2b45 0%,#141821 60%,#0d1017 100%);color:#fff;animation:walkfade .18s ease}
   @keyframes walkfade{from{opacity:0}to{opacity:1}}
   .walk-close{position:absolute;top:18px;right:18px;z-index:3;width:44px;height:44px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -283,7 +299,7 @@
 <script src="./data/psy355-career.js?v=4"></script>
 <script src="./data/seneca-programs.js?v=4"></script>
 <script src="./data/psy355-lens.js?v=1"></script>
-<script src="./app.js?v=119"></script>
+<script src="./app.js?v=120"></script>
 <script defer src="assets/img-viewer.js?v=1"></script>
 </body>
 </html>

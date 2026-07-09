@@ -1,4 +1,4 @@
-/* PSY355 Field Lens: per-area, per-week framing hooks (plain-language). */
+/* PSY355 Field Lens: per-area, per-week framing hooks (clear). */
 window.PSY355_LENS = {
  "byArea": {
   "Aviation": {
