@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif">
   <rect width="680" height="440" fill="#ffffff"/>
-  <text x="40" y="46" font-size="26" font-weight="700" fill="#15171C">Where the evidence is strong, where it needs context</text>
-  <text x="40" y="74" font-size="16" fill="#666">Reading the studies without turning the idea into a slogan</text>
+  <text x="40" y="42" font-size="26" font-weight="700" fill="#15171C">Where the evidence is strong,</text>
+  <text x="40" y="72" font-size="26" font-weight="700" fill="#15171C">where it needs context</text>
+  <text x="40" y="98" font-size="16" fill="#666">Reading the studies without turning the idea into a slogan</text>
 
   <!-- Strong support box -->
   <rect x="40" y="120" width="280" height="200" rx="12" fill="#f5f7f9" stroke="#cfd4db" stroke-width="1.5"/>

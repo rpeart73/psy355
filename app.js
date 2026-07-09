@@ -1255,6 +1255,32 @@
       + steps.map(function (s) { return '<li style="font-size:.96rem;line-height:1.55;color:var(--ink-dim);padding-left:4px">' + esc(s) + '</li>'; }).join('')
       + '</ol></section>';
   }
+  function homeIntroCollapsible() {
+    var code = courseCode() || 'this course';
+    var name = String(state.studentName || '').trim();
+    var days = Object.keys((state.visits && state.visits.days) || {}).length;
+    var touched = Object.keys((state.visits && state.visits.weeks) || {}).length;
+    var isNew = !name && touched === 0 && days <= 1;
+    var steps = [
+      'Start with the current week\'s learning pathway.',
+      'Review the guiding questions and key concepts.',
+      'Open the assigned readings and media.',
+      'Use the walkthroughs and self-checks to prepare for class and assessments.',
+      'Use Blackboard for official announcements, assignment submission, discussions, grades, and course records.'
+    ];
+    return '<section class="node home-intro" aria-label="About this companion website" style="border-left:4px solid var(--red);border-radius:0 14px 14px 0;margin-bottom:16px">'
+      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:8px">COMPANION WEBSITE</div>'
+      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink);margin:0"><strong>Learn and prepare here. Use Blackboard to submit work, get your grades, and read official announcements.</strong></p>'
+      + '<details class="home-about"' + (isNew ? ' open' : '') + '>'
+      + '<summary>What this site is for, and how to use it</summary>'
+      + '<div class="home-about-body">'
+      + '<p style="font-size:.96rem;line-height:1.6;color:var(--ink);margin:0 0 10px">This instructor-created companion website supports weekly learning in ' + esc(code) + '. Students use this site for weekly learning pathways, readings, key concepts, walkthroughs, and study supports. Blackboard remains the official Seneca course platform for announcements, assignment submission, grades, discussions, course records, and required administrative functions.</p>'
+      + '<h3>How to use this site</h3>'
+      + '<ol style="display:grid;gap:8px;margin:0;padding-left:22px">'
+      + steps.map(function (s) { return '<li style="font-size:.93rem;line-height:1.5;color:var(--ink-dim);padding-left:4px">' + esc(s) + '</li>'; }).join('')
+      + '</ol></div></details>'
+      + '</section>';
+  }
   function bbDiagramHtml() {
     var code = courseCode() || 'this course';
     var svg = '<svg viewBox="0 0 760 260" role="img" aria-labelledby="bbd-t bbd-d" style="width:100%;height:auto;display:block;max-width:760px">'
@@ -1756,12 +1782,9 @@
       + '<div style="position:relative;">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.08em;color:var(--red);font-weight:600;margin-bottom:12px">SENECA POLYTECHNIC &middot; FALL 2026</div>'
       + '<h1 class="jhero-title" style="font-size:2.5rem;line-height:1.1;font-weight:600;margin:0 0 14px;letter-spacing:0">' + esc(title) + '</h1>'
-      + '<p style="font-size:1.0625rem;line-height:1.6;color:var(--ink-dim);margin:0 0 24px;">' + esc(journeyIntro()) + '</p>'
-      + '<button class="jhero-cta" onclick="SOC.station(' + (cur || (ws[0] || 1)) + ')">' + ctaLabel + ic('chevron', 18, 2.4) + '</button>'
-      + (started ? '' : '<div style="margin-top:14px;font-size:.8125rem;color:var(--ink-faint)">' + ws.length + ' weeks in this course</div>')
       + '</div></section>';
     var spineHead = '<div style="display:flex;align-items:baseline;gap:12px;margin:0 0 16px;flex-wrap:wrap"><h2 style="font-size:1.375rem;font-weight:600;margin:0;color:var(--ink)">Your journey</h2><span style="font-size:.875rem;color:var(--ink-faint)">' + ws.length + ' weeks, in course order</span></div>';
-    return '<div class="rise">' + hero + institutionalNoticeHtml() + howToUseSiteHtml() + compassPanel() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
+    return '<div class="rise">' + hero + homeIntroCollapsible() + compassPanel() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
   }
   function journeyStations(cur) {
     var ws = journeyWeeks();

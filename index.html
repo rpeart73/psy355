@@ -97,6 +97,14 @@
   .sc-how{margin-top:10px}
   .sc-how summary{font-size:.8125rem;font-weight:600;color:#474C57;cursor:pointer}
   .sc-how p{font-size:.8125rem;color:#6B7280;margin:6px 0 0}
+  .home-intro .home-about{margin-top:8px}
+  .home-intro summary{font-size:.95rem;font-weight:600;color:var(--red);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;padding:4px 0}
+  .home-intro summary::-webkit-details-marker{display:none}
+  .home-intro summary::before{content:"\25B8";display:inline-block;transition:transform .18s ease}
+  .home-intro details[open] summary::before{transform:rotate(90deg)}
+  .home-about-body{padding-top:8px}
+  .home-about-body h3{font-size:1rem;margin:12px 0 6px;color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){.home-intro summary::before{transition:none}}
   .wk-rescue{border-left:4px solid #1B2A4A;background:#fff;border-radius:12px;padding:16px 18px;margin-top:14px;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
   .wk-rescue-head .mono{font-size:.68rem;letter-spacing:.08em;color:var(--red);font-weight:800}
   .wk-rescue h3{font-size:1.16rem;margin:4px 0 6px;color:var(--ink)}
@@ -299,7 +307,7 @@
 <script src="./data/psy355-career.js?v=4"></script>
 <script src="./data/seneca-programs.js?v=4"></script>
 <script src="./data/psy355-lens.js?v=1"></script>
-<script src="./app.js?v=121"></script>
+<script src="./app.js?v=123"></script>
 <script defer src="assets/img-viewer.js?v=1"></script>
 </body>
 </html>
