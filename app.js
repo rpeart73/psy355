@@ -14,7 +14,7 @@
   var VKEY = SKEY + '.view.v1';
   var HKEY = SKEY + '.hardResetNext';
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, rl: state.rl, wkColl: state.wkColl, studentName: state.studentName, visits: state.visits })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, rl: state.rl, wkOpen: state.wkOpen, studentName: state.studentName, visits: state.visits })); } catch (e) {} }
   function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function clearView() { try { sessionStorage.removeItem(VKEY); sessionStorage.removeItem(HKEY); } catch (e) {} }
   function shouldResumeView(v) {
@@ -61,7 +61,7 @@
     sgTick: (saved0.sgTick || {}),
     wkCheck: (saved0.wkCheck && typeof saved0.wkCheck === 'object') ? saved0.wkCheck : {},
     wkReflect: (saved0.wkReflect && typeof saved0.wkReflect === 'object') ? saved0.wkReflect : {},
-    wkColl: (saved0.wkColl && typeof saved0.wkColl === 'object') ? saved0.wkColl : {},
+    wkOpen: (saved0.wkOpen && typeof saved0.wkOpen === 'object') ? saved0.wkOpen : {},
     studentName: typeof saved0.studentName === 'string' ? saved0.studentName.slice(0, 40) : '',
     visits: (saved0.visits && typeof saved0.visits === 'object') ? saved0.visits : {},
     act: (resumeView0 && view0.act && typeof view0.act === 'object') ? view0.act : {},
@@ -1198,6 +1198,22 @@
       vw.n++; vw.last = Date.now();
     } catch (e) {}
   }
+  function wkOpenKey(id) { return (state.stationWeek || 0) + '|' + id; }
+  function wkOpenHas(id) { return !!(state.wkOpen && state.wkOpen[wkOpenKey(id)]); }
+  function wkOpenSet(id, open) {
+    state.wkOpen = state.wkOpen || {};
+    if (open) state.wkOpen[wkOpenKey(id)] = 1; else delete state.wkOpen[wkOpenKey(id)];
+  }
+  function wkExpandFor(id) {
+    if (!id || id.indexOf('wk-') !== 0 || id === 'wk-ov') return;
+    var sec = document.getElementById(id);
+    if (!sec || !sec.classList.contains('wk-collapsed')) return;
+    wkOpenSet(id, true);
+    persist();
+    sec.classList.remove('wk-collapsed');
+    var b = sec.querySelector('.wk-coll-btn');
+    if (b) { b.setAttribute('aria-expanded', 'true'); b.setAttribute('aria-label', 'Hide this section'); b.textContent = '\u2212'; }
+  }
   function wkEnhanceSections() {
     if (state.screen !== 'station') return;
     var secs = document.querySelectorAll('#soc-main section[id^="wk-"]');
@@ -1205,7 +1221,7 @@
       var h = sec.querySelector('h2.wk-sec');
       if (!h || h.parentElement !== sec || h.querySelector('.wk-coll-btn')) return;
       var id = sec.id;
-      var collapsed = !!(state.wkColl && state.wkColl[id]);
+      var collapsed = !wkOpenHas(id);
       if (collapsed) sec.classList.add('wk-collapsed');
       var btn = document.createElement('button');
       btn.type = 'button';
@@ -1217,6 +1233,14 @@
       btn.onclick = function () { SOC.wkColl(id); };
       h.appendChild(btn);
     });
+    var rail = document.querySelector('.wk-rail');
+    if (rail && !rail.__wkExpandWired) {
+      rail.__wkExpandWired = true;
+      rail.addEventListener('click', function (e) {
+        var link = e.target && e.target.closest ? e.target.closest('a[href^="#wk-"]') : null;
+        if (link) { try { wkExpandFor(link.getAttribute('href').slice(1)); } catch (e2) {} }
+      });
+    }
   }
   function compassRecs() {
     var recs = [];
@@ -1971,7 +1995,7 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><button type="button" onclick="SOC.wkCollAll(' + w + ',0)">Expand all</button><span>Hide sections you have finished. Headings stay put, and your choices are remembered on this device.</span></div>';
+    var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><button type="button" onclick="SOC.wkCollAll(' + w + ',0)">Expand all</button><span>Weeks start folded so you can see the whole map. Open just what you need; your choices are remembered on this device.</span></div>';
     return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
@@ -2849,6 +2873,7 @@
   function scrollWeekPart(part) {
     if (!part) { topScroll(); return; }
     setTimeout(function () {
+      try { wkExpandFor('wk-' + part); } catch (e) {}
       var el = document.getElementById('wk-' + part);
       var m = document.getElementById('soc-main');
       if (el && m) m.scrollTop = Math.max(0, el.offsetTop - 10);
@@ -3001,9 +3026,8 @@
     toggleNav: function () { state.navOpen = !state.navOpen; renderKeepScroll(); },
     closeNav: function () { state.navOpen = false; renderKeepScroll(); },
     wkColl: function (id) {
-      state.wkColl = state.wkColl || {};
-      var nowColl = !state.wkColl[id];
-      if (nowColl) state.wkColl[id] = 1; else delete state.wkColl[id];
+      var nowColl = wkOpenHas(id);
+      wkOpenSet(id, nowColl ? false : true);
       persist();
       var sec = document.getElementById(id);
       if (sec) {
@@ -3018,11 +3042,10 @@
       announce(nowColl ? 'Section hidden. The heading stays so you can bring it back.' : 'Section shown.');
     },
     wkCollAll: function (w, mode) {
-      state.wkColl = state.wkColl || {};
       var secs = document.querySelectorAll('#soc-main section[id^="wk-"]');
       Array.prototype.forEach.call(secs, function (sec) {
         if (sec.id === 'wk-ov' || !sec.querySelector('h2.wk-sec')) return;
-        if (mode) state.wkColl[sec.id] = 1; else delete state.wkColl[sec.id];
+        wkOpenSet(sec.id, mode ? false : true);
       });
       persist();
       renderKeepScroll();
