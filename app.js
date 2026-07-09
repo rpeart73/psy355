@@ -303,7 +303,53 @@
   }
   function readerLensButton() {
     var on = !!state.rlPanelOpen;
-    return '<button type="button" class="reader-lens-btn' + (on ? ' on' : '') + '" onclick="SOC.rlPanel()" aria-pressed="' + (on ? 'true' : 'false') + '" aria-expanded="' + (on ? 'true' : 'false') + '" aria-label="Reading Lens: open reading supports" title="Reading Lens: text size, spacing, font, tint, ruler, magnifier, read aloud">' + ic('search', 17, 2) + '<span class="reader-lens-label">Reading Lens</span></button>';
+    var rn = rlActiveCount();
+    return '<button type="button" class="reader-lens-btn' + (on ? ' on' : '') + '" onclick="SOC.rlPanel()" aria-pressed="' + (on ? 'true' : 'false') + '" aria-expanded="' + (on ? 'true' : 'false') + '" aria-label="Reading Lens: open reading supports' + (rn ? ', ' + rn + ' support' + (rn === 1 ? '' : 's') + ' active' : '') + '" title="Reading Lens: text size, spacing, font, tint, ruler, magnifier, read aloud">' + ic('search', 17, 2) + '<span class="reader-lens-label">Reading Lens</span>' + (rn ? '<span class="rl-count" aria-hidden="true">' + rn + '</span>' : '') + '</button>'
+      + (('speechSynthesis' in window) ? '<button type="button" class="reader-lens-btn listen-btn' + (rlSpeaking ? ' on' : '') + '" onclick="SOC.rlSpeak()" aria-pressed="' + (rlSpeaking ? 'true' : 'false') + '" aria-label="' + (rlSpeaking ? 'Stop reading this page aloud' : 'Listen: read this page aloud') + '"><span aria-hidden="true">' + (rlSpeaking ? '&#9632;' : '&#9654;') + '</span><span class="reader-lens-label">' + (rlSpeaking ? 'Stop' : 'Listen') + '</span></button>' : '');
+  }
+  function rlLangLabel(tag) {
+    var t = String(tag || '').replace('_', '-');
+    var MAP = {
+      'en-US': 'English, United States', 'en-GB': 'English, United Kingdom', 'en-CA': 'English, Canada',
+      'en-AU': 'English, Australia', 'en-IN': 'English, India', 'en-NG': 'English, Nigeria',
+      'en-ZA': 'English, South Africa', 'en-KE': 'English, Kenya', 'en-IE': 'English, Ireland',
+      'en-JM': 'English, Jamaica', 'en-TT': 'English, Trinidad and Tobago', 'en-GH': 'English, Ghana',
+      'fr-FR': 'French, France', 'fr-CA': 'French, Canada', 'es-ES': 'Spanish, Spain', 'es-MX': 'Spanish, Mexico',
+      'es-US': 'Spanish, United States', 'pt-BR': 'Portuguese, Brazil', 'pt-PT': 'Portuguese, Portugal',
+      'zh-CN': 'Chinese, Mainland', 'zh-HK': 'Chinese, Hong Kong', 'zh-TW': 'Chinese, Taiwan',
+      'hi-IN': 'Hindi', 'pa-IN': 'Punjabi', 'ta-IN': 'Tamil', 'ur-PK': 'Urdu', 'ar-SA': 'Arabic',
+      'sw-KE': 'Swahili', 'am-ET': 'Amharic', 'yo-NG': 'Yoruba', 'ig-NG': 'Igbo', 'ha-NG': 'Hausa',
+      'so-SO': 'Somali', 'vi-VN': 'Vietnamese', 'tl-PH': 'Filipino', 'fa-IR': 'Persian', 'ru-RU': 'Russian',
+      'uk-UA': 'Ukrainian', 'pl-PL': 'Polish', 'de-DE': 'German', 'it-IT': 'Italian', 'ko-KR': 'Korean', 'ja-JP': 'Japanese'
+    };
+    return MAP[t] || t;
+  }
+  function rlVoiceSelect(r) {
+    try {
+      var vs = (window.speechSynthesis.getVoices() || []).slice();
+      if (!vs.length) return '';
+      vs.sort(function (x, y) {
+        var xe = String(x.lang).indexOf('en') === 0 ? 0 : 1;
+        var ye = String(y.lang).indexOf('en') === 0 ? 0 : 1;
+        if (xe !== ye) return xe - ye;
+        if (x.lang !== y.lang) return String(x.lang) < String(y.lang) ? -1 : 1;
+        return String(x.name) < String(y.name) ? -1 : 1;
+      });
+      return '<select class="rl-voice" aria-label="Read aloud voice and language" onchange="SOC.rlVoice(this.value)"><option value="">Default voice</option>'
+        + vs.map(function (v) { return '<option value="' + esc(v.voiceURI) + '"' + (r.voice === v.voiceURI ? ' selected' : '') + '>' + esc(rlLangLabel(v.lang) + ': ' + v.name) + '</option>'; }).join('')
+        + '</select>'
+        + '<span class="rl-hint" style="display:block;margin-top:5px">Voices come from your own device, so the list differs by phone or computer. Pick the voice that sounds most like your community; many devices carry several English accents and other languages, and you can add more in your device settings.</span>';
+    } catch (e) { return ''; }
+  }
+  function rlActiveCount() {
+    var r = rlState(), n = 0;
+    if (r.zoom !== 100) n++;
+    if (r.space) n++;
+    if (r.font) n++;
+    if (r.tint !== 'none') n++;
+    if (r.ruler) n++;
+    if (state.readerLensOpen) n++;
+    return n;
   }
   function readerLensOverlay() {
     if (!state.readerLensOpen) return '';
@@ -376,7 +422,7 @@
     if (r.zoom === 85 || r.zoom === 92) r.zoom = 87;
     if ([75, 87, 100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
     if (['s', 'm', 'l'].indexOf(r.rulerH) < 0) r.rulerH = 'm';
-    if (['none', 'cream', 'blue', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
+    if (['none', 'cream', 'yellow', 'peach', 'rose', 'green', 'blue', 'lilac', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
     r.space = !!r.space; r.font = !!r.font; r.ruler = !!r.ruler;
     if ([85, 100, 115].indexOf(r.rate) < 0) r.rate = 100;
     return r;
@@ -392,7 +438,7 @@
     var tint = document.getElementById('rl-tint');
     if (r.tint !== 'none') {
       if (!tint) { tint = document.createElement('div'); tint.id = 'rl-tint'; document.body.appendChild(tint); }
-      tint.style.background = r.tint === 'cream' ? 'rgba(255,236,190,.34)' : r.tint === 'blue' ? 'rgba(199,222,255,.34)' : 'rgba(214,219,227,.4)';
+      tint.style.background = ({ cream: 'rgba(255,236,190,.34)', yellow: 'rgba(255,246,153,.32)', peach: 'rgba(255,214,182,.32)', rose: 'rgba(255,205,216,.30)', green: 'rgba(198,236,203,.32)', blue: 'rgba(199,222,255,.34)', lilac: 'rgba(222,208,255,.30)', grey: 'rgba(214,219,227,.4)' })[r.tint] || 'rgba(214,219,227,.4)';
     } else if (tint) { tint.remove(); }
     rlRulerApply();
   }
@@ -457,6 +503,15 @@
     if (cur) cur.classList.remove('rl-reading-now');
     var b = document.getElementById('rl-speak-btn');
     if (b) { b.setAttribute('aria-pressed', 'false'); b.textContent = 'Read this page aloud'; }
+    rlListenBtnSync();
+  }
+  function rlListenBtnSync() {
+    Array.prototype.forEach.call(document.querySelectorAll('.listen-btn'), function (lb) {
+      lb.classList.toggle('on', rlSpeaking);
+      lb.setAttribute('aria-pressed', String(rlSpeaking));
+      lb.setAttribute('aria-label', rlSpeaking ? 'Stop reading this page aloud' : 'Listen: read this page aloud');
+      lb.innerHTML = '<span aria-hidden="true">' + (rlSpeaking ? '&#9632;' : '&#9654;') + '</span><span class="reader-lens-label">' + (rlSpeaking ? 'Stop' : 'Listen') + '</span>';
+    });
   }
   function rlSpeakNext() {
     if (!rlSpeaking) return;
@@ -472,6 +527,13 @@
     try { el.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' }); } catch (e) {}
     var u = new SpeechSynthesisUtterance(el.textContent.replace(/\s+/g, ' ').trim().slice(0, 2000));
     u.rate = rlState().rate / 100;
+    try {
+      var vsel = rlState().voice;
+      if (vsel) {
+        var vv = (window.speechSynthesis.getVoices() || []).filter(function (v) { return v.voiceURI === vsel; })[0];
+        if (vv) { u.voice = vv; u.lang = vv.lang; }
+      }
+    } catch (e) {}
     u.onend = function () { setTimeout(rlSpeakNext, 120); };
     u.onerror = function () { rlSpeakStop(); };
     try { window.speechSynthesis.speak(u); } catch (e) { rlSpeakStop(); }
@@ -487,6 +549,7 @@
     rlSpeaking = true; rlSpeakIdx = -1;
     var b = document.getElementById('rl-speak-btn');
     if (b) { b.setAttribute('aria-pressed', 'true'); b.textContent = 'Stop reading aloud'; }
+    rlListenBtnSync();
     announce('Reading the page aloud from the top.');
     rlSpeakNext();
   }
@@ -499,12 +562,12 @@
     var zoomBtns = [75, 87, 100, 115, 130, 150, 175].map(function (z) {
       return rlBtn('', z === 75 ? 'Smaller' : z === 87 ? 'Small' : z === 100 ? 'Default' : z + '%', r.zoom === z, "SOC.rlZoom(" + z + ")");
     }).join('');
-    var tintBtns = [['none', 'None'], ['cream', 'Cream'], ['blue', 'Blue'], ['grey', 'Grey']].map(function (t) {
+    var tintBtns = [['none', 'None'], ['cream', 'Cream'], ['yellow', 'Yellow'], ['peach', 'Peach'], ['rose', 'Rose'], ['green', 'Green'], ['blue', 'Blue'], ['lilac', 'Lilac'], ['grey', 'Grey']].map(function (t) {
       return rlBtn('', t[1], r.tint === t[0], "SOC.rlTint('" + t[0] + "')");
     }).join('');
     var speech = ('speechSynthesis' in window)
       ? '<div class="rl-row"><b>Listen</b>' + rlBtn('rl-speak-btn', rlSpeaking ? 'Stop reading aloud' : 'Read this page aloud', rlSpeaking, 'SOC.rlSpeak()')
-        + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
+        + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + rlVoiceSelect(r) + '</div>'
       : '';
     return '<section id="rl-panel" class="rl-panel" role="dialog" aria-label="Reading Lens: reading supports" tabindex="-1" onkeydown="SOC.rlPanelKey(event)">'
       + '<div class="rl-head"><strong>Reading Lens</strong><button type="button" class="rl-btn rl-close" onclick="SOC.rlPanel()" aria-label="Close Reading Lens panel">' + ic('x', 16, 2) + '</button></div>'
@@ -518,6 +581,7 @@
       + '<span class="rl-hint">' + (r.rulerPin ? 'Pinned: drag the band by hand, or press Alt plus Up or Down.' : 'Follows your pointer. Pin it to drag it by hand. Alt plus Up or Down also moves it.') + '</span></div>'
       + '<div class="rl-row"><b>Magnifier</b>' + rlBtn('', state.readerLensOpen ? 'On' : 'Off', !!state.readerLensOpen, 'SOC.toggleReaderLens()') + '<span class="rl-hint">A movable lens that repeats the text under it in large print.</span></div>'
       + speech
+      + '<div class="rl-row"><b>Start fresh</b>' + rlBtn('', 'Reset all supports', false, 'SOC.rlReset()') + '<span class="rl-hint">Everything back to default. Your settings otherwise stay on, even with this panel closed, and are remembered for your next visit.</span></div>'
       + '<p class="rl-hint" style="margin:10px 0 0">Escape closes this panel. If any part of the site is still hard to use, use Blackboard and contact the instructor so access can be supported.</p>'
       + '</section>';
   }
@@ -3183,10 +3247,21 @@
     rlSpace: function () { var r = rlState(); r.space = !r.space; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.space ? 'Comfortable spacing on.' : 'Comfortable spacing off.'); },
     rlFont: function () { var r = rlState(); r.font = !r.font; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.font ? 'High-legibility font on.' : 'High-legibility font off.'); },
     rlTint: function (v) { rlState().tint = v; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(v === 'none' ? 'Page tint off.' : v + ' page tint on.'); },
+    rlReset: function () {
+      if (rlSpeaking) rlSpeakStop();
+      state.rl = {};
+      if (state.readerLensOpen) { state.readerLensOpen = false; rlDockWire(false); }
+      persist();
+      rlApply();
+      renderKeepScroll();
+      rlRefocus();
+      announce('All reading supports are back to default.');
+    },
     rlRulerH: function (h) { var r = rlState(); r.rulerH = h; persist(); rlRulerPosition(); renderKeepScroll(); rlRefocus(); announce('Ruler band set to ' + (h === 's' ? 'narrow' : h === 'l' ? 'wide' : 'medium') + '.'); },
     rlRulerPin: function () { var r = rlState(); r.rulerPin = !r.rulerPin; persist(); rlRulerPosition(); renderKeepScroll(); rlRefocus(); announce(r.rulerPin ? 'Ruler pinned. Drag the band by hand, or use Alt with the arrow keys.' : 'Ruler released. It follows your pointer again.'); },
     rlRuler: function () { var r = rlState(); r.ruler = !r.ruler; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.ruler ? 'Reading ruler on. Move your pointer, or hold Alt and press the up or down arrows.' : 'Reading ruler off.'); },
     rlSpeak: function () { rlSpeakToggle(); },
+    rlVoice: function (v) { rlState().voice = String(v || ''); persist(); announce(v ? 'Voice updated. It applies from the next line read.' : 'Default voice restored.'); },
     rlRate: function (v) { rlState().rate = v; persist(); renderKeepScroll(); rlRefocus(); announce('Reading speed set.'); },
     closeReaderLens: function () { if (state.readerLensOpen) SOC.toggleReaderLens(); },
     readerLensPointerDown: function () {},
@@ -3377,6 +3452,9 @@
 
   /* Reading Supports boot: apply saved settings, keep them across renders, stop speech on navigation */
   try {
+    if ('speechSynthesis' in window && window.speechSynthesis.addEventListener) {
+      window.speechSynthesis.addEventListener('voiceschanged', function () { if (state.rlPanelOpen) renderKeepScroll(); });
+    }
     var rlSaved = load();
     if (rlSaved && rlSaved.rl && typeof rlSaved.rl === 'object') state.rl = rlSaved.rl;
     rlApply();
