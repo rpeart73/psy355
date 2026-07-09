@@ -1361,6 +1361,7 @@
     if (state.screen === 'ecology') return 'Resilience Ecology';
     if (state.screen === 'activity') return 'Activity';
     if (state.screen === 'detail') return 'Reading Details';
+    if (state.screen && state.screen.indexOf('assignment') === 0) return 'Starting Your Assignment';
     return 'Home';
   }
   function reportBlock() {
@@ -3107,7 +3108,7 @@
         + '</div></div></article>';
     }).join('');
     return '<div class="rise vid-page">'
-      + '<section class="vid-hero"><div class="mono">SLIDE WALKTHROUGHS</div><h1>Weekly Walkthroughs</h1><p>Each week has a short set of slides that walks through its core idea. Open one to step through it in a new tab, then come back here or jump straight into that week. The walkthroughs support the readings; they do not replace them.</p></section>'
+      + '<section class="vid-hero"><div class="mono">SLIDE WALKTHROUGHS</div><h1>Weekly Walkthroughs</h1><p>Each week has a short set of slides that walks through its core idea. Open one to step through it right here, then jump straight into that week. The walkthroughs support the readings; they do not replace them.</p></section>'
       + (cards ? '<section class="vid-grid" aria-label="Weekly walkthrough decks">' + cards + '</section>' : '<p class="vid-empty">Walkthroughs are being prepared.</p>')
       + '</div>';
   }
