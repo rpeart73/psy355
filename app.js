@@ -1206,8 +1206,13 @@
   }
   function wkExpandFor(id) {
     if (!id || id.indexOf('wk-') !== 0 || id === 'wk-ov') return;
-    var sec = document.getElementById(id);
-    if (!sec || !sec.classList.contains('wk-collapsed')) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    var sec = null;
+    if (el.classList && el.classList.contains('wk-collapsed')) sec = el;
+    else if (el.closest) sec = el.closest('section.wk-collapsed');
+    if (!sec || !sec.id || sec.id === 'wk-ov') return;
+    id = sec.id;
     wkOpenSet(id, true);
     persist();
     sec.classList.remove('wk-collapsed');
@@ -1744,7 +1749,7 @@
         + (ladderDone ? '<div style="background:#E9EFE7;border:1px solid #9CC4A8;border-radius:12px;padding:13px 16px;font-size:.92rem;font-weight:600;color:#2c3b29">You have worked the whole ladder. You are ready for the Knowledge Check below. <a href="#wk-kc" style="color:#2c6b3f">Go to it \u2193</a></div>' : '')
         + '</div>';
     }
-    var html = '<section id="wk-sg" class="node"><h2 class="wk-sec">Study Guide <span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span></h2>'
+    var html = '<section id="wk-sg" class="node"><h2 class="wk-sec">Study Guide</h2>'
       + '<p class="wk-hint">Your rehearsal space before the Knowledge Check. Nothing here is recorded or graded; it lives only in your browser.</p>'
       + warm + tiles + ladder + '</section>';
     return { html: html };
