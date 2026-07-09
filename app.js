@@ -373,7 +373,9 @@
   function rlState() {
     if (!state.rl || typeof state.rl !== 'object') state.rl = {};
     var r = state.rl;
-    if ([85, 92, 100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
+    if (r.zoom === 85 || r.zoom === 92) r.zoom = 87;
+    if ([75, 87, 100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
+    if (['s', 'm', 'l'].indexOf(r.rulerH) < 0) r.rulerH = 'm';
     if (['none', 'cream', 'blue', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
     r.space = !!r.space; r.font = !!r.font; r.ruler = !!r.ruler;
     if ([85, 100, 115].indexOf(r.rate) < 0) r.rate = 100;
@@ -383,7 +385,7 @@
   function rlRefocus() { setTimeout(function () { var p = document.getElementById('rl-panel'); if (p) p.focus(); }, 0); }
   function rlApply() {
     var r = rlState(), root = document.documentElement;
-    ['rl-z85', 'rl-z92', 'rl-z115', 'rl-z130', 'rl-z150', 'rl-z175'].forEach(function (c) { root.classList.remove(c); });
+    ['rl-z75', 'rl-z87', 'rl-z115', 'rl-z130', 'rl-z150', 'rl-z175'].forEach(function (c) { root.classList.remove(c); });
     if (r.zoom !== 100) root.classList.add('rl-z' + r.zoom);
     root.classList.toggle('rl-space', r.space);
     root.classList.toggle('rl-font', r.font);
@@ -405,29 +407,43 @@
           var d = document.createElement('div'); d.id = id; d.setAttribute('aria-hidden', 'true'); document.body.appendChild(d);
         });
         document.addEventListener('pointermove', rlRulerFollow, true);
+        document.addEventListener('pointerdown', rlRulerDragStart, true);
+        document.addEventListener('pointerup', rlRulerDragEnd, true);
         document.addEventListener('keydown', rlRulerKeys, true);
       }
       rlRulerPosition();
     } else if (p.top) {
       p.top.remove(); p.band.remove(); p.bot.remove();
       document.removeEventListener('pointermove', rlRulerFollow, true);
+      document.removeEventListener('pointerdown', rlRulerDragStart, true);
+      document.removeEventListener('pointerup', rlRulerDragEnd, true);
       document.removeEventListener('keydown', rlRulerKeys, true);
     }
   }
   function rlRulerPosition() {
     var p = rlRulerParts();
     if (!p.top) return;
+    var r = rlState();
     var fs = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    var half = Math.round(fs * 1.6);
+    var half = Math.round(fs * (r.rulerH === 's' ? 1.05 : r.rulerH === 'l' ? 2.6 : 1.6));
     var y = Math.max(70, Math.min(window.innerHeight - 40, rlRulerY));
     p.top.style.cssText = 'position:fixed;left:0;right:0;top:0;height:' + Math.max(0, y - half) + 'px;pointer-events:none;z-index:61;background:rgba(27,42,74,.32)';
-    p.band.style.cssText = 'position:fixed;left:0;right:0;top:' + (y - half) + 'px;height:' + (half * 2) + 'px;pointer-events:none;z-index:62;border-top:2px solid rgba(218,41,28,.7);border-bottom:2px solid rgba(218,41,28,.7)';
+    p.band.style.cssText = 'position:fixed;left:0;right:0;top:' + (y - half) + 'px;height:' + (half * 2) + 'px;' + (rlState().rulerPin ? 'pointer-events:auto;cursor:grab;' : 'pointer-events:none;') + 'z-index:62;border-top:2px solid rgba(218,41,28,.7);border-bottom:2px solid rgba(218,41,28,.7)';
     p.bot.style.cssText = 'position:fixed;left:0;right:0;top:' + (y + half) + 'px;bottom:0;pointer-events:none;z-index:61;background:rgba(27,42,74,.32)';
   }
+  var rlRulerDragging = false;
   function rlRulerFollow(e) {
+    if (rlState().rulerPin && !rlRulerDragging) return;
     rlRulerY = e.clientY;
     if (!rlRulerRaf) rlRulerRaf = requestAnimationFrame(function () { rlRulerRaf = 0; rlRulerPosition(); });
   }
+  function rlRulerDragStart(e) {
+    if (e.target && e.target.id === 'rl-ruler-band' && rlState().rulerPin) {
+      rlRulerDragging = true;
+      e.preventDefault();
+    }
+  }
+  function rlRulerDragEnd() { rlRulerDragging = false; }
   function rlRulerKeys(e) {
     if (!e.altKey || (e.key !== 'ArrowDown' && e.key !== 'ArrowUp')) return;
     e.preventDefault();
@@ -480,8 +496,8 @@
   function rlPanelOverlay() {
     if (!state.rlPanelOpen) return '';
     var r = rlState();
-    var zoomBtns = [85, 92, 100, 115, 130, 150, 175].map(function (z) {
-      return rlBtn('', z === 85 ? 'Smaller' : z === 92 ? 'Small' : z === 100 ? 'Default' : z + '%', r.zoom === z, "SOC.rlZoom(" + z + ")");
+    var zoomBtns = [75, 87, 100, 115, 130, 150, 175].map(function (z) {
+      return rlBtn('', z === 75 ? 'Smaller' : z === 87 ? 'Small' : z === 100 ? 'Default' : z + '%', r.zoom === z, "SOC.rlZoom(" + z + ")");
     }).join('');
     var tintBtns = [['none', 'None'], ['cream', 'Cream'], ['blue', 'Blue'], ['grey', 'Grey']].map(function (t) {
       return rlBtn('', t[1], r.tint === t[0], "SOC.rlTint('" + t[0] + "')");
@@ -497,7 +513,9 @@
       + '<div class="rl-row"><b>Comfortable spacing</b>' + rlBtn('', r.space ? 'On' : 'Off', r.space, 'SOC.rlSpace()') + '</div>'
       + '<div class="rl-row"><b>High-legibility font</b>' + rlBtn('', r.font ? 'On' : 'Off', r.font, 'SOC.rlFont()') + '</div>'
       + '<div class="rl-row"><b>Page tint</b>' + tintBtns + '</div>'
-      + '<div class="rl-row"><b>Reading ruler</b>' + rlBtn('', r.ruler ? 'On' : 'Off', r.ruler, 'SOC.rlRuler()') + '<span class="rl-hint">Follows your pointer. Keyboard: Alt plus Up or Down arrow.</span></div>'
+      + '<div class="rl-row"><b>Reading ruler</b>' + rlBtn('', r.ruler ? 'On' : 'Off', r.ruler, 'SOC.rlRuler()')
+      + (r.ruler ? [['s', 'Narrow'], ['m', 'Medium'], ['l', 'Wide']].map(function (h) { return rlBtn('', h[1], r.rulerH === h[0], "SOC.rlRulerH('" + h[0] + "')"); }).join('') + rlBtn('', r.rulerPin ? 'Pinned' : 'Pin in place', !!r.rulerPin, 'SOC.rlRulerPin()') : '')
+      + '<span class="rl-hint">' + (r.rulerPin ? 'Pinned: drag the band by hand, or press Alt plus Up or Down.' : 'Follows your pointer. Pin it to drag it by hand. Alt plus Up or Down also moves it.') + '</span></div>'
       + '<div class="rl-row"><b>Magnifier</b>' + rlBtn('', state.readerLensOpen ? 'On' : 'Off', !!state.readerLensOpen, 'SOC.toggleReaderLens()') + '<span class="rl-hint">A movable lens that repeats the text under it in large print.</span></div>'
       + speech
       + '<p class="rl-hint" style="margin:10px 0 0">Escape closes this panel. If any part of the site is still hard to use, use Blackboard and contact the instructor so access can be supported.</p>'
@@ -3165,6 +3183,8 @@
     rlSpace: function () { var r = rlState(); r.space = !r.space; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.space ? 'Comfortable spacing on.' : 'Comfortable spacing off.'); },
     rlFont: function () { var r = rlState(); r.font = !r.font; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.font ? 'High-legibility font on.' : 'High-legibility font off.'); },
     rlTint: function (v) { rlState().tint = v; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(v === 'none' ? 'Page tint off.' : v + ' page tint on.'); },
+    rlRulerH: function (h) { var r = rlState(); r.rulerH = h; persist(); rlRulerPosition(); renderKeepScroll(); rlRefocus(); announce('Ruler band set to ' + (h === 's' ? 'narrow' : h === 'l' ? 'wide' : 'medium') + '.'); },
+    rlRulerPin: function () { var r = rlState(); r.rulerPin = !r.rulerPin; persist(); rlRulerPosition(); renderKeepScroll(); rlRefocus(); announce(r.rulerPin ? 'Ruler pinned. Drag the band by hand, or use Alt with the arrow keys.' : 'Ruler released. It follows your pointer again.'); },
     rlRuler: function () { var r = rlState(); r.ruler = !r.ruler; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.ruler ? 'Reading ruler on. Move your pointer, or hold Alt and press the up or down arrows.' : 'Reading ruler off.'); },
     rlSpeak: function () { rlSpeakToggle(); },
     rlRate: function (v) { rlState().rate = v; persist(); renderKeepScroll(); rlRefocus(); announce('Reading speed set.'); },
