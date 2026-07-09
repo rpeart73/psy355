@@ -1357,6 +1357,17 @@
       + '<div><b>3. Answer one evidence question</b><span>' + esc(q) + '</span><small>Your answer should point back to the reading, not only the video or activity.</small></div></div>'
       + '<div class="wk-rescue-foot"><b>Do not stop at the rescue path.</b><span>Use it when you are stuck, then return to the full reading list before you submit anything for marks.</span></div></div>';
   }
+  function selField(v) {
+    v = String(v || '').trim();
+    var i = v.indexOf('::');
+    return i >= 0 ? v.slice(0, i) : v;
+  }
+  function selProgram(v) {
+    v = String(v || '').trim();
+    var i = v.indexOf('::');
+    return i >= 0 ? v.slice(i + 2) : '';
+  }
+  function selLabel(v) { return selProgram(v) || selField(v); }
   function trackVisit(w) {
     try {
       var d = new Date(), dk = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
@@ -1471,7 +1482,7 @@
     var nameUi = name
       ? '<small class="sc-nameline">Saved as ' + esc(name) + ' in this browser only. <button type="button" class="sc-linkbtn" onclick="SOC.nameClear()">Remove my name</button></small>'
       : '<form class="sc-nameform" onsubmit="return SOC.nameSave(event)"><label for="sc-name">Add your first name (optional)</label><div><input id="sc-name" maxlength="40" autocomplete="off" placeholder="Your name"><button type="submit">Save</button></div><small>Stays in this browser on this device, is never sent anywhere, and Clear My Work removes it.</small></form>';
-    var scField = String(state.careerField || '').trim();
+    var scField = selLabel(state.careerField || '');
     var stats = (days || scField)
       ? '<div class="sc-stats">' + (days ? '<span><b>' + days + '</b> day' + (days === 1 ? '' : 's') + ' here</span><span><b>' + touched + '</b> of ' + total + ' weeks opened</span>' : '') + (scField ? '<span>Your lens: <b>' + esc(scField) + '</b></span>' : '') + '</div>'
       : '';
