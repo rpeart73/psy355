@@ -422,7 +422,7 @@
     if (r.zoom === 85 || r.zoom === 92) r.zoom = 87;
     if ([75, 87, 100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
     if (['s', 'm', 'l'].indexOf(r.rulerH) < 0) r.rulerH = 'm';
-    if (['none', 'cream', 'yellow', 'peach', 'rose', 'green', 'blue', 'lilac', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
+    if (['none', 'warm', 'cream', 'yellow', 'peach', 'rose', 'green', 'blue', 'lilac', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
     r.space = !!r.space; r.font = !!r.font; r.ruler = !!r.ruler;
     if ([85, 100, 115].indexOf(r.rate) < 0) r.rate = 100;
     return r;
@@ -438,7 +438,8 @@
     var tint = document.getElementById('rl-tint');
     if (r.tint !== 'none') {
       if (!tint) { tint = document.createElement('div'); tint.id = 'rl-tint'; document.body.appendChild(tint); }
-      tint.style.background = ({ cream: 'rgba(255,236,190,.34)', yellow: 'rgba(255,246,153,.32)', peach: 'rgba(255,214,182,.32)', rose: 'rgba(255,205,216,.30)', green: 'rgba(198,236,203,.32)', blue: 'rgba(199,222,255,.34)', lilac: 'rgba(222,208,255,.30)', grey: 'rgba(214,219,227,.4)' })[r.tint] || 'rgba(214,219,227,.4)';
+      tint.style.background = ({ warm: 'rgba(255,183,106,.42)', cream: 'rgba(255,236,190,.34)', yellow: 'rgba(255,246,153,.32)', peach: 'rgba(255,214,182,.32)', rose: 'rgba(255,205,216,.30)', green: 'rgba(198,236,203,.32)', blue: 'rgba(199,222,255,.34)', lilac: 'rgba(222,208,255,.30)', grey: 'rgba(214,219,227,.4)' })[r.tint] || 'rgba(214,219,227,.4)';
+      tint.style.mixBlendMode = (r.tint === 'warm') ? 'multiply' : '';
     } else if (tint) { tint.remove(); }
     rlRulerApply();
   }
@@ -572,7 +573,7 @@
     var zoomBtns = [75, 87, 100, 115, 130, 150, 175].map(function (z) {
       return rlBtn('', z === 75 ? 'Smaller' : z === 87 ? 'Small' : z === 100 ? 'Default' : z + '%', r.zoom === z, "SOC.rlZoom(" + z + ")");
     }).join('');
-    var tintBtns = [['none', 'None'], ['cream', 'Cream'], ['yellow', 'Yellow'], ['peach', 'Peach'], ['rose', 'Rose'], ['green', 'Green'], ['blue', 'Blue'], ['lilac', 'Lilac'], ['grey', 'Grey']].map(function (t) {
+    var tintBtns = [['none', 'None'], ['warm', 'Blue light filter'], ['cream', 'Cream'], ['yellow', 'Yellow'], ['peach', 'Peach'], ['rose', 'Rose'], ['green', 'Green'], ['blue', 'Blue'], ['lilac', 'Lilac'], ['grey', 'Grey']].map(function (t) {
       return rlBtn('', t[1], r.tint === t[0], "SOC.rlTint('" + t[0] + "')");
     }).join('');
     var speech = ('speechSynthesis' in window)
