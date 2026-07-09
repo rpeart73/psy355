@@ -422,6 +422,9 @@
     if (r.zoom === 85 || r.zoom === 92) r.zoom = 87;
     if ([75, 87, 100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
     if (['s', 'm', 'l'].indexOf(r.rulerH) < 0) r.rulerH = 'm';
+    if (r.rate === 85) r.rate = 75;
+    if (r.rate === 115) r.rate = 125;
+    if ([50, 75, 100, 125, 150, 200].indexOf(r.rate) < 0) r.rate = 100;
     if (['none', 'warm', 'cream', 'yellow', 'peach', 'rose', 'green', 'blue', 'lilac', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
     r.space = !!r.space; r.font = !!r.font; r.ruler = !!r.ruler;
     if ([85, 100, 115].indexOf(r.rate) < 0) r.rate = 100;
@@ -563,7 +566,7 @@
     return '<div class="rl-panel listen-pop" role="dialog" aria-label="Listen to this page">'
       + '<div class="rl-head"><strong>Listen</strong><button type="button" class="rl-btn rl-close" onclick="SOC.listenMenu()" aria-label="Close listen controls">' + ic('x', 16, 2) + '</button></div>'
       + '<div class="rl-row"><b>Voice and language</b>' + rlVoiceSelect(r) + '</div>'
-      + '<div class="rl-row"><b>Speed</b>' + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
+      + '<div class="rl-row"><b>Speed</b>' + [50, 75, 100, 125, 150, 200].map(function (v) { return rlBtn('', v === 100 ? '1x' : (v / 100) + 'x', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
       + '<button type="button" id="listen-play" class="wk-cta" style="margin:12px 0 0;width:100%" onclick="SOC.listenGo()">Read this page aloud</button>'
       + '</div>';
   }
@@ -578,7 +581,7 @@
     }).join('');
     var speech = ('speechSynthesis' in window)
       ? '<div class="rl-row"><b>Listen</b>' + rlBtn('rl-speak-btn', rlSpeaking ? 'Stop reading aloud' : 'Read this page aloud', rlSpeaking, 'SOC.rlSpeak()')
-        + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
+        + [50, 75, 100, 125, 150, 200].map(function (v) { return rlBtn('', v === 100 ? '1x' : (v / 100) + 'x', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
         + '<div class="rl-row"><b>Voice and language</b>' + rlVoiceSelect(r) + '</div>'
       : '';
     return '<section id="rl-panel" class="rl-panel" role="dialog" aria-label="Reading Lens: reading supports" tabindex="-1" onkeydown="SOC.rlPanelKey(event)">'
