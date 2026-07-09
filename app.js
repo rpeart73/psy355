@@ -556,6 +556,16 @@
   function rlBtn(id, label, pressed, handler, extra) {
     return '<button type="button" id="' + (id || '') + '" class="rl-btn" aria-pressed="' + (pressed ? 'true' : 'false') + '" onclick="' + handler + '"' + (extra || '') + '>' + label + '</button>';
   }
+  function listenOverlay() {
+    if (!state.listenOpen) return '';
+    var r = rlState();
+    return '<div class="rl-panel listen-pop" role="dialog" aria-label="Listen to this page">'
+      + '<div class="rl-head"><strong>Listen</strong><button type="button" class="rl-btn rl-close" onclick="SOC.listenMenu()" aria-label="Close listen controls">' + ic('x', 16, 2) + '</button></div>'
+      + '<div class="rl-row"><b>Voice and language</b>' + rlVoiceSelect(r) + '</div>'
+      + '<div class="rl-row"><b>Speed</b>' + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
+      + '<button type="button" id="listen-play" class="wk-cta" style="margin:12px 0 0;width:100%" onclick="SOC.listenGo()">Read this page aloud</button>'
+      + '</div>';
+  }
   function rlPanelOverlay() {
     if (!state.rlPanelOpen) return '';
     var r = rlState();
@@ -3006,7 +3016,7 @@
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
       + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + siteFooter() + '</div></main>'
-      + '</div>' + readerLensOverlay() + rlPanelOverlay() + toast + '</div>';
+      + '</div>' + readerLensOverlay() + rlPanelOverlay() + listenOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
       if (el) { el.focus(); var v = el.value; el.setSelectionRange(v.length, v.length); }
@@ -3269,14 +3279,21 @@
     rlSpeak: function () { rlSpeakToggle(); },
     listenMenu: function () {
       if (rlSpeaking) { rlSpeakToggle(); return; }
-      state.rlPanelOpen = true;
+      state.listenOpen = !state.listenOpen;
       renderKeepScroll();
-      setTimeout(function () { var b = document.getElementById('rl-speak-btn'); if (b) b.focus(); }, 60);
-      announce('Listening controls open. Pick a voice and speed if you like, then press Read this page aloud.');
+      if (state.listenOpen) {
+        setTimeout(function () { var b = document.getElementById('listen-play'); if (b) b.focus(); }, 60);
+        announce('Listen controls open. Pick a voice and speed if you like, then press Read this page aloud.');
+      } else { announce('Listen controls closed.'); }
+    },
+    listenGo: function () {
+      state.listenOpen = false;
+      renderKeepScroll();
+      rlSpeakToggle();
     },
     rlVoicesRefresh: function () {
       try { window.speechSynthesis.getVoices(); } catch (e) {}
-      setTimeout(function () { if (state.rlPanelOpen) renderKeepScroll(); }, 250);
+      setTimeout(function () { if (state.rlPanelOpen || state.listenOpen) renderKeepScroll(); }, 250);
       announce('Checking for voices.');
     },
     rlVoice: function (v) { rlState().voice = String(v || ''); persist(); announce(v ? 'Voice updated. It applies from the next line read.' : 'Default voice restored.'); },
