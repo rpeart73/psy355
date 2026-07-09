@@ -2960,9 +2960,10 @@
     var d = weekData(w);
     if (!d || !d.deck) return null;
     var code = (D.course && D.course.code) || '';
-    var sufs = code === 'PSY355' ? ['-a', '-b', '-c'] : code === 'SOC122' ? ['-two-eyed', '-class-path', '-read-practice'] : ['', '-b', '-c'];
-    if (idx >= sufs.length) return null;
-    return 'walkthroughs/' + d.deck + '/images/fig-week' + walkPad(w) + sufs[idx] + '.svg';
+    var man = (typeof window !== 'undefined' && window[code + '_WALKFIGS']) || {};
+    var list = man[w] || man[String(w)];
+    if (!list || !list[idx]) return null;
+    return 'walkthroughs/' + d.deck + '/images/' + list[idx];
   }
   function walkSlides(w) {
     var d = weekData(w);
