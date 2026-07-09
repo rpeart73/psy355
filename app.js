@@ -338,7 +338,7 @@
       return '<select class="rl-voice" aria-label="Read aloud voice and language" onchange="SOC.rlVoice(this.value)"><option value="">Default voice</option>'
         + vs.map(function (v) { return '<option value="' + esc(v.voiceURI) + '"' + (r.voice === v.voiceURI ? ' selected' : '') + '>' + esc(rlLangLabel(v.lang) + ': ' + v.name) + '</option>'; }).join('')
         + '</select>'
-        + '<span class="rl-hint" style="display:block;margin-top:5px">This reads the page\'s own words aloud, so the words stay in English: picking a voice changes the accent and pronunciation, not the language of the text. Voices come from your own device, so the list differs by phone or computer. Pick the voice that sounds most like your community; many devices carry several English accents and other languages, and you can add more in your device settings.</span>';
+        + '<span class="rl-hint" style="display:block;margin-top:5px">This reads the page\'s own words aloud, so the words stay in English: picking a voice changes the accent and pronunciation, not the language of the text. Voices come from your own device, so the list differs by phone or computer. Every voice on your device is listed, in a range of tones and styles, labelled only by region and name. Pick whichever sounds most like your community, or simply the one you find easiest to listen to; you can add more voices in your device settings.</span>';
     } catch (e) { return ''; }
   }
   function rlActiveCount() {
