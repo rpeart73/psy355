@@ -264,6 +264,7 @@
   }
 
   var ICON = {
+    help: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 8v5', 'M12 16h.01'],
     book: ['M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5H6.5A2.5 2.5 0 0 0 4 21z', 'M4 18.5A2.5 2.5 0 0 1 6.5 16H20'],
     file: ['M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8z', 'M14 3v5h5'],
     clipboard: ['M9 4.5h6v3H9z', 'M9 6H6v15h12V6h-3'],
@@ -692,7 +693,9 @@
     var wkActive = s.screen === 'walkthroughs';
     var walk = '<button onclick="SOC.go(\'walkthroughs\')" aria-current="' + (wkActive ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (wkActive ? '600' : '500') + ';background:' + (wkActive ? '#EEF1F5' : 'transparent') + ';color:' + (wkActive ? '#15171C' : '#474C57') + ';text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (wkActive ? 'var(--red)' : '#6B7280') + '">' + ic('layers', 19) + '</span><span style="flex:1;text-align:left">Weekly Walkthroughs</span></button>';
     var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a></div></div>';
-    var nav = btns[0] + btns[1] + guide + btns[2] + walk + btns.slice(3).join('');
+    var repActive = s.screen === 'report';
+    var report = '<button onclick="SOC.reportProblem()" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;background:transparent;color:#474C57;text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('help', 19) + '</span><span style="flex:1;text-align:left">Report a problem</span></button>';
+    var nav = btns[0] + btns[1] + guide + btns[2] + walk + btns.slice(3).join('') + report;
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
     var navWeeks = [];
     for (var nw = 1; nw <= 14; nw++) navWeeks.push(nw);
@@ -1298,11 +1301,7 @@
       ['STUDY', 'What this site is for', 'Use this companion website for weekly learning pathways, readings, key concepts, walkthroughs, self-checks, glossary materials, and study supports.'],
       ['TECHNICAL', 'How this site is built', 'This is a static website: plain HTML, CSS, and JavaScript served from GitHub Pages, with no server, no database, no accounts, and no third-party trackers or analytics. All fonts and scripts load from this site itself.'],
       ['MAINTENANCE', 'How this site is maintained', 'The instructor maintains this site and updates it alongside Blackboard postings each term. If anything here ever looks out of date, Blackboard is the source of truth, and the instructor can be reached through Blackboard.'],
-      ['LIMITS', 'Known limits', 'Saved notes and check answers live only in this browser on this device: clearing browser data removes them, and they do not move between devices. Some week videos may not yet have captions; their full scripts are posted in Blackboard. This site needs JavaScript; everything required for the course also remains available through Blackboard.'],
-      ['FALLBACK', 'If this site is unavailable', 'Everything required for the course also lives on Blackboard. If this website is ever down, or a link here is broken, use Blackboard and contact the instructor; the course can be completed through Blackboard alone. This companion is a study aid, never a single point of failure.'],
-      ['STORAGE', 'What is stored on your device', 'This site saves your notes, self-check answers, reflections, activity results, media notes, assignment-starter text, an optional first name, and simple visit counts. All of it stays in this one browser on this one device, is never sent to the instructor, Seneca, or any server, and is removed when you clear your browser data or use Clear my saved work below.'],
-      ['TESTING', 'Accessibility testing', 'Checked on 2026-07-09 for keyboard navigation with a visible skip-to-content link, colour contrast on text and controls, mobile layout at phone, tablet, and desktop widths, reduced-motion support for animations, and a correct heading structure with a single page heading. If you meet a barrier, use Blackboard and contact the instructor so it can be fixed quickly.'],
-      ['BRANDING', 'Seneca branding', 'This is an instructor-created companion, not official Seneca web infrastructure, and it makes no such claim. The Seneca name, logo, and colours are used only to orient students to the course, and can be adjusted or removed at the department request.']
+      ['LIMITS', 'Known limits', 'Saved notes and check answers live only in this browser on this device: clearing browser data removes them, and they do not move between devices. Some week videos may not yet have captions; their full scripts are posted in Blackboard. This site needs JavaScript; everything required for the course also remains available through Blackboard.']
     ];
     return '<div class="rise path-page">'
       + '<section class="path-hero"><div><div class="mono">COMPANION WEBSITE</div><h1>How This Site Works</h1><p>This page explains how the ' + esc(code) + ' companion website supports ' + esc(title) + ', what belongs on Blackboard, and how readings, privacy, accessibility, and media are handled.</p></div><div class="path-compass" aria-label="Companion website and Blackboard relationship"><span>THIS SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
