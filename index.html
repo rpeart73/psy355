@@ -121,6 +121,43 @@
   .rl-voice{width:100%;max-width:none;margin-top:6px;border:1px solid #DEE3EA;border-radius:8px;padding:6px 8px;font-size:.8125rem;color:#15171C;background:#fff}
   .listen-btn span[aria-hidden]{font-size:.72rem}
   .rl-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:999px;background:#DA291C;color:#fff;font-size:.68rem;font-weight:700;margin-left:6px;padding:0 5px}
+  #walk-overlay{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;background:radial-gradient(120% 90% at 50% 0%,#1f2b45 0%,#141821 60%,#0d1017 100%);color:#fff;animation:walkfade .18s ease}
+  @keyframes walkfade{from{opacity:0}to{opacity:1}}
+  .walk-close{position:absolute;top:18px;right:18px;z-index:3;width:44px;height:44px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .walk-close:hover{background:rgba(255,255,255,.2)}
+  .walk-stage{flex:1;display:flex;align-items:center;justify-content:center;padding:56px 24px 20px;overflow-y:auto}
+  .walk-slide{max-width:720px;width:100%}
+  .walk-anim{animation:walkslide .32s cubic-bezier(.22,.61,.36,1)}
+  @keyframes walkslide{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .walk-kicker{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;letter-spacing:.14em;color:#FF6B5E;font-weight:700;margin-bottom:14px}
+  .walk-title{font-size:clamp(1.8rem,4.5vw,2.9rem);line-height:1.08;font-weight:600;margin:0 0 16px;letter-spacing:-.01em;text-wrap:balance}
+  .walk-lead{font-size:1.1rem;line-height:1.6;color:rgba(255,255,255,.82);margin:0 0 22px;max-width:640px}
+  .walk-q{border-left:3px solid #FF6B5E;padding:4px 0 4px 18px;margin-top:10px}
+  .walk-q span{display:block;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+  .walk-q b{font-size:1.35rem;line-height:1.35;font-weight:600;color:#fff}
+  .walk-h{font-size:clamp(1.5rem,3.6vw,2.2rem);line-height:1.15;font-weight:600;margin:0 0 18px;letter-spacing:-.01em;text-wrap:balance}
+  .walk-body{font-size:clamp(1.05rem,2.4vw,1.28rem);line-height:1.7;color:rgba(255,255,255,.92);margin:0}
+  .walk-cite{margin-top:18px;font-size:.85rem;color:rgba(255,255,255,.5);font-style:italic}
+  .walk-qlist,.walk-can{list-style:none;margin:0;padding:0}
+  .walk-qlist li,.walk-can li{font-size:clamp(1.05rem,2.2vw,1.25rem);line-height:1.5;padding:14px 0 14px 30px;border-bottom:1px solid rgba(255,255,255,.1);position:relative;color:rgba(255,255,255,.92)}
+  .walk-qlist li:before{content:"?";position:absolute;left:0;color:#FF6B5E;font-weight:700}
+  .walk-can li:before{content:"\2713";position:absolute;left:0;color:#6FE39C;font-weight:700}
+  .walk-reflect{margin-top:22px;background:rgba(255,255,255,.06);border-radius:14px;padding:16px 18px}
+  .walk-reflect span{display:block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+  .walk-reflect p{margin:0;font-size:1.02rem;line-height:1.6;color:rgba(255,255,255,.9)}
+  .walk-cta{margin-top:24px;background:#DA291C;color:#fff;border:none;border-radius:11px;font-size:1rem;font-weight:600;padding:13px 24px;cursor:pointer}
+  .walk-cta:hover{background:#b8221199}
+  .walk-bar{display:flex;align-items:center;gap:16px;justify-content:center;padding:18px 24px calc(18px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.1)}
+  .walk-prev,.walk-next{width:48px;height:48px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+  .walk-prev{transform:scaleX(-1)}
+  .walk-prev:hover,.walk-next:hover{background:rgba(255,255,255,.2)}
+  .walk-prev:disabled,.walk-next:disabled{opacity:.3;cursor:default}
+  .walk-dots{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;max-width:340px}
+  .walk-dot{width:10px;height:10px;border-radius:50%;border:none;background:rgba(255,255,255,.28);cursor:pointer;padding:0}
+  .walk-dot.on{background:#FF6B5E;transform:scale(1.25)}
+  .walk-count{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.82rem;color:rgba(255,255,255,.6);min-width:52px;text-align:center}
+  @media (max-width:520px){.walk-count{display:none}.walk-stage{padding:60px 18px 12px}}
+  @media (prefers-reduced-motion:reduce){#walk-overlay,.walk-anim{animation:none}}
   .rl-panel{position:fixed;z-index:96;top:70px;right:12px;width:min(340px,calc(100vw - 20px));background:#fff;border:1px solid #DEE3EA;border-radius:14px;box-shadow:0 18px 42px rgba(21,23,28,.24);padding:12px 14px 14px;max-height:calc(100vh - 86px);overflow:auto}
   .rl-head{display:flex;align-items:center;gap:8px;margin:0 0 2px}.rl-head strong{font-size:.98rem;flex:1}
   .rl-sub{font-size:.75rem;color:#474C57;margin:0 0 8px;line-height:1.5}
@@ -246,7 +283,7 @@
 <script src="./data/psy355-career.js?v=4"></script>
 <script src="./data/seneca-programs.js?v=4"></script>
 <script src="./data/psy355-lens.js?v=1"></script>
-<script src="./app.js?v=118"></script>
+<script src="./app.js?v=119"></script>
 <script defer src="assets/img-viewer.js?v=1"></script>
 </body>
 </html>

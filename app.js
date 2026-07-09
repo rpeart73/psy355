@@ -49,12 +49,17 @@
   var view0 = loadView();
   var route0 = initialRoute();
   var resumeView0 = shouldResumeView(view0);
+  var __isReload = false;
+  try { var __nav = performance.getEntriesByType && performance.getEntriesByType('navigation'); __isReload = !!(__nav && __nav[0] && __nav[0].type === 'reload'); } catch (e) {}
+  if (__isReload) { route0 = null; resumeView0 = false; clearView(); }
   var routePart0 = route0 && route0.part;
 
   var state = {
     screen: route0 ? route0.screen : (resumeView0 ? cleanScreen(view0.screen) : 'journey'),
     prevView: (resumeView0 && view0.prevView && typeof view0.prevView === 'object') ? view0.prevView : null,
     navOpen: false,
+    walkWeek: null,
+    walkSlide: 0,
     readerLensOpen: false,
     readerLensX: 84,
     readerLensY: 86,
@@ -2927,6 +2932,49 @@
     var note = state.mediaNotes && state.mediaNotes[v.key] ? state.mediaNotes[v.key] : '';
     return '<article class="vid-card"><div class="vid-frame">' + videoEmbed(v) + '</div><div class="vid-copy"><div class="mono">WEEK ' + v.week + ' &middot; ' + esc(v.kind || 'Media') + ' &middot; ' + esc(v.source) + '</div><h2>' + esc(v.title) + '</h2><h3>' + esc(v.scholar) + '</h3><p>' + esc(v.synopsis) + '</p><div class="vid-watch"><b>Watch for</b><ul>' + v.watchFor.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div><div class="vid-read"><b>Then read</b><span>' + esc(v.readNext) + '</span></div>' + (v.fieldPrompt ? '<div class="vid-field"><b>Use it in your program</b><span>' + esc(v.fieldPrompt) + '</span></div>' : '') + '<label class="vid-note"><b>Reading Rescue note</b><span>After the media, write one sentence you can prove from the reading.</span><textarea oninput="SOC.mediaNote(\'' + esc(v.key) + '\',this.value)" placeholder="One evidence-backed sentence...">' + esc(note) + '</textarea></label><a href="' + esc(v.url) + '" target="_blank" rel="noopener">Open source page <span aria-hidden="true">&#8599;</span></a></div></article>';
   }
+  function walkSlides(w) {
+    var d = weekData(w);
+    if (!d) return [];
+    var slides = [];
+    slides.push({ kind: 'cover', title: weekTitle(w), question: (d.guiding && d.guiding[0]) || journeyQ(w), lead: firstSentence(d.overview || '') });
+    (d.concepts || []).forEach(function (c) { slides.push({ kind: 'concept', h: c.h, body: c.body, cite: c.cite }); });
+    if (d.guiding && d.guiding.length > 1) slides.push({ kind: 'questions', items: d.guiding.slice(0, 4) });
+    slides.push({ kind: 'close', youcan: (d.youcan || []).slice(0, 3), reflect: d.reflectPrompt || '' });
+    return slides;
+  }
+  function walkOverlay() {
+    if (state.walkWeek == null) return '';
+    var w = state.walkWeek, slides = walkSlides(w);
+    if (!slides.length) return '';
+    var i = Math.max(0, Math.min(slides.length - 1, state.walkSlide));
+    var s = slides[i];
+    var body = '';
+    if (s.kind === 'cover') {
+      body = '<div class="walk-kicker">WEEK ' + w + ' WALKTHROUGH</div>'
+        + '<h2 class="walk-title">' + esc(s.title) + '</h2>'
+        + (s.lead ? '<p class="walk-lead">' + esc(s.lead) + '</p>' : '')
+        + '<div class="walk-q"><span>The question this week</span><b>' + esc(s.question) + '</b></div>';
+    } else if (s.kind === 'concept') {
+      body = '<div class="walk-kicker">KEY IDEA</div><h2 class="walk-h">' + esc(s.h) + '</h2>'
+        + '<p class="walk-body">' + esc(s.body) + '</p>'
+        + (s.cite ? '<div class="walk-cite">' + esc(s.cite) + '</div>' : '');
+    } else if (s.kind === 'questions') {
+      body = '<div class="walk-kicker">CARRY THESE QUESTIONS</div><ul class="walk-qlist">' + s.items.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>';
+    } else {
+      body = '<div class="walk-kicker">YOU CAN NOW</div><ul class="walk-can">' + (s.youcan || []).map(function (y) { return '<li>' + esc(y) + '</li>'; }).join('') + '</ul>'
+        + (s.reflect ? '<div class="walk-reflect"><span>Then reflect</span><p>' + esc(s.reflect) + '</p></div>' : '')
+        + '<button type="button" class="walk-cta" onclick="SOC.walkGoWeek()">Open Week ' + w + ' in full</button>';
+    }
+    var dots = slides.map(function (_, k) { return '<button type="button" class="walk-dot' + (k === i ? ' on' : '') + '" onclick="SOC.walkGoto(' + k + ')" aria-label="Slide ' + (k + 1) + '"></button>'; }).join('');
+    return '<div id="walk-overlay" role="dialog" aria-modal="true" aria-label="Week ' + w + ' walkthrough" tabindex="-1">'
+      + '<button type="button" class="walk-close" onclick="SOC.walkClose()" aria-label="Close the walkthrough">' + ic('x', 20) + '</button>'
+      + '<div class="walk-stage"><div class="walk-slide walk-anim" key="' + i + '">' + body + '</div></div>'
+      + '<div class="walk-bar"><button type="button" class="walk-prev" onclick="SOC.walkNav(-1)"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous slide">' + ic('chevron', 20, 2.4) + '</button>'
+      + '<div class="walk-dots">' + dots + '</div>'
+      + '<div class="walk-count">' + (i + 1) + ' / ' + slides.length + '</div>'
+      + '<button type="button" class="walk-next" onclick="SOC.walkNav(1)"' + (i === slides.length - 1 ? ' disabled' : '') + ' aria-label="Next slide">' + ic('chevron', 20, 2.4) + '</button></div>'
+      + '</div>';
+  }
   function walkthroughsPage() {
     var ws = [];
     for (var w = 1; w <= 14; w++) { var d = weekData(w); if (d && d.deck) ws.push({ w: w, deck: d.deck }); }
@@ -2937,7 +2985,8 @@
         + '<h2 style="font-size:1.0625rem;margin:0 0 4px;color:#15171C">' + esc(weekTitle(it.w)) + '</h2>'
         + '<p style="font-size:.875rem;color:#474C57;margin:0 0 14px">A short slide walkthrough of this week\'s core idea, built to step through at your own pace.</p>'
         + '<div style="display:flex;gap:9px;flex-wrap:wrap">'
-        + '<a href="' + url + '" target="_blank" rel="noopener" class="wk-cta" style="text-decoration:none;margin:0">Open the walkthrough <span aria-hidden="true">&#8599;</span></a>'
+        + '<button type="button" class="wk-cta" style="margin:0" onclick="SOC.playWalk(' + it.w + ')">Play the walkthrough</button>'
+        + '<a href="' + url + '" target="_blank" rel="noopener" style="font-size:.8125rem;font-weight:600;color:#1B2A4A;align-self:center;text-decoration:underline">Open the full slides <span aria-hidden="true">&#8599;</span></a>'
         + '<button type="button" onclick="SOC.station(' + it.w + ')" style="border:1px solid #DEE3EA;background:#fff;color:#1B2A4A;border-radius:9px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Go to Week ' + it.w + '</button>'
         + '</div></div></article>';
     }).join('');
@@ -3076,7 +3125,7 @@
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
       + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + body() + siteFooter() + '</div></main>'
-      + '</div>' + readerLensOverlay() + rlPanelOverlay() + listenOverlay() + toast + '</div>';
+      + '</div>' + readerLensOverlay() + rlPanelOverlay() + listenOverlay() + walkOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
       if (el) { el.focus(); var v = el.value; el.setSelectionRange(v.length, v.length); }
@@ -3467,6 +3516,12 @@
     },
     clearCompare: function () { state.compareIds = []; state.showSynthesis = false; render(); },
     synthesize: function () { state.showSynthesis = true; render(); },
+    playWalk: function (w) { state.walkWeek = cleanWeek(w) || w; state.walkSlide = 0; renderKeepScroll(); setTimeout(function () { var o = document.getElementById('walk-overlay'); if (o) o.focus(); }, 40); },
+    walkNav: function (dir) { var slides = walkSlides(state.walkWeek); state.walkSlide = Math.max(0, Math.min(slides.length - 1, state.walkSlide + dir)); renderKeepScroll(); },
+    walkGoto: function (k) { state.walkSlide = k; renderKeepScroll(); },
+    walkClose: function () { state.walkWeek = null; renderKeepScroll(); },
+    walkGoWeek: function () { var w = state.walkWeek; state.walkWeek = null; SOC.station(w); },
+
     hideSynthesis: function () { state.showSynthesis = false; render(); },
     setLens: function (l) { state.lens = l; render(); },
     rcPick: function (id) { state.rcReading = id; state.lens = 'thematic'; persist(); render(); topScroll(); },
@@ -3580,6 +3635,7 @@
   };
 
   render();
+  try { if (location.search) history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
   if (routePart0) scrollWeekPart(routePart0);
 
   /* Reading Supports boot: apply saved settings, keep them across renders, stop speech on navigation */
@@ -3588,6 +3644,20 @@
     if ('speechSynthesis' in window && window.speechSynthesis.addEventListener) {
       window.speechSynthesis.addEventListener('voiceschanged', function () { if (state.rlPanelOpen) renderKeepScroll(); });
     }
+    document.addEventListener('keydown', function (e) {
+      if (state.walkWeek == null) return;
+      if (e.key === 'Escape') { e.preventDefault(); SOC.walkClose(); }
+      else if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); SOC.walkNav(1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); SOC.walkNav(-1); }
+    });
+    var walkTouchX = null;
+    document.addEventListener('touchstart', function (e) { if (state.walkWeek != null && e.touches && e.touches[0]) walkTouchX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (state.walkWeek == null || walkTouchX == null) return;
+      var dx = (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : walkTouchX) - walkTouchX;
+      walkTouchX = null;
+      if (Math.abs(dx) > 45) SOC.walkNav(dx < 0 ? 1 : -1);
+    }, { passive: true });
     var rlSaved = load();
     if (rlSaved && rlSaved.rl && typeof rlSaved.rl === 'object') state.rl = rlSaved.rl;
     rlApply();
