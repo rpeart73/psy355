@@ -24,7 +24,7 @@
     return !!(v && v.screen);
   }
   function cleanScreen(s) {
-    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'activity', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
+    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'activity', 'walkthroughs', 'ecology'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
     w = Number(w);
@@ -689,7 +689,8 @@
       return '<button onclick="' + click + '" aria-current="' + (active ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (active ? '600' : '500') + ';background:' + (active ? '#EEF1F5' : 'transparent') + ';color:' + (active ? '#15171C' : '#474C57') + ';text-align:left">'
         + '<span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (active ? 'var(--red)' : '#6B7280') + '">' + ic(d[2], 19) + '</span><span style="flex:1;text-align:left">' + d[1] + '</span>' + badge + '</button>';
     });
-    var walk = '<a href="./walkthroughs/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:11px;width:100%;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;color:#474C57;text-decoration:none"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('layers', 19) + '</span><span style="flex:1">Weekly Walkthroughs</span><span style="color:#6B7280">↗</span></a>';
+    var wkActive = s.screen === 'walkthroughs';
+    var walk = '<button onclick="SOC.go(\'walkthroughs\')" aria-current="' + (wkActive ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (wkActive ? '600' : '500') + ';background:' + (wkActive ? '#EEF1F5' : 'transparent') + ';color:' + (wkActive ? '#15171C' : '#474C57') + ';text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (wkActive ? 'var(--red)' : '#6B7280') + '">' + ic('layers', 19) + '</span><span style="flex:1;text-align:left">Weekly Walkthroughs</span></button>';
     var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a></div></div>';
     var nav = btns[0] + btns[1] + guide + btns[2] + walk + btns.slice(3).join('');
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
@@ -1136,7 +1137,13 @@
           var syn = buildSynthesis(recs);
           synthBlock = '<div style="background:#15171C;color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:18px">'
             + '<div style="display:flex;align-items:center;gap:9px;margin-bottom:12px"><span style="display:flex;color:#fff">' + ic('sparkle', 17) + '</span><span class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#fff">HOW THESE CONNECT</span><button onclick="SOC.hideSynthesis()" aria-label="Hide" style="margin-left:auto;background:rgba(255,255,255,.12);border:none;border-radius:7px;color:#fff;width:26px;height:26px;display:flex;align-items:center;justify-content:center">' + ic('x', 15) + '</button></div>'
-            + syn.paras.map(function (p) { return '<p style="font-size:1rem;line-height:1.6;margin:0 0 12px;color:rgba(255,255,255,.92)">' + esc(p) + '</p>'; }).join('')
+            + '<div id="syn-body">' + syn.paras.map(function (p) { return '<p style="font-size:1rem;line-height:1.6;margin:0 0 12px;color:rgba(255,255,255,.92)">' + esc(p) + '</p>'; }).join('') + '</div>'
+            + '<div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:6px;border-top:1px solid rgba(255,255,255,.14);padding-top:14px">'
+            + '<button type="button" onclick="SOC.synCopy()" style="border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Copy</button>'
+            + '<button type="button" onclick="SOC.synPrint()" style="border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Print</button>'
+            + '<button type="button" onclick="SOC.synSave()" style="border:1px solid rgba(255,255,255,.35);background:#fff;color:#15171C;border-radius:8px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Save to my notes</button>'
+            + '</div>'
+            + (state.cmpNotes && state.cmpNotes['saved-synthesis'] ? '<div style="margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.7)">Saved to your notes on this device. Copy or print it above to keep a copy anywhere.</div>' : '')
             + '</div>';
         } else {
           synthBlock = '<button onclick="SOC.synthesize()" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:12px 22px;font-size:1rem;font-weight:600;color:#fff;background:#15171C;margin-bottom:18px">' + ic('sparkle', 16) + 'Synthesize their relationship</button>';
@@ -1291,7 +1298,11 @@
       ['STUDY', 'What this site is for', 'Use this companion website for weekly learning pathways, readings, key concepts, walkthroughs, self-checks, glossary materials, and study supports.'],
       ['TECHNICAL', 'How this site is built', 'This is a static website: plain HTML, CSS, and JavaScript served from GitHub Pages, with no server, no database, no accounts, and no third-party trackers or analytics. All fonts and scripts load from this site itself.'],
       ['MAINTENANCE', 'How this site is maintained', 'The instructor maintains this site and updates it alongside Blackboard postings each term. If anything here ever looks out of date, Blackboard is the source of truth, and the instructor can be reached through Blackboard.'],
-      ['LIMITS', 'Known limits', 'Saved notes and check answers live only in this browser on this device: clearing browser data removes them, and they do not move between devices. Some week videos may not yet have captions; their full scripts are posted in Blackboard. This site needs JavaScript; everything required for the course also remains available through Blackboard.']
+      ['LIMITS', 'Known limits', 'Saved notes and check answers live only in this browser on this device: clearing browser data removes them, and they do not move between devices. Some week videos may not yet have captions; their full scripts are posted in Blackboard. This site needs JavaScript; everything required for the course also remains available through Blackboard.'],
+      ['FALLBACK', 'If this site is unavailable', 'Everything required for the course also lives on Blackboard. If this website is ever down, or a link here is broken, use Blackboard and contact the instructor; the course can be completed through Blackboard alone. This companion is a study aid, never a single point of failure.'],
+      ['STORAGE', 'What is stored on your device', 'This site saves your notes, self-check answers, reflections, activity results, media notes, assignment-starter text, an optional first name, and simple visit counts. All of it stays in this one browser on this one device, is never sent to the instructor, Seneca, or any server, and is removed when you clear your browser data or use Clear my saved work below.'],
+      ['TESTING', 'Accessibility testing', 'Checked on 2026-07-09 for keyboard navigation with a visible skip-to-content link, colour contrast on text and controls, mobile layout at phone, tablet, and desktop widths, reduced-motion support for animations, and a correct heading structure with a single page heading. If you meet a barrier, use Blackboard and contact the instructor so it can be fixed quickly.'],
+      ['BRANDING', 'Seneca branding', 'This is an instructor-created companion, not official Seneca web infrastructure, and it makes no such claim. The Seneca name, logo, and colours are used only to orient students to the course, and can be adjusted or removed at the department request.']
     ];
     return '<div class="rise path-page">'
       + '<section class="path-hero"><div><div class="mono">COMPANION WEBSITE</div><h1>How This Site Works</h1><p>This page explains how the ' + esc(code) + ' companion website supports ' + esc(title) + ', what belongs on Blackboard, and how readings, privacy, accessibility, and media are handled.</p></div><div class="path-compass" aria-label="Companion website and Blackboard relationship"><span>THIS SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
@@ -1299,6 +1310,7 @@
       + howToUseSiteHtml()
       + bbDiagramHtml()
       + '<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0">' + cards.map(function (c) { return siteCard(c[0], c[1], c[2]); }).join('') + '</section>'
+      + reportBlock()
       + '<section class="exp-card" style="border-left-color:#1B2A4A;background:#fff;border:1px solid #DEE3EA;border-left:5px solid #1B2A4A;border-radius:14px;padding:20px 22px;margin:0 0 20px" aria-label="Clear saved work"><div class="mono" style="font-size:.68rem;letter-spacing:.08em;color:#1B2A4A;font-weight:700">SHARED OR LAB COMPUTER?</div><h2 style="margin:4px 0 8px;font-size:1.1rem">Clear my saved work on this device</h2><p style="font-size:.9rem;line-height:1.55;margin:0 0 12px">Removes every note, check answer, and setting this site has saved in this browser. Download your weekly notes first if you want to keep them.</p><button type="button" class="wk-cta" style="margin:0" onclick="SOC.clearMyWork()">Clear everything saved here</button></section>'
       + '</div>';
   }
@@ -1309,6 +1321,7 @@
     if (state.screen === 'readings') return 'Readings Library';
     if (state.screen === 'compare') return 'Compare Readings';
     if (state.screen === 'reading') return 'Reading Practice';
+    if (state.screen === 'walkthroughs') return 'Weekly Walkthroughs';
     if (state.screen === 'videos') return 'Videos and Podcasts';
     if (state.screen === 'glossary') return 'Glossary';
     if (state.screen === 'cards') return 'Concept Flashcards';
@@ -1318,6 +1331,14 @@
     if (state.screen === 'activity') return 'Activity';
     if (state.screen === 'detail') return 'Reading Details';
     return 'Home';
+  }
+  function reportBlock() {
+    return '<section class="node" aria-labelledby="rep-h" style="margin:16px 0"><h2 id="rep-h" class="wk-sec">Something not working?</h2>'
+      + '<p style="margin:0 0 12px;font-size:.95rem;line-height:1.6;color:var(--ink-dim)">If a video will not load, a link is broken, or anything looks wrong, tell the instructor so it can be fixed. The button opens your own email with the page details filled in; you just add what happened and press send. Nothing is collected by this site.</p>'
+      + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
+      + '<button type="button" class="wk-cta" style="margin:0" onclick="SOC.reportProblem()">Report a problem by email</button>'
+      + '<span style="font-size:.85rem;color:var(--ink-dim)">or call or text <a href="tel:+14162779174" style="color:#1B2A4A;font-weight:600">416-277-9174</a></span>'
+      + '</div></section>';
   }
   function siteFooter() {
     var code = courseCode() || 'Course';
@@ -2907,6 +2928,25 @@
     var note = state.mediaNotes && state.mediaNotes[v.key] ? state.mediaNotes[v.key] : '';
     return '<article class="vid-card"><div class="vid-frame">' + videoEmbed(v) + '</div><div class="vid-copy"><div class="mono">WEEK ' + v.week + ' &middot; ' + esc(v.kind || 'Media') + ' &middot; ' + esc(v.source) + '</div><h2>' + esc(v.title) + '</h2><h3>' + esc(v.scholar) + '</h3><p>' + esc(v.synopsis) + '</p><div class="vid-watch"><b>Watch for</b><ul>' + v.watchFor.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div><div class="vid-read"><b>Then read</b><span>' + esc(v.readNext) + '</span></div>' + (v.fieldPrompt ? '<div class="vid-field"><b>Use it in your program</b><span>' + esc(v.fieldPrompt) + '</span></div>' : '') + '<label class="vid-note"><b>Reading Rescue note</b><span>After the media, write one sentence you can prove from the reading.</span><textarea oninput="SOC.mediaNote(\'' + esc(v.key) + '\',this.value)" placeholder="One evidence-backed sentence...">' + esc(note) + '</textarea></label><a href="' + esc(v.url) + '" target="_blank" rel="noopener">Open source page <span aria-hidden="true">&#8599;</span></a></div></article>';
   }
+  function walkthroughsPage() {
+    var ws = [];
+    for (var w = 1; w <= 14; w++) { var d = weekData(w); if (d && d.deck) ws.push({ w: w, deck: d.deck }); }
+    var cards = ws.map(function (it) {
+      var url = './walkthroughs/' + it.deck + '/index.html?v=4';
+      return '<article class="vid-card" style="padding:0"><div style="padding:18px 20px">'
+        + '<div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:6px">WEEK ' + it.w + '</div>'
+        + '<h2 style="font-size:1.0625rem;margin:0 0 4px;color:#15171C">' + esc(weekTitle(it.w)) + '</h2>'
+        + '<p style="font-size:.875rem;color:#474C57;margin:0 0 14px">A short slide walkthrough of this week\'s core idea, built to step through at your own pace.</p>'
+        + '<div style="display:flex;gap:9px;flex-wrap:wrap">'
+        + '<a href="' + url + '" target="_blank" rel="noopener" class="wk-cta" style="text-decoration:none;margin:0">Open the walkthrough <span aria-hidden="true">&#8599;</span></a>'
+        + '<button type="button" onclick="SOC.station(' + it.w + ')" style="border:1px solid #DEE3EA;background:#fff;color:#1B2A4A;border-radius:9px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Go to Week ' + it.w + '</button>'
+        + '</div></div></article>';
+    }).join('');
+    return '<div class="rise vid-page">'
+      + '<section class="vid-hero"><div class="mono">SLIDE WALKTHROUGHS</div><h1>Weekly Walkthroughs</h1><p>Each week has a short set of slides that walks through its core idea. Open one to step through it in a new tab, then come back here or jump straight into that week. The walkthroughs support the readings; they do not replace them.</p></section>'
+      + (cards ? '<section class="vid-grid" aria-label="Weekly walkthrough decks">' + cards + '</section>' : '<p class="vid-empty">Walkthroughs are being prepared.</p>')
+      + '</div>';
+  }
   function videosPage() {
     var items = scholarMedia();
     var filter = state.videoWeek || 'all';
@@ -2952,6 +2992,7 @@
     if (state.screen === 'detail') return homeBar() + detail();
     if (state.screen === 'pathways') return homeBar() + pathwaysPage();
     if (state.screen === 'site') return homeBar() + siteInfoPage();
+    if (state.screen === 'walkthroughs') return homeBar() + walkthroughsPage();
     if (state.screen === 'videos') return homeBar() + videosPage();
     if (state.screen === 'readings') return homeBar() + readingsGallery();
     if (state.screen === 'compare') return homeBar() + compare();
@@ -3322,6 +3363,18 @@
     readerLensPointerDown: function () {},
     readerLensKey: function () {},
     prev: goPrevious,
+    reportProblem: function () {
+      var scr = screenAnnounceText ? screenAnnounceText() : (state.screen || 'a page');
+      var wk = state.screen === 'station' ? (' (Week ' + state.stationWeek + ')') : '';
+      var vp = (window.innerWidth || '?') + 'x' + (window.innerHeight || '?');
+      var ua = (navigator.userAgent || '').slice(0, 160);
+      var course = (D.course && D.course.code) || 'Course';
+      var subject = course + ' companion site: problem report';
+      var body = 'Hi Professor Peart,\n\nI ran into a problem on the ' + course + ' companion website.\n\nWhat happened (please describe):\n\n\n---- details that help fix it (please leave these) ----\nPage: ' + scr + wk + '\nAddress: ' + (location.href || '') + '\nScreen: ' + vp + '\nBrowser: ' + ua + '\n';
+      var href = 'mailto:raymond.peart@senecapolytechnic.ca?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      try { window.location.href = href; } catch (e) {}
+      announce('Opening your email app with the page details filled in. Add what happened, then send.');
+    },
     go: function (s) {
       var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
@@ -3389,6 +3442,30 @@
     dismissIntro: function () { state.introOpen = false; persist(); render(); },
     save: function (id) { var a = state.saved, i = a.indexOf(id); var msg; if (i >= 0) { a.splice(i, 1); msg = 'Removed from saved.'; } else { a.push(id); msg = 'Saved to your shelf.'; } persist(); flash(msg); },
     compare: function (id) { var a = state.compareIds, i = a.indexOf(id); if (i >= 0) { a.splice(i, 1); persist(); flash('Removed from compare.'); } else { if (a.length >= 3) { flash('Compare holds three at a time.'); return; } a.push(id); persist(); flash('Added to compare.'); } },
+    synCopy: function () {
+      var el = document.getElementById('syn-body');
+      var txt = el ? el.textContent.replace(/\s+\n/g, '\n').trim() : '';
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(function () { announce('Copied to your clipboard.'); }, function () { announce('Copy failed. Select the text and copy it manually.'); }); }
+      else { announce('Copy is not available in this browser. Select the text to copy it.'); }
+    },
+    synPrint: function () {
+      var el = document.getElementById('syn-body');
+      var txt = el ? el.innerHTML : '';
+      var w = window.open('', '_blank');
+      if (!w) { announce('Allow pop-ups to print, or use Copy instead.'); return; }
+      w.document.write('<!doctype html><meta charset=utf-8><title>Reading synthesis</title><body style="font-family:Georgia,serif;max-width:640px;margin:40px auto;padding:0 20px;color:#15171C;line-height:1.6"><h1 style="font-size:1.2rem">How these readings connect</h1>' + txt + '<script>window.onload=function(){window.print();}<\/script></body>');
+      w.document.close();
+    },
+    synSave: function () {
+      var el = document.getElementById('syn-body');
+      var txt = el ? el.textContent.replace(/\s+\n/g, '\n').trim() : '';
+      if (!txt) { announce('Nothing to save yet.'); return; }
+      state.cmpNotes = state.cmpNotes || {};
+      state.cmpNotes['saved-synthesis'] = txt;
+      persist();
+      renderKeepScroll();
+      announce('Saved to your notes on this device. It will be here when you come back in this browser.');
+    },
     clearCompare: function () { state.compareIds = []; state.showSynthesis = false; render(); },
     synthesize: function () { state.showSynthesis = true; render(); },
     hideSynthesis: function () { state.showSynthesis = false; render(); },
