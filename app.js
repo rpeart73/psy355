@@ -42,6 +42,9 @@
     } catch (e) {}
     return null;
   }
+  /* Term shell URL: replace with the exact Blackboard course link once the Fall shell is published. */
+  var BB_URL = 'https://learn.senecapolytechnic.ca';
+  var ICS_PATH = '';
   var saved0 = load();
   var view0 = loadView();
   var route0 = initialRoute();
@@ -1140,6 +1143,44 @@
       + steps.map(function (s) { return '<li style="font-size:.96rem;line-height:1.55;color:var(--ink-dim);padding-left:4px">' + esc(s) + '</li>'; }).join('')
       + '</ol></section>';
   }
+  function bbDiagramHtml() {
+    var code = courseCode() || 'this course';
+    var svg = '<svg viewBox="0 0 760 260" role="img" aria-labelledby="bbd-t bbd-d" style="width:100%;height:auto;display:block;max-width:760px">'
+      + '<title id="bbd-t">How this site and Blackboard work together</title>'
+      + '<desc id="bbd-d">Two panels. This site is for learning and practice and saves only to your device. Blackboard is the official platform where you submit work and receive grades. Arrows show moving between them: submit on Blackboard, come back here to study.</desc>'
+      + '<rect x="10" y="20" width="330" height="190" rx="14" fill="#F7F9FB" stroke="#1B2A4A" stroke-width="2"/>'
+      + '<text x="30" y="52" font-size="15" font-weight="700" fill="#1B2A4A" style="letter-spacing:.06em">THIS SITE</text>'
+      + '<text x="30" y="82" font-size="13.5" fill="#15171C">Weekly pathway, readings, key concepts</text>'
+      + '<text x="30" y="108" font-size="13.5" fill="#15171C">Practice checks, notes, study supports</text>'
+      + '<text x="30" y="134" font-size="13.5" fill="#15171C">Never graded, nothing submitted here</text>'
+      + '<text x="30" y="160" font-size="13.5" fill="#15171C">Saves only to this device</text>'
+      + '<text x="30" y="192" font-size="12" font-weight="600" fill="#6B7280">LEARN AND PRACTICE</text>'
+      + '<rect x="420" y="20" width="330" height="190" rx="14" fill="#FFF6F5" stroke="#DA291C" stroke-width="2"/>'
+      + '<text x="440" y="52" font-size="15" font-weight="700" fill="#DA291C" style="letter-spacing:.06em">BLACKBOARD</text>'
+      + '<text x="440" y="82" font-size="13.5" fill="#15171C">Submit every assignment</text>'
+      + '<text x="440" y="108" font-size="13.5" fill="#15171C">Discussions, announcements, messages</text>'
+      + '<text x="440" y="134" font-size="13.5" fill="#15171C">Grades and official records</text>'
+      + '<text x="440" y="160" font-size="13.5" fill="#15171C">Official due dates</text>'
+      + '<text x="440" y="192" font-size="12" font-weight="600" fill="#6B7280">ACT AND SUBMIT</text>'
+      + '<line x1="345" y1="80" x2="412" y2="80" stroke="#DA291C" stroke-width="2.5"/>'
+      + '<polygon points="412,80 400,74 400,86" fill="#DA291C"/>'
+      + '<text x="378" y="66" font-size="11.5" font-weight="600" fill="#DA291C" text-anchor="middle">submit</text>'
+      + '<line x1="415" y1="150" x2="348" y2="150" stroke="#1B2A4A" stroke-width="2.5"/>'
+      + '<polygon points="348,150 360,144 360,156" fill="#1B2A4A"/>'
+      + '<text x="380" y="172" font-size="11.5" font-weight="600" fill="#1B2A4A" text-anchor="middle">study, review</text>'
+      + '<text x="380" y="242" font-size="13" font-weight="700" fill="#15171C" text-anchor="middle">If the two ever disagree, Blackboard is the source of truth.</text>'
+      + '</svg>';
+    return '<section class="node" aria-labelledby="bbd-h" style="margin:16px 0">'
+      + '<h2 id="bbd-h" class="wk-sec">How this site works with Blackboard</h2>'
+      + '<p style="margin:0 0 14px;font-size:.95rem;line-height:1.6;color:var(--ink-dim)">Think of the two as one loop. You learn and practice here: the weekly pathway, readings, concepts, checks, and notes. You act on Blackboard: every submission, discussion post, grade, and official date lives there. Nothing you do on this site is graded or visible to anyone, and nothing here replaces a Blackboard step.</p>'
+      + svg
+      + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">'
+      + '<a href="' + BB_URL + '" target="_blank" rel="noopener" class="wk-cta" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">Open Blackboard <span aria-hidden="true">&#8599;</span></a>'
+      + (typeof ICS_PATH === 'string' && ICS_PATH ? '<a href="' + ICS_PATH + '" download class="wk-cta" style="text-decoration:none;background:#fff;color:#1B2A4A;border:1px solid #1B2A4A;display:inline-flex;align-items:center;gap:6px">Add the key dates to your calendar</a>' : '')
+      + '</div>'
+      + (typeof ICS_PATH === 'string' && ICS_PATH ? '<p style="margin:8px 0 0;font-size:.78rem;color:var(--ink-faint)">The calendar file adds every assessment open and due date to Outlook, Google Calendar, or Apple Calendar. Blackboard remains the official word on dates.</p>' : '')
+      + '</section>';
+  }
   function siteInfoPage() {
     var code = courseCode() || 'this course';
     var title = courseTitle();
@@ -1158,6 +1199,7 @@
       + '<section class="path-hero"><div><div class="mono">COMPANION WEBSITE</div><h1>How This Site Works</h1><p>This page explains how the ' + esc(code) + ' companion website supports ' + esc(title) + ', what belongs on Blackboard, and how readings, privacy, accessibility, and media are handled.</p></div><div class="path-compass" aria-label="Companion website and Blackboard relationship"><span>THIS SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
       + institutionalNoticeHtml()
       + howToUseSiteHtml()
+      + bbDiagramHtml()
       + '<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0">' + cards.map(function (c) { return siteCard(c[0], c[1], c[2]); }).join('') + '</section>'
       + '<section class="exp-card" style="border-left-color:#1B2A4A;background:#fff;border:1px solid #DEE3EA;border-left:5px solid #1B2A4A;border-radius:14px;padding:20px 22px;margin:0 0 20px" aria-label="Clear saved work"><div class="mono" style="font-size:.68rem;letter-spacing:.08em;color:#1B2A4A;font-weight:700">SHARED OR LAB COMPUTER?</div><h2 style="margin:4px 0 8px;font-size:1.1rem">Clear my saved work on this device</h2><p style="font-size:.9rem;line-height:1.55;margin:0 0 12px">Removes every note, check answer, and setting this site has saved in this browser. Download your weekly notes first if you want to keep them.</p><button type="button" class="wk-cta" style="margin:0" onclick="SOC.clearMyWork()">Clear everything saved here</button></section>'
       + '</div>';
