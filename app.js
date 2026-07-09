@@ -327,7 +327,7 @@
   function rlVoiceSelect(r) {
     try {
       var vs = (window.speechSynthesis.getVoices() || []).slice();
-      if (!vs.length) return '';
+      if (!vs.length) return '<span class="rl-hint">Your browser has not shared its voice list yet.</span>' + rlBtn('', 'Load voices', false, 'SOC.rlVoicesRefresh()');
       vs.sort(function (x, y) {
         var xe = String(x.lang).indexOf('en') === 0 ? 0 : 1;
         var ye = String(y.lang).indexOf('en') === 0 ? 0 : 1;
@@ -567,7 +567,8 @@
     }).join('');
     var speech = ('speechSynthesis' in window)
       ? '<div class="rl-row"><b>Listen</b>' + rlBtn('rl-speak-btn', rlSpeaking ? 'Stop reading aloud' : 'Read this page aloud', rlSpeaking, 'SOC.rlSpeak()')
-        + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + rlVoiceSelect(r) + '</div>'
+        + [85, 100, 115].map(function (v) { return rlBtn('', v === 85 ? 'Slower' : v === 100 ? 'Normal speed' : 'Faster', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
+        + '<div class="rl-row"><b>Voice and language</b>' + rlVoiceSelect(r) + '</div>'
       : '';
     return '<section id="rl-panel" class="rl-panel" role="dialog" aria-label="Reading Lens: reading supports" tabindex="-1" onkeydown="SOC.rlPanelKey(event)">'
       + '<div class="rl-head"><strong>Reading Lens</strong><button type="button" class="rl-btn rl-close" onclick="SOC.rlPanel()" aria-label="Close Reading Lens panel">' + ic('x', 16, 2) + '</button></div>'
@@ -3261,6 +3262,11 @@
     rlRulerPin: function () { var r = rlState(); r.rulerPin = !r.rulerPin; persist(); rlRulerPosition(); renderKeepScroll(); rlRefocus(); announce(r.rulerPin ? 'Ruler pinned. Drag the band by hand, or use Alt with the arrow keys.' : 'Ruler released. It follows your pointer again.'); },
     rlRuler: function () { var r = rlState(); r.ruler = !r.ruler; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.ruler ? 'Reading ruler on. Move your pointer, or hold Alt and press the up or down arrows.' : 'Reading ruler off.'); },
     rlSpeak: function () { rlSpeakToggle(); },
+    rlVoicesRefresh: function () {
+      try { window.speechSynthesis.getVoices(); } catch (e) {}
+      setTimeout(function () { if (state.rlPanelOpen) renderKeepScroll(); }, 250);
+      announce('Checking for voices.');
+    },
     rlVoice: function (v) { rlState().voice = String(v || ''); persist(); announce(v ? 'Voice updated. It applies from the next line read.' : 'Default voice restored.'); },
     rlRate: function (v) { rlState().rate = v; persist(); renderKeepScroll(); rlRefocus(); announce('Reading speed set.'); },
     closeReaderLens: function () { if (state.readerLensOpen) SOC.toggleReaderLens(); },
@@ -3452,6 +3458,7 @@
 
   /* Reading Supports boot: apply saved settings, keep them across renders, stop speech on navigation */
   try {
+    try { if ('speechSynthesis' in window) window.speechSynthesis.getVoices(); } catch (e0) {}
     if ('speechSynthesis' in window && window.speechSynthesis.addEventListener) {
       window.speechSynthesis.addEventListener('voiceschanged', function () { if (state.rlPanelOpen) renderKeepScroll(); });
     }
