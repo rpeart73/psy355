@@ -370,7 +370,7 @@
   function rlState() {
     if (!state.rl || typeof state.rl !== 'object') state.rl = {};
     var r = state.rl;
-    if ([100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
+    if ([85, 92, 100, 115, 130, 150, 175].indexOf(r.zoom) < 0) r.zoom = 100;
     if (['none', 'cream', 'blue', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
     r.space = !!r.space; r.font = !!r.font; r.ruler = !!r.ruler;
     if ([85, 100, 115].indexOf(r.rate) < 0) r.rate = 100;
@@ -380,7 +380,7 @@
   function rlRefocus() { setTimeout(function () { var p = document.getElementById('rl-panel'); if (p) p.focus(); }, 0); }
   function rlApply() {
     var r = rlState(), root = document.documentElement;
-    ['rl-z115', 'rl-z130', 'rl-z150', 'rl-z175'].forEach(function (c) { root.classList.remove(c); });
+    ['rl-z85', 'rl-z92', 'rl-z115', 'rl-z130', 'rl-z150', 'rl-z175'].forEach(function (c) { root.classList.remove(c); });
     if (r.zoom !== 100) root.classList.add('rl-z' + r.zoom);
     root.classList.toggle('rl-space', r.space);
     root.classList.toggle('rl-font', r.font);
@@ -477,8 +477,8 @@
   function rlPanelOverlay() {
     if (!state.rlPanelOpen) return '';
     var r = rlState();
-    var zoomBtns = [100, 115, 130, 150, 175].map(function (z) {
-      return rlBtn('', z === 100 ? 'Default' : z + '%', r.zoom === z, "SOC.rlZoom(" + z + ")");
+    var zoomBtns = [85, 92, 100, 115, 130, 150, 175].map(function (z) {
+      return rlBtn('', z === 85 ? 'Smaller' : z === 92 ? 'Small' : z === 100 ? 'Default' : z + '%', r.zoom === z, "SOC.rlZoom(" + z + ")");
     }).join('');
     var tintBtns = [['none', 'None'], ['cream', 'Cream'], ['blue', 'Blue'], ['grey', 'Grey']].map(function (t) {
       return rlBtn('', t[1], r.tint === t[0], "SOC.rlTint('" + t[0] + "')");
