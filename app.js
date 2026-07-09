@@ -1186,7 +1186,7 @@
     var title = courseTitle();
     var cards = [
       ['BLACKBOARD', 'Where official course work happens', 'Blackboard remains the official Seneca course platform for announcements, assignment submission, discussions, grades, course records, and required administrative functions.'],
-      ['PRIVACY', 'What this site does not collect', 'This site does not require an account, does not collect student submissions, does not store grades, and does not request personal student information. Notes and check answers stay in this browser unless you export them.'],
+      ['PRIVACY', 'What this site does not send', 'This site does not require an account, does not collect student submissions, does not store grades, and does not send personal student information to the instructor, Seneca, or any server. The optional first name, notes, and check answers stay in this browser unless you remove or export them.'],
       ['COPYRIGHT', 'How readings and media are used', 'Course readings and media are linked for educational use. Copyright remains with the original creators and publishers. Access readings through the provided links, Seneca library access, or Blackboard where applicable.'],
       ['MEDIA', 'External media', 'Nothing on this site contacts an external service until you choose to load or play a video. When you press a load button, that platform (YouTube in privacy-enhanced mode) applies its own privacy practices inside its player.'],
       ['ACCESS', 'Accessibility support', 'This site is designed to support accessible course navigation. The Reading Lens button at the top of every page offers text size, spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. If you experience a barrier, use Blackboard and contact the instructor so access can be supported.'],
@@ -1225,7 +1225,7 @@
     var code = courseCode() || 'Course';
     return '<footer role="contentinfo" style="margin:28px 0 0;padding:18px 20px;border:1px solid #DEE3EA;border-top:4px solid var(--red);border-radius:14px;background:#fff;color:var(--ink-dim)">'
       + '<p style="font-size:.9rem;line-height:1.55;margin:0 0 8px"><strong style="color:var(--ink)">' + esc(code) + ' companion website.</strong> Blackboard remains the official course platform for submissions, grades, announcements, discussions, and course records.</p>'
-      + '<p style="font-size:.84rem;line-height:1.55;margin:0 0 8px">This site does not require an account, does not collect student submissions, does not store grades, and does not request personal student information. Notes and check answers stay in this browser unless you export them. No external service is contacted unless you choose to play a video.</p>'
+      + '<p style="font-size:.84rem;line-height:1.55;margin:0 0 8px">This site does not require an account, does not collect student submissions, does not store grades, and does not send personal student information to the instructor, Seneca, or any server. The optional first name, notes, and check answers stay in this browser unless you remove or export them. No external service is contacted unless you choose to play a video.</p>'
       + '<p style="font-size:.84rem;line-height:1.55;margin:0">This site is designed to support accessible course navigation. Students who experience barriers using the site should use Blackboard and contact the instructor so access can be supported.</p>'
       + '</footer>';
   }
