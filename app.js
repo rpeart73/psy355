@@ -692,7 +692,7 @@
   }
   function sidebar() {
     var s = state;
-    var navDefs = [['journey', 'Home', 'gauge'], ['site', 'How This Site Works', 'file'], ['pathways', 'Course Pathways', 'map'], ['readings', 'Readings Library', 'gallery'], ['compare', 'Compare Readings', 'columns'], ['reading', 'Reading Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
+    var navDefs = [['journey', 'Home', 'gauge'], ['site', 'How This Site Works', 'file'], ['pathways', 'Course Rhythm', 'map'], ['readings', 'Readings Library', 'gallery'], ['compare', 'Compare Readings', 'columns'], ['reading', 'Reading Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || s.screen === key;
@@ -1357,7 +1357,7 @@
     if (state.screen === 'station') return 'Week ' + state.stationWeek + ': ' + weekTitle(state.stationWeek);
     if (state.screen === 'calendar') return 'Calendar and Due Dates';
     if (state.screen === 'site') return 'How This Site Works';
-    if (state.screen === 'pathways') return 'Course Pathways';
+    if (state.screen === 'pathways') return 'Course Rhythm';
     if (state.screen === 'readings') return 'Readings Library';
     if (state.screen === 'compare') return 'Compare Readings';
     if (state.screen === 'reading') return 'Reading Practice';
@@ -1381,16 +1381,17 @@
       + '</div></section>';
   }
   function keyDatesList() {
-    /* schema: [label, subtext, category, assignmentIndex?]  category = 'due' | 'open' | 'class' (finalized ASYNC due dates) */
+    /* schema: [label, subtext, category, assignmentIndex?] category = 'due' | 'open' | 'class' */
     return [
       { d: '2026-09-08', it: [['First day of classes', '', 'class']] },
-      { d: '2026-09-14', it: [['Learning Practice Journal begins', 'weekly, Weeks 2 to 12', 'open']] },
+      { d: '2026-09-14', it: [['Weekly Reflections begin', 'weekly, Weeks 2 to 12', 'open']] },
       { d: '2026-10-09', it: [['Mindset Evidence Check 1', 'due, end of Week 5', 'due']] },
+      { d: '2026-10-23', it: [['Mid-course Practice Synthesis', 'due, end of Week 7', 'due']] },
       { d: '2026-10-26', it: [['Study Week', 'Oct 26 to 30. No classes.', 'class']] },
       { d: '2026-11-06', it: [['Self-Regulated Learning Case Redesign', 'due, end of Week 8', 'due']] },
       { d: '2026-11-27', it: [['Mindset Evidence Check 2', 'due, end of Week 11', 'due']] },
-      { d: '2026-12-04', it: [['Learning Practice Journal closes', 'due, end of Week 12', 'due']] },
-      { d: '2026-12-11', it: [['Personal Resilience Plan', 'due, your capstone', 'due']] },
+      { d: '2026-12-04', it: [['Weekly Reflections close', 'due, end of Week 12', 'due']] },
+      { d: '2026-12-11', it: [['Personal Resilience Plan', 'due, your final project', 'due']] },
       { d: '2026-12-16', it: [['Last day of classes', 'Nothing is due this week.', 'class']] }
     ];
   }
@@ -1471,7 +1472,7 @@
     return '<section class="node kd-cal" aria-label="Key dates for this course">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">DUE DATES</div>'
       + '<h2 class="wk-sec" style="margin:0 0 4px">What you hand in, and when</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Deadlines follow your weekly class rhythm: Mindset Evidence Check 1 in Week 5, the Case Redesign in Week 8, Mindset Evidence Check 2 in Week 11, the journal closes at the end of Week 12, and the Personal Resilience Plan lands Friday, December 11. Nothing is due in Study Week or the final week. Week-based deadlines land on your class day; Blackboard confirms the exact time.'
+      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Weekly Reflections run from Weeks 2 to 12. Mindset Evidence Check 1 is due October 9, the Mid-course Practice Synthesis is due October 23, the Case Redesign is due November 6, Mindset Evidence Check 2 is due November 27, the reflection thread closes December 4, and the Personal Resilience Plan final project is due December 11. Nothing is due in Study Week or the final week. Blackboard confirms the exact time.'
       + '<div class="kd-list">' + keyDatesRows(['due']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">When each assignment opens on Blackboard</h2>'
       + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">These are opening dates, not deadlines.</p>'
@@ -1563,12 +1564,12 @@
       return '<button type="button" class="pp-dot' + (done ? ' on' : '') + (cur ? ' cur' : '') + '" onclick="SOC.station(' + w + ')" title="Week ' + w + '" aria-label="Week ' + w + (done ? ', practised' : '') + '">' + (done ? '&#10003;' : w) + '</button>';
     }).join('');
     var line;
-    if (cw.phase === 'before') line = 'Your practice rhythm starts in Week 2. Eleven weeks, one honest entry each: that is what the Personal Resilience Plan is built from.';
-    else if (entries === 0) line = 'No entries yet. One honest reflection this week starts the rhythm; your capstone is built from these.';
+    if (cw.phase === 'before') line = 'Your practice rhythm starts in Week 2. Eleven reflections build the record used in the Mid-course Practice Synthesis and Personal Resilience Plan.';
+    else if (entries === 0) line = 'No entries yet. One honest reflection this week starts the record used in your synthesis and final project.';
     else line = 'You have practised in ' + entries + ' of 11 weeks. Every entry is raw material for your Personal Resilience Plan.';
     return '<section class="node practice-pulse"><div class="mono pp-kick">YOUR PRACTICE PULSE</div>'
       + '<h2 class="pp-h">This course works by practice, not cramming.</h2>'
-      + '<p class="pp-p">The Learning Practice Journal runs weekly, Weeks 2 to 12. This pulse mirrors your rhythm on this device: a week lights up when you have written a reflection or worked its page. Private to this browser, never submitted; the journal itself is handed in on Blackboard.</p>'
+      + '<p class="pp-p">Weekly Reflections run from Weeks 2 to 12, and the best 10 of 11 count. This pulse mirrors your rhythm on this device: a week lights up when you have written a reflection or worked its page. The pulse is private to this browser and never submitted. Complete the graded reflection in Blackboard.</p>'
       + '<div class="pp-dots">' + dots + '</div>'
       + '<p class="pp-line">' + line + '</p>'
       + '</section>';
@@ -1591,7 +1592,7 @@
       + '<li><b>Skim the walkthrough</b><span>Preview the core pattern so the live discussion can go deeper.</span></li>'
       + '<li><b>Carry one question in</b><span>The guiding question is on the week page. Bring your version of it.</span></li>';
     var after = ''
-      + '<li><b>Write your journal entry</b><span>The Learning Practice Journal runs weekly; capture this week while it is fresh.</span></li>'
+      + '<li><b>Complete the Weekly Reflection</b><span>Use one live class moment, one honest practice observation, and the link to your previous entry while the week is still fresh.</span></li>'
       + '<li><b>Take the Knowledge Check</b><span>Find out what actually landed. Never graded.</span></li>'
       + '<li><b>Save your notes</b><span>Reflect, then download your weekly notes so nothing lives only in a browser.</span></li>';
     return '<section class="node sync-rhythm"><div class="sr-top"><div><div class="mono sr-kick">AROUND THIS WEEK\'S CLASS</div>'
@@ -1883,7 +1884,7 @@
     if (!r) return '';
     var ev = firstWhere(items, function (m) { return m.skill === 'argument' || m.skill === 'context'; });
     var panels = studioPanel('CLAIM', r.title, r.coreIdea, r.authors + ' (' + r.year + ')', 'book', '#1552D8')
-      + studioPanel('EVIDENCE', ev ? ev.q : 'What supports the claim?', ev ? ev.why : firstSentence(r.abstract), 'Ground this in the reading before applying it.', 'search', '#1f7a4d')
+      + studioPanel('EVIDENCE', ev ? ev.q : 'What supports the claim?', ev ? ev.why : firstSentence(r.abstract), 'Ground this in the reading before applying it.', 'search', '#1B2A4A')
       + studioPanel('BOUNDARY', 'What this does not prove', 'Do not turn this idea into a rule for every learner. Check the context, supports, workload, strategy, and evidence before giving advice.', g ? g.term : 'Course concept', 'x', '#B7791F')
       + studioPanel('TRANSFER', 'Academic next step', 'Name one course task, one support, one study strategy, and one sign that the strategy is working.', 'No clinical or diagnostic framing.', 'external', '#7C3AED');
     var check = studioCheck('PSY355|studio|' + w, {
@@ -1979,7 +1980,7 @@
     var challenge = '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:14px 16px;margin:0 0 18px"><label style="display:block"><span style="display:block;font-size:.8125rem;font-weight:600;color:#474C57;margin-bottom:7px">Name one academic challenge you are facing this term</span><input value="' + esc(state.ecoChallenge || '') + '" oninput="SOC.ecoChallenge(this.value)" placeholder="for example, staying on top of readings in a heavy course load" style="width:100%;font:inherit;font-size:.95rem;padding:10px 13px;border:1px solid #DEE3EA;border-radius:9px;color:#15171C;background:#F7F8FA"></label></div>';
     var count = '<p style="font-size:.8rem;color:#6b7280;margin:12px 0 0;text-align:center"><span id="psy-ecocount">' + ecoCount() + ' of 5</span> layers filled. Resilience builds as the outer layers fill, not from the centre alone.</p>';
     var save = '<div style="margin-top:18px"><button onclick="SOC.saveResiliencePlan()" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:10px 18px;font-size:.875rem;font-weight:600;cursor:pointer">Save my Personal Resilience Plan (.docx)</button></div>';
-    var support = '<div style="display:flex;align-items:flex-start;gap:10px;background:#EAF1F0;border:1px solid #BFD8D2;border-radius:12px;padding:13px 16px;margin-top:16px;color:#1f4d38;font-size:.83rem;line-height:1.55"><span style="display:flex;flex:none;margin-top:1px">' + ic('check', 16) + '</span><span>This is a study and mindset planning tool, not therapy or a clinical assessment. If you are struggling with your well-being, Seneca Counselling and Accessible Learning Services are there for exactly that. Asking for help is a skill, not a failure.</span></div>';
+    var support = '<div style="display:flex;align-items:flex-start;gap:10px;background:#F3F6FB;border:1px solid #C9D3E2;border-radius:12px;padding:13px 16px;margin-top:16px;color:#1B2A4A;font-size:.83rem;line-height:1.55"><span style="display:flex;flex:none;margin-top:1px">' + ic('check', 16) + '</span><span>This is a study and mindset planning tool, not therapy or a clinical assessment. If you are struggling with your well-being, Seneca Counselling and Accessible Learning Services are there for exactly that. Asking for help is a skill, not a failure.</span></div>';
     return '<div class="rise">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:var(--red);font-weight:600;margin-bottom:8px">RESILIENCE ECOLOGY</div>'
       + '<h1 style="font-size:1.75rem;line-height:1.2;font-weight:600;margin:0 0 8px;color:#15171C">Build your resilience ecology.</h1>'
@@ -2704,7 +2705,7 @@
     return template.replace(/\{program\}/g, label);
   }
   function lensChangeLine() {
-    return 'What changes: your program filter changes the expanded week hook, field diagram, case study, activity map, home field panel, key-week badges, and Career Choices write-up. What stays the same: readings, assessments, and outcomes.';
+    return 'What changes: your program filter changes the expanded week hook, field diagram, case study, home field panel, key-week badges, and Career Choices write-up. What stays the same: readings, assessments, and outcomes.';
   }
   function lensFieldContext(L) {
     var label = (L && (L.program || L.area)) || 'your field';
@@ -2730,7 +2731,7 @@
   function lensActivityProfile(w, a, L) {
     var ctx = lensFieldContext(L);
     var code = (D.course && D.course.code) || '';
-    var title = a && a.title ? a.title : 'this activity';
+    var title = a && a.title ? a.title : 'this week\'s idea';
     if (code === 'PSY355') {
       return {
         flow: [
@@ -2739,7 +2740,7 @@
           ['Recovery move', 'plan, practise, ask, adjust, and try again'],
           ['Who depends on it', ctx.people]
         ],
-        use: 'Use the activity as a rehearsal for how you learn under pressure in ' + ctx.label + ': what you try first, what support you use, and how you recover when the first attempt does not work.',
+        use: 'Use the program case as a rehearsal for how you learn under pressure in ' + ctx.label + ': what you try first, what support you use, and how you recover when the first attempt does not work.',
         check: 'The custom question: what would keep your judgment steady in ' + ctx.setting + '?'
       };
     }
@@ -2751,8 +2752,8 @@
           ['People and power', ctx.people],
           ['Respectful action', 'listen, compare perspectives, and let affected communities lead']
         ],
-        use: 'Use the activity to translate the course idea into ' + ctx.label + ': who is present, who has power, whose knowledge is trusted, and what respectful action would look like.',
-        check: 'The custom question: what would this activity make visible in ' + ctx.setting + '?'
+        use: 'Use the program case to translate the course idea into ' + ctx.label + ': who is present, who has power, whose knowledge is trusted, and what respectful action would look like.',
+        check: 'The custom question: what would this case make visible in ' + ctx.setting + '?'
       };
     }
     return {
@@ -2762,7 +2763,7 @@
         ['Decision point', ctx.decision],
         ['People affected', ctx.people]
       ],
-      use: 'Use the activity to test one field decision in ' + ctx.label + ': who benefits, who carries risk, what evidence you would need, and what would make the system more accountable.',
+      use: 'Use the program case to test one field decision in ' + ctx.label + ': who benefits, who carries risk, what evidence you would need, and what would make the system more accountable.',
       check: 'The custom question: where could this same pattern appear in ' + ctx.setting + '?'
     };
   }
@@ -2902,7 +2903,7 @@
           ['Program pressure', ctx.pressure],
           ['Learning move', 'notice, practise, ask for feedback, and recover'],
           ['Who depends on it', ctx.people],
-          ['Activity test', profile.check.replace(/^The custom question: /, '')]
+          ['Practice check', profile.check.replace(/^The custom question: /, '')]
         ],
         intro: 'Imagine this week\'s psychology concept showing up inside ' + ctx.setting + '. The pressure is ' + ctx.pressure + ', and the professional move is not just knowing the concept. It is noticing how stress, feedback, bias, motivation, memory, or recovery can shape what you do next.',
         concept: 'Use it to ask what the person is experiencing, what support would change the path, and how a small recovery move could prevent a bad first attempt from becoming a fixed story about ability.',
@@ -2933,7 +2934,7 @@
         ['Program setting', ctx.setting],
         ['Field decision', ctx.decision],
         ['Who feels it', ctx.people],
-        ['Activity test', profile.check.replace(/^The custom question: /, '')]
+        ['Practice check', profile.check.replace(/^The custom question: /, '')]
       ],
       intro: 'Imagine this week\'s concept showing up inside ' + ctx.setting + '. The decision is not abstract: it is ' + ctx.decision + '. In ' + label + ', that decision sits inside ' + ctx.place + '.',
       concept: 'Use it to ask who the system sees clearly, who it treats as an exception, and what evidence would show the harm before it becomes normal practice.',
@@ -3033,29 +3034,20 @@
       + '</div>';
   }
   function pathwaysPage() {
-    var route = function (kind, title, subtitle, steps) {
-      return '<section class="path-route path-' + kind + '"><div class="path-route-head"><div class="mono">' + esc(kind === 'async' ? 'ASYNCHRONOUS COURSE USERS' : 'SYNCHRONOUS COURSE USERS') + '</div><h2>' + esc(title) + '</h2><p>' + esc(subtitle) + '</p></div>'
-        + '<ol>' + steps.map(function (s, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(s[0]) + '</b><em>' + esc(s[1]) + '</em><p>' + esc(s[2]) + '</p></div></li>'; }).join('') + '</ol></section>';
-    };
-    var asyncSteps = [
-      ['Start', 'Weekly page', 'Work through the module in order.'],
-      ['Learn', 'Walkthrough plus readings', 'Use the walkthrough as your class moment, then anchor it in the readings.'],
-      ['Practise', 'Activity and checks', 'Use the activity, Reading Practice, flashcards, and Knowledge Check as private rehearsal.'],
-      ['Capture', 'Notes as you go', 'Write in the note boxes while your thinking is fresh.'],
-      ['Finish', 'Generate notes', 'Download one organized weekly record for review and Blackboard preparation.']
+    var steps = [
+      ['Prepare', 'Before class', 'Open the week, complete the readings, skim the walkthrough, and choose one question to bring with you.'],
+      ['Meet', 'Live class', 'Test the ideas through examples and discussion. Record one specific class moment without naming another student.'],
+      ['Reflect', 'After class', 'Complete the Weekly Reflection in Blackboard while the discussion and your own practice are still clear.'],
+      ['Rehearse', 'Private study', 'Use Reading Practice, flashcards, the Study Guide, or the Knowledge Check only when they help you check your understanding.'],
+      ['Carry forward', 'Your learning record', 'Use verified lines from your Weekly Reflections in the Mid-course Practice Synthesis and Personal Resilience Plan final project.']
     ];
-    var syncSteps = [
-      ['Preview', 'Before class', 'Skim the weekly page and bring one question.'],
-      ['Discuss', 'Class time', 'Use the walkthrough, activity, and examples as shared discussion tools.'],
-      ['Return', 'After class', 'Finish the readings, activity notes, checks, and reflection.'],
-      ['Connect', 'Class plus site notes', 'Add classroom takeaways into the site note boxes.'],
-      ['Prepare', 'Blackboard work', 'Use the assignment guide, practice tools, and notes before submitting.']
-    ];
+    var route = '<section class="path-route path-sync"><div class="path-route-head"><div class="mono">SYNCHRONOUS &middot; LIVE ONLINE CLASSES</div><h2>One weekly rhythm</h2><p>The site supports what happens before and after class. The live meeting is where the ideas are worked through together.</p></div><ol>'
+      + steps.map(function (s, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(s[0]) + '</b><em>' + esc(s[1]) + '</em><p>' + esc(s[2]) + '</p></div></li>'; }).join('') + '</ol></section>';
     return '<div class="rise path-page">'
-      + '<section class="path-hero"><div><div class="mono">COURSE PATHWAYS</div><h1>Choose your weekly rhythm</h1><p>The work is the same. The pacing is different. Pick the route that matches how you are taking PSY355, then use it every week.</p></div><div class="path-compass" aria-label="Two pathway options"><span>ASYNC</span><b>self-paced learning room</b><i></i><span>SYNC</span><b>before, during, after class</b></div></section>'
-      + '<section class="path-summary"><div><b>Same course</b><span>Same readings, activities, assignments, and expectations.</span></div><div><b>Different rhythm</b><span>Async is self-paced. Sync is class-connected.</span></div><div><b>One weekly record</b><span>Both routes end with Generate Your Weekly Notes.</span></div></section>'
-      + '<div class="path-routes">' + route('async', 'Asynchronous route', 'Use the weekly page as the full learning room.', asyncSteps) + route('sync', 'Synchronous route', 'Use the site around class so class time goes deeper.', syncSteps) + '</div>'
-      + '<section class="path-close"><h2>Which route should you follow?</h2><p>No live weekly class? Use the asynchronous route. Scheduled class meetings? Use the synchronous route. Unsure? Start with the asynchronous route because it is the complete self-paced path.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Enter Week 2 Learning Room</b><small>Start the full module.</small></button><button type="button" onclick="SOC.go(\'videos\')"><b>Scholar Media</b><small>Use media as an on-ramp.</small></button><button type="button" onclick="SOC.careerChoices()"><b>Career Choices</b><small>Connect the course to your path.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Plan the graded work.</small></button></div></section>'
+      + '<section class="path-hero"><div><div class="mono">COURSE RHYTHM</div><h1>Prepare, meet live, reflect, and carry it forward</h1><p>PSY355 is a live online course built around discussion and a continuing reflection record. Use the same rhythm each week so the final project grows from evidence you created across the term.</p></div><div class="path-compass" aria-label="PSY355 weekly rhythm"><span>BEFORE</span><b>read and prepare</b><i></i><span>AFTER</span><b>reflect and connect</b></div></section>'
+      + '<section class="path-summary"><div><b>Our class meets live</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Reflection is the spine</b><span>Weekly Reflections create the record used in the synthesis and final project.</span></div><div><b>Practice stays private</b><span>Checks and notes help you learn, but Blackboard holds graded work.</span></div></section>'
+      + '<div class="path-routes">' + route + '</div>'
+      + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week before class, return to it after class, and complete the graded Weekly Reflection in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>Prepare or return after class.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Walkthroughs</b><small>Preview or revisit the teaching deck.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Calendar and Due Dates</b><small>See every graded deadline.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Understand the graded work.</small></button></div></section>'
       + '</div>';
   }
   function assignmentIntegrityNotice() {
@@ -3070,14 +3062,15 @@
   }
   function assignmentsPage() {
     var items = [
-      ['Learning Practice Journal', 'Recurring preparation', 'Use weekly notes as low-stakes raw material for later reflection and planning.'],
-      ['Mindset Evidence Check 1', 'Week 5 window', 'Use readings and examples from the mindset weeks to keep the evidence precise.'],
-      ['Self-Regulated Learning Case Redesign', 'Week 8 window', 'Choose one real study routine and redesign it with course language and a short implementation log.'],
-      ['Mindset Evidence Check 2', 'Week 11 window', 'Use self-compassion, flexibility, and help-seeking without turning the work into a clinical account.'],
-      ['Personal Resilience Plan', 'Week 13 final project', 'Build a forward plan grounded in course evidence and your own learning record.']
+      ['Weekly Reflections', 'Weeks 2 to 12, 10 percent', 'Complete 11 connected entries in Blackboard. Your best 10 count, and each entry uses your previous record, one live class moment, and one honest practice observation.'],
+      ['Mindset Evidence Check 1', 'Due October 9, 20 percent', 'Use evidence from Weeks 3 and 4 to examine one real learning struggle without turning growth mindset into a slogan.'],
+      ['Mid-course Practice Synthesis', 'Due October 23, 10 percent', 'Quote at least three of your own Weekly Reflections, name a pattern, and set a concrete plan for the second half.'],
+      ['Self-Regulated Learning Case Redesign', 'Due November 6, 20 percent', 'Redesign one real study routine with the self-regulated learning cycle, resilience as process, and an honest implementation record.'],
+      ['Mindset Evidence Check 2', 'Due November 27, 20 percent', 'Use self-compassion, flexibility, and help seeking without turning the work into a clinical account.'],
+      ['Personal Resilience Plan', 'Due December 11, 20 percent', 'Build the final project from course evidence and at least six verified quotes from your own Weekly Reflections.']
     ];
     var steps = items.map(function (x, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(x[0]) + '</b><em>' + esc(x[1]) + '</em><p>' + esc(x[2]) + '</p></div></li>'; }).join('');
-    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Use the site to prepare, then submit in Blackboard</h1><p>This page gives you the standard starting pattern: find the official assignment in Blackboard, use this site to gather concepts and evidence, then write and submit the final work yourself.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Use weekly notes</b><span>Generate notes from the weeks that feed the assignment before drafting.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section>' + assignmentIntegrityNotice() + '<section class="path-route"><div class="path-route-head"><div class="mono">ASSIGNMENT ROUTE</div><h2>Start from the active PSY355 package</h2><p>Use this as a planning map only. Always check Blackboard for the complete instructions before submitting.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then come back to this assignment map when you are ready to draft.</p><div class="path-actions"><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Mindset evidence.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>SRL case redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Evidence check 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Final project planning.</small></button></div></section></div>';
+    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Understanding Your Assignment</h1><p>Find the official assignment in Blackboard, use this site to gather concepts and evidence, then write and submit the final work yourself. The site supports your process; Blackboard holds the requirements and submission.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Your record matters</b><span>Weekly Reflections become evidence for the synthesis and final project.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section>' + assignmentIntegrityNotice() + '<section class="path-route"><div class="path-route-head"><div class="mono">THE SIX GRADED PIECES</div><h2>Understand the full assessment path</h2><p>Use this as a planning map. Always check Blackboard for the complete instructions and exact submission time.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then return here when you are ready to plan the graded work.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Week 2</b><small>Begin the reflection record.</small></button><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Evidence Check 1.</small></button><button type="button" onclick="SOC.station(7)"><b>Week 7</b><small>Mid-course synthesis.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>Case redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Evidence Check 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Final project planning.</small></button></div></section></div>';
   }
   function scholarMedia() {
     var out = [];
