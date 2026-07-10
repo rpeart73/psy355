@@ -1438,9 +1438,37 @@
   }
   function wkOpenKey(id) { return (state.stationWeek || 0) + '|' + id; }
   function wkOpenHas(id) { return !!(state.wkOpen && state.wkOpen[wkOpenKey(id)]); }
+  var wkSeq = 1;
   function wkOpenSet(id, open) {
     state.wkOpen = state.wkOpen || {};
-    if (open) state.wkOpen[wkOpenKey(id)] = 1; else delete state.wkOpen[wkOpenKey(id)];
+    if (open) {
+      var k; for (k in state.wkOpen) { var v = +state.wkOpen[k] || 1; if (v >= wkSeq) wkSeq = v + 1; }
+      state.wkOpen[wkOpenKey(id)] = wkSeq++;
+    } else delete state.wkOpen[wkOpenKey(id)];
+  }
+  /* Raymond rule: at most two sections open per week. Opening a third quietly closes the earliest opened. */
+  function wkCapEnforce(keepId) {
+    try {
+      var secs = document.querySelectorAll('#soc-main section[id^="wk-"]');
+      var open = [];
+      Array.prototype.forEach.call(secs, function (sec) {
+        if (sec.id === 'wk-ov' || sec.id === keepId || !sec.querySelector('h2.wk-sec')) return;
+        if (!sec.querySelector('.wk-coll-btn')) return;
+        if (sec.classList.contains('wk-collapsed')) return;
+        open.push({ id: sec.id, seq: +((state.wkOpen || {})[wkOpenKey(sec.id)]) || 0 });
+      });
+      open.sort(function (a, b) { return a.seq - b.seq; });
+      while (open.length > 1) {
+        var old = open.shift();
+        wkOpenSet(old.id, false);
+        var osec = document.getElementById(old.id);
+        if (osec) {
+          osec.classList.add('wk-collapsed');
+          var ob = osec.querySelector('.wk-coll-btn');
+          if (ob) { ob.setAttribute('aria-expanded', 'false'); ob.setAttribute('aria-label', 'Show this section'); ob.textContent = '+'; }
+        }
+      }
+    } catch (e) {}
   }
   function wkExpandFor(id) {
     if (!id || id.indexOf('wk-') !== 0 || id === 'wk-ov') return;
@@ -1452,10 +1480,11 @@
     if (!sec || !sec.id || sec.id === 'wk-ov') return;
     id = sec.id;
     wkOpenSet(id, true);
-    persist();
     sec.classList.remove('wk-collapsed');
     var b = sec.querySelector('.wk-coll-btn');
     if (b) { b.setAttribute('aria-expanded', 'true'); b.setAttribute('aria-label', 'Hide this section'); b.textContent = '\u2212'; }
+    wkCapEnforce(id);
+    persist();
   }
   function wkEnhanceSections() {
     if (state.screen !== 'station') return;
@@ -2239,7 +2268,7 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['do', 'The activity'], ['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
-    var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><button type="button" onclick="SOC.wkCollAll(' + w + ',0)">Expand all</button><span>Weeks start folded so you can see the whole map. Open just what you need; sections fold again when you leave the week.</span></div>';
+    var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><span>Weeks start folded so you can see the whole map. Up to two sections stay open at once; opening a third closes the earliest one. Sections fold again when you leave the week.</span></div>';
     return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
@@ -3454,6 +3483,7 @@
           b.textContent = nowColl ? '+' : '\u2212';
         }
       }
+      if (!nowColl) { wkCapEnforce(id); persist(); }
       announce(nowColl ? 'Section hidden. The heading stays so you can bring it back.' : 'Section shown.');
     },
     wkCollAll: function (w, mode) {
