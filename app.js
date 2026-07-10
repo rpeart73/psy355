@@ -2600,7 +2600,7 @@
       + (next != null ? '<button onclick="SOC.station(' + next + ')" style="flex:1;min-width:180px;text-align:right;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--red)">NEXT &rarr;</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button>' : '')
       + '</div>';
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'This week']].concat(d.activity ? [['do', 'Your final project']] : []).concat([['reflect', 'Reflection'], ['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'This week']].concat(d.activity ? [] : []).concat([['reflect', 'Reflection'], ['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' No new material</div></div></aside>';
     return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + act + reflect + notes + navRow + '</section>' + rail + '</div></div>';
   }
