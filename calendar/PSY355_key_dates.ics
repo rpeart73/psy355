@@ -8,7 +8,7 @@ BEGIN:VEVENT
 UID:psy355-1@rpeart73.github.io
 DTSTART;VALUE=DATE:20260914
 DTEND;VALUE=DATE:20260915
-SUMMARY:PSY355: Learning Practice Journal begins (weekly\, Weeks 2 to 12)
+SUMMARY:PSY355: Weekly Reflections begin (weekly\, Weeks 2 to 12)
 DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
 END:VEVENT
 BEGIN:VEVENT
@@ -25,6 +25,18 @@ END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-3@rpeart73.github.io
+DTSTART;VALUE=DATE:20261023
+DTEND;VALUE=DATE:20261024
+SUMMARY:PSY355: Mid-course Practice Synthesis (due\, end of Week 7)
+DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:PSY355 deadline in 2 days
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-4@rpeart73.github.io
 DTSTART;VALUE=DATE:20261106
 DTEND;VALUE=DATE:20261107
 SUMMARY:PSY355: Self-Regulated Learning Case Redesign (due\, end of Week 8)
@@ -36,7 +48,7 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:psy355-4@rpeart73.github.io
+UID:psy355-5@rpeart73.github.io
 DTSTART;VALUE=DATE:20261127
 DTEND;VALUE=DATE:20261128
 SUMMARY:PSY355: Mindset Evidence Check 2 (due\, end of Week 11)
@@ -48,10 +60,10 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:psy355-5@rpeart73.github.io
+UID:psy355-6@rpeart73.github.io
 DTSTART;VALUE=DATE:20261204
 DTEND;VALUE=DATE:20261205
-SUMMARY:PSY355: Learning Practice Journal closes (due\, end of Week 12)
+SUMMARY:PSY355: Weekly Reflections close (end of Week 12)
 DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
 BEGIN:VALARM
 TRIGGER:-P2D
@@ -60,10 +72,10 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:psy355-6@rpeart73.github.io
+UID:psy355-7@rpeart73.github.io
 DTSTART;VALUE=DATE:20261211
 DTEND;VALUE=DATE:20261212
-SUMMARY:PSY355: Personal Resilience Plan (due\, capstone)
+SUMMARY:PSY355: Personal Resilience Plan (due\, your final project)
 DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
 BEGIN:VALARM
 TRIGGER:-P2D
