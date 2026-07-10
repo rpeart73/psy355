@@ -3493,7 +3493,7 @@
     clearMyWork: function () {
       if (!window.confirm('Remove all notes, check answers, and settings saved by this site in this browser? Downloaded files are not affected.')) return;
       try {
-        var prefix = SKEY.split('.')[0];
+        var prefix = SKEY; /* full site-scoped key: never touch another course site's saves on the shared github.io origin */
         Object.keys(localStorage).forEach(function (k) { if (k.indexOf(prefix) === 0) localStorage.removeItem(k); });
       } catch (e) {}
       location.reload();
