@@ -67,7 +67,7 @@
   @media (max-width:760px){.rl-dock-hint{display:none}.rl-dock-copy{font-size:1.3rem;max-height:4.6em}}
   textarea:focus-visible{outline:3px solid #1552D8!important;outline-offset:2px}
   .vid-load:focus-visible{outline:3px solid #7EB8FF!important;outline-offset:2px}
-  .vid-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#1B2A4A 0%,#27436e 55%,#00777b 100%)}
+  .vid-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#1B2A4A 0%,#27436e 55%,#961A13 100%)}
   .vid-cover-play{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.75);position:relative}
   .vid-cover-play:after{content:"";position:absolute;left:21px;top:15px;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
   .vid-cover-note{font-size:.72rem;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.85)}
@@ -159,7 +159,7 @@
   .walk-qlist,.walk-can{list-style:none;margin:0;padding:0}
   .walk-qlist li,.walk-can li{font-size:clamp(1.08rem,2.2vw,1.3rem);line-height:1.5;padding:16px 0 16px 34px;border-bottom:1px solid rgba(255,255,255,.16);position:relative;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.2)}
   .walk-qlist li:before{content:"?";position:absolute;left:0;color:#FF6B5E;font-weight:700;font-size:1.2rem}
-  .walk-can li:before{content:"\2713";position:absolute;left:0;color:#6FE39C;font-weight:700;font-size:1.2rem}
+  .walk-can li:before{content:"\2713";position:absolute;left:0;color:#F79E92;font-weight:700;font-size:1.2rem}
   .walk-reflect{margin-top:22px;background:none;border-top:1px solid rgba(255,255,255,.14);border-radius:0;padding:16px 0 0}
   .walk-reflect span{display:block;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:#d3d9e5;margin-bottom:8px}
   .walk-reflect p{margin:0;font-size:clamp(1rem,2vw,1.12rem);line-height:1.6;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.2)}
@@ -296,7 +296,7 @@
   .wk-fs{display:inline-block;margin-top:10px;font-size:.82rem;font-weight:600;color:#1552D8;text-decoration:none}
   .wk-whatwhy{background:var(--soft);border-radius:11px;padding:14px 16px;margin:0 0 14px;font-size:.93rem;color:var(--ink-dim);line-height:1.6}.wk-whatwhy b{color:var(--ink)}
   .wk-cta{display:inline-flex;align-items:center;gap:7px;background:var(--red);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:.92rem;font-weight:700;cursor:pointer}
-  .wk-ocheck{background:var(--soft);border-radius:11px;padding:14px 16px;margin:0 0 6px}.wk-row{display:flex;gap:9px;align-items:center;font-size:.9rem;color:var(--ink);margin:6px 0}.wk-row .t{color:#1f7a4d;display:inline-flex}
+  .wk-ocheck{background:var(--soft);border-radius:11px;padding:14px 16px;margin:0 0 6px}.wk-row{display:flex;gap:9px;align-items:center;font-size:.9rem;color:var(--ink);margin:6px 0}.wk-row .t{color:#1B2A4A;display:inline-flex}
   .wk-q{margin:12px 0;font-size:.95rem;color:var(--ink)}
   .wk-opts{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}
   .wk-opt{font-size:.78rem;font-weight:600;color:var(--ink-dim);border:1.5px solid var(--border);border-radius:999px;padding:6px 13px;background:#fff;cursor:pointer}
@@ -405,7 +405,7 @@
   .pp-dot.on{background:#1B2A4A;border-color:#1B2A4A;color:#fff}
   .pp-dot.cur{box-shadow:0 0 0 3px rgba(27,42,74,.22)}
   .pp-line{font-size:.88rem;line-height:1.5;color:var(--ink);font-weight:600;margin:0}
-  .wk-hero-img{width:100%;max-height:230px;object-fit:cover;border-radius:12px;display:block;margin:0 0 18px}
+  .wk-hero-img{grid-column:1/-1;width:100%;max-height:230px;object-fit:cover;border-radius:12px;display:block;margin:0 0 18px}
   .home-hero-img{width:100%;max-height:280px;object-fit:cover;border-radius:12px;display:block;margin:0 0 20px}
 </style>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
@@ -428,6 +428,7 @@
 <script src="./data/seneca-programs.js?v=4"></script>
 <script src="./data/psy355-lens.js?v=1"></script>
 <script src="./data/psy355-walkfigs.js?v=1"></script>
+<script src="./data/psy355-images.js?v=1"></script>
 <script src="./app.js?v=131"></script>
 <script defer src="assets/img-viewer.js?v=1"></script>
 </body>

@@ -171,6 +171,12 @@
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var COURSE_IMAGES = window.PSY355_IMAGES || {};
+  function courseImage(key, className, eager) {
+    var image = COURSE_IMAGES[key];
+    if (!image || !image.src) return '';
+    return '<img class="' + esc(className) + '" src="' + esc(image.src) + '" alt="' + esc(image.alt || '') + '" loading="' + (eager ? 'eager' : 'lazy') + '" decoding="async"' + (eager ? ' fetchpriority="high"' : '') + '>';
+  }
   function typeMeta(t) { return D.types[t] || D.types.Article; }
   function rec(id) { for (var i = 0; i < D.records.length; i++) if (D.records[i].id === id) return D.records[i]; return null; }
   var OPENSTAX_CH = {
@@ -2035,7 +2041,7 @@
     var ctaLabel = started ? ('Resume Week ' + cur) : ('Start Week ' + (ws[0] || 1));
     var hero = '<section class="jhero jfade" style="margin-bottom:26px">' + heroArt()
       + '<div style="position:relative;">'
-      + '<img class="home-hero-img" src="images/hero.jpg" alt="" loading="lazy" onerror="this.remove()">'
+      + courseImage('hero', 'home-hero-img', true)
       + '<div class="mono" style="font-size:.78rem;letter-spacing:.09em;color:var(--red);font-weight:700;margin-bottom:14px">SYNCHRONOUS ONLINE &middot; WEEKLY LIVE CLASSES</div>'
       + '<h1 class="jhero-title" style="font-size:3rem;line-height:1.04;font-weight:700;margin:0 0 16px;letter-spacing:-.01em;color:var(--ink)">Our class meets live. Everything around it lives here.</h1>'
       + '<p style="font-size:1.18rem;line-height:1.55;color:var(--ink);margin:0 0 20px;font-weight:500">The live class is where mindset, resilience, and self-regulated learning get worked out together. This site is your companion for everything before and after it: the readings, the walkthroughs, your journal rhythm, and your notes, all in one place, ready when class ends.</p>'
@@ -2452,7 +2458,9 @@
     var startLabel = opt.startLabel || 'Start this week';
     var sub = opt.sub || d.overview || '';
     var q = opt.question === false ? '' : (opt.question || journeyQ(w));
+    var imageKey = 'wk' + (w < 10 ? '0' : '') + w;
     return '<section id="wk-ov" class="node jhero jfade wk-hero2">'
+      + courseImage(imageKey, 'wk-hero-img', false)
       + '<div class="wk-hero-main"><div class="mono wk-hero-kicker">WEEK ' + w + ' | ' + esc(weekDate(w)) + ' | ' + esc(opt.label || 'WEEKLY MODULE') + '</div>'
       + '<h1>' + esc(opt.title || weekTitle(w)) + '</h1>'
       + (sub ? '<p>' + esc(sub) + '</p>' : '')
@@ -3286,7 +3294,6 @@
       mobileJumpItem('Menu', 'SOC.openNav()', true),
       mobileJumpItem('Home', "SOC.go('journey')", false)
     ];
-    if (d.activity) items.push(mobileJumpItem('Activity', "SOC.jumpWeek(" + w + ",'do')", false));
     items.push(mobileJumpItem('Reflect', "SOC.jumpWeek(" + w + ",'reflect')", false));
     items.push(mobileJumpItem('Notes', "SOC.jumpWeek(" + w + ",'notes')", false));
     return '<nav class="soc-mobile-jump" aria-label="Mobile week shortcuts">' + items.join('') + '</nav>';
