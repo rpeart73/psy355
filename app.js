@@ -1545,6 +1545,28 @@
       return { week: cur, phase: today > new Date('2026-12-20T00:00:00') ? 'after' : 'during' };
     } catch (e) { return { week: 1, phase: 'before' }; }
   }
+  function practicePulse() {
+    var cw = courseWeekByDate();
+    var weeks = [];
+    for (var w = 2; w <= 12; w++) weeks.push(w);
+    var entries = 0;
+    var dots = weeks.map(function (w) {
+      var done = !!((state.wkReflect || {})[w]) || weekHasWork(w);
+      if (done) entries++;
+      var cur = (cw.phase === 'during' && w === cw.week);
+      return '<button type="button" class="pp-dot' + (done ? ' on' : '') + (cur ? ' cur' : '') + '" onclick="SOC.station(' + w + ')" title="Week ' + w + '" aria-label="Week ' + w + (done ? ', practised' : '') + '">' + (done ? '&#10003;' : w) + '</button>';
+    }).join('');
+    var line;
+    if (cw.phase === 'before') line = 'Your practice rhythm starts in Week 2. Eleven weeks, one honest entry each: that is what the Personal Resilience Plan is built from.';
+    else if (entries === 0) line = 'No entries yet. One honest reflection this week starts the rhythm; your capstone is built from these.';
+    else line = 'You have practised in ' + entries + ' of 11 weeks. Every entry is raw material for your Personal Resilience Plan.';
+    return '<section class="node practice-pulse"><div class="mono pp-kick">YOUR PRACTICE PULSE</div>'
+      + '<h2 class="pp-h">This course works by practice, not cramming.</h2>'
+      + '<p class="pp-p">The Learning Practice Journal runs weekly, Weeks 2 to 12. This pulse mirrors your rhythm on this device: a week lights up when you have written a reflection or worked its page. Private to this browser, never submitted; the journal itself is handed in on Blackboard.</p>'
+      + '<div class="pp-dots">' + dots + '</div>'
+      + '<p class="pp-line">' + line + '</p>'
+      + '</section>';
+  }
   function syncWeekRhythm(cw) {
     if (cw.phase === 'before') {
       return '<section class="node sync-rhythm"><div class="mono sr-kick">AROUND YOUR FIRST CLASS</div>'
@@ -2013,6 +2035,7 @@
     var ctaLabel = started ? ('Resume Week ' + cur) : ('Start Week ' + (ws[0] || 1));
     var hero = '<section class="jhero jfade" style="margin-bottom:26px">' + heroArt()
       + '<div style="position:relative;">'
+      + '<img class="home-hero-img" src="images/hero.jpg" alt="" loading="lazy" onerror="this.remove()">'
       + '<div class="mono" style="font-size:.78rem;letter-spacing:.09em;color:var(--red);font-weight:700;margin-bottom:14px">SYNCHRONOUS ONLINE &middot; WEEKLY LIVE CLASSES</div>'
       + '<h1 class="jhero-title" style="font-size:3rem;line-height:1.04;font-weight:700;margin:0 0 16px;letter-spacing:-.01em;color:var(--ink)">Our class meets live. Everything around it lives here.</h1>'
       + '<p style="font-size:1.18rem;line-height:1.55;color:var(--ink);margin:0 0 20px;font-weight:500">The live class is where mindset, resilience, and self-regulated learning get worked out together. This site is your companion for everything before and after it: the readings, the walkthroughs, your journal rhythm, and your notes, all in one place, ready when class ends.</p>'
@@ -2020,7 +2043,7 @@
       + '<div class="mono" style="font-size:.72rem;letter-spacing:.06em;color:var(--ink-faint);font-weight:600">SENECA POLYTECHNIC &middot; FALL 2026 &middot; <span style="color:var(--ink-dim)">' + esc(title) + '</span></div>'
       + '</div></section>';
     var spineHead = '<div style="display:flex;align-items:baseline;gap:12px;margin:0 0 16px;flex-wrap:wrap"><h2 style="font-size:1.375rem;font-weight:600;margin:0;color:var(--ink)">Your journey</h2><span style="font-size:.875rem;color:var(--ink-faint)">' + ws.length + ' weeks, in course order</span></div>';
-    return '<div class="rise">' + hero + syncWeekRhythm(courseWeekByDate()) + homeIntroCollapsible() + compassPanel() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
+    return '<div class="rise">' + hero + syncWeekRhythm(courseWeekByDate()) + practicePulse() + homeIntroCollapsible() + compassPanel() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
   }
   function journeyStations(cur) {
     var ws = journeyWeeks();
@@ -2481,60 +2504,6 @@
   function actCite(c) { return c ? '<div style="font-size:.74rem;color:var(--ink-faint);margin-top:6px">(' + esc(c) + ')</div>' : ''; }
   function actBadge(harm) { return harm ? '<span style="display:inline-block;background:#FBE9EA;color:#B11722;font-size:.7rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px">less helpful for learning</span>' : '<span style="display:inline-block;background:#E7F3EC;color:#1C7A43;font-size:.7rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px">more helpful for learning</span>'; }
   function actCaseBox(label, txt) { return txt ? '<div style="background:#15171C;color:#fff;border-radius:12px;padding:14px 18px;margin:0 0 16px"><div style="font-size:.7rem;font-weight:700;color:#F2A900;margin-bottom:4px">' + label + '</div><div style="font-size:.98rem;line-height:1.5">' + esc(txt) + '</div></div>' : ''; }
-  function actMatch(w, a) {
-    var d = a.data || {}, pairs = d.pairs || [], uniq = [], seen = {};
-    pairs.forEach(function (p) { if (!seen[p.match]) { seen[p.match] = 1; uniq.push(p.match); } });
-    var rows = pairs.map(function (p, i) {
-      var key = 'a|' + w + '|m|' + i, sel = state.act[key];
-      var btns = uniq.map(function (o, oi) {
-        var picked = (sel === oi), correct = (o === p.match), bg = '#fff', bd = 'var(--border)', col = 'var(--ink)';
-        if (sel != null) { if (correct) { bg = '#E7F3EC'; bd = '#1C7A43'; col = '#155f34'; } else if (picked) { bg = '#FBE9EA'; bd = '#B11722'; col = '#8f1119'; } }
-        return '<button onclick="SOC.actPick(\'' + key + '\',' + oi + ')" aria-pressed="' + picked + '" style="text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:9px;padding:8px 12px;font-size:.86rem;font-weight:600;cursor:pointer;margin:0 6px 6px 0">' + esc(o) + '</button>';
-      }).join('');
-      var fb = (sel != null) ? '<div style="margin-top:8px;font-size:.86rem;color:var(--ink-dim)">' + (uniq[sel] === p.match ? '<b style="color:#1C7A43">Yes. </b>' : '<b style="color:#B11722">Not quite. </b>') + esc(p.why) + actCite(p.cite) + '</div>' : '';
-      return actCard('<div style="font-size:.7rem;font-weight:700;color:var(--red);margin-bottom:5px">EXAMPLE ' + (i + 1) + '</div><div style="font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:10px">' + esc(p.item) + '</div><div style="font-size:.78rem;color:var(--ink-faint);margin-bottom:6px">Which mechanism does this show?</div>' + btns + fb);
-    }).join('');
-    return '<p style="margin:0 0 14px;color:var(--ink-dim)">' + esc(d.prompt || 'Match each example to the mechanism it shows.') + '</p>' + rows;
-  }
-  function actScenario(w, a) {
-    var d = a.data || {}, steps = d.steps || [];
-    var rows = steps.map(function (st, i) {
-      var key = 'a|' + w + '|s|' + i, sel = state.act[key];
-      var choices = (st.choices || []).map(function (c, ci) {
-        var picked = (sel === ci), bd = picked ? (c.harm ? '#B11722' : '#1C7A43') : 'var(--border)', bg = picked ? (c.harm ? '#FBE9EA' : '#E7F3EC') : '#fff';
-        return '<button onclick="SOC.actPick(\'' + key + '\',' + ci + ')" style="display:block;width:100%;text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:var(--ink);border-radius:9px;padding:10px 13px;font-size:.9rem;font-weight:600;cursor:pointer;margin:0 0 7px">' + esc(c.label) + (picked ? actBadge(c.harm) : '') + '</button>' + (picked ? '<div style="font-size:.86rem;color:var(--ink-dim);margin:0 0 10px;padding:0 2px">' + esc(c.outcome) + actCite(c.cite) + '</div>' : '');
-      }).join('');
-      return actCard('<div style="font-size:.7rem;font-weight:700;color:var(--red);margin-bottom:6px">DECISION ' + (i + 1) + '</div><div style="font-size:.98rem;font-weight:600;color:var(--ink);margin-bottom:10px">' + esc(st.situation) + '</div>' + choices);
-    }).join('');
-    return actCaseBox('THE CASE', d.setup) + '<p style="margin:0 0 14px;color:var(--ink-dim)">Make a call at each point, then see where it leads for learning.</p>' + rows;
-  }
-  function actToggle(w, a) {
-    var d = a.data || {}, tgs = d.toggles || [];
-    var rows = tgs.map(function (t, i) {
-      var key = 'a|' + w + '|t|' + i, on = !!state.act[key];
-      var sw = '<button onclick="SOC.actToggle(\'' + key + '\')" aria-pressed="' + on + '" aria-label="' + esc(t.label) + '" style="border:none;border-radius:999px;width:52px;height:28px;background:' + (on ? '#1C7A43' : '#C7CDD6') + ';position:relative;cursor:pointer;flex:0 0 auto"><span style="position:absolute;top:3px;left:' + (on ? '27px' : '3px') + ';width:22px;height:22px;border-radius:50%;background:#fff"></span></button>';
-      return actCard('<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' + sw + '<div style="font-size:.96rem;font-weight:700;color:var(--ink)">' + esc(t.label) + '<span style="font-size:.72rem;font-weight:600;color:var(--ink-faint);margin-left:8px">' + (on ? 'ON' : 'OFF') + '</span></div></div><div style="font-size:.88rem;color:var(--ink-dim)">' + esc(on ? t.on : t.off) + '</div><div style="font-size:.82rem;color:#B11722;margin-top:6px"><b>What it costs:</b> ' + esc(t.whoHarmed) + '</div>' + actCite(t.cite));
-    }).join('');
-    return actCaseBox('THE SYSTEM', d.system) + '<p style="margin:0 0 14px;color:var(--ink-dim)">Flip each setting and see what changes for the learner. Small defaults shape big outcomes.</p>' + rows;
-  }
-  function actAssemble(w, a) {
-    var d = a.data || {}, comps = d.components || [], key = 'a|' + w + '|asm', added = state.act[key] || [];
-    var avail = comps.map(function (c, i) { return added.indexOf(i) >= 0 ? '' : '<button onclick="SOC.actAdd(\'' + key + '\',' + i + ')" style="display:block;width:100%;text-align:left;border:1px dashed var(--border);background:#fff;color:var(--ink);border-radius:9px;padding:10px 13px;font-size:.9rem;font-weight:600;cursor:pointer;margin:0 0 7px">+ ' + esc(c.label) + '</button>'; }).join('');
-    var built = added.map(function (idx, n) { var c = comps[idx] || {}; return '<div style="border-left:3px solid var(--red);background:#fff;border:1px solid var(--border);border-radius:9px;padding:10px 13px;margin:0 0 8px"><div style="font-size:.92rem;font-weight:700;color:var(--ink)">' + (n + 1) + '. ' + esc(c.label) + '</div><div style="font-size:.85rem;color:var(--ink-dim);margin-top:3px">' + esc(c.role) + actCite(c.cite) + '</div></div>'; }).join('');
-    var done = (added.length >= comps.length && comps.length) ? '<div style="margin-top:14px;background:#E7F3EC;border:1px solid #1C7A43;border-radius:10px;padding:12px 15px;font-size:.9rem;color:#155f34;font-weight:600">You have assembled the whole picture. Seeing the parts together is the point: it is how they work together that matters, not any one piece.</div>' : '';
-    return actCaseBox('THE GOAL', d.goal) + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px"><div><div style="font-size:.7rem;font-weight:700;color:var(--ink-faint);margin-bottom:8px">PARTS TO ADD</div>' + (avail || '<div style="font-size:.85rem;color:var(--ink-faint)">All parts added.</div>') + '</div><div><div style="font-size:.7rem;font-weight:700;color:var(--red);margin-bottom:8px">WHAT YOU HAVE BUILT</div>' + (built || '<div style="font-size:.85rem;color:var(--ink-faint)">Nothing yet. Add parts from the left.</div>') + '</div></div>' + done;
-  }
-  function actLab(w, a) {
-    var d = a.data || {}, levers = d.levers || [], pick = d.pick || 2, key = 'a|' + w + '|lab', chosen = state.act[key] || [];
-    var rows = levers.map(function (l, i) {
-      var sel = chosen.indexOf(i) >= 0;
-      var head = '<button onclick="SOC.actLabPick(\'' + key + '\',' + i + ',' + pick + ')" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;border:1px solid ' + (sel ? 'var(--red)' : 'var(--border)') + ';background:' + (sel ? '#FDECEC' : '#fff') + ';color:var(--ink);border-radius:9px;padding:10px 13px;font-size:.92rem;font-weight:700;cursor:pointer;margin:0 0 ' + (sel ? '0' : '8px') + '"><span style="width:18px;height:18px;border-radius:5px;border:2px solid ' + (sel ? 'var(--red)' : '#C7CDD6') + ';background:' + (sel ? 'var(--red)' : '#fff') + ';flex:0 0 auto"></span>' + esc(l.label) + '</button>';
-      var body = sel ? '<div style="border:1px solid var(--red);border-top:none;border-radius:0 0 9px 9px;background:#fff;padding:10px 13px;margin:0 0 8px;font-size:.86rem;color:var(--ink-dim)"><b>What it does:</b> ' + esc(l.effect) + '<br><b>The trade-off:</b> ' + esc(l.tradeoff) + actCite(l.cite) + '</div>' : '';
-      return head + body;
-    }).join('');
-    var note = chosen.length >= pick ? '<div style="margin-top:8px;background:#E7F3EC;border:1px solid #1C7A43;border-radius:10px;padding:12px 15px;font-size:.88rem;color:#155f34;font-weight:600">You picked your ' + pick + '. There is no clean answer here: every option helps in one way and costs in another. That trade-off is the real choice.</div>' : '<div style="margin-top:8px;font-size:.82rem;color:var(--ink-faint)">Choose ' + pick + ' levers (' + chosen.length + ' of ' + pick + ' chosen).</div>';
-    return actCaseBox('THE CASE', d['case']) + '<p style="margin:0 0 12px;color:var(--ink-dim)">You are weighing the options. Pick the ' + pick + ' levers you would use, and weigh what each one costs.</p>' + rows + note;
-  }
   function actCapstone(w, a) {
     var d = a.data || {}, items = d.items || [];
     var rows = items.map(function (it, i) {
@@ -2545,32 +2514,6 @@
     }).join('');
     var callout = d.callout ? '<div style="margin-top:14px;background:#15171C;color:#fff;border-radius:12px;padding:16px 18px"><div style="font-size:.7rem;font-weight:700;color:#F2A900;margin-bottom:5px">YOUR FINAL PROJECT</div><div style="font-size:.95rem;line-height:1.5">' + esc(d.callout) + '</div></div>' : '';
     return '<p style="margin:0 0 14px;color:var(--ink-dim)">' + esc(d.prompt || 'Revisit your cartography one dimension at a time. Mark each as you reread it.') + '</p>' + rows + callout;
-  }
-  function activityScreen() {
-    var w = state.activityReturn, d = weekData(w);
-    if (!d || !d.activity) return '<div style="padding:30px 0;color:var(--ink-dim)">No activity here. <button onclick="SOC.go(\'journey\')" style="background:none;border:none;color:var(--red);font-weight:600;cursor:pointer">Back to your journey</button></div>';
-    var a = d.activity;
-    var head = '<section class="jhero" style="margin:0 0 18px;padding:26px 28px"><div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">WEEK ' + w + ' ACTIVITY</div><h1 style="font-size:1.7rem;line-height:1.15;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(a.title) + '</h1><div class="wk-whatwhy" style="margin:0"><b>What this is:</b> ' + esc(a.what) + '<br><br><b>Why you are doing it:</b> ' + esc(a.why) + '</div></section>' + lensActivityBlock(w, a, true);
-    var inner = '';
-    switch (a.archetype) { case 'match': inner = actMatch(w, a); break; case 'scenario': inner = actScenario(w, a); break; case 'toggle': inner = actToggle(w, a); break; case 'assemble': inner = actAssemble(w, a); break; case 'lab': inner = actLab(w, a); break; case 'capstone': inner = actCapstone(w, a); break; default: inner = '<p style="color:var(--ink-dim)">This activity is not set up yet.</p>'; }
-    var foot = '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:.86rem;color:var(--ink-dim)">When you are done, go back to the week to answer the reflection and save your work.</div><button onclick="SOC.station(' + w + ')" class="wk-cta" style="margin:0">Back to Week ' + w + ' ' + ic('chevron', 16, 2.4) + '</button></div>';
-    return '<div class="rise" style="margin:0 auto">' + head + inner + foot + '</div>';
-  }
-  function activitySummary(w, d) {
-    var a = d.activity || {};
-    var actMap = (state.actResult && typeof state.actResult === 'object') ? state.actResult : (state.act || {});
-    if (a.screen === 'sandbox' || a.archetype == null) {
-      var audited = Object.keys(state.auditedSystems || {});
-      return audited.length ? ('You audited ' + audited.length + ' of 3 systems. Every system you tested failed darker-skinned women the most (up to 34.7 percent), against near-zero error for lighter-skinned men. The disparity was hidden by overall accuracy and only an intersectional cut revealed it.') : '(activity not run yet)';
-    }
-    var data = a.data || {};
-    if (a.archetype === 'match') { var pairs = data.pairs || [], uniq = [], seen = {}, done = 0, correct = 0; pairs.forEach(function (q) { if (!seen[q.match]) { seen[q.match] = 1; uniq.push(q.match); } }); pairs.forEach(function (p, i) { var s = actMap['a|' + w + '|m|' + i]; if (s != null) { done++; if (uniq[s] === p.match) correct++; } }); return done ? ('You matched ' + correct + ' of ' + pairs.length + ' examples to the mechanism each one shows.') : '(activity not started yet)'; }
-    if (a.archetype === 'scenario') { var steps = data.steps || [], n = 0; steps.forEach(function (st, i) { if (actMap['a|' + w + '|s|' + i] != null) n++; }); return n ? ('You worked through ' + n + ' of ' + steps.length + ' decision points and saw which design choices lead to harm.') : '(activity not started yet)'; }
-    if (a.archetype === 'toggle') { var tgs = data.toggles || [], n2 = 0; tgs.forEach(function (t, i) { if (actMap['a|' + w + '|t|' + i]) n2++; }); return 'You explored the system defaults and saw who each one harms (' + n2 + ' of ' + tgs.length + ' turned on).'; }
-    if (a.archetype === 'assemble') { var comps = data.components || [], added = (actMap['a|' + w + '|asm'] || []).length; return added ? ('You assembled ' + added + ' of ' + comps.length + ' parts and saw how they work together as a system.') : '(activity not started yet)'; }
-    if (a.archetype === 'lab') { var levers = data.levers || [], ch = actMap['a|' + w + '|lab'] || []; if (!ch.length) return '(activity not started yet)'; var names = ch.map(function (i) { return levers[i] ? levers[i].label : ''; }).filter(Boolean); return 'For the case, you chose: ' + names.join(', ') + '. Each lever buys something and costs something.'; }
-    if (a.archetype === 'capstone') { var citems = data.items || [], cn = 0; citems.forEach(function (it, i) { if (actMap['a|' + w + '|cap|' + i]) cn++; }); return cn ? ('You revisited ' + cn + ' of ' + citems.length + ' dimensions of your cartography across the term.') : '(revisit not started yet)'; }
-    return '(activity not started yet)';
   }
   var WEEK_DATES = { 1: 'Week of Sept 8', 2: 'Week of Sept 14', 3: 'Week of Sept 21', 4: 'Week of Sept 28', 5: 'Week of Oct 5', 6: 'Week of Oct 13', 7: 'Week of Oct 19', 8: 'Week of Nov 2', 9: 'Week of Nov 9', 10: 'Week of Nov 16', 11: 'Week of Nov 23', 12: 'Week of Nov 30', 13: 'Week of Dec 7', 14: 'Week of Dec 14' };
   var STUDY_WEEK_DATE = 'Oct 26 to 30';
@@ -2825,22 +2768,6 @@
       use: 'Use the activity to test one field decision in ' + ctx.label + ': who benefits, who carries risk, what evidence you would need, and what would make the system more accountable.',
       check: 'The custom question: where could this same pattern appear in ' + ctx.setting + '?'
     };
-  }
-  function lensActivityBlock(w, a, inScreen) {
-    var L = lensParse();
-    if (!L || !a) return '';
-    var profile = lensActivityProfile(w, a, L);
-    var cells = profile.flow.map(function (x, i) {
-      return '<div style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 12px;min-height:74px">'
-        + '<div class="mono" style="font-size:.6rem;letter-spacing:.05em;color:var(--red);font-weight:700;margin-bottom:5px">STEP ' + (i + 1) + '</div>'
-        + '<div style="font-size:.83rem;font-weight:700;color:var(--ink);margin-bottom:4px">' + esc(x[0]) + '</div>'
-        + '<div style="font-size:.78rem;line-height:1.35;color:var(--ink-dim)">' + esc(x[1]) + '</div></div>';
-    }).join('');
-    return '<div style="background:#F7F8FA;border:1px solid var(--border);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:14px 16px;margin:' + (inScreen ? '0 0 18px' : '14px 0 16px') + '">'
-      + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">ACTIVITY MAP FOR ' + esc((L.program || L.area).toUpperCase()) + '</div>'
-      + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px">' + cells + '</div>'
-      + '<p style="margin:0 0 6px;font-size:.9rem;line-height:1.5;color:var(--ink)">' + esc(profile.use) + '</p>'
-      + '<p style="margin:0;font-size:.78rem;line-height:1.45;color:var(--ink-dim)">' + esc(profile.check) + ' The week itself stays the same for everyone.</p></div>';
   }
   function lensProgramFocus(L) {
     var p = ((L && L.program) || '').toLowerCase();
@@ -3374,16 +3301,6 @@
     items.push(mobileJumpItem('Reflect', "SOC.jumpWeek(" + w + ",'reflect')", false));
     items.push(mobileJumpItem('Notes', "SOC.jumpWeek(" + w + ",'notes')", false));
     return '<nav class="soc-mobile-jump" aria-label="Mobile week shortcuts">' + items.join('') + '</nav>';
-  }
-  function mobileActivityActions(w) {
-    var items = [
-      mobileJumpItem('Menu', 'SOC.openNav()', true),
-      mobileJumpItem('Week ' + w, 'SOC.station(' + w + ')', false),
-      mobileJumpItem('Home', "SOC.go('journey')", false),
-      mobileJumpItem('Reflect', "SOC.jumpWeek(" + w + ",'reflect')", false),
-      mobileJumpItem('Notes', "SOC.jumpWeek(" + w + ",'notes')", false)
-    ];
-    return '<nav class="soc-mobile-jump" aria-label="Mobile activity shortcuts">' + items.join('') + '</nav>';
   }
   function body() {
     if (state.screen === 'journey' || state.screen === 'library') return journeyHome();
