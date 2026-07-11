@@ -3303,41 +3303,66 @@
   function walkMount() {
     var ov = document.getElementById('walk-overlay');
     if (!ov || !_walk) return;
-    var slides = _walk.slides, i = Math.max(0, Math.min(slides.length - 1, _walk.i)), s = slides[i];
-    ov.className = 'walk-' + walkTheme();
+    var slides = _walk.slides, i = Math.max(0, Math.min(slides.length - 1, _walk.i)), s = slides[i], p = walkPrefs();
+    ov.className = 'walk-' + walkTheme() + ' walk-size-' + p.walkSize + (p.walkFont ? ' walk-font' : '') + (p.walkMotion ? ' walk-reduce' : '');
     var dots = slides.map(function (_, k) { return '<button type="button" class="walk-dot' + (k === i ? ' on' : '') + '" onclick="SOC.walkGoto(' + k + ')" aria-label="Slide ' + (k + 1) + '"></button>'; }).join('');
-    ov.innerHTML = '<button type="button" class="walk-theme" onclick="SOC.walkTheme()" aria-label="Switch background between light and dark">' + (walkTheme() === 'dark' ? 'Light background' : 'Dark background') + '</button>'
+    ov.innerHTML = '<button type="button" class="walk-theme" onclick="SOC.walkPanel()" aria-expanded="' + (!!_walk.panel) + '" aria-controls="walk-access-panel">Accessibility</button>'
       + '<button type="button" class="walk-close" onclick="SOC.walkClose()" aria-label="Close the walkthrough">' + ic('x', 20) + '</button>'
-      + '<div class="walk-stage"><div class="walk-slide wkslide-' + s.kind + '" key="' + i + '">' + walkSlideHtml(s, _walk.week) + '</div></div>'
+      + walkPanelHtml()
+      + '<div id="walk-live" class="vh" role="status" aria-live="polite" aria-atomic="true">Slide ' + (i + 1) + ' of ' + slides.length + ': ' + esc(walkSlideName(s)) + '</div>'
+      + '<div class="walk-stage"><div class="walk-slide wkslide-' + s.kind + '" key="' + i + '" tabindex="-1">' + walkSlideHtml(s, _walk.week) + '</div></div>'
       + '<div class="walk-bar"><button type="button" class="walk-prev" onclick="SOC.walkNav(-1)"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous slide">' + ic('chevron', 20, 2.4) + '</button>'
       + '<div class="walk-dots">' + dots + '</div><div class="walk-count">' + (i + 1) + ' / ' + slides.length + '</div>'
       + '<button type="button" class="walk-next" onclick="SOC.walkNav(1)"' + (i === slides.length - 1 ? ' disabled' : '') + ' aria-label="Next slide">' + ic('chevron', 20, 2.4) + '</button></div>';
     if (s.kind === 'model') { try { initTopicModels(); } catch (e) {} }
+    walkControlSync();
+    setTimeout(function () {
+      var target = _walk && _walk.panel ? document.getElementById('walk-access-panel') : (_walk && _walk.focusSlide ? ov.querySelector('.walk-slide') : null);
+      if (target) { target.focus(); if (_walk) _walk.focusSlide = false; }
+    }, 0);
     try { sessionStorage.setItem(WKKEY, JSON.stringify({ w: _walk.week, i: _walk.i })); } catch (e) {}
   }
   function walkKey(e) {
     if (!_walk) return;
-    if (e.key === 'Escape') { e.preventDefault(); SOC.walkClose(); }
-    else if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); SOC.walkNav(1); }
-    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); SOC.walkNav(-1); }
+    if (e.key === 'Escape') { e.preventDefault(); if (_walk.panel) { _walk.panel = false; walkMount(); } else SOC.walkClose(); }
+    else if (e.key === 'Tab') {
+      var ov = document.getElementById('walk-overlay'), f = ov && ov.querySelectorAll('button:not([disabled]),select:not([disabled]),[href],[tabindex]:not([tabindex="-1"])');
+      if (!f || !f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    else if (!_walk.panel && !/^(SELECT|INPUT|TEXTAREA|BUTTON)$/.test(String(e.target && e.target.tagName)) && (e.key === 'ArrowRight' || e.key === 'PageDown')) { e.preventDefault(); SOC.walkNav(1); }
+    else if (!_walk.panel && !/^(SELECT|INPUT|TEXTAREA|BUTTON)$/.test(String(e.target && e.target.tagName)) && (e.key === 'ArrowLeft' || e.key === 'PageUp')) { e.preventDefault(); SOC.walkNav(-1); }
   }
   function walkOpen(w) {
     walkCloseDom();
     var slides = walkSlides(w);
     if (!slides.length) return;
-    _walk = { week: w, i: 0, slides: slides, fig: null };
+    var shell = document.getElementById('app');
+    _walk = { week: w, i: 0, slides: slides, fig: null, panel: false, focusSlide: true, returnFocus: document.activeElement, bodyOverflow: document.body.style.overflow, shell: shell, shellHidden: shell && shell.getAttribute('aria-hidden'), shellInert: !!(shell && shell.inert) };
     var ov = document.createElement('div');
     ov.id = 'walk-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', 'Week ' + w + ' walkthrough'); ov.tabIndex = -1;
     document.body.appendChild(ov);
+    if (shell) { shell.inert = true; shell.setAttribute('aria-hidden', 'true'); }
+    document.body.style.overflow = 'hidden';
     walkMount();
-    ov.focus();
     document.addEventListener('keydown', walkKey, true);
   }
   function walkCloseDom() {
+    var ret = _walk && _walk.returnFocus, oldOverflow = _walk && _walk.bodyOverflow, shell = _walk && _walk.shell;
+    walkSpeakStop();
     var ov = document.getElementById('walk-overlay');
     if (ov) ov.remove();
+    if (shell) {
+      shell.inert = !!_walk.shellInert;
+      if (_walk.shellHidden === null || _walk.shellHidden === undefined) shell.removeAttribute('aria-hidden');
+      else shell.setAttribute('aria-hidden', _walk.shellHidden);
+    }
+    if (document.body) document.body.style.overflow = oldOverflow || '';
     document.removeEventListener('keydown', walkKey, true);
     try { sessionStorage.removeItem(WKKEY); } catch (e) {}
+    if (ret && ret.focus) setTimeout(function () { try { ret.focus(); } catch (e) {} }, 0);
   }
   function walkthroughsPage() {
     var ws = [];
@@ -3883,11 +3908,17 @@
     clearCompare: function () { state.compareIds = []; state.showSynthesis = false; render(); },
     synthesize: function () { state.showSynthesis = true; render(); },
     playWalk: function (w) { walkOpen(cleanWeek(w) || w); },
-    walkNav: function (dir) { if (!_walk) return; var n = Math.max(0, Math.min(_walk.slides.length - 1, _walk.i + dir)); if (n === _walk.i) return; _walk.i = n; walkMount(); },
-    walkGoto: function (k) { if (!_walk) return; _walk.i = k; walkMount(); },
+    walkNav: function (dir) { if (!_walk) return; var n = Math.max(0, Math.min(_walk.slides.length - 1, _walk.i + dir)); if (n === _walk.i) return; walkSpeakStop(); _walk.i = n; _walk.focusSlide = true; walkMount(); announce('Slide ' + (n + 1) + ' of ' + _walk.slides.length + ': ' + walkSlideName(_walk.slides[n]) + '.'); },
+    walkGoto: function (k) { if (!_walk) return; walkSpeakStop(); _walk.i = Math.max(0, Math.min(_walk.slides.length - 1, k)); _walk.focusSlide = true; walkMount(); announce('Slide ' + (_walk.i + 1) + ' of ' + _walk.slides.length + ': ' + walkSlideName(_walk.slides[_walk.i]) + '.'); },
     walkClose: function () { walkCloseDom(); _walk = null; },
     walkGoWeek: function () { var w = _walk && _walk.week; walkCloseDom(); _walk = null; if (w) SOC.station(w); },
-    walkTheme: function () { var r = rlState(); r.walkTheme = (r.walkTheme === 'light' ? 'dark' : 'light'); persist(); walkMount(); },
+    walkPanel: function () { if (!_walk) return; _walk.panel = !_walk.panel; walkMount(); announce(_walk.panel ? 'Accessibility settings opened.' : 'Accessibility settings closed.'); },
+    walkSetting: function (key, value) { var p = walkPrefs(); if (key === 'theme') p.walkTheme = String(value); else if (key === 'size') p.walkSize = Number(value); else if (key === 'font') p.walkFont = !!value; else if (key === 'motion') p.walkMotion = !!value; persist(); walkMount(); announce('Walkthrough display updated.'); },
+    walkTheme: function () { if (!_walk) return; _walk.panel = true; walkMount(); },
+    walkSpeak: function () { walkSpeakToggle(); },
+    walkStop: function () { walkSpeakStop(); announce('Voice narration stopped.'); },
+    walkRate: function (v) { walkPrefs().walkRate = Number(v); persist(); walkSpeakStop(); announce('Narration speed updated.'); },
+    walkVoice: function (v) { walkPrefs().voice = String(v || ''); persist(); walkSpeakStop(); announce(v ? 'Narration voice updated.' : 'Default narration voice restored.'); },
     walkFig: function (op) {
       if (!_walk || !_walk.fig) return;
       if (op === 'zin') _walk.fig.scale = Math.min(6, _walk.fig.scale * 1.2);
