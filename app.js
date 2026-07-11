@@ -642,7 +642,7 @@
   function eyePill(r) {
     if (!HAS_EYE) return '';
     var ind = r.eye === 'indigenous';
-    return '<span title="' + esc(eyeLabel(r)) + '" style="display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.625rem;font-weight:600;letter-spacing:.04em;color:' + (ind ? '#1f4d38' : '#3a47a8') + ';background:' + (ind ? '#E4F0E9' : '#E7E9FB') + ';padding:3px 8px;border-radius:999px">' + (ind ? 'INDIGENOUS' : 'WESTERN') + '</span>';
+    return '<span title="' + esc(eyeLabel(r)) + '" style="display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.625rem;font-weight:600;letter-spacing:.04em;color:' + (ind ? '#961A13' : '#3a47a8') + ';background:' + (ind ? '#FBF4F3' : '#E7E9FB') + ';padding:3px 8px;border-radius:999px">' + (ind ? 'INDIGENOUS' : 'WESTERN') + '</span>';
   }
   function weekTag(r) { return '<span class="mono" style="font-size:.6875rem;color:#6B7280;background:#EEF1F5;padding:3px 8px;border-radius:6px">Week ' + r.week + '</span>'; }
 
@@ -812,7 +812,7 @@
   }
   function rgAccessBadge(r) {
     var full = r.fulltext !== false;
-    var fg = full ? '#1f7a4d' : '#8a5a13', bg = full ? '#E4F0E9' : '#FCEFD2';
+    var fg = full ? '#1B2A4A' : '#8a5a13', bg = full ? '#E6EAF1' : '#FCEFD2';
     return '<span style="display:inline-flex;align-items:center;gap:5px;font-size:.6875rem;font-weight:600;letter-spacing:.03em;color:' + fg + ';background:' + bg + ';padding:4px 9px;border-radius:999px">' + ic(full ? 'unlock' : 'book', 12) + (full ? 'Read online' : 'Seneca Library') + '</span>';
   }
   function rgVideoCover(r) {
@@ -1603,6 +1603,36 @@
       + '<div class="sr-col"><div class="sr-col-h sr-after">AFTER CLASS</div><ul>' + after + '</ul></div>'
       + '</div></section>';
   }
+  function fieldArea() {
+    try {
+      var v = state.careerField || state.programViewField || '';
+      if (!v) return '';
+      var parts = String(v).split('::');
+      var area = parts[0] === 'All of' && parts[1] ? parts[1] : parts[0];
+      if (area.indexOf('All of ') === 0) area = area.slice(7);
+      return area;
+    } catch (e) { return ''; }
+  }
+  function fieldConceptExample(w, heading) {
+    try {
+      var R = window.PSY355_FIELD_EXAMPLES; var area = fieldArea();
+      if (!R || !R.concepts || !area || !R.concepts[area]) return '';
+      var wk = R.concepts[area][String(w)];
+      var txt = wk && wk[heading];
+      if (!txt) return '';
+      return '<div style="border-left:4px solid var(--red);background:#FBF4F3;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0 2px"><div class="mono" style="font-size:.62rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:4px">IN YOUR PROGRAM</div><p style="margin:0;font-size:.9rem;line-height:1.55;color:var(--ink)">' + esc(txt) + '</p></div>';
+    } catch (e) { return ''; }
+  }
+  function fieldTermUsage(w, term) {
+    try {
+      var R = window.PSY355_FIELD_EXAMPLES; var area = fieldArea();
+      if (!R || !R.terms || !area || !R.terms[area]) return '';
+      var wk = R.terms[area][String(w)];
+      var txt = wk && wk[term];
+      if (!txt) return '';
+      return '<div style="border-left:3px solid #F0C8C3;padding:5px 0 5px 12px;margin:5px 0 2px"><span class="mono" style="font-size:.6rem;letter-spacing:.06em;color:var(--red);font-weight:700">IN YOUR FIELD</span> <span style="font-size:.86rem;line-height:1.5;color:var(--ink-dim)">' + esc(txt) + '</span></div>';
+    } catch (e) { return ''; }
+  }
   function siteFooter() {
     var code = courseCode() || 'Course';
     return '<footer role="contentinfo" style="margin:28px 0 0;padding:18px 20px;border:1px solid #DEE3EA;border-top:4px solid var(--red);border-radius:14px;background:#fff;color:var(--ink-dim)">'
@@ -1857,8 +1887,8 @@
     var ind = firstWhere(recs, function (r) { return r.eye === 'indigenous'; });
     if (!ind) return '';
     var panels = (west ? studioPanel('WESTERN EYE', west.authors, west.coreIdea, west.title + ' (' + west.year + ')', 'eye', '#3a47a8', west) : '')
-      + studioPanel('INDIGENOUS EYE', ind.authors, ind.coreIdea, ind.title + ' (' + ind.year + ')', 'eye', '#1f4d38', ind);
-    var soloNote = west ? '' : '<div style="margin-top:12px;background:#E4F0E9;border:1px solid #c4ddcf;border-radius:11px;padding:12px 15px;font-size:.85rem;line-height:1.55;color:#1f4d38">This week centres Indigenous knowledge; there is no separate Western-eye reading to set beside it. That is itself a Two-Eyed Seeing observation: not every topic carries a Western counterpart, and the Indigenous frame stands on its own here.</div>';
+      + studioPanel('INDIGENOUS EYE', ind.authors, ind.coreIdea, ind.title + ' (' + ind.year + ')', 'eye', '#961A13', ind);
+    var soloNote = west ? '' : '<div style="margin-top:12px;background:#FBF4F3;border:1px solid #F0C8C3;border-radius:11px;padding:12px 15px;font-size:.85rem;line-height:1.55;color:#961A13">This week centres Indigenous knowledge; there is no separate Western-eye reading to set beside it. That is itself a Two-Eyed Seeing observation: not every topic carries a Western counterpart, and the Indigenous frame stands on its own here.</div>';
     var prompts = west
       ? ['What does ' + ind.authors + '\'s reading let you see that ' + west.authors + '\'s does not?', 'What would be missed if this week were read with only the Western eye?', 'What responsibility does ' + ind.authors + ' ask you to keep visible?']
       : ['What does ' + ind.authors + '\'s reading let you see about this week\'s topic?', 'What responsibility does ' + ind.authors + ' ask you to keep visible?'];
@@ -2066,7 +2096,7 @@
         + '<span class="jdot" style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;flex:none;border-radius:12px;background:' + (isCur ? 'var(--red)' : '#1B2A4A') + ';color:#fff;font-family:var(--mono);font-size:1.0625rem;font-weight:600">' + w + '</span>'
         + '<div style="flex:1;min-width:0">'
         + '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px">' + (isCur ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#B02318;background:#F6E3E1;padding:2px 8px;border-radius:999px">YOU ARE HERE</span>' : '') + lensCardBadge(w) + '<span class="mono" style="font-size:.66rem;color:var(--ink-faint);letter-spacing:.03em">' + esc(weekDate(w)) + '</span></div>'
-        + (weekHasWork(w) ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:2px 8px">IN PROGRESS</span>' : '')
+        + (weekHasWork(w) ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #F0C8C3;border-radius:999px;padding:2px 8px">IN PROGRESS</span>' : '')
         + '<h3 style="font-size:1.0625rem;font-weight:600;margin:0 0 2px;color:var(--ink)">' + esc(weekTitle(w)) + '</h3>'
         + '<p style="font-size:.9375rem;line-height:1.5;color:var(--ink-dim);margin:0 0 8px">' + esc(journeyQ(w)) + '</p>' + lensCardLine(w)
         + '<div style="display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--ink-faint)"><span style="display:inline-flex;color:#6B7280">' + ic('book', 13) + '</span>' + esc(note) + '<span style="margin:0 4px">&middot;</span><span style="color:var(--red);font-weight:600">Open &rarr;</span></div>'
@@ -2239,7 +2269,7 @@
         if (!prevDone) { rows += '<div style="border:1.5px dashed var(--border);border-radius:12px;padding:13px 16px;margin-bottom:10px;color:var(--ink-faint);font-size:.88rem">Rung ' + (ri + 1) + ' \u00B7 ' + rungNames[Math.min(ri, 2)] + ' unlocks when you finish the rung above.</div>'; continue; }
         var rv = state.sgNotes[rk] || '';
         var ticked = state.sgTick[rk] && rv.length >= 20;
-        rows += '<div style="background:#fff;border:1.5px solid ' + (ticked ? '#50694C' : 'var(--border)') + ';border-radius:12px;padding:14px 16px;margin-bottom:10px">'
+        rows += '<div style="background:#fff;border:1.5px solid ' + (ticked ? '#961A13' : 'var(--border)') + ';border-radius:12px;padding:14px 16px;margin-bottom:10px">'
           + '<div class="mono" style="font-size:.62rem;letter-spacing:.06em;color:' + (ticked ? '#2c6b3f' : '#6B7280') + '">RUNG ' + (ri + 1) + ' \u00B7 ' + rungNames[Math.min(ri, 2)].toUpperCase() + (ticked ? ' \u2713' : '') + '</div>'
           + '<div style="font-weight:600;margin:5px 0 8px;line-height:1.5">' + esc(gqs[ri]) + '</div>'
           + '<textarea oninput="SOC.sgNote(\'' + rk + '\', this.value)" placeholder="Work it out here..." style="width:100%;min-height:56px;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem;resize:vertical">' + esc(rv) + '</textarea>'
@@ -2249,7 +2279,7 @@
       var lastRk = 'sg' + w + '|r|' + (gqs.length - 1);
       var ladderDone = state.sgTick[lastRk] && (state.sgNotes[lastRk] || '').length >= 20;
       ladder = '<div><h3 style="font-size:1rem;margin:0 0 8px">The question ladder</h3><p class="wk-hint" style="margin:0 0 10px">This week\'s guiding questions, one rung at a time: remember it, connect it, apply it to your own world. Twenty words or more moves you up.</p>' + rows
-        + (ladderDone ? '<div style="background:#E9EFE7;border:1px solid #9CC4A8;border-radius:12px;padding:13px 16px;font-size:.92rem;font-weight:600;color:#2c3b29">You have worked the whole ladder. You are ready for the Knowledge Check below. <a href="#wk-kc" style="color:#2c6b3f">Go to it \u2193</a></div>' : '')
+        + (ladderDone ? '<div style="background:#E9EFE7;border:1px solid #F0C8C3;border-radius:12px;padding:13px 16px;font-size:.92rem;font-weight:600;color:#961A13">You have worked the whole ladder. You are ready for the Knowledge Check below. <a href="#wk-kc" style="color:#2c6b3f">Go to it \u2193</a></div>' : '')
         + '</div>';
     }
     var html = '<section id="wk-sg" class="node"><h2 class="wk-sec">Study Guide</h2>'
@@ -2442,7 +2472,7 @@
         + '</div>';
     }
 
-    var badge = '<span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #9CC4A8;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span>';
+    var badge = '<span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #F0C8C3;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span>';
     var kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check ' + badge + '</h2>'
       + '<p class="wk-hint">Nothing here counts toward your grade and nothing is recorded. Three sets: Set A and Set B are multiple choice; Set C brings scenarios, matching, and short written reflections. Answer, say how sure you were, and the check shows you not just what you got right but where a confident answer was actually wrong, the thing most worth fixing.</p>'
       + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px">' + vers + retake + '</div>'
@@ -2481,8 +2511,8 @@
     var guiding = sec('gq', 'Guiding questions', '<p style="margin:0 0 8px;font-size:.9rem">Hold these in mind as you work:</p>' + d.guiding.map(function (q) { return '<div class="wk-gq"><span class="q">+</span>' + esc(q) + '</div>'; }).join(''));
     var programLens = lensProgramSection(w, d);
     var programCase = lensCaseStudySection(w, d);
-    var concepts = sec('con', 'Key concepts', '<p class="wk-hint">These are the week\'s big ideas, explained. Read them to understand the argument; this is what your discussions and written work draw on.</p>' + d.concepts.map(function (c) { return '<div class="wk-concept"><h3>' + esc(c.h) + '</h3><p>' + esc(c.body) + ' <span class="wk-cite">(' + esc(c.cite) + ')</span></p></div>'; }).join(''));
-    var terms = sec('term', 'Key terms', '<p class="wk-hint">These are the precise vocabulary. Learn them to speak and write accurately; they feed the flashcards and Knowledge Check.</p>' + d.terms.map(function (t) { return '<div class="wk-term"><b>' + esc(t.term) + '</b>: ' + esc(t.def) + ' <span class="wk-cite">(' + esc(t.cite) + ')</span></div>'; }).join(''));
+    var concepts = sec('con', 'Key concepts', '<p class="wk-hint">These are the week\'s big ideas, explained. Read them to understand the argument; this is what your discussions and written work draw on.</p>' + d.concepts.map(function (c) { return '<div class="wk-concept"><h3>' + esc(c.h) + '</h3><p>' + esc(c.body) + ' <span class="wk-cite">(' + esc(c.cite) + ')</span></p>' + fieldConceptExample(w, c.h) + '</div>'; }).join(''));
+    var terms = sec('term', 'Key terms', '<p class="wk-hint">These are the precise vocabulary. Learn them to speak and write accurately; they feed the flashcards and Knowledge Check.</p>' + d.terms.map(function (t) { return '<div class="wk-term"><b>' + esc(t.term) + '</b>: ' + esc(t.def) + ' <span class="wk-cite">(' + esc(t.cite) + ')</span>' + fieldTermUsage(w, t.term) + '</div>'; }).join(''));
     var readings = sec('read', 'Readings', d.readings.map(function (r) { var resolves = (typeof rec === 'function') && r.id && rec(r.id); var tail = resolves ? '<button onclick="SOC.read(\'' + r.id + '\')" class="wk-scope">' + esc(r.scope || 'Open the reading') + ' &#8599;</button>' : (r.scope ? '<div class="wk-scope" style="background:none;border:none;color:var(--ink-faint);padding:6px 0;cursor:default">' + esc(r.scope) + '</div>' : ''); return '<div class="wk-read"><div class="ref">' + r.apa + '</div>' + tail + '</div>'; }).join('') + readingRescueSection(w, d));
     var watch = d.deck ? '<section id="wk-watch" class="node"><h2 class="wk-sec">Walkthrough</h2><p style="margin:0 0 12px;font-size:.92rem">A short, immersive walk through this week\'s core idea, with its diagrams. Step through it right here.</p><button type="button" class="wk-cta" style="margin:0" onclick="SOC.playWalk(' + w + ')">Play the walkthrough</button></section>' : '';
     var act = '';
@@ -2493,7 +2523,7 @@
       + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" class="wk-ta" placeholder="Your reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
       + '</section>';
     var notes = '<section id="wk-notes" class="node"><h2 class="wk-sec">Generate Your Weekly Notes</h2>'
-      + '<div class="wk-savebox" style="margin-top:0"><h3>Your organized Week ' + w + ' record</h3><p style="margin:0 0 4px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead. It organizes your private weekly check answers, activity summary, and reflection for review before Blackboard work.</p><ul><li>your before-and-after answers to the five check questions</li><li>a summary of what you did in this week\'s activity</li><li>your answer to the reflection question</li></ul><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Generate Your Weekly Notes</button></div>'
+      + '<div class="wk-savebox" style="margin-top:0"><h3>Your organized Week ' + w + ' record</h3><p style="margin:0 0 4px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead. It organizes your private weekly check answers, practice notes, and reflection for review before Blackboard work.</p><ul><li>your before-and-after answers to the five check questions</li><li>a summary of what you practised this week</li><li>your answer to the reflection question</li></ul><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Generate Your Weekly Notes</button></div>'
       + '</section>';
     var navRow = '<div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">'
       + (prev != null ? '<button onclick="SOC.station(' + prev + ')" style="flex:1;min-width:180px;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--ink-faint)">&larr; PREVIOUS</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + prev + ': ' + esc(weekTitle(prev)) + '</div></button>' : '')
@@ -2522,7 +2552,7 @@
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var isFinal = (next == null);
     var hero = weekHero(w, d, {
-      label: isFinal ? 'FINAL WEEK' : 'CAPSTONE WEEK',
+      label: isFinal ? 'FINAL WEEK' : 'FINAL PROJECT WEEK',
       route: ['Reflect', 'Save notes'],
       startPart: 'reflect',
       startLabel: 'Start reflection',
@@ -3062,7 +3092,7 @@
   }
   function assignmentsPage() {
     var items = [
-      ['Weekly Reflections', 'Weeks 2 to 12, 10 percent', 'Complete 11 connected entries in Blackboard. Your best 10 count, and each entry uses your previous record, one live class moment, and one honest practice observation.'],
+      ['Weekly Reflections', 'Weeks 2 to 12, closes December 4, 10 percent', 'Complete 11 connected entries in Blackboard. Your best 10 count, and each entry uses your previous record, one live class moment, and one honest practice observation.'],
       ['Mindset Evidence Check 1', 'Due October 9, 20 percent', 'Use evidence from Weeks 3 and 4 to examine one real learning struggle without turning growth mindset into a slogan.'],
       ['Mid-course Practice Synthesis', 'Due October 23, 10 percent', 'Quote at least three of your own Weekly Reflections, name a pattern, and set a concrete plan for the second half.'],
       ['Self-Regulated Learning Case Redesign', 'Due November 6, 20 percent', 'Redesign one real study routine with the self-regulated learning cycle, resilience as process, and an honest implementation record.'],
