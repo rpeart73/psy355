@@ -1463,14 +1463,12 @@
     var box = document.createElement('div');
     box.id = 'upcoming-reminder'; box.className = 'upcoming-reminder';
     box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-labelledby', 'upcoming-reminder-title');
-    box.innerHTML = '<div class="upcoming-reminder-card"><button type="button" class="upcoming-reminder-close" onclick="SOC.closeUpcomingReminder()" aria-label="Close coming-up reminder">&times;</button>'
-      + '<div class="mono">BEFORE YOU BEGIN</div><h2 id="upcoming-reminder-title">Here is what is coming up</h2>'
+    box.innerHTML = '<div class="upcoming-reminder-card"><div class="mono">BEFORE YOU BEGIN</div><h2 id="upcoming-reminder-title">Here is what is coming up</h2>'
       + '<ul>' + entries.map(function (e) { var p = upcomingParts(e); return '<li><b>' + esc(p.label) + '<small>(' + esc(p.date) + ')</small></b><span>' + esc(p.name) + (p.note ? ' <small>' + esc(p.note) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>'
       + '<p>The banner at the top of every page stays current. Blackboard remains the official source for announcements and changed dates.</p>'
       + '<div><button type="button" onclick="SOC.closeUpcomingReminder();SOC.go(\'calendar\')">Open full calendar</button><button type="button" class="secondary" onclick="SOC.closeUpcomingReminder()">Continue to the site</button></div></div>';
     document.body.appendChild(box);
     box.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { e.preventDefault(); SOC.closeUpcomingReminder(); return; }
       if (e.key !== 'Tab') return;
       var focusable = box.querySelectorAll('button:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])');
       if (!focusable.length) return;
@@ -1478,7 +1476,7 @@
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
-    setTimeout(function () { var b = box.querySelector('.upcoming-reminder-close'); if (b) b.focus(); }, 0);
+    setTimeout(function () { var b = box.querySelector('button'); if (b) b.focus(); }, 0);
   }
   function keyDatesRows(cats) {
     var K = keyDatesList(), out = '', curMon = '';
