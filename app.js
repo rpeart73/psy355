@@ -46,7 +46,6 @@
   }
   /* Term shell URL: replace with the exact Blackboard course link once the Fall shell is published. */
   var BB_URL = 'https://learn.senecapolytechnic.ca';
-  var ICS_PATH = './calendar/PSY355_key_dates.ics';
   var saved0 = load();
   var view0 = loadView();
   var route0 = initialRoute();
@@ -114,6 +113,7 @@
     glossSearch: resumeView0 ? (view0.glossSearch || '') : '',
     videoWeek: resumeView0 ? (view0.videoWeek || 'all') : 'all',
     mediaKind: resumeView0 ? (view0.mediaKind || 'all') : 'all',
+    tickerPaused: false,
   };
   if (resumeView0) {
     state.activityReturn = cleanWeek(view0.activityReturn);
@@ -1323,9 +1323,8 @@
       + svg
       + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">'
       + '<a href="' + BB_URL + '" target="_blank" rel="noopener" class="wk-cta" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">Open Blackboard <span aria-hidden="true">&#8599;</span></a>'
-      + (typeof ICS_PATH === 'string' && ICS_PATH ? '<a href="' + ICS_PATH + '" download class="wk-cta" style="text-decoration:none;background:#fff;color:#1B2A4A;border:1px solid #1B2A4A;display:inline-flex;align-items:center;gap:6px">Add the key dates to your calendar</a>' : '')
+      + '<button type="button" onclick="SOC.go(\'calendar\')" class="wk-cta" style="background:#fff;color:#1B2A4A;border:1px solid #1B2A4A">Open course calendar</button>'
       + '</div>'
-      + (typeof ICS_PATH === 'string' && ICS_PATH ? '<p style="margin:8px 0 0;font-size:.78rem;color:var(--ink-faint)">The calendar file adds every assessment open and due date to Outlook, Google Calendar, or Apple Calendar. Blackboard remains the official word on dates.</p>' : '')
       + '</section>';
   }
   function siteInfoPage() {
@@ -1349,6 +1348,7 @@
       + howToUseSiteHtml()
       + bbDiagramHtml()
       + '<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0">' + cards.map(function (c) { return siteCard(c[0], c[1], c[2]); }).join('') + '</section>'
+      + mobileAccessPanel()
       + reportBlock()
       + '<section class="exp-card" style="border-left-color:#1B2A4A;background:#fff;border:1px solid #DEE3EA;border-left:5px solid #1B2A4A;border-radius:14px;padding:20px 22px;margin:0 0 20px" aria-label="Clear saved work"><div class="mono" style="font-size:.68rem;letter-spacing:.08em;color:#1B2A4A;font-weight:700">SHARED OR LAB COMPUTER?</div><h2 style="margin:4px 0 8px;font-size:1.1rem">Clear my saved work on this device</h2><p style="font-size:.9rem;line-height:1.55;margin:0 0 12px">Removes every note, check answer, and setting this site has saved in this browser. Download your weekly notes first if you want to keep them.</p><button type="button" class="wk-cta" style="margin:0" onclick="SOC.clearMyWork()">Clear everything saved here</button></section>'
       + '</div>';
@@ -1377,7 +1377,7 @@
       + '<p style="margin:0 0 12px;font-size:.95rem;line-height:1.6;color:var(--ink-dim)">If a video will not load, a link is broken, or anything looks wrong, tell the instructor so it can be fixed. The button opens your own email with the page details filled in; you just add what happened and press send. Nothing is collected by this site.</p>'
       + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
       + '<button type="button" class="wk-cta" style="margin:0" onclick="SOC.reportProblem()">Report a problem by email</button>'
-      + '<span style="font-size:.85rem;color:var(--ink-dim)">or call or text <a href="tel:+14162779174" style="color:#1B2A4A;font-weight:600">416-277-9174</a></span>'
+      + '<span style="font-size:.85rem;color:var(--ink-dim)">Use Seneca email or Blackboard messages for course support.</span>'
       + '</div></section>';
   }
   function keyDatesList() {
@@ -1412,44 +1412,73 @@
     try { var t = new Date(); var a0 = Date.UTC(t.getFullYear(), t.getMonth(), t.getDate()); var p = iso.split('-'); var b0 = Date.UTC(+p[0], +p[1] - 1, +p[2]); return Math.round((b0 - a0) / 86400000); } catch (e) { return 999; }
   }
   function kdMonthDay(iso) { var p = iso.split('-'); return KD_MON[+p[1] - 1] + ' ' + (+p[2]); }
-  function nextDue() {
-    var K = keyDatesList(), byDate = {};
-    K.forEach(function (row) { row.it.forEach(function (x) { if (x[2] === 'due') { (byDate[row.d] = byDate[row.d] || []).push(x[0]); } }); });
-    var dates = Object.keys(byDate).sort().filter(function (d) { return kdDaysUntil(d) >= 0; });
-    if (!dates.length) return null;
-    return { d: dates[0], names: byDate[dates[0]], days: kdDaysUntil(dates[0]) };
+  function deadlineRule() { return '<aside class="deadline-rule" role="note" style="border:1px solid #E7C3BF;border-left:5px solid #DA291C;border-radius:0 11px 11px 0;background:#fff;padding:12px 14px;margin:0 0 16px;color:#15171C"><strong style="color:#961A13">Submission time:</strong> All assignments are due by 11:59 p.m. Eastern Time, EDT or EST as applicable, on the date shown. Blackboard remains the official submission record.</aside>'; }
+  function mobileCalendarSubscription() { var code = courseCode(), base = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, ''), feed = (base + 'calendar/' + code + '_key_dates.ics').replace(/^https?:/i, 'webcal:'); return '<section class="mobile-cal-sub" aria-labelledby="mobile-cal-title"><div class="mono">MOBILE CALENDAR</div><h2 id="mobile-cal-title">Keep these dates on your phone</h2><p>This is a live calendar subscription, not a downloaded copy. Your calendar app can refresh it when the course schedule changes. Blackboard remains the official source.</p><a href="' + esc(feed) + '">Subscribe on this phone <span aria-hidden="true">&#8594;</span></a></section>'; }
+  function mobileAccessPanel() { var url = (location.origin + location.pathname).replace(/index\.html$/i, ''); return '<section class="mobile-access-panel" aria-labelledby="mobile-access-title"><div class="mono">PHONE OR TABLET</div><h2 id="mobile-access-title">Use the same site on any device</h2><p>There is no separate app. This responsive site is the mobile version too. Share or copy the link, then open it on your phone or tablet.</p><div><a href="' + esc(url) + '">Open the site link</a><button type="button" onclick="SOC.shareMobileSite()">Share or copy the link</button></div><small>Your saved notes stay on the device and browser where you typed them.</small></section>'; }
+  function upcomingParts(e) {
+    var title = String(e.title || ''), note = String(e.note || ''), label = 'Course date', name = title, m;
+    if (e.kind === 'open') { label = 'Assignment released'; m = title.match(/^(.*?)\s+(?:opens|begins)(?:\s+(.*))?$/i); if (m) { name = m[1]; if (!note && m[2]) note = m[2]; } }
+    else if (e.kind === 'due') { label = 'Assignment due'; name = title.replace(/\s+(?:due|close|closes)$/i, ''); note = note.replace(/^due,?\s*/i, ''); }
+    else if (/study week/i.test(title)) label = 'Study Week';
+    else if (e.kind === 'class') label = 'Live class';
+    else if (e.kind === 'async') label = 'Asynchronous week';
+    return { label: label, name: name, note: note, date: kdMonthDay(e.date) };
   }
-  function dueReminderStrip() {
-    if (state.screen === 'calendar') return '';
-    var nd = nextDue(); if (!nd) return '';
-    var lead = nd.days <= 0 ? 'Due today' : nd.days === 1 ? 'Due tomorrow' : nd.days <= 21 ? ('Due in ' + nd.days + ' days') : 'Next due';
-    var urgent = nd.days <= 7 ? ' due-strip-urgent' : '';
-    return '<div class="due-wrap"><button type="button" class="due-strip' + urgent + '" onclick="SOC.go(\'calendar\')" aria-label="Next due date. Opens the calendar page.">'
-      + '<span class="due-strip-dot" aria-hidden="true"></span>'
-      + '<span class="due-strip-main"><strong>' + esc(lead) + ':</strong> ' + esc(nd.names.join(', ')) + '</span>'
-      + '<span class="due-strip-date">' + esc(kdMonthDay(nd.d)) + '</span>'
-      + '<span class="due-strip-cta">See all dates <span aria-hidden="true">&#8594;</span></span>'
-      + '</button></div>';
-  }
-  var WEBCAL = 'webcal://' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'calendar/PSY355_key_dates.ics';
-  function kdPad2(n) { return (n < 10 ? '0' : '') + n; }
-  function kdIsoPlus1(iso) { var p = iso.split('-'); var dt = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2] + 1)); return dt.getUTCFullYear() + '-' + kdPad2(dt.getUTCMonth() + 1) + '-' + kdPad2(dt.getUTCDate()); }
-  function kdIcsEsc(s) { return String(s).replace(/([,;\\])/g, '\\$1').replace(/\n/g, '\\n'); }
-  function addCalUrls(iso, title, details) {
-    var d0 = iso.replace(/-/g, ''), d1 = kdIsoPlus1(iso).replace(/-/g, '');
-    var g = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(title) + '&dates=' + d0 + '/' + d1 + '&details=' + encodeURIComponent(details);
-    var o = 'https://outlook.office.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=' + encodeURIComponent(title) + '&startdt=' + iso + '&enddt=' + kdIsoPlus1(iso) + '&allday=true&body=' + encodeURIComponent(details);
-    var ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//PSY355//Companion//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:' + d0 + '-psy355@rpeart73.github.io\r\nDTSTART;VALUE=DATE:' + d0 + '\r\nDTEND;VALUE=DATE:' + d1 + '\r\nSUMMARY:' + kdIcsEsc(title) + '\r\nDESCRIPTION:' + kdIcsEsc(details) + '\r\nBEGIN:VALARM\r\nTRIGGER:-P2D\r\nACTION:DISPLAY\r\nDESCRIPTION:' + kdIcsEsc(title) + '\r\nEND:VALARM\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    return { g: g, o: o, a: 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics) };
-  }
-  function phoneReminders() {
-    return '<section class="node phone-rem">'
-      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">REMINDERS</div>'
-      + '<h2 class="wk-sec" style="margin:0 0 4px">Get these on your phone</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">One tap adds the deadlines to your own phone calendar, with a reminder two days before. Nothing is downloaded, and nothing about you is stored here.</p>'
-      + '<a href="' + WEBCAL + '" class="phone-sub">Subscribe on your phone <span aria-hidden="true">&#8594;</span></a>'
-      + '<p style="font-size:.8rem;color:var(--ink-faint);margin:9px 0 0;line-height:1.5">This adds every deadline at once and keeps them updated if a date ever changes. It works with Apple Calendar and Google Calendar. You can also add one date at a time with the Google, Apple, or Outlook links beside each due date below.</p>'
+  function upcomingBanner() {
+    var rows = keyDatesList(), todayIso = '', entries = [];
+    try { var now = new Date(); todayIso = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2); } catch (e) {}
+    rows.forEach(function (row) {
+      if (todayIso && row.d < todayIso) return;
+      (row.it || []).forEach(function (it) {
+        if (entries.length < 10) entries.push({ date: row.d, title: it[0], note: it[1] || '', kind: it[2] || 'event' });
+      });
+    });
+    if (!entries.length) return '';
+    function item(e, hidden) {
+      var p = upcomingParts(e);
+      return '<span class="upcoming-item upcoming-' + esc(e.kind) + '"' + (hidden ? ' aria-hidden="true"' : '') + '><i aria-hidden="true"></i><b>' + esc(p.label) + ' (' + esc(p.date) + '):</b><span>' + esc(p.name) + (p.note ? ' <small>' + esc(p.note) + '</small>' : '') + '</span></span>';
+    }
+    var first = entries.map(function (e) { return item(e, false); }).join('');
+    var repeat = entries.map(function (e) { return item(e, true); }).join('');
+    var paused = !!state.tickerPaused;
+    return '<section class="upcoming-banner' + (paused ? ' paused' : '') + '" aria-label="Coming up in PSY355">'
+      + '<button type="button" class="upcoming-label" onclick="SOC.go(\'calendar\')"><span>Coming up</span><small>Open calendar</small></button>'
+      + '<div class="upcoming-window" tabindex="0"><div class="upcoming-track"><div class="upcoming-loop">' + first + '</div><div class="upcoming-loop" aria-hidden="true">' + repeat + '</div></div></div>'
+      + '<button type="button" class="upcoming-pause" onclick="SOC.tickerPause()" aria-pressed="' + paused + '">' + (paused ? 'Resume' : 'Pause') + '</button>'
       + '</section>';
+  }
+  var upcomingReminderFocus = null;
+  function showUpcomingReminder() {
+    var key = SKEY + '.upcomingReminder.session.v1';
+    try { if (sessionStorage.getItem(key) === '1') return; sessionStorage.setItem(key, '1'); } catch (e) {}
+    if (document.getElementById('upcoming-reminder')) return;
+    var rows = keyDatesList(), todayIso = '', entries = [];
+    try { var now = new Date(); todayIso = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2); } catch (e2) {}
+    rows.forEach(function (row) {
+      if (todayIso && row.d < todayIso) return;
+      (row.it || []).forEach(function (it) { if (entries.length < 4) entries.push({ date: row.d, title: it[0], note: it[1] || '' }); });
+    });
+    if (!entries.length) return;
+    upcomingReminderFocus = document.activeElement;
+    var box = document.createElement('div');
+    box.id = 'upcoming-reminder'; box.className = 'upcoming-reminder';
+    box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-labelledby', 'upcoming-reminder-title');
+    box.innerHTML = '<div class="upcoming-reminder-card"><button type="button" class="upcoming-reminder-close" onclick="SOC.closeUpcomingReminder()" aria-label="Close coming-up reminder">&times;</button>'
+      + '<div class="mono">BEFORE YOU BEGIN</div><h2 id="upcoming-reminder-title">Here is what is coming up</h2>'
+      + '<ul>' + entries.map(function (e) { var p = upcomingParts(e); return '<li><b>' + esc(p.label) + '<small>(' + esc(p.date) + ')</small></b><span>' + esc(p.name) + (p.note ? ' <small>' + esc(p.note) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>'
+      + '<p>The banner at the top of every page stays current. Blackboard remains the official source for announcements and changed dates.</p>'
+      + '<div><button type="button" onclick="SOC.closeUpcomingReminder();SOC.go(\'calendar\')">Open full calendar</button><button type="button" class="secondary" onclick="SOC.closeUpcomingReminder()">Continue to the site</button></div></div>';
+    document.body.appendChild(box);
+    box.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); SOC.closeUpcomingReminder(); return; }
+      if (e.key !== 'Tab') return;
+      var focusable = box.querySelectorAll('button:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])');
+      if (!focusable.length) return;
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    setTimeout(function () { var b = box.querySelector('.upcoming-reminder-close'); if (b) b.focus(); }, 0);
   }
   function keyDatesRows(cats) {
     var K = keyDatesList(), out = '', curMon = '';
@@ -1467,15 +1496,7 @@
         if (x[3] != null) return '<a href="?screen=assignment-details&asg=' + x[3] + '" target="_blank" rel="noopener" class="kd-item kd-' + x[2] + ' kd-link" aria-label="Open the ' + esc(x[0]) + ' assignment in a new tab">' + inner + '<span class="kd-go" aria-hidden="true">&#8599;</span></a>';
         return '<div class="kd-item kd-' + x[2] + '">' + inner + '</div>';
       }).join('');
-      var dueItems = rowItems.filter(function (x) { return x[2] === 'due'; });
-      var add = '';
-      if (dueItems.length) {
-        var names = dueItems.map(function (x) { return x[0]; }).join(', ');
-        var title = 'PSY355: ' + (dueItems.length > 1 ? (dueItems.length + ' assignments due') : (dueItems[0][0] + ' due'));
-        var u = addCalUrls(row.d, title, names + '. Details on Blackboard and the PSY355 companion site.');
-        add = '<div class="kd-add"><span class="kd-add-lbl">Remind me:</span> <a href="' + u.g + '" target="_blank" rel="noopener">Google</a> <a href="' + u.a + '">Apple</a> <a href="' + u.o + '" target="_blank" rel="noopener">Outlook</a></div>';
-      }
-      out += '<div class="kd-row' + (past ? ' kd-rowpast' : '') + '">' + badge + '<div class="kd-items">' + items + add + '</div></div>';
+      out += '<div class="kd-row' + (past ? ' kd-rowpast' : '') + '">' + badge + '<div class="kd-items">' + items + '</div></div>';
     });
     return out;
   }
@@ -1555,8 +1576,9 @@
     return '<div class="rise cal-page">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">CALENDAR</div>'
       + '<h1 style="font-size:1.9rem;line-height:1.15;font-weight:600;margin:0 0 8px;color:var(--ink)">Every date that matters</h1>'
-      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Red marks due dates. Navy marks live classes. Amber marks every asynchronous week with no lecture, including the office-hour weeks. Blue-grey marks Study Week. Week 4 gives you room to apply the early foundations independently. Week 11 creates a deliberate synthesis point before the final live class. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
-      + phoneReminders()
+      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Seneca red marks due dates. Black marks live classes. Neutral grey marks every asynchronous week with no lecture, including the office-hour weeks. A light grey outline marks Study Week. Week 4 gives you room to apply the early foundations independently. Week 11 creates a deliberate synthesis point before the final live class. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
+      + deadlineRule()
+      + mobileCalendarSubscription()
       + calendarBody()
       + '</div>';
   }
@@ -2118,7 +2140,7 @@
         + '<div style="display:flex;align-items:flex-start;gap:16px">'
         + '<span class="jdot" style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;flex:none;border-radius:12px;background:' + (isCur ? 'var(--red)' : '#1B2A4A') + ';color:#fff;font-family:var(--mono);font-size:1.0625rem;font-weight:600">' + w + '</span>'
         + '<div style="flex:1;min-width:0">'
-        + '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px"><span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.05em;color:' + (mode.kind === 'live' ? '#1B2A4A' : '#6E4B00') + ';background:' + (mode.kind === 'live' ? '#EEF1F5' : '#FFF4D6') + ';border:1px solid ' + (mode.kind === 'live' ? '#D6DCE5' : '#F2A900') + ';padding:2px 8px;border-radius:999px">' + (mode.kind === 'live' ? 'LIVE' : 'ASYNC') + '</span>' + lensCardBadge(w) + '<span class="mono" style="font-size:.66rem;color:var(--ink-faint);letter-spacing:.03em">' + esc(weekDate(w)) + '</span></div>'
+        + '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px"><span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.05em;color:' + (mode.kind === 'live' ? '#15171C' : '#474C57') + ';background:#F4F4F4;border:1px solid ' + (mode.kind === 'live' ? '#15171C' : '#6B7280') + ';padding:2px 8px;border-radius:999px">' + (mode.kind === 'live' ? 'LIVE' : 'ASYNC') + '</span>' + lensCardBadge(w) + '<span class="mono" style="font-size:.66rem;color:var(--ink-faint);letter-spacing:.03em">' + esc(weekDate(w)) + '</span></div>'
         + (weekHasWork(w) ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #F0C8C3;border-radius:999px;padding:2px 8px">IN PROGRESS</span>' : '')
         + '<h3 style="font-size:1.0625rem;font-weight:600;margin:0 0 2px;color:var(--ink)">' + esc(weekTitle(w)) + '</h3>'
         + '<p style="font-size:.9375rem;line-height:1.5;color:var(--ink-dim);margin:0 0 8px">' + esc(journeyQ(w)) + '</p>' + lensCardLine(w)
@@ -2571,8 +2593,8 @@
   var WORK_WEEKS = [13, 14];
   function weekDate(w) { return WEEK_DATES[w] || ''; }
   function deliveryMode(w) {
-    if (w === 4) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning', reason: 'This week gives you flexible space to apply the early foundations independently and notice how the ideas work in your own learning.' };
-    if (w === 11) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning', reason: 'This week is a deliberate self-regulated synthesis point before the final live class. Use it to connect the second-half ideas and prepare one question to carry into Week 12.' };
+    if (w === 4) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Use the flexible class time to apply the early foundations independently and notice how the ideas work in your own learning.' };
+    if (w === 11) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Use this deliberate self-regulated synthesis point to connect the second-half ideas and prepare one question to carry into Week 12.' };
     if (w === 13) return { kind: 'async', label: 'OFFICE HOURS + SUPPORTED ASYNCHRONOUS COMPLETION', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes office hours for focused final-work support and consultation. Office hours are not recorded by default.' };
     if (w === 14) return { kind: 'async', label: 'OFFICE HOURS + ASYNCHRONOUS COURSE CLOSURE', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes optional office hours for feedback and final questions. No graded work is due, and office hours are not recorded by default.' };
     return { kind: 'live', label: 'SYNCHRONOUS LIVE CLASS', short: 'Live class', reason: w === 12 ? 'This is the final substantive live class. Bring the synthesis you prepared in Week 11 and use the meeting to test and strengthen it.' : 'Our class meets live this week. Use the week page before class to prepare and return after class to reflect and save what matters.' };
@@ -2581,7 +2603,7 @@
     var m = deliveryMode(w);
     return '<section id="wk-mode" class="delivery-note ' + (m.kind === 'live' ? '' : m.kind) + '" aria-labelledby="wk-mode-h"><div class="mono">' + esc(m.label) + '</div><h2 id="wk-mode-h">How this week works</h2><p>' + esc(m.reason) + '</p></section>';
   }
-  function deliveryLegend() { return '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 14px;font-size:.8rem;color:var(--ink-dim)"><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#1B2A4A"></i> Live class</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#F2A900"></i> Asynchronous; no lecture</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#D8DEE8"></i> Study Week</span></div>'; }
+  function deliveryLegend() { return '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 14px;font-size:.8rem;color:var(--ink-dim)"><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#15171C"></i> Live class</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:2px;background:#6B7280"></i> Asynchronous; no lecture</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#fff;border:2px solid #6B7280"></i> Study Week</span></div>'; }
   function recordingEntry(w) { return RECORDINGS[String(w)] || RECORDINGS[w] || null; }
   function safeZoomRecordingUrl(raw) {
     try { var u = new URL(String(raw || '')); if (u.protocol !== 'https:' || !/(^|\.)zoom\.us$/i.test(u.hostname) || /(?:^|[?&])(pwd|passcode)=/i.test(u.search)) return ''; return u.href; } catch (e) { return ''; }
@@ -3149,7 +3171,7 @@
       ['Your response matters', 'The first step is information gathering. You have a chance to explain your process, disclosure, sources, and assignment choices.'],
       ['Blackboard records', 'Blackboard Activity Log evidence may be reviewed. A Progress report is not enough by itself and needs the Activity Log with it.']
     ];
-    return '<section class="path-summary integrity-note" aria-label="Academic integrity process">' + rows.map(function (r) {
+    return deadlineRule() + '<section class="path-summary integrity-note" aria-label="Academic integrity process">' + rows.map(function (r) {
       return '<div><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + '</span></div>';
     }).join('') + '</section>';
   }
@@ -3577,7 +3599,7 @@
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + dueReminderStrip() + body() + siteFooter() + '</div></main>'
+      + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + upcomingBanner() + body() + siteFooter() + '</div></main>'
       + '</div>' + readerLensOverlay() + rlPanelOverlay() + listenOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
@@ -3598,6 +3620,7 @@
     }
     saveView();
     wkEnhanceSections();
+    setTimeout(showUpcomingReminder, 80);
     navHistorySync();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
@@ -3822,6 +3845,23 @@
       } catch (e) {}
       location.reload();
     },
+    tickerPause: function () {
+      state.tickerPaused = !state.tickerPaused;
+      var banner = document.querySelector('.upcoming-banner');
+      var button = banner ? banner.querySelector('.upcoming-pause') : null;
+      if (banner) banner.classList.toggle('paused', state.tickerPaused);
+      if (button) {
+        button.textContent = state.tickerPaused ? 'Resume' : 'Pause';
+        button.setAttribute('aria-pressed', String(state.tickerPaused));
+      }
+      announce(state.tickerPaused ? 'Coming-up banner paused.' : 'Coming-up banner resumed.');
+    },
+    closeUpcomingReminder: function () {
+      var box = document.getElementById('upcoming-reminder');
+      if (box) box.remove();
+      if (upcomingReminderFocus && upcomingReminderFocus.focus) { try { upcomingReminderFocus.focus(); } catch (e) {} }
+      upcomingReminderFocus = null;
+    },
     rlPanel: function () { state.rlPanelOpen = !state.rlPanelOpen; renderKeepScroll(); announce(state.rlPanelOpen ? 'Reading Lens panel open.' : 'Reading Lens panel closed.'); if (state.rlPanelOpen) { var p = document.getElementById('rl-panel'); if (p) p.focus(); } else { var b = document.querySelector('.reader-lens-btn'); if (b) b.focus(); } },
     rlPanelKey: function (e) { if (e.key === 'Escape') { e.stopPropagation(); SOC.rlPanel(); } },
     rlZoom: function (v) { rlState().zoom = v; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce('Text size ' + (v === 100 ? 'default.' : v + ' percent.')); },
@@ -3867,6 +3907,12 @@
     readerLensPointerDown: function () {},
     readerLensKey: function () {},
     prev: goPrevious,
+    shareMobileSite: function () {
+      var url = (location.origin + location.pathname).replace(/index\.html$/i, '');
+      if (navigator.share) { navigator.share({ title: courseCode() + ' companion website', url: url }).then(function () { announce('Site link shared.'); }).catch(function () {}); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(function () { announce('Site link copied.'); }).catch(function () { announce('Copy the address from your browser to use this site on another device.'); }); return; }
+      announce('Copy the address from your browser to use this site on another device.');
+    },
     reportProblem: function () {
       var scr = screenAnnounceText ? screenAnnounceText() : (state.screen || 'a page');
       var wk = state.screen === 'station' ? (' (Week ' + state.stationWeek + ')') : '';
