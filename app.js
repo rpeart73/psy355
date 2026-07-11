@@ -440,7 +440,6 @@
     if ([50, 75, 100, 125, 150, 200].indexOf(r.rate) < 0) r.rate = 100;
     if (['none', 'warm', 'cream', 'yellow', 'peach', 'rose', 'green', 'blue', 'lilac', 'grey'].indexOf(r.tint) < 0) r.tint = 'none';
     r.space = !!r.space; r.font = !!r.font; r.ruler = !!r.ruler;
-    if ([85, 100, 115].indexOf(r.rate) < 0) r.rate = 100;
     return r;
   }
   var rlRulerY = 220, rlRulerRaf = 0, rlSpeaking = false, rlSpeakIdx = -1, rlSpeakBlocks = [];
@@ -3148,7 +3147,72 @@
     if (!list || !list[idx]) return null;
     return 'walkthroughs/' + d.deck + '/images/' + list[idx];
   }
-  function walkTheme() { var r = rlState(); return r.walkTheme === 'light' ? 'light' : 'dark'; }
+  function walkPrefs() {
+    var r = rlState();
+    if (['dark', 'light', 'soft', 'warm', 'contrast'].indexOf(r.walkTheme) < 0) r.walkTheme = 'dark';
+    if ([100, 115, 130, 150].indexOf(r.walkSize) < 0) r.walkSize = 100;
+    if ([75, 100, 125, 150].indexOf(r.walkRate) < 0) r.walkRate = 100;
+    r.walkFont = !!r.walkFont;
+    r.walkMotion = !!r.walkMotion;
+    return r;
+  }
+  function walkTheme() { return walkPrefs().walkTheme; }
+  var walkSpeaking = false, walkPaused = false;
+  function walkSpeakStop() {
+    try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
+    walkSpeaking = false; walkPaused = false; walkControlSync();
+  }
+  function walkSlideText() {
+    var el = document.querySelector('#walk-overlay .walk-slide');
+    return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : '';
+  }
+  function walkSlideName(s) {
+    if (!s) return 'Walkthrough slide';
+    return String(s.title || s.h || (s.kind === 'terms' ? 'The words to know' : s.kind === 'questions' ? 'Carry these questions' : s.kind === 'close' ? 'You can now' : 'Walkthrough slide'));
+  }
+  function walkControlSync() {
+    var b = document.getElementById('walk-speak'), stop = document.getElementById('walk-stop');
+    if (b) { b.textContent = walkSpeaking ? (walkPaused ? 'Resume' : 'Pause') : 'Read this slide'; b.setAttribute('aria-pressed', String(walkSpeaking && !walkPaused)); }
+    if (stop) stop.disabled = !walkSpeaking;
+  }
+  function walkSpeakToggle() {
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') { announce('Voice narration is not available in this browser.'); return; }
+    if (walkSpeaking) {
+      if (walkPaused) { window.speechSynthesis.resume(); walkPaused = false; announce('Voice narration resumed.'); }
+      else { window.speechSynthesis.pause(); walkPaused = true; announce('Voice narration paused.'); }
+      walkControlSync(); return;
+    }
+    var text = walkSlideText();
+    if (!text) { announce('There is no slide text to read.'); return; }
+    var p = walkPrefs(), u = new SpeechSynthesisUtterance(text.slice(0, 5000));
+    u.rate = p.walkRate / 100;
+    try {
+      var voices = window.speechSynthesis.getVoices() || [];
+      for (var i = 0; i < voices.length; i++) if (voices[i].voiceURI === p.voice) { u.voice = voices[i]; break; }
+    } catch (e) {}
+    u.onend = function () { walkSpeaking = false; walkPaused = false; walkControlSync(); announce('Finished reading this slide.'); };
+    u.onerror = function () { walkSpeaking = false; walkPaused = false; walkControlSync(); };
+    walkSpeaking = true; walkPaused = false; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); walkControlSync(); announce('Reading this slide aloud.');
+  }
+  function walkVoiceOptions() {
+    var p = walkPrefs(), voices = [];
+    try { voices = (window.speechSynthesis.getVoices() || []).slice(); } catch (e) {}
+    voices.sort(function (a, b) { return String(a.lang + a.name).localeCompare(String(b.lang + b.name)); });
+    return '<option value="">Default device voice</option>' + voices.map(function (v) {
+      return '<option value="' + esc(v.voiceURI) + '"' + (p.voice === v.voiceURI ? ' selected' : '') + '>' + esc(rlLangLabel(v.lang) + ': ' + v.name) + '</option>';
+    }).join('');
+  }
+  function walkPanelHtml() {
+    if (!_walk || !_walk.panel) return '';
+    var p = walkPrefs(), themes = [['dark', 'Dark'], ['light', 'Light'], ['soft', 'Soft grey'], ['warm', 'Warm'], ['contrast', 'High contrast']];
+    return '<section id="walk-access-panel" class="walk-access-panel" role="region" aria-label="Walkthrough accessibility settings" tabindex="-1">'
+      + '<div class="walk-access-head"><h2>Accessibility</h2><button type="button" onclick="SOC.walkPanel()" aria-label="Close accessibility settings">' + ic('x', 17, 2) + '</button></div>'
+      + '<div class="walk-access-group"><b>Screen</b><div>' + themes.map(function (x) { return '<button type="button" onclick="SOC.walkSetting(\'theme\',\'' + x[0] + '\')" aria-pressed="' + (p.walkTheme === x[0]) + '">' + x[1] + '</button>'; }).join('') + '</div></div>'
+      + '<div class="walk-access-group"><b>Text size</b><div>' + [100, 115, 130, 150].map(function (n) { return '<button type="button" onclick="SOC.walkSetting(\'size\',' + n + ')" aria-pressed="' + (p.walkSize === n) + '">' + n + '%</button>'; }).join('') + '</div></div>'
+      + '<div class="walk-access-group"><b>Reading display</b><div><button type="button" onclick="SOC.walkSetting(\'font\',' + (!p.walkFont) + ')" aria-pressed="' + p.walkFont + '">High-legibility font</button><button type="button" onclick="SOC.walkSetting(\'motion\',' + (!p.walkMotion) + ')" aria-pressed="' + p.walkMotion + '">Reduce motion</button></div></div>'
+      + (('speechSynthesis' in window) ? '<div class="walk-access-group"><b>Voice narration</b><label>Voice<select onchange="SOC.walkVoice(this.value)">' + walkVoiceOptions() + '</select></label><label>Speed<select onchange="SOC.walkRate(Number(this.value))"><option value="75"' + (p.walkRate === 75 ? ' selected' : '') + '>0.75x</option><option value="100"' + (p.walkRate === 100 ? ' selected' : '') + '>1x</option><option value="125"' + (p.walkRate === 125 ? ' selected' : '') + '>1.25x</option><option value="150"' + (p.walkRate === 150 ? ' selected' : '') + '>1.5x</option></select></label><div><button id="walk-speak" type="button" onclick="SOC.walkSpeak()">Read this slide</button><button id="walk-stop" type="button" onclick="SOC.walkStop()" disabled>Stop</button></div><small>Voice options come from your device. Narration reads only the current slide.</small></div>' : '<p class="walk-access-note">Voice narration is not available in this browser.</p>')
+      + '<p class="walk-access-note">Your choices stay on this device. They do not change the course content or send information anywhere.</p></section>';
+  }
   function walkSlides(w) {
     var d = weekData(w);
     if (!d) return [];
