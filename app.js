@@ -7,6 +7,7 @@
   'use strict';
   var D = window.PSY355;
   var MC = window.PSY355_MC || {};
+  var RECORDINGS = window.PSY355_RECORDINGS || {};
   if (!D) { document.getElementById('app').textContent = 'Course data did not load.'; return; }
   var HAS_EYE = !!(D.course && D.course.frame);
 
@@ -1382,16 +1383,28 @@
   function keyDatesList() {
     /* schema: [label, subtext, category, assignmentIndex?] category = 'due' | 'open' | 'class' */
     return [
-      { d: '2026-09-08', it: [['First day of classes', '', 'class']] },
-      { d: '2026-09-14', it: [['Weekly Reflections begin', 'weekly, Weeks 2 to 12', 'open']] },
+      { d: '2026-09-08', it: [['Week 1 live class', 'Course orientation and shared start', 'class']] },
+      { d: '2026-09-14', it: [['Week 2 live class', '', 'class'], ['Weekly Reflections begin', 'weekly, Weeks 2 to 12', 'open']] },
+      { d: '2026-09-21', it: [['Week 3 live class', '', 'class']] },
+      { d: '2026-09-28', it: [['Week 4 asynchronous learning', 'Independent application of the early foundations', 'async']] },
+      { d: '2026-10-05', it: [['Week 5 live class', '', 'class']] },
       { d: '2026-10-09', it: [['Mindset Evidence Check 1', 'due, end of Week 5', 'due']] },
+      { d: '2026-10-13', it: [['Week 6 live class', '', 'class']] },
+      { d: '2026-10-19', it: [['Week 7 live class', '', 'class']] },
       { d: '2026-10-23', it: [['Mid-course Practice Synthesis', 'due, end of Week 7', 'due']] },
-      { d: '2026-10-26', it: [['Study Week', 'Oct 26 to 30. No classes.', 'class']] },
+      { d: '2026-10-26', it: [['Study Week', 'Oct 26 to 30. No class and no new module.', 'support']] },
+      { d: '2026-11-02', it: [['Week 8 live class', '', 'class']] },
       { d: '2026-11-06', it: [['Self-Regulated Learning Case Redesign', 'due, end of Week 8', 'due']] },
+      { d: '2026-11-09', it: [['Week 9 live class', '', 'class']] },
+      { d: '2026-11-16', it: [['Week 10 live class', '', 'class']] },
+      { d: '2026-11-23', it: [['Week 11 asynchronous learning', 'Self-regulated synthesis before the final live class', 'async']] },
       { d: '2026-11-27', it: [['Mindset Evidence Check 2', 'due, end of Week 11', 'due']] },
+      { d: '2026-11-30', it: [['Week 12 live class', 'Final substantive class meeting', 'class']] },
       { d: '2026-12-04', it: [['Weekly Reflections close', 'due, end of Week 12', 'due']] },
+      { d: '2026-12-07', it: [['Week 13 asynchronous office hours and supported completion', 'No lecture; focused work and consultation', 'async']] },
       { d: '2026-12-11', it: [['Personal Resilience Plan', 'due, your final project', 'due']] },
-      { d: '2026-12-16', it: [['Last day of classes', 'Nothing is due this week.', 'class']] }
+      { d: '2026-12-14', it: [['Week 14 asynchronous office hours and course closure', 'No lecture; optional consultation, feedback, and final questions', 'async']] },
+      { d: '2026-12-16', it: [['Last day of the term', 'No graded work is due in Week 14', 'support']] }
     ];
   }
   var KD_MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -1478,7 +1491,7 @@
       + '<div class="kd-list">' + keyDatesRows(['open']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">The class schedule</h2>'
       + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The shape of the term. Nothing here is due.</p>'
-      + '<div class="kd-list">' + keyDatesRows(['class']) + '</div>'
+      + '<div class="kd-list">' + keyDatesRows(['class', 'async', 'support']) + '</div>'
       + '</section>';
   }
   function calEventsByIso() {
@@ -1486,14 +1499,18 @@
     K.forEach(function (row) {
       var dues = row.it.filter(function (x) { return x[2] === 'due'; });
       var cls = row.it.filter(function (x) { return x[2] === 'class'; });
+      var asyncs = row.it.filter(function (x) { return x[2] === 'async'; });
+      var support = row.it.filter(function (x) { return x[2] === 'support'; });
       var ops = row.it.filter(function (x) { return x[2] === 'open'; });
       var asg = row.it.filter(function (x) { return x[3] != null; }).map(function (x) { return x[3]; });
       var idx = asg.length === 1 ? asg[0] : (asg.length > 1 ? -1 : null);
       if (dues.length) map[row.d] = { kind: 'due', label: dues.length > 1 ? (dues.length + ' assignments due') : dues[0][0] + ' due', idx: idx };
+      else if (asyncs.length) map[row.d] = { kind: 'async', label: asyncs[0][0], idx: null };
+      else if (support.length) map[row.d] = { kind: 'support', label: support[0][0], idx: null };
       else if (cls.length) map[row.d] = { kind: 'class', label: cls[0][0], idx: null };
       else if (ops.length) map[row.d] = { kind: 'open', label: ops[0][0], idx: idx };
     });
-    ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29'].forEach(function (d) { map[d] = { kind: 'study', label: 'Study Week' }; });
+    ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30'].forEach(function (d) { map[d] = { kind: 'study', label: 'Study Week' }; });
     return map;
   }
   function calMonthGrid(year, m) {
@@ -1525,6 +1542,8 @@
       + '<span class="cal-lg"><span class="cal-sw cal-sw-due"></span>Due date</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-open"></span>Assignment opens</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-class"></span>Class schedule</span>'
+      + '<span class="cal-lg"><span class="cal-sw cal-sw-async"></span>Asynchronous learning</span>'
+      + '<span class="cal-lg"><span class="cal-sw cal-sw-support"></span>Term marker</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-study"></span>Study Week</span>'
       + '</div>';
   }
@@ -1536,7 +1555,7 @@
     return '<div class="rise cal-page">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">CALENDAR</div>'
       + '<h1 style="font-size:1.9rem;line-height:1.15;font-weight:600;margin:0 0 8px;color:var(--ink)">Every date that matters</h1>'
-      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px;max-width:70ch">This calendar keeps two things clearly apart: the red days when you hand something in, and the class schedule in navy (first day of classes, Study Week, and last day of classes). These are the due dates for your section. Click any assignment to open its page in a new tab. Blackboard remains the official word on dates, and nothing here should ever be a surprise.</p>'
+      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Red marks due dates. Navy marks live classes. Amber marks every asynchronous week with no lecture, including the office-hour weeks. Blue-grey marks Study Week. Week 4 gives you room to apply the early foundations independently. Week 11 creates a deliberate synthesis point before the final live class. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
       + phoneReminders()
       + calendarBody()
       + '</div>';
@@ -1585,7 +1604,10 @@
         + '<h2 class="sr-h">Classes have wrapped.</h2>'
         + '<p class="sr-p">Everything stays here for review: the walkthroughs, readings, and your notes. Thank you for the term.</p></section>';
     }
-    var w = cw.week, recs = recordsForWeek(w), n = recs.length;
+    var w = cw.week, mode = deliveryMode(w), recs = recordsForWeek(w), n = recs.length;
+    if (mode.kind !== 'live') {
+      return '<section class="node sync-rhythm"><div class="sr-top"><div><div class="mono sr-kick">' + esc(mode.label) + '</div><h2 class="sr-h">Week ' + w + ': ' + esc(weekTitle(w)) + '</h2></div><button type="button" class="sr-open" onclick="SOC.station(' + w + ')">Open Week ' + w + ' ' + ic('chevron', 15, 2.4) + '</button></div><p class="sr-p">' + esc(mode.reason) + '</p><div class="sr-cols"><div class="sr-col"><div class="sr-col-h sr-before">USE THE WEEK</div><ul><li><b>Follow the week page</b><span>Use the readings, walkthrough, and reflection prompts in the order that supports you.</span></li><li><b>Make the learning visible</b><span>Write one clear connection in your reflection record while it is still fresh.</span></li></ul></div><div class="sr-col"><div class="sr-col-h sr-after">SUPPORT</div><ul><li><b>' + (w >= 13 ? 'Use office hours if helpful' : 'Carry one question forward') + '</b><span>' + (w >= 13 ? 'Consultation is available during the usual class window. Office hours are not recorded by default.' : 'Bring one unresolved point into the next live class.') + '</span></li><li><b>Check for an instructor update</b><span>The week page has a dedicated space if a short update is posted.</span></li></ul></div></div></section>';
+    }
     var before = ''
       + (n ? '<li><b>Do the readings</b><span>' + n + (n === 1 ? ' reading sets up' : ' readings set up') + ' what class works through together.</span></li>' : '<li><b>Read the week overview</b><span>Know the guiding question before you arrive.</span></li>')
       + '<li><b>Skim the walkthrough</b><span>Preview the core pattern so the live discussion can go deeper.</span></li>'
@@ -1619,7 +1641,7 @@
       var wk = R.concepts[area][String(w)];
       var txt = wk && wk[heading];
       if (!txt) return '';
-      return '<div style="border-left:4px solid var(--red);background:#FBF4F3;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0 2px"><div class="mono" style="font-size:.62rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:4px">IN YOUR PROGRAM</div><p style="margin:0;font-size:.9rem;line-height:1.55;color:var(--ink)">' + esc(txt) + '</p></div>';
+      return '<div style="border-left:4px solid var(--red);background:#FBF4F3;border-radius:0 10px 10px 0;padding:10px 14px;margin:8px 0 2px"><div class="mono" style="font-size:.62rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:4px">IN YOUR FIELD</div><p style="margin:0;font-size:.9rem;line-height:1.55;color:var(--ink)">' + esc(txt) + '</p></div>';
     } catch (e) { return ''; }
   }
   function fieldTermUsage(w, term) {
@@ -1750,6 +1772,7 @@
     if (state.screen !== 'station') return;
     var secs = document.querySelectorAll('#soc-main section[id^="wk-"]');
     Array.prototype.forEach.call(secs, function (sec) {
+      if (sec.id === 'wk-mode') return;
       var h = sec.querySelector('h2.wk-sec');
       if (!h || h.parentElement !== sec || h.querySelector('.wk-coll-btn')) return;
       var id = sec.id;
@@ -2072,14 +2095,14 @@
     var hero = '<section class="jhero jfade" style="margin-bottom:26px">' + heroArt()
       + '<div style="position:relative;">'
       + courseImage('hero', 'home-hero-img', true)
-      + '<div class="mono" style="font-size:.78rem;letter-spacing:.09em;color:var(--red);font-weight:700;margin-bottom:14px">SYNCHRONOUS ONLINE &middot; WEEKLY LIVE CLASSES</div>'
+      + '<div class="mono" style="font-size:.78rem;letter-spacing:.09em;color:var(--red);font-weight:700;margin-bottom:14px">BLENDED SYNCHRONOUS COURSE &middot; LIVE AND ASYNCHRONOUS WEEKS</div>'
       + '<h1 class="jhero-title" style="font-size:3rem;line-height:1.04;font-weight:700;margin:0 0 16px;letter-spacing:-.01em;color:var(--ink)">Our class meets live. Everything around it lives here.</h1>'
-      + '<p style="font-size:1.18rem;line-height:1.55;color:var(--ink);margin:0 0 20px;font-weight:500">The live class is where mindset, resilience, and self-regulated learning get worked out together. This site is your companion for everything before and after it: the readings, the walkthroughs, your journal rhythm, and your notes, all in one place, ready when class ends.</p>'
-      + '<div style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px">' + ['Weekly live classes', 'Week-by-week due dates', 'Prepare and review here', 'Blackboard is official'].map(function (t) { return '<span class="mono" style="font-size:.72rem;font-weight:700;letter-spacing:.03em;color:var(--red);background:#FBF3F2;border:1px solid #F0C8C3;border-radius:999px;padding:5px 12px">' + esc(t) + '</span>'; }).join('') + '</div>'
+      + '<p style="font-size:1.18rem;line-height:1.55;color:var(--ink);margin:0 0 20px;font-weight:500">Most weeks meet live so mindset, resilience, and self-regulated learning can be worked out together. Four clearly marked asynchronous weeks give you space to apply, synthesize, complete, and close the course with support. This site carries the readings, walkthroughs, recording spaces, reflection rhythm, and notes around both formats.</p>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px">' + ['Live classes clearly marked', 'Four asynchronous weeks', 'Class recordings by week', 'Blackboard is official'].map(function (t) { return '<span class="mono" style="font-size:.72rem;font-weight:700;letter-spacing:.03em;color:var(--red);background:#FBF3F2;border:1px solid #F0C8C3;border-radius:999px;padding:5px 12px">' + esc(t) + '</span>'; }).join('') + '</div>'
       + '<div class="mono" style="font-size:.72rem;letter-spacing:.06em;color:var(--ink-faint);font-weight:600">SENECA POLYTECHNIC &middot; FALL 2026 &middot; <span style="color:var(--ink-dim)">' + esc(title) + '</span></div>'
       + '</div></section>';
     var spineHead = '<div style="display:flex;align-items:baseline;gap:12px;margin:0 0 16px;flex-wrap:wrap"><h2 style="font-size:1.375rem;font-weight:600;margin:0;color:var(--ink)">Your journey</h2><span style="font-size:.875rem;color:var(--ink-faint)">' + ws.length + ' weeks, in course order</span></div>';
-    return '<div class="rise">' + hero + syncWeekRhythm(courseWeekByDate()) + practicePulse() + homeIntroCollapsible() + compassPanel() + lensHomeIntro() + spineHead + journeyStations(cur) + '</div>';
+    return '<div class="rise">' + hero + syncWeekRhythm(courseWeekByDate()) + practicePulse() + homeIntroCollapsible() + compassPanel() + lensHomeIntro() + spineHead + deliveryLegend() + journeyStations(null) + '</div>';
   }
   function journeyStations(cur) {
     var ws = journeyWeeks();
@@ -2089,12 +2112,13 @@
     ws.forEach(function (w) {
       if (!studyIn && w >= 8) { out += studyMarker(); studyIn = true; }
       var recs = recordsForWeek(w), n = recs.length, isCur = (w === cur);
-      var note = (w === OVERVIEW_WEEK) ? 'Course overview' : (WORK_WEEKS.indexOf(w) >= 0 ? 'Focus on your work, no new material' : (n + (n === 1 ? ' reading' : ' readings')));
+      var mode = deliveryMode(w);
+      var note = mode.short + ' · ' + ((w === OVERVIEW_WEEK) ? 'Course overview' : (WORK_WEEKS.indexOf(w) >= 0 ? 'Focus on your work, no new material' : (n + (n === 1 ? ' reading' : ' readings'))));
       out += '<button class="jstation' + (isCur ? ' cur' : '') + '" onclick="SOC.station(' + w + ')">'
         + '<div style="display:flex;align-items:flex-start;gap:16px">'
         + '<span class="jdot" style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;flex:none;border-radius:12px;background:' + (isCur ? 'var(--red)' : '#1B2A4A') + ';color:#fff;font-family:var(--mono);font-size:1.0625rem;font-weight:600">' + w + '</span>'
         + '<div style="flex:1;min-width:0">'
-        + '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px">' + (isCur ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#B02318;background:#F6E3E1;padding:2px 8px;border-radius:999px">YOU ARE HERE</span>' : '') + lensCardBadge(w) + '<span class="mono" style="font-size:.66rem;color:var(--ink-faint);letter-spacing:.03em">' + esc(weekDate(w)) + '</span></div>'
+        + '<div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:3px"><span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.05em;color:' + (mode.kind === 'live' ? '#1B2A4A' : '#6E4B00') + ';background:' + (mode.kind === 'live' ? '#EEF1F5' : '#FFF4D6') + ';border:1px solid ' + (mode.kind === 'live' ? '#D6DCE5' : '#F2A900') + ';padding:2px 8px;border-radius:999px">' + (mode.kind === 'live' ? 'LIVE' : 'ASYNC') + '</span>' + lensCardBadge(w) + '<span class="mono" style="font-size:.66rem;color:var(--ink-faint);letter-spacing:.03em">' + esc(weekDate(w)) + '</span></div>'
         + (weekHasWork(w) ? '<span class="mono" style="font-size:.625rem;font-weight:700;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #F0C8C3;border-radius:999px;padding:2px 8px">IN PROGRESS</span>' : '')
         + '<h3 style="font-size:1.0625rem;font-weight:600;margin:0 0 2px;color:var(--ink)">' + esc(weekTitle(w)) + '</h3>'
         + '<p style="font-size:.9375rem;line-height:1.5;color:var(--ink-dim);margin:0 0 8px">' + esc(journeyQ(w)) + '</p>' + lensCardLine(w)
@@ -2491,7 +2515,7 @@
     var imageKey = 'wk' + (w < 10 ? '0' : '') + w;
     return '<section id="wk-ov" class="node jhero jfade wk-hero2">'
       + courseImage(imageKey, 'wk-hero-img', false)
-      + '<div class="wk-hero-main"><div class="mono wk-hero-kicker">WEEK ' + w + ' | ' + esc(weekDate(w)) + ' | ' + esc(opt.label || 'WEEKLY MODULE') + '</div>'
+      + '<div class="wk-hero-main"><div class="mono wk-hero-kicker">WEEK ' + w + ' | ' + esc(weekDate(w)) + ' | ' + esc(opt.label || deliveryMode(w).label) + '</div>'
       + '<h1>' + esc(opt.title || weekTitle(w)) + '</h1>'
       + (sub ? '<p>' + esc(sub) + '</p>' : '')
       + (q ? '<div class="wk-hero-question">' + esc(q) + '</div>' : '')
@@ -2503,7 +2527,7 @@
   function weekPage(w, d) {
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var sec = function (id, title, inner) { return '<section id="wk-' + id + '" class="node"><h2 class="wk-sec">' + esc(title) + '</h2>' + inner + '</section>'; };
-    var hero = weekHero(w, d, { startPart: 'pre', startLabel: 'Start this week', label: 'WEEKLY MODULE' });
+    var hero = weekHero(w, d, { startPart: 'pre', startLabel: 'Start this week', label: deliveryMode(w).label });
     var pre = sec('pre', 'Before you begin', '<p class="wk-hint">A quick read on where your understanding sits right now, no grade. Rate each idea, then meet them again at the end to see how far your thinking moves.</p>' + wkChecks(w, 'pre', d));
     var purpose = '<section id="wk-learn" class="node"><h2 class="wk-sec">Purpose</h2><p style="margin:0">' + esc(d.purpose) + '</p></section>';
     var outcomes = sec('out', 'Learning outcomes', '<p style="margin:0 0 8px;font-size:.9rem">By the end of this week, you will be able to:</p>' + d.outcomes.map(function (o) { return '<div class="wk-oc"><span class="b"></span>' + esc(o) + '</div>'; }).join(''));
@@ -2532,10 +2556,10 @@
     var kcR = kcSection(w);
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['mode', 'How this week works'], ['rec', deliveryMode(w).kind === 'live' ? 'Class recording' : 'Instructor update'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Walkthrough']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
     var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><span>Weeks start folded so you can see the whole map. Up to two sections stay open at once; opening a third closes the earliest one. Sections fold again when you leave the week.</span></div>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + deliveryNotice(w) + recordingSection(w) + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -2546,12 +2570,47 @@
   var STUDY_WEEK_DATE = 'Oct 26 to 30';
   var WORK_WEEKS = [13, 14];
   function weekDate(w) { return WEEK_DATES[w] || ''; }
+  function deliveryMode(w) {
+    if (w === 4) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning', reason: 'This week gives you flexible space to apply the early foundations independently and notice how the ideas work in your own learning.' };
+    if (w === 11) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning', reason: 'This week is a deliberate self-regulated synthesis point before the final live class. Use it to connect the second-half ideas and prepare one question to carry into Week 12.' };
+    if (w === 13) return { kind: 'async', label: 'OFFICE HOURS + SUPPORTED ASYNCHRONOUS COMPLETION', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes office hours for focused final-work support and consultation. Office hours are not recorded by default.' };
+    if (w === 14) return { kind: 'async', label: 'OFFICE HOURS + ASYNCHRONOUS COURSE CLOSURE', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes optional office hours for feedback and final questions. No graded work is due, and office hours are not recorded by default.' };
+    return { kind: 'live', label: 'SYNCHRONOUS LIVE CLASS', short: 'Live class', reason: w === 12 ? 'This is the final substantive live class. Bring the synthesis you prepared in Week 11 and use the meeting to test and strengthen it.' : 'Our class meets live this week. Use the week page before class to prepare and return after class to reflect and save what matters.' };
+  }
+  function deliveryNotice(w) {
+    var m = deliveryMode(w);
+    return '<section id="wk-mode" class="delivery-note ' + (m.kind === 'live' ? '' : m.kind) + '" aria-labelledby="wk-mode-h"><div class="mono">' + esc(m.label) + '</div><h2 id="wk-mode-h">How this week works</h2><p>' + esc(m.reason) + '</p></section>';
+  }
+  function deliveryLegend() { return '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 14px;font-size:.8rem;color:var(--ink-dim)"><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#1B2A4A"></i> Live class</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#F2A900"></i> Asynchronous; no lecture</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#D8DEE8"></i> Study Week</span></div>'; }
+  function recordingEntry(w) { return RECORDINGS[String(w)] || RECORDINGS[w] || null; }
+  function safeZoomRecordingUrl(raw) {
+    try { var u = new URL(String(raw || '')); if (u.protocol !== 'https:' || !/(^|\.)zoom\.us$/i.test(u.hostname) || /(?:^|[?&])(pwd|passcode)=/i.test(u.search)) return ''; return u.href; } catch (e) { return ''; }
+  }
+  function recordingSection(w) {
+    var m = deliveryMode(w), e = recordingEntry(w), live = m.kind === 'live';
+    var heading = live ? 'Class recording' : 'Instructor update';
+    var empty = live ? 'The recording space is ready. After class, the captioned recording will appear here when it has been processed and posted.' : 'There is no live class recording this week. If the instructor posts a short update, it will appear here.';
+    var body = '';
+    if (e) {
+      var title = e.title || ('Week ' + w + ' ' + (live ? 'class recording' : 'instructor update'));
+      var access = e.access || 'Check the player or recording page for captions and transcript options.';
+      if (e.platform === 'youtube' && /^[A-Za-z0-9_-]{6,20}$/.test(String(e.videoId || e.yt || ''))) {
+        var id = String(e.videoId || e.yt);
+        body = '<div class="wk-rec-frame"><button type="button" class="wk-rec-play" onclick="SOC.playVideo(this,\'' + esc(id) + '\',\'' + esc(title) + '\')" aria-label="Load ' + esc(title) + '"><b>Play ' + esc(title) + '</b><small>YouTube loads only after you choose to play.</small></button></div>';
+      } else if (e.platform === 'zoom' && safeZoomRecordingUrl(e.url)) {
+        body = '<a class="wk-rec-link" href="' + esc(safeZoomRecordingUrl(e.url)) + '" target="_blank" rel="noopener">Open ' + esc(title) + ' on Zoom <span aria-hidden="true">&#8599;</span></a>';
+      }
+      if (body) body += '<div class="wk-rec-meta">' + (e.date ? '<span>Posted ' + esc(e.date) + '</span>' : '') + '<span>' + esc(access) + '</span>' + (e.transcriptUrl ? '<a href="' + esc(e.transcriptUrl) + '" target="_blank" rel="noopener">Open transcript</a>' : '') + '</div>';
+      else empty = 'The recording entry needs attention before it can be shown safely. Use a valid YouTube video ID or a Zoom recording link without an embedded passcode.';
+    }
+    return '<section id="wk-rec" class="wk-rec" aria-labelledby="wk-rec-h"><div class="wk-rec-inner"><div class="wk-rec-kick">' + esc(live ? 'AFTER CLASS' : 'THIS WEEK') + '</div><h2 id="wk-rec-h">' + esc(heading) + '</h2>' + (body || '<p>' + esc(empty) + '</p>') + '</div></section>';
+  }
   function workWeekPage(w) {
     var d = weekData(w) || {};
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var isFinal = (next == null);
     var hero = weekHero(w, d, {
-      label: isFinal ? 'FINAL WEEK' : 'FINAL PROJECT WEEK',
+      label: deliveryMode(w).label,
       route: ['Reflect', 'Save notes'],
       startPart: 'reflect',
       startLabel: 'Start reflection',
@@ -2570,9 +2629,9 @@
       + (next != null ? '<button onclick="SOC.station(' + next + ')" style="flex:1;min-width:180px;text-align:right;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--red)">NEXT &rarr;</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button>' : '')
       + '</div>';
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'This week']].concat(d.activity ? [] : []).concat([['reflect', 'Reflection'], ['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'This week'], ['mode', 'How this week works'], ['rec', 'Instructor update']].concat(d.activity ? [] : []).concat([['reflect', 'Reflection'], ['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' No new material</div></div></aside>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + act + reflect + notes + navRow + '</section>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + deliveryNotice(w) + recordingSection(w) + '<div class="wk-grid"><section>' + act + reflect + notes + navRow + '</section>' + rail + '</div></div>';
   }
   var OVERVIEW_WEEK = 1;
   function overviewPage(w) {
@@ -2583,19 +2642,24 @@
       label: 'COURSE OVERVIEW',
       title: cname,
       question: false,
-      route: ['Orient', 'Open Week ' + (next != null ? next : 2), 'Use the tools'],
+      route: ['Orient', 'Reflect', 'Open Week ' + (next != null ? next : 2)],
       startPart: 'how',
       startLabel: 'How this course works',
       time: 'Overview, no readings'
     });
     var how = '<section id="wk-how" class="node"><h2 class="wk-sec">How this course works</h2>'
-      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">Each teaching week opens a module with its readings, walkthrough, and optional practice, a study guide and a knowledge check, that are never graded and never recorded. You work through the week at your own pace. A Study Week (October 26 to 30) falls between Weeks 7 and 8, a break with no new work, and nothing is due in the final week. Blackboard remains the official Seneca course platform for announcements, submissions, discussions, grades, course records, and administrative functions.</p>'
+      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">This is a blended synchronous course. Weeks 1 to 3, 5 to 10, and 12 meet live. Weeks 4 and 11 are independent asynchronous learning weeks. Week 13 is supported asynchronous completion with office hours, and Week 14 is asynchronous course closure with optional consultation and no graded deadline. Every week page names its mode and purpose. Live weeks include a class-recording space; asynchronous weeks may carry a short instructor update. Study Week, October 26 to 30, has no class and no new module. Blackboard remains the official Seneca course platform.</p>'
       + '<p style="margin:0;font-size:1rem;line-height:1.6">This week is your orientation. There are no readings and nothing to submit. When you are ready, begin with Week ' + (next != null ? next : 2) + '.</p></section>';
+    var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Starting reflection</h2>'
+      + '<p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt || 'What is one learning habit you already have that deserves to be strengthened rather than judged?') + '</p>'
+      + '<p class="wk-hint">This is private, ungraded, and saved only in this browser. It gives you a starting point to revisit later in the course.</p>'
+      + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" class="wk-ta" placeholder="Your starting reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
+      + '</section>';
     var beginRow = (next != null) ? '<div style="margin-top:18px"><button onclick="SOC.station(' + next + ')" style="border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 18px;cursor:pointer;text-align:left;min-width:220px"><div class="mono" style="font-size:.66rem;color:var(--red)">BEGIN &rarr;</div><div style="font-size:.95rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button></div>' : '';
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['how', 'How this course works']].map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['mode', 'How this week works'], ['rec', 'Class recording'], ['how', 'How this course works'], ['reflect', 'Starting reflection']].map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' Overview, no readings</div></div></aside>';
-    return '<div class="rise">' + hero + '<div class="wk-grid"><section>' + how + beginRow + '</section>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + deliveryNotice(w) + recordingSection(w) + '<div class="wk-grid"><section>' + how + reflect + beginRow + '</section>' + rail + '</div></div>';
   }
   var STUDY_WEEK = 7;
   function studyWeekPage(w) {
@@ -3065,18 +3129,18 @@
   function pathwaysPage() {
     var steps = [
       ['Prepare', 'Before class', 'Open the week, complete the readings, skim the walkthrough, and choose one question to bring with you.'],
-      ['Meet', 'Live class', 'Test the ideas through examples and discussion. Record one specific class moment without naming another student.'],
+      ['Meet or work independently', 'Follow the week label', 'Live weeks use discussion. Asynchronous weeks use the week page for independent application, synthesis, completion, or closure.'],
       ['Reflect', 'After class', 'Complete the Weekly Reflection in Blackboard while the discussion and your own practice are still clear.'],
       ['Rehearse', 'Private study', 'Use Reading Practice, flashcards, the Study Guide, or the Knowledge Check only when they help you check your understanding.'],
       ['Carry forward', 'Your learning record', 'Use verified lines from your Weekly Reflections in the Mid-course Practice Synthesis and Personal Resilience Plan final project.']
     ];
-    var route = '<section class="path-route path-sync"><div class="path-route-head"><div class="mono">SYNCHRONOUS &middot; LIVE ONLINE CLASSES</div><h2>One weekly rhythm</h2><p>The site supports what happens before and after class. The live meeting is where the ideas are worked through together.</p></div><ol>'
+    var route = '<section class="path-route path-sync"><div class="path-route-head"><div class="mono">BLENDED SYNCHRONOUS COURSE</div><h2>One rhythm, two ways of learning</h2><p>Most weeks meet live. Weeks 4 and 11 are independent asynchronous learning. Week 13 protects supported completion, and Week 14 provides low-pressure closure and optional consultation.</p></div><ol>'
       + steps.map(function (s, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(s[0]) + '</b><em>' + esc(s[1]) + '</em><p>' + esc(s[2]) + '</p></div></li>'; }).join('') + '</ol></section>';
     return '<div class="rise path-page">'
-      + '<section class="path-hero"><div><div class="mono">COURSE RHYTHM</div><h1>Prepare, meet live, reflect, and carry it forward</h1><p>PSY355 is a live online course built around discussion and a continuing reflection record. Use the same rhythm each week so the final project grows from evidence you created across the term.</p></div><div class="path-compass" aria-label="PSY355 weekly rhythm"><span>BEFORE</span><b>read and prepare</b><i></i><span>AFTER</span><b>reflect and connect</b></div></section>'
-      + '<section class="path-summary"><div><b>Our class meets live</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Reflection is the spine</b><span>Weekly Reflections create the record used in the synthesis and final project.</span></div><div><b>Practice stays private</b><span>Checks and notes help you learn, but Blackboard holds graded work.</span></div></section>'
+      + '<section class="path-hero"><div><div class="mono">COURSE RHYTHM</div><h1>Prepare, meet or work independently, reflect, and carry it forward</h1><p>PSY355 uses live discussion and four purposeful asynchronous weeks around a continuing reflection record. The week label tells you exactly how that week works.</p></div><div class="path-compass" aria-label="PSY355 weekly rhythm"><span>PREPARE</span><b>read and orient</b><i></i><span>REFLECT</span><b>connect and carry forward</b></div></section>'
+      + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 4 applies, Week 11 synthesizes, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your Weekly Reflections create the record used in the synthesis and final project.</span></div></section>'
       + '<div class="path-routes">' + route + '</div>'
-      + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week before class, return to it after class, and complete the graded Weekly Reflection in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>Prepare or return after class.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Walkthroughs</b><small>Preview or revisit the teaching deck.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Calendar and Due Dates</b><small>See every graded deadline.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Understand the graded work.</small></button></div></section>'
+      + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week, check its delivery label and purpose, then follow the route on that page. Complete graded Weekly Reflections in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>See the mode and weekly route.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Walkthroughs</b><small>Preview or revisit the teaching deck.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Calendar and Due Dates</b><small>See delivery modes and deadlines.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Understand the graded work.</small></button></div></section>'
       + '</div>';
   }
   function assignmentIntegrityNotice() {
@@ -3868,7 +3932,7 @@
     galWeek: function (w) { var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galWeek = (state.galWeek === w) ? null : w; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
     galTopic: function (t) { var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galTopic = (state.galTopic === t) ? null : t; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
     galClear: function () { state.galWeek = null; state.galTopic = null; render(); },
-    playVideo: function (el, id) { var box = el.closest ? el.closest('.rgvideo, .vid-frame') : el.parentNode; if (box) { box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1" referrerpolicy="strict-origin-when-cross-origin" title="Scholar talk" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; } },
+    playVideo: function (el, id, title) { var box = el.closest ? el.closest('.rgvideo, .vid-frame, .wk-rec-frame') : el.parentNode; if (box && /^[A-Za-z0-9_-]{6,20}$/.test(String(id || ''))) { box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1" referrerpolicy="strict-origin-when-cross-origin" title="' + esc(title || 'Scholar talk') + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; } },
     back: function () { if (state.screen !== 'library') rememberPrevious(); state.screen = 'library'; focusTarget = 'soc-main'; render(); var m = document.getElementById('soc-main'); if (m) m.scrollTop = state.libScroll || 0; },
     open: function (id) { rememberPrevious(); var m = document.getElementById('soc-main'); if (m) state.libScroll = m.scrollTop; state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); },
     layout: function (l) { state.layout = l; persist(); render(); },
