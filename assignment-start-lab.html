@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" data-course="PSY355">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:,">
+  <title>Assignment Start Lab</title>
+  <style>
+    :root{--red:#DA291C;--dark-red:#961A13;--ink:#15171C;--muted:#474C57;--line:#D8DEE6;--soft:#F5F6F8;--paper:#fff;--focus:#1552D8;--max:1040px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--soft);color:var(--ink);font-family:Arial,"Helvetica Neue",sans-serif;line-height:1.55}button,input,select,textarea{font:inherit}button,a,select,input,textarea{outline-offset:3px}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--focus)}
+    .skip{position:absolute;left:-9999px;top:8px;z-index:10;background:#fff;color:var(--ink);padding:10px 14px;border:2px solid var(--focus);border-radius:6px}.skip:focus{left:8px}.site-head{background:#fff;border-top:6px solid var(--red);border-bottom:1px solid var(--line)}.site-head>div{max-width:var(--max);margin:auto;padding:13px 22px;display:flex;align-items:center;gap:16px}.site-head img{width:auto;height:36px;display:block}.site-head span{font-weight:700}.site-head a{margin-left:auto;color:var(--dark-red);font-weight:700;text-decoration-thickness:2px}
+    main{max-width:var(--max);margin:0 auto;padding:28px 22px 52px}.hero{background:linear-gradient(135deg,#fff 0%,#FFF5F3 100%);border:1px solid #E7C3BF;border-left:7px solid var(--red);border-radius:0 18px 18px 0;padding:28px;margin-bottom:18px}.eyebrow{color:var(--dark-red);font-size:.78rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}.hero h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.02;margin:8px 0 12px;max-width:760px}.hero p{font-size:1.08rem;max-width:760px;margin:0}.privacy{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 20px}.privacy div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.privacy b,.privacy span{display:block}.privacy b{margin-bottom:3px}.privacy span{font-size:.9rem;color:var(--muted)}
+    form,.plan{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 10px 28px rgba(21,23,28,.06)}fieldset{border:0;margin:0 0 28px;padding:0}legend{font-size:1.28rem;font-weight:800;margin:0 0 7px;padding:0}.step{display:inline-grid;place-items:center;width:28px;height:28px;margin-right:8px;border-radius:50%;background:var(--ink);color:#fff;font-size:.85rem}.hint{color:var(--muted);margin:0 0 14px}.required{color:var(--dark-red);font-weight:700}.select-label,.text-label{display:block;font-weight:700;margin-bottom:7px}.text-input,select,textarea{width:100%;border:1.5px solid #9CA6B3;border-radius:9px;background:#fff;color:var(--ink);padding:11px 12px}.text-input::placeholder,textarea::placeholder{color:#68717D}textarea{min-height:104px;resize:vertical}.personal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.personal-grid .assignment-field{grid-column:1/-1}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.choice{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:11px;padding:12px;background:#FBFCFD;cursor:pointer}.choice:has(input:checked){border-color:var(--red);background:#FFF5F3;box-shadow:0 0 0 1px var(--red)}.choice input{width:19px;height:19px;margin:2px 0 0;accent-color:var(--red);flex:none}.choice span{font-weight:650}.time-choices{grid-template-columns:repeat(4,1fr)}.form-actions,.plan-actions{display:flex;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line);padding-top:18px}.button{border:2px solid var(--red);border-radius:9px;padding:11px 16px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}.button.secondary{background:#fff;color:var(--dark-red)}.button.quiet{border-color:var(--line);background:#fff;color:var(--ink)}.button:disabled{cursor:not-allowed;opacity:.55}.error{display:none;border:2px solid var(--dark-red);background:#FFF1F0;border-radius:10px;padding:12px 14px;margin:0 0 18px}.error.on{display:block}
+    .plan{display:none;margin-top:22px}.plan.on{display:block}.plan-head{border-bottom:4px solid var(--red);padding-bottom:15px;margin-bottom:18px}.plan-head h2{font-size:2rem;line-height:1.12;margin:6px 0}.plan-head p{margin:3px 0 0;color:var(--muted)}.plan-personal{font-weight:700;color:var(--ink)!important}.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.plan-block{min-width:0;border:1px solid var(--line);border-radius:12px;padding:16px;break-inside:avoid;overflow-wrap:anywhere}.plan-block a{word-break:break-word}.plan-block.wide{grid-column:1/-1}.plan-block h3{font-size:1.08rem;margin:0 0 9px;color:var(--dark-red)}.plan-block p{margin:0}.plan-block ol,.plan-block ul{margin:0;padding-left:22px}.plan-block li{margin:0 0 8px}.plan-block li:last-child{margin-bottom:0}.student-note{white-space:pre-wrap;background:var(--soft);border-left:4px solid var(--ink);padding:10px 12px;margin-top:10px}.integrity{background:#FFF5F3;border-color:#E7C3BF}.screen-note{font-size:.88rem;color:var(--muted);margin-top:12px}.status{min-height:1.5em;margin-top:8px;color:var(--dark-red);font-weight:700}
+    @media(max-width:760px){.privacy,.choices,.plan-grid,.personal-grid{grid-template-columns:1fr}.personal-grid .assignment-field{grid-column:auto}.time-choices{grid-template-columns:1fr 1fr}.plan-block.wide{grid-column:auto}.site-head>div{padding:12px 16px}.site-head span{display:none}main{padding:20px 14px 40px}.hero,form,.plan{padding:18px}.hero h1{font-size:2.25rem}.site-head a{font-size:.9rem}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+    @media print{@page{size:letter;margin:.65in}body{background:#fff;font-family:Arial,"Helvetica Neue",sans-serif;font-size:10.5pt}.no-print,.skip,.site-head,form,.hero,.privacy,.screen-note,.plan-actions,.status{display:none!important}main{max-width:none;margin:0;padding:0}.plan,.plan.on{display:block!important;border:0;box-shadow:none;margin:0;padding:0}.plan-head h2{font-size:22pt}.plan-grid{gap:10px}.plan-block{padding:11px}.plan-block h3{color:#76140E}.plan-block a{color:#15171C;text-decoration:none}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#lab-form">Skip to the questions</a>
+  <header class="site-head no-print"><div><img src="./seneca-logo.png" alt="Seneca Polytechnic"><span id="course-label">Course companion</span><a href="./index.html#assignments">Return to Starting Your Assignment</a></div></header>
+  <main>
+    <section class="hero no-print" aria-labelledby="page-title"><div class="eyebrow">Private planning support</div><h1 id="page-title">Assignment Start Lab</h1><p>If beginning feels difficult, answer a few focused questions. The lab will use your assignment, progress, words, and available time to create a realistic plan you can print or save as a PDF.</p></section>
+    <section class="privacy no-print" aria-label="How the lab works"><div><b>No account</b><span>Your answers stay in this browser on this device.</span></div><div><b>No AI</b><span>Fixed course rules combine only the answers you choose and write.</span></div><div><b>No grade</b><span>This is planning support. Nothing is submitted.</span></div><div><b>Blackboard is official</b><span>The assignment brief, rubric, due date, and dropbox control.</span></div></section>
+
+    <form id="lab-form" novalidate>
+      <div id="error" class="error" role="alert" tabindex="-1"></div>
+      <fieldset><legend><span class="step">1</span>Make the plan yours</legend><p class="hint">Choose the exact Blackboard assignment. The other details are optional, but they make the PDF more useful.</p><div class="personal-grid"><div><label class="text-label" for="student-name">Preferred name <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="text-input" id="student-name" name="student-name" type="text" maxlength="60" autocomplete="name" placeholder="The name you want on the plan"></div><div><label class="text-label" for="program">Program or field <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="text-input" id="program" name="program" type="text" maxlength="100" placeholder="For example, Social Service Worker"></div><div class="assignment-field"><label class="select-label" for="assignment">Assignment <span class="required">Required</span></label><select id="assignment" name="assignment" required><option value="">Choose an assignment</option></select></div><div><label class="text-label" for="due">Due date and time from Blackboard <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="text-input" id="due" name="due" type="text" maxlength="100" placeholder="For example, October 8 at 11:59 p.m."></div><div><label class="text-label" for="work-when">Your next work session <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="text-input" id="work-when" name="work-when" type="text" maxlength="140" placeholder="For example, Tuesday at 7 p.m. in the library"></div></div></fieldset>
+      <fieldset><legend><span class="step">2</span>What is making it hard to begin?</legend><p class="hint">Choose every answer that fits, then describe the exact sticking point in your own words.</p><div id="stuck-choices" class="choices"></div><label class="text-label" for="challenge" style="margin-top:16px">The exact part that feels unclear or difficult <span style="font-weight:400;color:var(--muted)">(optional)</span></label><textarea id="challenge" name="challenge" maxlength="600" placeholder="For example: I understand the topic, but I do not know how narrow my case should be."></textarea></fieldset>
+      <fieldset><legend><span class="step">3</span>What do you already have ready?</legend><p class="hint">This lets the plan skip work you have already done and begin from your real starting point.</p><div id="ready-choices" class="choices"></div><label class="text-label" for="done" style="margin-top:16px">What you have already done or collected <span style="font-weight:400;color:var(--muted)">(optional)</span></label><textarea id="done" name="done" maxlength="700" placeholder="Name the notes, source, example, rough paragraph, feedback, or other material you already have."></textarea></fieldset>
+      <fieldset><legend><span class="step">4</span>What can you do next?</legend><p class="hint">Choose a realistic work block, then add the idea or question you want the plan to carry forward.</p><div id="time-choices" class="choices time-choices"></div><label class="text-label" for="idea" style="margin-top:16px">One idea, example, or question you want to use <span style="font-weight:400;color:var(--muted)">(optional)</span></label><textarea id="idea" name="idea" maxlength="900" placeholder="A rough note is enough. You do not need a polished sentence."></textarea></fieldset>
+      <div class="form-actions"><button class="button" type="submit">Create my start plan</button><button class="button quiet" id="clear-answers" type="button">Clear my answers</button></div><div id="save-status" class="status" aria-live="polite"></div>
+    </form>
+
+    <section id="plan" class="plan" aria-labelledby="plan-title" tabindex="-1">
+      <div class="plan-head"><div class="eyebrow" id="plan-course"></div><h2 id="plan-title">My assignment start plan</h2><p id="plan-assignment"></p><p id="plan-personal" class="plan-personal"></p></div>
+      <div id="plan-grid" class="plan-grid"></div>
+      <p class="screen-note">To create a PDF, choose <b>Print or save as PDF</b>, then select <b>Save as PDF</b> in the print window. Keep the on-screen plan if PDF is not accessible with your assistive technology.</p>
+      <div class="plan-actions"><button class="button" id="print" type="button">Print or save as PDF</button><button class="button secondary" id="copy" type="button">Copy plan as text</button><a class="button quiet" href="#lab-form" style="text-decoration:none">Change my answers</a></div><div id="plan-status" class="status" aria-live="polite"></div>
+    </section>
+  </main>
+  <script>
+  (function(){
+    'use strict';
+    var CONFIG={
+      SOC122:{name:'SOC122',title:'Cross-Cultural Interfaces',lens:'Name the source, the course concept, the evidence limit, and the responsibility question.',assignments:[
+        {id:'cartography',title:'Personal Cartography sequence',goal:'Build the course map from weekly observations and notes instead of inventing it at the end.',moves:['Return to the weekly room that feeds this piece and collect the notes you already made.','Choose one specific moment, source, or question for this part of the map.','Name the course concept that helps you interpret it and what your evidence cannot prove.']},
+        {id:'journal',title:'Two-Eyed Seeing Journal',goal:'Keep a recurring record grounded in named sources and respectful, attributed language.',moves:['Open the source named for this entry and record its author and central idea accurately.','Write what the source helps you notice before adding your own response.','Check that you are not speaking for a community or blending distinct knowledge systems together.']},
+        {id:'two-eyes',title:'Knowledge in Two Eyes',goal:'Compare one Western and one Indigenous-authored source, then interpret one numerical or measurement claim and state its limit.',moves:['Confirm the two assigned sources and keep each author\'s claims separate.','Choose one real numerical, statistical, sample, or measurement claim to interpret.','Write one comparison point and one clear statement about what the evidence cannot prove.']},
+        {id:'reconciliation',title:'A Question of Reconciliation',goal:'Connect course concepts to responsibility without speaking for a community.',moves:['Return to the official question in Blackboard and circle its action words.','Choose one course concept and one named source that genuinely help answer it.','State whose responsibility is being discussed and what you can say without claiming another community\'s voice.']},
+        {id:'final',title:'Final project integration',goal:'Bring the course map together during the Week 13 completion window.',moves:['Gather the strongest earlier notes and journal entries before making anything new.','Choose a small number of connected pieces that show how your thinking developed.','Build one clear through-line, then check every part against the official Blackboard brief.']}
+      ]},
+      PSY355:{name:'PSY355',title:'Psychology of Learning',lens:'Name the course concept, the evidence, its limit, and one practical next move.',assignments:[
+        {id:'reflections',title:'Weekly Reflections',goal:'Build 11 connected Blackboard entries from your previous record, one course moment, and one honest practice observation.',moves:['Open the current reflection prompt and your previous entry.','Choose one specific course moment or practice observation, not a general summary.','Connect it to one concept accurately and record what you will try or notice next.']},
+        {id:'mindset-1',title:'Mindset Evidence Check 1',goal:'Use evidence from Weeks 3 and 4 to examine one real learning struggle without turning growth mindset into a slogan.',moves:['Name one real learning struggle narrowly and without judging yourself.','Choose evidence from Weeks 3 and 4 that fits the situation.','Explain both what the mindset concept helps you see and what it cannot solve by itself.']},
+        {id:'synthesis',title:'Mid-course Practice Synthesis',goal:'Use at least three of your own reflections to name a pattern and plan the second half.',moves:['Collect three exact excerpts from your own Weekly Reflections.','Name one pattern that appears across them instead of summarizing each entry.','Set one concrete second-half plan that can be observed and adjusted.']},
+        {id:'redesign',title:'Self-Regulated Learning Case Redesign',goal:'Redesign one real study routine using the self-regulated learning cycle, resilience as process, and an honest implementation record.',moves:['Choose one real routine that is specific enough to change.','Map the planning, monitoring, and reflection points in that routine.','Choose one adjustment, try it, and keep an honest record of what happened.']},
+        {id:'mindset-2',title:'Mindset Evidence Check 2',goal:'Use self-compassion, flexibility, and help seeking without turning the work into a clinical account.',moves:['Choose one bounded academic situation rather than a diagnosis or life history.','Use the assigned concepts with their evidence limits visible.','Name one flexible response or help-seeking move and explain why it fits the situation.']},
+        {id:'resilience-plan',title:'Personal Resilience Plan',goal:'Build the final project from course evidence and at least six verified excerpts from your own Weekly Reflections.',moves:['Collect and verify at least six excerpts from your own reflection record.','Group the excerpts into a small number of patterns supported by course concepts.','Turn those patterns into a realistic plan with supports, adjustments, and ways to review progress.']}
+      ]},
+      BFS218:{name:'BFS218',title:'Racism and the Digital Age',lens:'Name the system, the people affected, the course concept, the evidence, and who can challenge the outcome.',assignments:[
+        {id:'map-exchange',title:'Map Exchange',goal:'Build the weekly habit of noticing how an ordinary digital system shapes people differently.',moves:['Choose one small, specific digital moment rather than a broad issue.','Name what the system did and who was affected.','Connect the moment to one course concept or reading, then prepare one useful peer question.']},
+        {id:'coded-encounter',title:'Compass Check',closed:true,goal:'Prepare for a closed, timed Blackboard sitting without generating or rehearsing graded answers.',moves:['Complete the Weeks 2 to 6 learning before opening the assessment.','Use course notes, knowledge checks, and flashcards to review concepts, not assessment items.','Confirm the standard 90-minute window or approved accommodated time, then complete the sitting independently in Blackboard.']},
+        {id:'case-file',title:'Canadian Case File',goal:'Investigate one real Canadian system using a system or oversight source, a news source, and a scholarly source.',moves:['Choose one Canadian system that is narrow enough to explain clearly.','Collect the three required source types and verify that each source is real.','Explain what the system does before connecting the evidence to a course concept and the people affected.']},
+        {id:'repair',title:'Design the Repair',goal:'Propose a concrete response to one harm you have already documented.',moves:['Return to one harm you can prove with an earlier artifact, case, or source.','Choose a specific change to a rule, process, design, review step, appeal path, or accountability system.','Explain who gains voice, protection, appeal, control, or safety and what trade-offs remain.']},
+        {id:'cartography',title:'Personal Cartography',goal:'Use four earlier pieces to show how your way of seeing technology and racism changed across the term.',moves:['Gather four earlier pieces before creating the final map.','Choose one through-line that connects the pieces and shows a change in your thinking.','Plan the map, reflective narrative, and two-to-three-minute walkthrough as parts of one story.']}
+      ]}
+    };
+    var STUCK=[['brief','I am not sure what the instructions are asking.'],['focus','I cannot choose a topic, example, or focus.'],['evidence','I do not know what sources or evidence to use.'],['organize','I have ideas but cannot organize them.'],['write','I am stuck on the first sentence or paragraph.'],['time','The task feels too large or I am short on time.'],['access','A technology, access, or accommodation issue is blocking me.']];
+    var READY=[['brief','I have the official Blackboard brief open.'],['due','I wrote down the exact due date and time.'],['rubric','I read the rubric or marking criteria.'],['notes','I have relevant course notes or weekly work.'],['evidence','I have at least one possible source or piece of evidence.'],['idea','I have a possible idea, example, case, or question.']];
+    var TIMES=[['15','15 minutes'],['30','30 minutes'],['60','60 minutes'],['90','90 minutes or more']];
+    var SUPPORT={
+      instructor:{name:'Your course instructor',why:'Use this route for the meaning, scope, format, or course expectations of this assignment.'},
+      learning:{name:'Seneca Learning Centres',url:'https://students.senecapolytechnic.ca/spaces/118/learning-centres/home',why:'Use this route for writing, study skills, learning strategies, peer tutoring, or help building an independent work process.'},
+      library:{name:'Seneca Libraries',url:'https://students.senecapolytechnic.ca/spaces/116/seneca-libraries/home/',why:'Use this route for finding, evaluating, using, or citing sources and evidence.'},
+      als:{name:'Accessible Learning Services',url:'https://students.senecapolytechnic.ca/spaces/122/accessible-learning-services/accommodation',why:'Use this route for disability-related accommodations, accessible formats, assistive technology, or an accommodation barrier.'},
+      it:{name:'ITS Student Service Desk',url:'https://students.senecapolytechnic.ca/spaces/190/support/wiki/view/1461/it-support',why:'Use this route for Blackboard, account, device, network, software, file, or other technical problems.'}
+    };
+    var course=(document.documentElement.getAttribute('data-course')||'SOC122').toUpperCase(),cfg=CONFIG[course]||CONFIG.SOC122,key='assignment-start-lab.v2.'+course,oldKey='assignment-start-lab.v1.'+course;
+    var form=document.getElementById('lab-form'),assignment=document.getElementById('assignment'),studentName=document.getElementById('student-name'),programField=document.getElementById('program'),due=document.getElementById('due'),workWhen=document.getElementById('work-when'),challenge=document.getElementById('challenge'),done=document.getElementById('done'),idea=document.getElementById('idea'),plan=document.getElementById('plan'),grid=document.getElementById('plan-grid');
+    document.title=course+' Assignment Start Lab';document.getElementById('course-label').textContent=course+' Companion';
+    function addOption(value,label){var o=document.createElement('option');o.value=value;o.textContent=label;assignment.appendChild(o)}
+    cfg.assignments.forEach(function(a){addOption(a.id,a.title)});
+    function choices(hostId,name,items,type){var host=document.getElementById(hostId);items.forEach(function(x){var label=document.createElement('label'),input=document.createElement('input'),span=document.createElement('span');label.className='choice';input.type=type;input.name=name;input.value=x[0];span.textContent=x[1];label.appendChild(input);label.appendChild(span);host.appendChild(label)})}
+    choices('stuck-choices','stuck',STUCK,'checkbox');choices('ready-choices','ready',READY,'checkbox');choices('time-choices','time',TIMES,'radio');
+    function values(name){return Array.prototype.map.call(form.querySelectorAll('[name="'+name+'"]:checked'),function(x){return x.value})}
+    function has(arr,x){return arr.indexOf(x)>=0}function selectedAssignment(){return cfg.assignments.filter(function(a){return a.id===assignment.value})[0]}
+    function syncIdeaField(){var a=selectedAssignment(),closed=!!(a&&a.closed);idea.disabled=closed;if(closed){idea.value='';idea.placeholder='This closed assessment does not use answer-planning notes.'}else{idea.placeholder='A rough note is enough. You do not need a polished sentence.'}}
+    function companionContext(){
+      var out={name:'',program:''},keys=[];
+      try{
+        for(var i=0;i<localStorage.length;i+=1){var k=localStorage.key(i)||'';if((course==='SOC122'&&k==='soc122corpus.v2')||(course==='PSY355'&&k==='psy355corpus.v2')||(course==='BFS218'&&/^bfs218corpus\..+\.v2$/.test(k)))keys.push(k)}
+        keys.forEach(function(k){var d=JSON.parse(localStorage.getItem(k)||'{}');if(!out.name&&typeof d.studentName==='string')out.name=d.studentName.trim().slice(0,60);if(!out.program&&typeof(d.programViewField||d.careerField)==='string')out.program=String(d.programViewField||d.careerField).trim().slice(0,100);try{var v=JSON.parse(sessionStorage.getItem(k+'.view.v1')||'{}');if(!out.program&&typeof v.careerField==='string')out.program=v.careerField.trim().slice(0,100)}catch(e){}})
+      }catch(e){}
+      return out;
+    }
+    function save(){try{localStorage.setItem(key,JSON.stringify({studentName:studentName.value,program:programField.value,assignment:assignment.value,due:due.value,workWhen:workWhen.value,stuck:values('stuck'),challenge:challenge.value,ready:values('ready'),done:done.value,time:values('time')[0]||'',idea:idea.value}))}catch(e){}}
+    function load(){
+      var d={};try{d=JSON.parse(localStorage.getItem(key)||localStorage.getItem(oldKey)||'{}')}catch(e){}
+      studentName.value=d.studentName||'';programField.value=d.program||'';assignment.value=d.assignment||'';due.value=d.due||'';workWhen.value=d.workWhen||'';challenge.value=d.challenge||'';done.value=d.done||'';idea.value=d.idea||'';
+      ['stuck','ready','time'].forEach(function(n){(d[n] instanceof Array?d[n]:[d[n]]).forEach(function(v){var q=form.querySelector('[name="'+n+'"][value="'+v+'"]');if(q)q.checked=true})});
+      var c=companionContext();if(!studentName.value&&c.name)studentName.value=c.name;if(!programField.value&&c.program)programField.value=c.program;
+    }
+    function make(tag,cls,text){var n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n}
+    function block(title,wide){var b=make('section','plan-block'+(wide?' wide':'')),h=make('h3','',title);b.appendChild(h);grid.appendChild(b);return b}
+    function listBlock(title,items,ordered,wide){var b=block(title,wide),list=make(ordered?'ol':'ul');items.forEach(function(x){var li=make('li','',x);list.appendChild(li)});b.appendChild(list);return b}
+    function uniq(items){var out=[];items.forEach(function(x){if(x&&out.indexOf(x)<0)out.push(x)});return out}
+    function itemLabel(items,id){for(var i=0;i<items.length;i+=1)if(items[i][0]===id)return items[i][1];return id}
+    function pickedLabels(items,ids){return ids.map(function(id){return itemLabel(items,id)})}
+    function displayDate(){try{return new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'long',day:'numeric'}).format(new Date())}catch(e){return new Date().toLocaleDateString()}}
+    function firstBlock(time){if(time==='15')return 'Use this 15-minute block only to complete the first two actions. Stop with a written next step.';if(time==='30')return 'Use 5 minutes to set up, 20 minutes on the first useful task, and 5 minutes to record what comes next.';if(time==='60')return 'Use 10 minutes to set up, 40 minutes on one focused task, and 10 minutes to check the brief and record your next step.';return 'Use one focused 45-minute block, take a short break, then use a second block to check the work against the brief and rubric.'}
+    function sessionOutcome(stuck,ready,a){
+      if(a.closed)return 'Leave this block with the sitting conditions confirmed and one bounded course concept reviewed.';
+      if(has(stuck,'access'))return 'Leave this block with one precise support request sent and a safe task you can do while you wait.';
+      if(!has(ready,'brief')||has(stuck,'brief'))return 'Leave this block with a short requirement checklist written in your own words.';
+      if(has(stuck,'focus'))return 'Leave this block with one narrow focus and one sentence explaining why it fits the assignment.';
+      if(has(stuck,'evidence')||!has(ready,'evidence'))return 'Leave this block with one verified source or piece of evidence and the exact idea you may use.';
+      if(has(stuck,'organize'))return 'Leave this block with one claim, its evidence, and your explanation placed in order.';
+      if(has(stuck,'write'))return 'Leave this block with one imperfect working sentence and notes for what comes next.';
+      if(has(stuck,'time'))return 'Leave this block with one visible piece completed and the next action already written down.';
+      return 'Leave this block with the first course-specific move completed and the next move named.';
+    }
+    function addSupport(list,id){if(!list.some(function(x){return x.name===SUPPORT[id].name}))list.push(SUPPORT[id])}
+    function supportFor(stuck,a){
+      var out=[];
+      if(has(stuck,'brief')||has(stuck,'focus')||challenge.value.trim())addSupport(out,'instructor');
+      if(has(stuck,'evidence')&&!a.closed)addSupport(out,'library');
+      if(has(stuck,'organize')||has(stuck,'write')||has(stuck,'time'))addSupport(out,'learning');
+      if(has(stuck,'access')){addSupport(out,'als');addSupport(out,'it');addSupport(out,'instructor')}
+      if(!out.length)addSupport(out,a.closed?'instructor':'learning');
+      return out;
+    }
+    function supportBlock(items){
+      var b=block('Where to get the right kind of help',true),list=make('ul');
+      items.forEach(function(x){var li=make('li'),strong=make('b','',x.name+': '),why=document.createTextNode(x.why);li.appendChild(strong);li.appendChild(why);if(x.url){li.appendChild(document.createTextNode(' '));var a=make('a','',x.url);a.href=x.url;a.target='_blank';a.rel='noopener';li.appendChild(a)}list.appendChild(li)});
+      b.appendChild(list);return b;
+    }
+    function build(){
+      var a=selectedAssignment(),stuck=values('stuck'),ready=values('ready'),time=values('time')[0]||'',name=studentName.value.trim(),field=programField.value.trim(),dueText=due.value.trim(),whenText=workWhen.value.trim(),challengeText=challenge.value.trim(),doneText=done.value.trim(),ideaText=idea.value.trim();
+      if(dueText&&!has(ready,'due'))ready=ready.concat(['due']);
+      grid.textContent='';
+      document.getElementById('plan-course').textContent=cfg.name+' | '+cfg.title;
+      document.getElementById('plan-title').textContent=name?'Assignment start plan for '+name:'My assignment start plan';
+      document.getElementById('plan-assignment').textContent=a.title+' | Created '+displayDate()+' | Planning support only';
+      var meta=[];if(field)meta.push('Program or field: '+field);if(dueText)meta.push('Blackboard due date you recorded: '+dueText);document.getElementById('plan-personal').textContent=meta.join(' | ');
+
+      var goal=block('What you are working toward',true),gp=make('p','',a.goal);goal.appendChild(gp);
+      if(ideaText&&!a.closed){var note=make('div','student-note'),nb=make('b','','Your starting idea or question: '),nt=document.createTextNode(ideaText);note.appendChild(nb);note.appendChild(nt);goal.appendChild(note)}
+
+      var snapshot=['Assignment: '+a.title];
+      if(field)snapshot.push('Program or field context: '+field);
+      if(dueText)snapshot.push('Due date and time copied from Blackboard: '+dueText);
+      if(whenText)snapshot.push('Planned work session: '+whenText);
+      if(stuck.length)snapshot.push('What feels difficult: '+pickedLabels(STUCK,stuck).join(' '));
+      if(challengeText)snapshot.push('Your exact description of the sticking point: '+challengeText);
+      if(ready.length)snapshot.push('What you marked ready: '+pickedLabels(READY,ready).join(' '));
+      if(doneText)snapshot.push('What you have already done or collected: '+doneText);
+      listBlock('Your starting point',snapshot,false,true);
+
+      var actions=[];
+      if(!has(ready,'brief'))actions.push('Open the official Blackboard brief. Write down what you must submit and circle the action words in the prompt.');
+      if(!has(ready,'due'))actions.push('Record the exact due date and time from Blackboard in your calendar.');
+      if(!has(ready,'rubric'))actions.push('Read the rubric or marking criteria and identify the two areas carrying the most weight.');
+      if(a.closed){
+        if(stuck.length)actions.push('Use the assignment room only to clarify the sitting conditions and the concepts to review. Do not build or rehearse an answer outline.');
+        if(!has(ready,'notes')||has(stuck,'evidence'))actions.push('Review one Weeks 2 to 6 concept from your course notes, learning rooms, knowledge checks, or flashcards.');
+      }else{
+        if(has(stuck,'brief'))actions.push('Translate the prompt into a short checklist: action, content, evidence, format, and submission requirements.');
+        if(has(stuck,'focus'))actions.push('Choose one narrow example, case, question, or moment. A small focus is easier to analyse well than a whole topic.');
+        if(has(stuck,'evidence')||!has(ready,'evidence'))actions.push('Find one course source or required piece of evidence. Record its author, title, and the exact idea you may use before drafting.');
+        if(has(stuck,'organize'))actions.push('Make three boxes labelled claim, evidence, and explanation. Put one note in each box before writing paragraphs.');
+        if(has(stuck,'write'))actions.push('Write a temporary working sentence that names the example and the course concept. It can be revised after the evidence is in place.');
+      }
+      if(has(stuck,'time'))actions.push(a.closed?'Use today\'s block for one readiness task, such as confirming the timer, checking accommodations, or reviewing one concept.':'Reduce today\'s goal to one visible result, such as choosing the case, finding one source, or building the three-box outline.');
+      if(has(stuck,'access'))actions.push('Pause the blocked task and contact the appropriate support early. Describe what is happening, what you tried, and what access you need.');
+      var priority=actions.filter(function(x){return /^Pause the blocked|^Use today|^Reduce today|^Use the assignment room|^Review one Weeks/.test(x)}),rest=actions.filter(function(x){return priority.indexOf(x)<0});
+      actions=a.closed?uniq(priority.concat(a.moves)).slice(0,7):uniq(priority.concat(rest).slice(0,4).concat(a.moves));
+      listBlock('Your next actions',actions,true,true);
+
+      var session=[];if(whenText)session.push('Planned time and place: '+whenText);session.push(firstBlock(time));session.push('Success for this work block: '+sessionOutcome(stuck,ready,a));session.push(a.closed?'Review the Weeks 2 to 6 concepts without creating or rehearsing assessment answers.':(field?'Use '+field+' only as the setting for your example. Keep the course task in control: '+cfg.lens:cfg.lens));session.push('At the end, write one sentence naming what is done and the first action for your next session.');
+      listBlock('Your next work session',session,false,false);
+
+      var questions=[],shortChallenge=challengeText.length>260?challengeText.slice(0,257)+'...':challengeText,shortDone=doneText.length>260?doneText.slice(0,257)+'...':doneText;
+      if(shortChallenge)questions.push('My exact sticking point is: \"'+shortChallenge+'\" Which course requirement or resource should I check first?');
+      if(shortDone&&!a.closed)questions.push('I have already completed or collected this: \"'+shortDone+'\" Is my next step aligned with the assignment?');
+      if(a.closed){
+        if(has(stuck,'brief'))questions.push('Which sitting condition or preparation requirement should I clarify before I begin?');
+        if(has(stuck,'access'))questions.push('Are my approved accommodations and Blackboard timer set correctly for this sitting?');
+        if(!questions.length)questions.push('Before I begin, are my timing, accommodations, and assessment conditions correct in Blackboard?');
+      }else{
+        if(has(stuck,'brief'))questions.push('Which part of the prompt or required format should I interpret differently?');
+        if(has(stuck,'focus'))questions.push('Is this focus narrow enough and appropriate for the assignment?');
+        if(has(stuck,'evidence'))questions.push('Which source type or course reading should anchor this part of the assignment?');
+        if(has(stuck,'access'))questions.push('What approved alternative or access support should I use while this issue is being resolved?');
+        if(!questions.length)questions.push('Before I draft further, is there one requirement students most often miss on this assignment?');
+      }
+      listBlock('Questions you can take to the instructor',uniq(questions).slice(0,5),false,false);
+
+      var reasons=['The lab used the fixed course map for '+a.title+'.'];
+      if(stuck.length)reasons.push('Your selected obstacles moved the related repair steps ahead of the standard assignment moves.');
+      if(ready.length)reasons.push('Your ready-items list prevented the plan from treating every setup task as unfinished.');
+      if(challengeText||doneText||ideaText)reasons.push('Your own words were carried into the plan so you can resume from the point you actually reached.');
+      reasons.push('Your '+itemLabel(TIMES,time).toLowerCase()+' choice set the size, success point, and stopping rule for the next session.');
+      reasons.push('No AI model read, interpreted, or generated this plan. The same visible answer choices always trigger the same support rules.');
+      listBlock('How your answers shaped this plan',reasons,false,true);
+      supportBlock(supportFor(stuck,a));
+
+      if(a.closed)listBlock('Important boundary for this assessment',['Use this plan only to prepare your concepts, time, access, and working conditions.','Do not use the lab to generate, preview, share, or rehearse answers to graded Compass Check items.','Complete the sitting independently in Blackboard under the stated conditions.'],false,true).classList.add('integrity');
+      listBlock(a.closed?'Before you begin the Blackboard sitting':'Before the final submission',a.closed?['Confirm the timer, approved accommodations, connection, and uninterrupted work window before you start.','Complete the assessment independently and do not use outside answer material.','Submit within Blackboard and confirm that the completed attempt was recorded.']:['Reopen Blackboard and check the complete brief, rubric, due date, file format, and dropbox.','Verify every source, quotation, claim, and required course connection.','Write the submitted work in your own words and follow the course disclosure rules for any study tools you used.','Keep a copy of what you submitted and confirm that Blackboard recorded the submission.'],false,true).classList.add('integrity');
+      plan.classList.add('on');plan.focus();plan.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});save();
+    }
+    assignment.addEventListener('change',syncIdeaField);form.addEventListener('input',save);form.addEventListener('change',save);form.addEventListener('submit',function(e){e.preventDefault();var errors=[];if(!assignment.value)errors.push('Choose the assignment you are trying to begin.');if(!values('time').length)errors.push('Choose a realistic amount of time for your next work block.');var box=document.getElementById('error');if(errors.length){box.textContent=errors.join(' ');box.classList.add('on');box.focus();return}box.classList.remove('on');build()});
+    document.getElementById('clear-answers').addEventListener('click',function(){form.reset();syncIdeaField();plan.classList.remove('on');grid.textContent='';try{localStorage.removeItem(key);localStorage.removeItem(oldKey)}catch(e){}document.getElementById('save-status').textContent='Lab answers cleared from this browser.';studentName.focus()});
+    document.getElementById('print').addEventListener('click',function(){var oldTitle=document.title,a=selectedAssignment(),parts=[course,a?a.title:'Assignment Start Plan'];if(studentName.value.trim())parts.push(studentName.value.trim());document.title=parts.join(' - ');window.print();document.title=oldTitle});
+    document.getElementById('copy').addEventListener('click',function(){var text=document.getElementById('plan').innerText.replace(/Print or save as PDF[\s\S]*$/,'').trim(),status=document.getElementById('plan-status');if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){status.textContent='Plan copied as text.'},function(){status.textContent='Copy was blocked. Select the plan text and copy it manually.'})}else{status.textContent='Select the plan text and copy it manually.'}});
+    load();try{var requested=new URLSearchParams(location.search).get('assignment');if(requested&&cfg.assignments.some(function(a){return a.id===requested})){assignment.value=requested;save()}}catch(e){}syncIdeaField();
+  }());
+  </script>
+</body>
+</html>

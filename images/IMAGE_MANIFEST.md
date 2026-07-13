@@ -6,11 +6,13 @@ Prompt bank: `projects/_config/shared_comms/CODEX_PSY355_IMAGE_PROMPTS_2026-07-1
 
 Prompt bank SHA-256: `a942da4619ff4de5aa2bda6f103dc1cd8751f2dfc62e6176d6213a90ddaccb0b`
 
-Rights: These images were created for Raymond's PSY355 course site with the approved image-generation tool. They do not use external reference images. No external image licence or attribution is required. The preserved tool outputs are listed below.
+Rights: These are instructor-created AI-generated conceptual images made for Raymond's PSY355 course site with the approved image-generation tool. They do not use external reference images. No external image licence or attribution is required. The preserved tool outputs are listed below.
 
 Technical standard: Every published asset is a metadata-stripped JPG at 1600 by 900 pixels. Every file is below the 400 KB target. The generated originals remain preserved outside the course repository.
 
 Review state: Codex completed the first visual, accessibility, crop, realism, and technical review. Forge must independently review every current file before the set is jointly ratified or moved to the public site.
+
+Visible disclosure: every home, weekly, and experience use states that the image is AI-generated and conceptual and does not depict a real learner, event, institution, class, or research finding.
 
 | Prompt | File | Target | Bytes | SHA-256 | Preserved original | Alt text | Review |
 |---|---|---|---:|---|---|---|---|
