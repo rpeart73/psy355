@@ -3588,6 +3588,44 @@
     items.push(mobileJumpItem('Notes', "SOC.jumpWeek(" + w + ",'notes')", false));
     return '<nav class="soc-mobile-jump" aria-label="Mobile week shortcuts">' + items.join('') + '</nav>';
   }
+  /* ---------- per-page how-to (2026-07-25): every page teaches itself ---------- */
+  function howtoKey() {
+    var s = state.screen;
+    if (s === 'library') return 'journey';
+    if (s === 'reading' || s === 'detail') return 'readings';
+    return s;
+  }
+  function howtoSection() {
+    try {
+      var code = (D.course && D.course.code) || '';
+      var H = window[code + '_HOWTO'];
+      if (!H || !H.byScreen) return '';
+      var key = howtoKey();
+      var d = H.byScreen[key];
+      if (!d) return '';
+      state.howtoOpen = state.howtoOpen || {};
+      var open = !!state.howtoOpen[key];
+      var vidSrc = d.video || ((H.tour && H.tour.file && d.clip) ? H.tour.file + '#t=' + d.clip : '');
+      var bar = '<button type="button" onclick="SOC.howtoToggle(\'' + key + '\')" aria-expanded="' + (open ? 'true' : 'false') + '" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:' + (open ? '10px 10px 0 0' : '10px') + ';padding:10px 16px;cursor:pointer">'
+        + '<span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex:none;border-radius:50%;background:var(--red);color:#fff;font-weight:700;font-size:.85rem">?</span>'
+        + '<span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:.92rem;color:var(--ink)">How to use this page</span><span style="display:block;font-size:.78rem;color:var(--ink-dim)">' + esc(d.title || 'Step-by-step guide and walkthrough video') + '</span></span>'
+        + '<span aria-hidden="true" style="font-size:.8rem;color:var(--ink-faint)">' + (open ? 'Close' : 'Open') + '</span></button>';
+      var inner = '';
+      if (open) {
+        inner = '<div style="border:1px solid var(--border);border-top:none;border-left:4px solid var(--red);border-radius:0 0 10px 10px;background:#fff;padding:14px 18px 16px">'
+          + (d.intro ? '<p style="margin:0 0 10px;font-size:.92rem;line-height:1.55;color:var(--ink)">' + esc(d.intro) + '</p>' : '')
+          + '<ol style="margin:0 0 12px;padding-left:20px">' + (d.steps || []).map(function (s) { return '<li style="margin:0 0 8px;font-size:.9rem;line-height:1.5;color:var(--ink)"><b>' + esc(s.do) + '</b>' + (s.detail ? ' <span style="color:var(--ink-dim)">' + esc(s.detail) + '</span>' : '') + '</li>'; }).join('') + '</ol>'
+          + (d.saves ? '<p style="margin:0 0 6px;font-size:.82rem;line-height:1.5;color:var(--ink-dim)"><b style="color:var(--ink)">On this device:</b> ' + esc(d.saves) + '</p>' : '')
+          + (d.graded ? '<p style="margin:0 0 6px;font-size:.82rem;line-height:1.5;color:var(--ink-dim)"><b style="color:var(--ink)">Grading:</b> ' + esc(d.graded) + '</p>' : '')
+          + (d.next ? '<p style="margin:0 0 10px;font-size:.82rem;line-height:1.5;color:var(--ink-dim)"><b style="color:var(--ink)">Where next:</b> ' + esc(d.next) + '</p>' : '')
+          + (vidSrc
+            ? '<div style="border-top:1px solid var(--border);padding-top:10px"><div class="mono" style="font-size:.66rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:6px">WATCH THE VIDEO TOUR</div><video controls preload="none" src="' + esc(vidSrc) + '" style="width:100%;max-width:760px;border-radius:8px;border:1px solid var(--border);background:#000" aria-label="Silent captioned video tour of this page"></video><p style="margin:6px 0 0;font-size:.76rem;color:var(--ink-faint)">' + esc((H.tour && H.tour.note) || 'Silent walkthrough with on-screen captions.') + '</p></div>'
+            : '<div style="border-top:1px solid var(--border);padding-top:10px"><div class="mono" style="font-size:.66rem;letter-spacing:.07em;color:var(--ink-faint);font-weight:700">VIDEO TOUR COMING SOON</div></div>')
+          + '</div>';
+      }
+      return '<div id="howto-panel" style="margin:0 0 18px">' + bar + inner + '</div>';
+    } catch (e) { return ''; }
+  }
   function body() {
     if (state.screen === 'journey' || state.screen === 'library') return journeyHome();
     if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + mobileWeekActions(_sw, weekData(_sw)) + lensHook(_sw) + weekStation(_sw); }
@@ -3691,7 +3729,7 @@
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + upcomingBanner() + body() + siteFooter() + '</div></main>'
+      + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + upcomingBanner() + howtoSection() + body() + siteFooter() + '</div></main>'
       + '</div>' + readerLensOverlay() + rlPanelOverlay() + listenOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
@@ -4019,6 +4057,7 @@
     },
     go: function (s) {
       var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
+    howtoToggle: function (k) { state.howtoOpen = state.howtoOpen || {}; state.howtoOpen[k] = !state.howtoOpen[k]; var el = document.getElementById('howto-panel'); if (el && el.outerHTML !== undefined) { el.outerHTML = howtoSection(); } else { render(); } },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
     lensOff: function () { state.careerField = ''; persist(); render(); },
     careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
