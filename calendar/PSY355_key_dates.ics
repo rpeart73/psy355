@@ -5,6 +5,7 @@ CALSCALE:GREGORIAN
 X-WR-CALNAME:PSY355 Key Dates (Fall 2026)
 X-WR-TIMEZONE:America/Toronto
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-1@rpeart73.github.io
 DTSTART;VALUE=DATE:20260914
 DTEND;VALUE=DATE:20260915
@@ -12,6 +13,7 @@ SUMMARY:PSY355: Weekly Reflections begin (weekly\, Weeks 2 to 12)
 DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-2@rpeart73.github.io
 DTSTART;VALUE=DATE:20261009
 DTEND;VALUE=DATE:20261010
@@ -24,6 +26,7 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-3@rpeart73.github.io
 DTSTART;VALUE=DATE:20261023
 DTEND;VALUE=DATE:20261024
@@ -36,6 +39,7 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-4@rpeart73.github.io
 DTSTART;VALUE=DATE:20261106
 DTEND;VALUE=DATE:20261107
@@ -48,6 +52,7 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-5@rpeart73.github.io
 DTSTART;VALUE=DATE:20261127
 DTEND;VALUE=DATE:20261128
@@ -60,6 +65,7 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-6@rpeart73.github.io
 DTSTART;VALUE=DATE:20261204
 DTEND;VALUE=DATE:20261205
@@ -72,6 +78,7 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-7@rpeart73.github.io
 DTSTART;VALUE=DATE:20261211
 DTEND;VALUE=DATE:20261212
@@ -84,6 +91,7 @@ DESCRIPTION:PSY355 deadline in 2 days
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w1@rpeart73.github.io
 DTSTART;VALUE=DATE:20260908
 DTEND;VALUE=DATE:20260909
@@ -91,6 +99,7 @@ SUMMARY:PSY355 Week 1: live class
 DESCRIPTION:Course orientation and shared start. The week page includes the class recording space.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w2@rpeart73.github.io
 DTSTART;VALUE=DATE:20260914
 DTEND;VALUE=DATE:20260915
@@ -98,6 +107,7 @@ SUMMARY:PSY355 Week 2: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w3@rpeart73.github.io
 DTSTART;VALUE=DATE:20260921
 DTEND;VALUE=DATE:20260922
@@ -105,6 +115,7 @@ SUMMARY:PSY355 Week 3: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w4@rpeart73.github.io
 DTSTART;VALUE=DATE:20260928
 DTEND;VALUE=DATE:20260929
@@ -112,6 +123,7 @@ SUMMARY:PSY355 Week 4: asynchronous independent learning
 DESCRIPTION:Flexible independent application of the early course foundations. No live class.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w5@rpeart73.github.io
 DTSTART;VALUE=DATE:20261005
 DTEND;VALUE=DATE:20261006
@@ -119,6 +131,7 @@ SUMMARY:PSY355 Week 5: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w6@rpeart73.github.io
 DTSTART;VALUE=DATE:20261013
 DTEND;VALUE=DATE:20261014
@@ -126,6 +139,7 @@ SUMMARY:PSY355 Week 6: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w7@rpeart73.github.io
 DTSTART;VALUE=DATE:20261019
 DTEND;VALUE=DATE:20261020
@@ -133,6 +147,7 @@ SUMMARY:PSY355 Week 7: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-study-week@rpeart73.github.io
 DTSTART;VALUE=DATE:20261026
 DTEND;VALUE=DATE:20261031
@@ -140,6 +155,7 @@ SUMMARY:PSY355 Study Week: no class and no new module
 DESCRIPTION:Use the week to rest. No graded work is due.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w8@rpeart73.github.io
 DTSTART;VALUE=DATE:20261102
 DTEND;VALUE=DATE:20261103
@@ -147,6 +163,7 @@ SUMMARY:PSY355 Week 8: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w9@rpeart73.github.io
 DTSTART;VALUE=DATE:20261109
 DTEND;VALUE=DATE:20261110
@@ -154,6 +171,7 @@ SUMMARY:PSY355 Week 9: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w10@rpeart73.github.io
 DTSTART;VALUE=DATE:20261116
 DTEND;VALUE=DATE:20261117
@@ -161,6 +179,7 @@ SUMMARY:PSY355 Week 10: live class
 DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w11@rpeart73.github.io
 DTSTART;VALUE=DATE:20261123
 DTEND;VALUE=DATE:20261124
@@ -168,6 +187,7 @@ SUMMARY:PSY355 Week 11: asynchronous independent learning
 DESCRIPTION:Self-regulated synthesis before the final substantive live class. No live class.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w12@rpeart73.github.io
 DTSTART;VALUE=DATE:20261130
 DTEND;VALUE=DATE:20261201
@@ -175,6 +195,7 @@ SUMMARY:PSY355 Week 12: final substantive live class
 DESCRIPTION:Bring the synthesis prepared in Week 11. The week page includes the class recording space.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w13@rpeart73.github.io
 DTSTART;VALUE=DATE:20261207
 DTEND;VALUE=DATE:20261208
@@ -182,6 +203,7 @@ SUMMARY:PSY355 Week 13: office hours and supported asynchronous completion
 DESCRIPTION:No lecture. The usual class window becomes office hours for focused completion and consultation. Office hours are not recorded.
 END:VEVENT
 BEGIN:VEVENT
+DTSTAMP:20260708T120000Z
 UID:psy355-mode-w14@rpeart73.github.io
 DTSTART;VALUE=DATE:20261214
 DTEND;VALUE=DATE:20261217
