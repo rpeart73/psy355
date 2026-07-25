@@ -2,10 +2,51 @@
 (function () {
   'use strict';
   var state = null;
+  var pageLock = [];
+  function ensureStyle() {
+    if (document.getElementById('imgv-style')) return;
+    var style = document.createElement('style');
+    style.id = 'imgv-style';
+    style.textContent = '.imgv-trigger{cursor:zoom-in}.imgv-trigger:focus-visible{outline:3px solid #961A13!important;outline-offset:4px!important}#imgv-overlay button:focus-visible{outline:3px solid #fff;outline-offset:3px}';
+    document.head.appendChild(style);
+  }
+  function enhanceImage(img) {
+    if (!img || img.id === 'imgv-img' || img.closest('a,button,.lightbox') || img.classList.contains('imgv-trigger')) return;
+    var mark = function () {
+      if (img.width < 60 || img.height < 60) return;
+      img.classList.add('imgv-trigger');
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', 'Open full-size image: ' + (img.alt || 'course image'));
+    };
+    if (img.complete) mark(); else img.addEventListener('load', mark, { once: true });
+  }
+  function enhanceImages(root) {
+    ensureStyle();
+    if (root && root.tagName === 'IMG') enhanceImage(root);
+    Array.prototype.forEach.call((root || document).querySelectorAll ? (root || document).querySelectorAll('img') : [], enhanceImage);
+  }
+  function lockPage(overlay) {
+    pageLock = [];
+    Array.prototype.forEach.call(document.body.children, function (node) {
+      if (node === overlay) return;
+      pageLock.push({ node: node, inert: !!node.inert, hidden: node.getAttribute('aria-hidden') });
+      node.inert = true;
+      node.setAttribute('aria-hidden', 'true');
+    });
+  }
+  function unlockPage() {
+    pageLock.forEach(function (entry) {
+      entry.node.inert = entry.inert;
+      if (entry.hidden == null) entry.node.removeAttribute('aria-hidden'); else entry.node.setAttribute('aria-hidden', entry.hidden);
+    });
+    pageLock = [];
+  }
   function build() {
     var ov = document.createElement('div');
     ov.id = 'imgv-overlay';
     ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
     ov.setAttribute('aria-label', 'Image viewer');
     ov.style.cssText = 'position:fixed;inset:0;z-index:200;background:rgba(15,18,25,.92);display:flex;flex-direction:column;align-items:center;justify-content:center';
     var img = document.createElement('img');
@@ -38,6 +79,7 @@
     img.addEventListener('pointermove', function (e) { if (!drag) return; state.tx = e.clientX - drag.x; state.ty = e.clientY - drag.y; apply(); });
     img.addEventListener('pointerup', function () { drag = null; img.style.cursor = 'grab'; });
     document.body.appendChild(ov);
+    lockPage(ov);
     return ov;
   }
   function apply() {
@@ -50,6 +92,7 @@
   function close() {
     var ov = document.getElementById('imgv-overlay');
     if (ov) ov.remove();
+    unlockPage();
     var r = state && state.returnTo;
     state = null;
     document.removeEventListener('keydown', keys, true);
@@ -57,6 +100,15 @@
   }
   function keys(e) {
     if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'Tab') {
+      var ov = document.getElementById('imgv-overlay');
+      if (!ov) return;
+      var focusable = ov.querySelectorAll('button:not([disabled]),[tabindex]:not([tabindex="-1"])');
+      if (!focusable.length) { e.preventDefault(); ov.focus(); return; }
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
     else if (e.key === '+' || e.key === '=') zoom(1.25);
     else if (e.key === '-') zoom(1 / 1.25);
     else if (e.key === 'r') rotate(90);
@@ -86,4 +138,10 @@
       if (!t.closest('a, button')) { e.preventDefault(); open(t.currentSrc || t.src, t.alt, t); }
     }
   });
+  enhanceImages(document);
+  new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      Array.prototype.forEach.call(mutation.addedNodes || [], function (node) { if (node.nodeType === 1) enhanceImages(node); });
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
 })();

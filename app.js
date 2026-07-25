@@ -26,7 +26,7 @@
     return !!(v && v.screen);
   }
   function cleanScreen(s) {
-    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'walkthroughs', 'ecology', 'calendar'].indexOf(s) >= 0 ? s : 'journey';
+    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'walkthroughs', 'ecology', 'calendar', 'review', 'activity', 'outcomes'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
     w = Number(w);
@@ -188,16 +188,6 @@
   }
   function typeMeta(t) { return D.types[t] || D.types.Article; }
   function rec(id) { for (var i = 0; i < D.records.length; i++) if (D.records[i].id === id) return D.records[i]; return null; }
-  var OPENSTAX_CH = {
-    'soc-intro': 'https://openstax.org/books/introduction-sociology-3e/pages/1-introduction',
-    'soc-research': 'https://openstax.org/books/introduction-sociology-3e/pages/2-introduction',
-    'soc-socialization': 'https://openstax.org/books/introduction-sociology-3e/pages/5-introduction',
-    'soc-stratification': 'https://openstax.org/books/introduction-sociology-3e/pages/9-introduction',
-    'soc-family': 'https://openstax.org/books/introduction-sociology-3e/pages/14-introduction',
-    'anth-culture': 'https://openstax.org/books/introduction-anthropology/pages/3-introduction',
-    'psy-intro': 'https://openstax.org/books/psychology-2e/pages/1-introduction',
-    'psy-social': 'https://openstax.org/books/psychology-2e/pages/12-introduction'
-  };
   // Only free, openly accessible readings get a public link. Copyrighted or
   // library readings (access 'verified' or 'library') are reached through
   // Blackboard or the Seneca Library, never linked or hosted here (copyright).
@@ -701,7 +691,7 @@
   }
   function sidebar() {
     var s = state;
-    var navDefs = [['journey', 'Home', 'gauge'], ['site', 'How This Site Works', 'file'], ['pathways', 'Course Rhythm', 'map'], ['readings', 'Readings and Media', 'gallery'], ['compare', 'Compare Sources', 'columns'], ['reading', 'Source Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
+    var navDefs = [['journey', 'Home', 'gauge'], ['site', 'How This Site Works', 'file'], ['pathways', 'Course Rhythm', 'map'], ['readings', 'Readings and Media', 'gallery'], ['compare', 'Compare Sources', 'columns'], ['reading', 'Source Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['review', 'Term Review', 'check'], ['outcomes', 'What This Course Builds', 'columns'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || s.screen === key;
@@ -1373,6 +1363,9 @@
   }
   function screenAnnounceText() {
     if (state.screen === 'station') return 'Week ' + state.stationWeek + ': ' + weekTitle(state.stationWeek);
+    if (state.screen === 'review') return 'Term Review';
+    if (state.screen === 'outcomes') return 'What This Course Builds';
+    if (state.screen === 'activity') return 'Weekly Activity';
     if (state.screen === 'calendar') return 'Calendar and Due Dates';
     if (state.screen === 'site') return 'How This Site Works';
     if (state.screen === 'pathways') return 'Course Rhythm';
@@ -2569,7 +2562,7 @@
     var sec = function (id, title, inner) { return '<section id="wk-' + id + '" class="node"><h2 class="wk-sec">' + esc(title) + '</h2>' + inner + '</section>'; };
     return {
       purpose: d.purpose ? '<section id="wk-learn" class="node"><h2 class="wk-sec">Purpose</h2><p style="margin:0">' + esc(d.purpose) + '</p></section>' : '',
-      outcomes: (d.outcomes && d.outcomes.length) ? sec('out', 'Learning outcomes', '<p style="margin:0 0 8px;font-size:.9rem">By the end of this week, you will be able to:</p>' + d.outcomes.map(function (o) { return '<div class="wk-oc"><span class="b"></span>' + esc(o) + '</div>'; }).join('')) : '',
+      outcomes: (d.outcomes && d.outcomes.length) ? sec('out', 'Learning outcomes', '<p style="margin:0 0 8px;font-size:.9rem">By the end of this week, you will be able to:</p>' + d.outcomes.map(function (o) { return '<div class="wk-oc"><span class="b"></span>' + esc(o) + '</div>'; }).join('') + cloChips(w)) : '',
       guiding: (d.guiding && d.guiding.length) ? sec('gq', 'Guiding questions', '<p style="margin:0 0 8px;font-size:.9rem">Hold these in mind as you work:</p>' + d.guiding.map(function (q) { return '<div class="wk-gq"><span class="q">+</span>' + esc(q) + '</div>'; }).join('')) : '',
       concepts: (d.concepts && d.concepts.length) ? sec('con', 'Key concepts', '<p class="wk-hint">These are the week\'s big ideas, explained. Read them to understand the argument; this is what your discussions and written work draw on.</p>' + d.concepts.map(function (c) { return '<div class="wk-concept"><h3>' + esc(c.h) + '</h3><p>' + esc(c.body) + ' <span class="wk-cite">(' + esc(c.cite) + ')</span></p>' + fieldConceptExample(w, c.h) + '</div>'; }).join('')) : '',
       terms: (d.terms && d.terms.length) ? sec('term', 'Key terms', '<p class="wk-hint">These are the precise vocabulary. Learn them to speak and write accurately; they feed the flashcards and Knowledge Check.</p>' + d.terms.map(function (t) { return '<div class="wk-term"><b>' + esc(t.term) + '</b>: ' + esc(t.def) + ' <span class="wk-cite">(' + esc(t.cite) + ')</span>' + fieldTermUsage(w, t.term) + '</div>'; }).join('')) : '',
@@ -2591,7 +2584,7 @@
     var terms = A.terms;
     var readings = A.readings;
     var watch = d.deck ? '<section id="wk-watch" class="node"><h2 class="wk-sec">Weekly experience</h2><p style="margin:0 0 12px;font-size:.92rem">Enter this week\'s idea as a sequence of scenes, evidence rooms, decisions, diagrams, and reflection.</p><button type="button" class="wk-cta" style="margin:0" data-experience-week="' + w + '" onclick="SOC.enterExperience(' + w + ')">' + esc(experienceActionLabel(w)) + '</button></section>' : '';
-    var act = '';
+    var act = d.activity ? '<section id="wk-do" class="node interactive"><h2 class="wk-sec">' + esc(d.activity.title) + '</h2><div class="wk-whatwhy"><b>What this is:</b> ' + esc(d.activity.what) + '<br><br><b>Why you are doing it:</b> ' + esc(d.activity.why) + '</div><button onclick="SOC.startActivity(\'activity\',' + w + ')" class="wk-cta">Start the activity' + ic('chevron', 17, 2.4) + '</button></section>' : '';
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Reflection</h2>'
       + '<div class="wk-ocheck"><div class="mono" style="font-size:.78rem;font-weight:700;color:var(--ink-faint);margin-bottom:7px">YOU CAN NOW</div>' + d.youcan.map(function (y) { return '<div class="wk-row"><span class="t">' + ic('check', 14, 2.6) + '</span>' + esc(y) + '</div>'; }).join('') + '</div>'
       + '<h3 style="margin:16px 0 4px">Now, what do you think?</h3><p class="wk-hint" style="margin-bottom:8px">The same ideas from the start. Rate them again to see where your understanding sits now, and how far it moved.</p>' + wkChecks(w, 'post', d)
@@ -2612,7 +2605,7 @@
       + [['ov', 'Overview'], ['mode', 'How this week works'], ['rec', deliveryMode(w).kind === 'live' ? 'Class recording' : 'Instructor update'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Experience']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
     var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><span>Weeks start folded so you can see the whole map. Up to two sections stay open at once; opening a third closes the earliest one. Sections fold again when you leave the week.</span></div>';
-    return '<div class="rise">' + hero + deliveryNotice(w) + recordingSection(w) + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + deliveryNotice(w) + interpersonalSection(w) + recordingSection(w) + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -2672,6 +2665,8 @@
     });
     var A = authoredWeekSections(w, d, { readingsTitle: 'Revisit readings', readingsIntro: '<p class="wk-hint">Nothing here is new. These are the anchors worth rereading as you finish your work; each one names why it earns the revisit.</p>' });
     var act = A.purpose + A.outcomes + A.guiding + A.concepts + A.terms + A.readings;
+    var actLaunch = d.activity ? '<section id="wk-do" class="node interactive"><h2 class="wk-sec">' + esc(d.activity.title) + '</h2><div class="wk-whatwhy"><b>What this is:</b> ' + esc(d.activity.what) + '<br><br><b>Why you are doing it:</b> ' + esc(d.activity.why) + '</div><button onclick="SOC.startActivity(\'activity\',' + w + ')" class="wk-cta">' + (isFinal ? 'Open the course closure activity' : 'Open your final project activity') + ic('chevron', 17, 2.4) + '</button></section>' : '';
+    act = act + actLaunch;
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Your reflection</h2>'
       + ((d.youcan && d.youcan.length) ? '<div class="wk-ocheck"><div class="mono" style="font-size:.78rem;font-weight:700;color:var(--ink-faint);margin-bottom:7px">YOU CAN NOW</div>' + d.youcan.map(function (y) { return '<div class="wk-row"><span class="t">' + ic('check', 14, 2.6) + '</span>' + esc(y) + '</div>'; }).join('') + '</div>' : '')
       + ((d.checks && d.checks.length) ? '<h3 style="margin:16px 0 4px">Where does your understanding sit now?</h3><p class="wk-hint" style="margin-bottom:8px">Rate each idea from the course. No grade, saved only in this browser.</p>' + wkChecks(w, 'post', d) : '')
@@ -3588,11 +3583,218 @@
     items.push(mobileJumpItem('Notes', "SOC.jumpWeek(" + w + ",'notes')", false));
     return '<nav class="soc-mobile-jump" aria-label="Mobile week shortcuts">' + items.join('') + '</nav>';
   }
+  /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
+  function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
+  function actCite(c) { return c ? '<div style="font-size:.74rem;color:var(--ink-faint);margin-top:6px">(' + esc(c) + ')</div>' : ''; }
+  function actBadge(harm) { return harm ? '<span style="display:inline-block;background:#FBE9EA;color:#B11722;font-size:.7rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px">a weaker move</span>' : '<span style="display:inline-block;background:#E7F3EC;color:#1E7B34;font-size:.7rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px">a stronger move</span>'; }
+  function actCaseBox(label, txt) { return txt ? '<div style="background:#15171C;color:#fff;border-radius:12px;padding:14px 18px;margin:0 0 16px"><div style="font-size:.7rem;font-weight:700;color:#6B7280;margin-bottom:4px">' + label + '</div><div style="font-size:.98rem;line-height:1.5">' + esc(txt) + '</div></div>' : ''; }
+  function actMatch(w, a) {
+    var d = a.data || {}, pairs = d.pairs || [], uniq = [], seen = {};
+    pairs.forEach(function (p) { if (!seen[p.match]) { seen[p.match] = 1; uniq.push(p.match); } });
+    var rows = pairs.map(function (p, i) {
+      var key = 'a|' + w + '|m|' + i, sel = state.act[key];
+      var btns = uniq.map(function (o, oi) {
+        var picked = (sel === oi), correct = (o === p.match), bg = '#fff', bd = 'var(--border)', col = 'var(--ink)';
+        if (sel != null) { if (correct) { bg = '#E7F3EC'; bd = '#1E7B34'; col = '#155f34'; } else if (picked) { bg = '#FBE9EA'; bd = '#B11722'; col = '#8f1119'; } }
+        return '<button onclick="SOC.actPick(\'' + key + '\',' + oi + ')" aria-pressed="' + picked + '" style="text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:' + col + ';border-radius:9px;padding:8px 12px;font-size:.86rem;font-weight:600;cursor:pointer;margin:0 6px 6px 0">' + esc(o) + '</button>';
+      }).join('');
+      var fb = (sel != null) ? '<div style="margin-top:8px;font-size:.86rem;color:var(--ink-dim)">' + (uniq[sel] === p.match ? '<b style="color:#1E7B34">Yes. </b>' : '<b style="color:#B11722">Not quite. </b>') + esc(p.why) + actCite(p.cite) + '</div>' : '';
+      return actCard('<div style="font-size:.7rem;font-weight:700;color:var(--red);margin-bottom:5px">EXAMPLE ' + (i + 1) + '</div><div style="font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:10px">' + esc(p.item) + '</div><div style="font-size:.78rem;color:var(--ink-faint);margin-bottom:6px">Which mechanism does this show?</div>' + btns + fb);
+    }).join('');
+    return '<p style="margin:0 0 14px;color:var(--ink-dim)">' + esc(d.prompt || 'Match each example to the mechanism it shows.') + '</p>' + rows;
+  }
+  function actScenario(w, a) {
+    var d = a.data || {}, steps = d.steps || [];
+    var rows = steps.map(function (st, i) {
+      var key = 'a|' + w + '|s|' + i, sel = state.act[key];
+      var choices = (st.choices || []).map(function (c, ci) {
+        var picked = (sel === ci), bd = picked ? (c.harm ? '#B11722' : '#1E7B34') : 'var(--border)', bg = picked ? (c.harm ? '#FBE9EA' : '#E7F3EC') : '#fff';
+        return '<button onclick="SOC.actPick(\'' + key + '\',' + ci + ')" style="display:block;width:100%;text-align:left;border:1px solid ' + bd + ';background:' + bg + ';color:var(--ink);border-radius:9px;padding:10px 13px;font-size:.9rem;font-weight:600;cursor:pointer;margin:0 0 7px">' + esc(c.label) + (picked ? actBadge(c.harm) : '') + '</button>' + (picked ? '<div style="font-size:.86rem;color:var(--ink-dim);margin:0 0 10px;padding:0 2px">' + esc(c.outcome) + actCite(c.cite) + '</div>' : '');
+      }).join('');
+      return actCard('<div style="font-size:.7rem;font-weight:700;color:var(--red);margin-bottom:6px">DECISION ' + (i + 1) + '</div><div style="font-size:.98rem;font-weight:600;color:var(--ink);margin-bottom:10px">' + esc(st.situation) + '</div>' + choices);
+    }).join('');
+    return actCaseBox('THE CASE', d.setup) + '<p style="margin:0 0 14px;color:var(--ink-dim)">Make a call at each point, then see where it leads.</p>' + rows;
+  }
+  function actToggle(w, a) {
+    var d = a.data || {}, tgs = d.toggles || [];
+    var rows = tgs.map(function (t, i) {
+      var key = 'a|' + w + '|t|' + i, on = !!state.act[key];
+      var sw = '<button onclick="SOC.actToggle(\'' + key + '\')" aria-pressed="' + on + '" aria-label="' + esc(t.label) + '" style="border:none;border-radius:999px;width:52px;height:28px;background:' + (on ? '#1E7B34' : '#C7CDD6') + ';position:relative;cursor:pointer;flex:0 0 auto"><span style="position:absolute;top:3px;left:' + (on ? '27px' : '3px') + ';width:22px;height:22px;border-radius:50%;background:#fff"></span></button>';
+      return actCard('<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">' + sw + '<div style="font-size:.96rem;font-weight:700;color:var(--ink)">' + esc(t.label) + '<span style="font-size:.72rem;font-weight:600;color:var(--ink-faint);margin-left:8px">' + (on ? 'ON' : 'OFF') + '</span></div></div><div style="font-size:.88rem;color:var(--ink-dim)">' + esc(on ? t.on : t.off) + '</div><div style="font-size:.82rem;color:#B11722;margin-top:6px"><b>What it affects:</b> ' + esc(t.whoHarmed) + '</div>' + actCite(t.cite));
+    }).join('');
+    return actCaseBox('THE SYSTEM', d.system) + '<p style="margin:0 0 14px;color:var(--ink-dim)">Flip each setting and watch what changes.</p>' + rows;
+  }
+  function actAssemble(w, a) {
+    var d = a.data || {}, comps = d.components || [], key = 'a|' + w + '|asm', added = state.act[key] || [];
+    var avail = comps.map(function (c, i) { return added.indexOf(i) >= 0 ? '' : '<button onclick="SOC.actAdd(\'' + key + '\',' + i + ')" style="display:block;width:100%;text-align:left;border:1px dashed var(--border);background:#fff;color:var(--ink);border-radius:9px;padding:10px 13px;font-size:.9rem;font-weight:600;cursor:pointer;margin:0 0 7px">+ ' + esc(c.label) + '</button>'; }).join('');
+    var built = added.map(function (idx, n) { var c = comps[idx] || {}; return '<div style="border-left:3px solid var(--red);background:#fff;border:1px solid var(--border);border-radius:9px;padding:10px 13px;margin:0 0 8px"><div style="font-size:.92rem;font-weight:700;color:var(--ink)">' + (n + 1) + '. ' + esc(c.label) + '</div><div style="font-size:.85rem;color:var(--ink-dim);margin-top:3px">' + esc(c.role) + actCite(c.cite) + '</div></div>'; }).join('');
+    var done = (added.length >= comps.length && comps.length) ? '<div style="margin-top:14px;background:#E7F3EC;border:1px solid #1E7B34;border-radius:10px;padding:12px 15px;font-size:.9rem;color:#155f34;font-weight:600">You have assembled the whole picture. Seeing the parts together is the point: it is how they fit that matters, not any one piece.</div>' : '';
+    return actCaseBox('THE GOAL', d.goal) + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px"><div><div style="font-size:.7rem;font-weight:700;color:var(--ink-faint);margin-bottom:8px">PARTS TO ADD</div>' + (avail || '<div style="font-size:.85rem;color:var(--ink-faint)">All parts added.</div>') + '</div><div><div style="font-size:.7rem;font-weight:700;color:var(--red);margin-bottom:8px">WHAT YOU HAVE BUILT</div>' + (built || '<div style="font-size:.85rem;color:var(--ink-faint)">Nothing yet. Add parts from the left.</div>') + '</div></div>' + done;
+  }
+  function actLab(w, a) {
+    var d = a.data || {}, levers = d.levers || [], pick = d.pick || 2, key = 'a|' + w + '|lab', chosen = state.act[key] || [];
+    var rows = levers.map(function (l, i) {
+      var sel = chosen.indexOf(i) >= 0;
+      var head = '<button onclick="SOC.actLabPick(\'' + key + '\',' + i + ',' + pick + ')" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;border:1px solid ' + (sel ? 'var(--red)' : 'var(--border)') + ';background:' + (sel ? '#FDECEC' : '#fff') + ';color:var(--ink);border-radius:9px;padding:10px 13px;font-size:.92rem;font-weight:700;cursor:pointer;margin:0 0 ' + (sel ? '0' : '8px') + '"><span style="width:18px;height:18px;border-radius:5px;border:2px solid ' + (sel ? 'var(--red)' : '#C7CDD6') + ';background:' + (sel ? 'var(--red)' : '#fff') + ';flex:0 0 auto"></span>' + esc(l.label) + '</button>';
+      var body = sel ? '<div style="border:1px solid var(--red);border-top:none;border-radius:0 0 9px 9px;background:#fff;padding:10px 13px;margin:0 0 8px;font-size:.86rem;color:var(--ink-dim)"><b>What it does:</b> ' + esc(l.effect) + '<br><b>The trade-off:</b> ' + esc(l.tradeoff) + actCite(l.cite) + '</div>' : '';
+      return head + body;
+    }).join('');
+    var note = chosen.length >= pick ? '<div style="margin-top:8px;background:#E7F3EC;border:1px solid #1E7B34;border-radius:10px;padding:12px 15px;font-size:.88rem;color:#155f34;font-weight:600">You picked your ' + pick + '. There is no clean answer here: every option gives something and costs something. That trade-off is the real choice.</div>' : '<div style="margin-top:8px;font-size:.82rem;color:var(--ink-faint)">Choose ' + pick + ' levers (' + chosen.length + ' of ' + pick + ' chosen).</div>';
+    return actCaseBox('THE CASE', d['case']) + '<p style="margin:0 0 12px;color:var(--ink-dim)">You are weighing the options. Pick the ' + pick + ' levers you would use, and weigh what each one costs.</p>' + rows + note;
+  }
+  function actCapstone(w, a) {
+    var d = a.data || {}, items = d.items || [];
+    var rows = items.map(function (it, i) {
+      var key = 'a|' + w + '|cap|' + i, on = !!state.act[key];
+      var btn = '<button onclick="SOC.actToggle(\'' + key + '\')" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;border:1px solid ' + (on ? '#1E7B34' : 'var(--border)') + ';background:' + (on ? '#E7F3EC' : '#fff') + ';border-radius:9px;padding:11px 14px;font-size:.95rem;font-weight:700;color:var(--ink);cursor:pointer;margin:0 0 ' + (on ? '0' : '8px') + '"><span style="width:20px;height:20px;border-radius:50%;border:2px solid ' + (on ? '#1E7B34' : '#C7CDD6') + ';background:' + (on ? '#1E7B34' : '#fff') + ';color:#fff;flex:0 0 auto;display:flex;align-items:center;justify-content:center">' + (on ? ic('check', 12, 3) : '') + '</span>' + esc(it.label) + '</button>';
+      var body = on ? '<div style="border:1px solid #1E7B34;border-top:none;border-radius:0 0 9px 9px;background:#fff;padding:10px 14px;margin:0 0 8px;font-size:.88rem;color:var(--ink-dim)">' + esc(it.prompt) + actCite(it.cite) + '</div>' : '';
+      return btn + body;
+    }).join('');
+    var callout = d.callout ? '<div style="margin-top:14px;background:#15171C;color:#fff;border-radius:12px;padding:16px 18px"><div style="font-size:.7rem;font-weight:700;color:#6B7280;margin-bottom:5px">YOUR FINAL PROJECT</div><div style="font-size:.95rem;line-height:1.5">' + esc(d.callout) + '</div></div>' : '';
+    return '<p style="margin:0 0 14px;color:var(--ink-dim)">' + esc(d.prompt || 'Revisit your cartography one dimension at a time. Mark each as you reread it.') + '</p>' + rows + callout;
+  }
+  function activityScreen() {
+    var w = state.activityReturn, d = weekData(w);
+    if (!d || !d.activity) return '<div style="padding:30px 0;color:var(--ink-dim)">No activity here. <button onclick="SOC.go(\'journey\')" style="background:none;border:none;color:var(--red);font-weight:600;cursor:pointer">Back to your journey</button></div>';
+    var a = d.activity;
+    var head = '<section class="jhero" style="margin:0 0 18px;padding:26px 28px"><div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">WEEK ' + w + ' ACTIVITY</div><h1 style="font-size:1.7rem;line-height:1.15;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(a.title) + '</h1><div class="wk-whatwhy" style="margin:0"><b>What this is:</b> ' + esc(a.what) + '<br><br><b>Why you are doing it:</b> ' + esc(a.why) + '</div></section>';
+    var inner = '';
+    switch (a.archetype) { case 'match': inner = actMatch(w, a); break; case 'scenario': inner = actScenario(w, a); break; case 'toggle': inner = actToggle(w, a); break; case 'assemble': inner = actAssemble(w, a); break; case 'lab': inner = actLab(w, a); break; case 'capstone': inner = actCapstone(w, a); break; default: inner = '<p style="color:var(--ink-dim)">This activity is not set up yet.</p>'; }
+    var foot = '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:.86rem;color:var(--ink-dim)">When you are done, go back to the week to answer the reflection and save your work.</div><button onclick="SOC.station(' + w + ')" class="wk-cta" style="margin:0">Back to Week ' + w + ' ' + ic('chevron', 16, 2.4) + '</button></div>';
+    return '<div class="rise" style="margin:0 auto">' + head + inner + foot + '</div>';
+  }
+  /* ---------- interpersonal layer (2026-07-25): the teams EES gets a vehicle ---------- */
+  function interpersonalSection(w) {
+    try {
+      var P = window.PSY355_INTERPERSONAL;
+      var e = P && P.byWeek && (P.byWeek[w] || P.byWeek[String(w)]);
+      if (!e) return '';
+      var rows = [];
+      if (e.pair) rows.push(['Think, pair, share in class', e.pair]);
+      if (e.team) rows.push(['Small group move', e.team]);
+      if (e.discussion) rows.push(['This week on the discussion board', e.discussion]);
+      if (!rows.length) return '';
+      return '<section id="wk-interp" class="node"><h2 class="wk-sec">Working with your classmates this week</h2><p class="wk-hint">Learning psychology is social. Here is how this week uses the people around you.</p>'
+        + rows.map(function (r) { return '<div style="border:1px solid var(--border);border-radius:10px;background:#fff;padding:11px 14px;margin:0 0 8px"><div style="font-size:.72rem;font-weight:700;color:var(--red);margin-bottom:4px">' + esc(r[0].toUpperCase()) + '</div><div style="font-size:.9rem;line-height:1.55;color:var(--ink)">' + esc(r[1]) + '</div></div>'; }).join('')
+        + '</section>';
+    } catch (e2) { return ''; }
+  }
+  /* ---------- outcomes spine (2026-07-25): official CLO and EES, made visible ---------- */
+  function outcomesData() { return window[((D.course && D.course.code) || '') + '_OUTCOMES'] || null; }
+  function cloChips(w) {
+    try {
+      var O = outcomesData(); if (!O || !O.clos) return '';
+      var hits = O.clos.filter(function (c) { return (c.weeks || []).indexOf(w) >= 0; });
+      if (!hits.length) return '';
+      return '<div style="margin:8px 0 0;font-size:.76rem;color:var(--ink-faint)">This week builds ' + hits.map(function (c) { return '<button type="button" onclick="SOC.go(\'outcomes\')" style="border:1px solid var(--border);background:#fff;border-radius:999px;padding:1px 9px;font-size:.72rem;font-weight:700;color:var(--red);cursor:pointer;margin:0 3px">' + esc(c.id) + '</button>'; }).join('') + '</div>';
+    } catch (e) { return ''; }
+  }
+  function outcomesPage() {
+    var O = outcomesData();
+    if (!O) return '<div style="padding:30px 0;color:var(--ink-dim)">The outcomes map is not available yet.</div>';
+    var head = '<section class="node" style="margin-bottom:16px"><div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:6px">WHAT THIS COURSE BUILDS</div><h1 style="font-size:1.55rem;line-height:1.15;margin:0 0 8px;color:var(--ink)">The official outcomes behind every week</h1><p style="font-size:.92rem;line-height:1.6;color:var(--ink-dim);margin:0 0 6px">Every week and every assessment in this course exists to build these outcomes. They are the same for every student on every route through the material. ' + esc(O.note || '') + '</p></section>';
+    var clos = '<section class="node"><h2 class="wk-sec">Course learning outcomes</h2>' + O.clos.map(function (c) {
+      var wk = (c.weeks && c.weeks.length) ? '<div style="margin-top:7px;font-size:.78rem;color:var(--ink-faint)">Built in ' + c.weeks.map(function (n) { return '<button type="button" onclick="SOC.station(' + n + ')" class="wk-scope" style="padding:2px 9px;font-size:.74rem;margin:0 3px 3px 0">Week ' + n + '</button>'; }).join('') + '</div>' : '';
+      var asmt = (c.assessments && c.assessments.length) ? '<div style="margin-top:4px;font-size:.78rem;color:var(--ink-faint)">Measured by: ' + esc(c.assessments.join('; ')) + '</div>' : '';
+      return '<div style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:12px 16px;margin:0 0 10px"><div class="mono" style="font-size:.68rem;font-weight:700;color:var(--red);margin-bottom:4px">' + esc(c.id) + '</div><div style="font-size:.93rem;line-height:1.55;color:var(--ink)">' + esc(c.text) + '</div>' + wk + asmt + '</div>';
+    }).join('') + '</section>';
+    var ees = (O.ees && O.ees.length) ? '<section class="node"><h2 class="wk-sec">Essential Employability Skills</h2><p class="wk-hint">Ontario college courses also build these transferable skills. The ones this course develops:</p>' + O.ees.map(function (e) {
+      return '<div style="display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:0 0 8px"><span style="color:var(--red);font-weight:700">&#10003;</span><div style="flex:1;font-size:.9rem;line-height:1.5;color:var(--ink)">' + esc(e.skill) + ((e.weeks && e.weeks.length) ? '<div style="font-size:.76rem;color:var(--ink-faint);margin-top:3px">Practised most in weeks ' + e.weeks.join(', ') + '</div>' : '') + '</div></div>';
+    }).join('') + '</section>' : '';
+    return '<div class="rise">' + head + clos + ees + '</div>';
+  }
+  /* ---------- Term Review (2026-07-25): cumulative mixed practice + calibration ---------- */
+  function trShuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function trPool() {
+    var code = (D.course && D.course.code) || '';
+    var KB = window[code + '_KC'] || {};
+    var seen = {}, pool = [];
+    journeyWeeks().forEach(function (w) {
+      ((KB[w] || KB[String(w)]) || []).forEach(function (m) { if (!m.kind && !m.type && (m.options || []).length >= 4 && !seen[m.q]) { seen[m.q] = 1; pool.push({ m: m, w: w }); } });
+      recordsForWeek(w).forEach(function (r) { ((MC[r.id]) || []).forEach(function (m) { if ((m.options || []).length >= 4 && !seen[m.q]) { seen[m.q] = 1; pool.push({ m: m, w: w }); } }); });
+    });
+    return pool;
+  }
+  function trStart() {
+    var hist = state.kcHist || {};
+    var missed = [], unseen = [], strong = [];
+    trPool().forEach(function (it) {
+      var h = hist[kcHashKey(it.m.q)];
+      if (h && h.n > (h.right || 0)) missed.push(it);
+      else if (!h || !h.n) unseen.push(it);
+      else strong.push(it);
+    });
+    var items = trShuffle(missed).concat(trShuffle(unseen)).concat(trShuffle(strong)).slice(0, 12);
+    state.trs = { items: items, i: 0, sel: null, conf: null, revealed: false, log: [] };
+  }
+  function trReport() {
+    var S = state.trs, b = { mastered: [], fragile: [], confmiss: [], growing: [] };
+    S.log.forEach(function (e) {
+      if (e.right && e.conf === 2) b.mastered.push(e);
+      else if (e.right) b.fragile.push(e);
+      else if (e.conf === 2) b.confmiss.push(e);
+      else b.growing.push(e);
+    });
+    var block = function (title, hint, list, accent) {
+      if (!list.length) return '';
+      return '<div style="border:1px solid var(--border);border-left:4px solid ' + accent + ';border-radius:0 10px 10px 0;background:#fff;padding:12px 16px;margin:0 0 10px"><div style="font-weight:700;font-size:.95rem;color:var(--ink)">' + title + ' (' + list.length + ')</div><p style="font-size:.82rem;color:var(--ink-dim);margin:4px 0 8px">' + hint + '</p>'
+        + list.map(function (e) { return '<div style="display:flex;gap:10px;align-items:flex-start;font-size:.86rem;color:var(--ink);padding:5px 0;border-top:1px dashed var(--border)"><span style="flex:1">' + esc(e.q) + '</span><button type="button" onclick="SOC.station(' + e.w + ')" class="wk-scope" style="flex:none">Revisit Week ' + e.w + '</button></div>'; }).join('') + '</div>';
+    };
+    return '<section class="node"><h2 class="wk-sec">Your calibration report</h2><p class="wk-hint">Where confidence and accuracy disagree is where your next hour of study earns the most.</p>'
+      + block('Start here: confident misses', 'You were sure and the answer says otherwise. These ideas feel settled but are not yet; they are worth unlearning first.', b.confmiss, '#B11722')
+      + block('Fragile: right but unsure', 'You got these right without trusting yourself. One more pass turns them solid.', b.fragile, '#B77400')
+      + block('Growing edge', 'Missed while unsure. Normal learning territory; revisit the weeks and try again.', b.growing, '#6B7280')
+      + block('Mastered this round', 'Right and sure. Let these rest and spend your time above.', b.mastered, '#1E7B34')
+      + '<div style="display:flex;gap:10px;margin-top:12px"><button type="button" class="wk-save" onclick="SOC.trAgain()">Practise another set</button></div></section>';
+  }
+  function reviewPage() {
+    if (!state.trs) trStart();
+    var S = state.trs;
+    var head = '<section class="node" style="margin-bottom:14px"><div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:6px">TERM REVIEW &middot; NEVER SCORED</div><h1 style="font-size:1.55rem;line-height:1.15;margin:0 0 8px;color:var(--ink)">Mixed practice across the whole course</h1><p style="font-size:.92rem;line-height:1.55;color:var(--ink-dim);margin:0">Up to twelve questions drawn from every week so far. Ideas you have missed before come first. Mark how sure you are before revealing; your calibration report at the end shows where confidence and accuracy disagree. Nothing here is scored or seen by anyone.</p></section>';
+    if (!S.items.length) return '<div class="rise">' + head + '<section class="node"><p style="font-size:.95rem;color:var(--ink)">No practice items are available yet. Come back once the first content weeks are open.</p></section></div>';
+    if (S.i >= S.items.length) return '<div class="rise">' + head + trReport() + '</div>';
+    var it = S.items[S.i], m = it.m;
+    var opts = m.options.map(function (o, oi) {
+      var st = 'display:block;width:100%;text-align:left;border:1.5px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;margin:0 0 8px;cursor:pointer;font-size:.92rem;line-height:1.45;color:var(--ink)';
+      if (S.revealed && oi === m.answer) st += ';border-color:#1E7B34;background:#F0F7F1';
+      else if (S.revealed && S.sel === oi) st += ';border-color:#B11722;background:#FBE9EA';
+      else if (!S.revealed && S.sel === oi) st += ';border-color:var(--red);background:#FBF4F3';
+      var tail = '';
+      if (S.revealed && oi === m.answer && m.why) tail = '<div style="font-size:.8rem;color:#1E7B34;margin-top:5px">' + esc(m.why) + '</div>';
+      else if (S.revealed && S.sel === oi && m.whyWrong && m.whyWrong[oi]) tail = '<div style="font-size:.8rem;color:var(--ink-faint);margin-top:5px">' + esc(m.whyWrong[oi]) + '</div>';
+      return '<button type="button"' + (S.revealed ? ' disabled' : '') + ' onclick="SOC.trPick(' + oi + ')" style="' + st + '">' + esc(o) + tail + '</button>';
+    }).join('');
+    var confRow = '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0"><span style="font-size:.82rem;color:var(--ink-dim)">How sure are you?</span>'
+      + [['Guessing', 0], ['Think so', 1], ['Sure', 2]].map(function (c) { return '<button type="button"' + (S.revealed ? ' disabled' : '') + ' onclick="SOC.trConf(' + c[1] + ')" class="wk-scope" style="' + (S.conf === c[1] ? 'border-color:var(--red);color:var(--red);font-weight:700' : '') + '">' + c[0] + '</button>'; }).join('') + '</div>';
+    var action = S.revealed
+      ? '<button type="button" class="wk-save" onclick="SOC.trNext()">' + (S.i + 1 >= S.items.length ? 'See your calibration report' : 'Next question') + '</button>'
+      : '<button type="button" class="wk-save"' + ((S.sel == null || S.conf == null) ? ' disabled style="opacity:.5"' : '') + ' onclick="SOC.trReveal()">See how I did</button>';
+    return '<div class="rise">' + head + '<section class="node"><div class="mono" style="font-size:.68rem;color:var(--ink-faint);margin-bottom:8px">QUESTION ' + (S.i + 1) + ' OF ' + S.items.length + ' &middot; FROM WEEK ' + it.w + '</div>'
+      + '<p style="font-size:1rem;font-weight:600;color:var(--ink);margin:0 0 12px">' + esc(m.q) + '</p>' + opts + confRow + action + '</section></div>';
+  }
+  function accessStatement() {
+    return '<section class="node" id="wk-access" style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0 0">'
+      + '<h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Accessibility on this site</h2>'
+      + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0 0 8px">This site is built to work for every student: it adapts to any screen size, works with keyboard navigation, keeps text resizable, gives every image a text description, and never puts course content behind a timed or scored gate. The Reading Lens offers text sizing, comfortable spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. The weekly experiences include adjustable text size and keyboard movement.</p>'
+      + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0">The page walkthrough videos are silent with on-screen captions by design. If any material is not accessible to you, contact your professor through Blackboard; barriers get fixed, not explained away.</p>'
+      + '</section>';
+  }
+  /* ---------- saved-work export/restore (2026-07-25): device-bound loss fix ---------- */
+  function dataPortSection() {
+    return '<section class="node" id="wk-dataport" style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0 0">'
+      + '<h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Take your saved work with you</h2>'
+      + '<p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0 0 10px">Everything you type and rate on this site is saved only in this browser. On a shared or lab computer that work can disappear. Download a backup file here, then restore it on any device to carry your work across. The file stays with you; nothing is uploaded anywhere.</p>'
+      + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
+      + '<button type="button" class="wk-save" onclick="SOC.exportWork()">Download my saved work</button>'
+      + '<label class="wk-scope" style="cursor:pointer;display:inline-block">Restore from a backup file<input type="file" accept="application/json,.json" style="display:none" onchange="SOC.importWork(this)"></label>'
+      + '</div><p id="dataport-msg" role="status" style="font-size:.8rem;color:var(--ink-faint);margin:8px 0 0"></p></section>';
+  }
   /* ---------- per-page how-to (2026-07-25): every page teaches itself ---------- */
   function howtoKey() {
     var s = state.screen;
     if (s === 'library') return 'journey';
     if (s === 'reading' || s === 'detail') return 'readings';
+    if (s === 'activity') return 'station';
     return s;
   }
   function howtoSection() {
@@ -3631,7 +3833,10 @@
     if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + mobileWeekActions(_sw, weekData(_sw)) + lensHook(_sw) + weekStation(_sw); }
     if (state.screen === 'detail') return homeBar() + detail();
     if (state.screen === 'pathways') return homeBar() + pathwaysPage();
-    if (state.screen === 'site') return homeBar() + siteInfoPage();
+    if (state.screen === 'review') return homeBar() + reviewPage();
+    if (state.screen === 'outcomes') return homeBar() + outcomesPage();
+    if (state.screen === 'activity') return homeBar() + activityScreen();
+    if (state.screen === 'site') return homeBar() + siteInfoPage() + dataPortSection() + accessStatement();
     if (state.screen === 'calendar') return homeBar() + calendarPage();
     if (state.screen === 'walkthroughs') return homeBar() + walkthroughsPage();
     if (state.screen === 'videos') return homeBar() + videosPage();
@@ -4058,6 +4263,57 @@
     go: function (s) {
       var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
     howtoToggle: function (k) { state.howtoOpen = state.howtoOpen || {}; state.howtoOpen[k] = !state.howtoOpen[k]; var el = document.getElementById('howto-panel'); if (el && el.outerHTML !== undefined) { el.outerHTML = howtoSection(); } else { render(); } },
+    exportWork: function () {
+      try {
+        var pre = SKEY.split('corpus')[0];
+        var out = { site: SKEY, savedAt: new Date().toISOString(), keys: {} };
+        for (var xi = 0; xi < localStorage.length; xi++) { var xk = localStorage.key(xi); if (xk && xk.indexOf(pre) === 0) out.keys[xk] = localStorage.getItem(xk); }
+        var blob = new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = pre + '-saved-work-' + new Date().toISOString().slice(0, 10) + '.json';
+        document.body.appendChild(a); a.click(); a.remove();
+        var xm = document.getElementById('dataport-msg'); if (xm) xm.textContent = 'Backup file downloaded. Keep it somewhere you can find it again.';
+      } catch (e) { var xe = document.getElementById('dataport-msg'); if (xe) xe.textContent = 'The download did not work in this browser.'; }
+    },
+    importWork: function (inp) {
+      try {
+        var f = inp.files && inp.files[0]; if (!f) return;
+        var pre = SKEY.split('corpus')[0];
+        var rd = new FileReader();
+        rd.onload = function () {
+          try {
+            var data = JSON.parse(String(rd.result));
+            var xm = document.getElementById('dataport-msg');
+            if (!data || !data.keys || String(data.site || '').indexOf(pre) !== 0) { if (xm) xm.textContent = 'That file is not a saved-work backup for this site.'; return; }
+            var n = 0;
+            Object.keys(data.keys).forEach(function (xk) { if (xk.indexOf(pre) === 0) { localStorage.setItem(xk, data.keys[xk]); n++; } });
+            if (xm) xm.textContent = 'Restored ' + n + ' saved records. Reloading the site with your work in place.';
+            setTimeout(function () { location.reload(); }, 900);
+          } catch (e2) { var xe2 = document.getElementById('dataport-msg'); if (xe2) xe2.textContent = 'That file could not be read.'; }
+        };
+        rd.readAsText(f);
+      } catch (e) {}
+    },
+    startActivity: function (sc, w) { rememberPrevious(); state.activityReturn = cleanWeek(w) || w; state.screen = 'activity'; focusTarget = 'soc-main'; persist(); render(); topScroll(); },
+    actPick: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; state.act[key] = idx; state.actResult = state.actResult || {}; state.actResult[key] = idx; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actToggle: function (key) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var val = !state.act[key]; state.act[key] = val; state.actResult = state.actResult || {}; state.actResult[key] = val; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actAdd: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || []; if (arr.indexOf(idx) < 0) arr.push(idx); state.act[key] = arr; state.actResult = state.actResult || {}; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actLabPick: function (key, idx, max) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || [], pz = arr.indexOf(idx); if (pz >= 0) arr.splice(pz, 1); else { if (arr.length >= max) arr.shift(); arr.push(idx); } state.act[key] = arr; state.actResult = state.actResult || {}; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    trPick: function (oi) { if (state.trs && !state.trs.revealed) { state.trs.sel = (state.trs.sel === oi ? null : oi); render(); } },
+    trConf: function (c) { if (state.trs && !state.trs.revealed) { state.trs.conf = c; render(); } },
+    trReveal: function () {
+      var S = state.trs; if (!S || S.sel == null || S.conf == null || S.revealed) return;
+      S.revealed = true;
+      var it = S.items[S.i], right = (S.sel === it.m.answer);
+      S.log.push({ q: it.m.q, w: it.w, right: right, conf: S.conf });
+      state.kcHist = state.kcHist || {};
+      var hk = kcHashKey(it.m.q), h = state.kcHist[hk] || { n: 0, right: 0 };
+      h.n = (h.n || 0) + 1; if (right) h.right = (h.right || 0) + 1;
+      state.kcHist[hk] = h; persist(); render();
+    },
+    trNext: function () { var S = state.trs; if (!S) return; S.i++; S.sel = null; S.conf = null; S.revealed = false; render(); topScroll(); },
+    trAgain: function () { trStart(); render(); topScroll(); },
     careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
     lensOff: function () { state.careerField = ''; persist(); render(); },
     careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
@@ -4068,7 +4324,6 @@
     careerChoices: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-choices'); },
     station: function (w) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); topScroll(); },
     jumpWeek: function (w, part) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
-    startActivity: function () { SOC.go('journey'); },
     wkCheck: function (k, o) {
       if (state.wkCheck[k] === o) delete state.wkCheck[k]; else state.wkCheck[k] = o;
       persist();
