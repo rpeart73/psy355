@@ -1,0 +1,101 @@
+{
+ "code": "PSY355",
+ "recorded": {
+  "journey": {
+   "dur": 74,
+   "kb": 867,
+   "beats": 8,
+   "cues": 8
+  },
+  "station": {
+   "dur": 102,
+   "kb": 1255,
+   "beats": 10,
+   "cues": 10
+  },
+  "site": {
+   "dur": 59,
+   "kb": 298,
+   "beats": 7,
+   "cues": 7
+  },
+  "pathways": {
+   "dur": 48,
+   "kb": 556,
+   "beats": 6,
+   "cues": 6
+  },
+  "readings": {
+   "dur": 54,
+   "kb": 801,
+   "beats": 7,
+   "cues": 7
+  },
+  "compare": {
+   "dur": 59,
+   "kb": 1126,
+   "beats": 7,
+   "cues": 7
+  },
+  "walkthroughs": {
+   "dur": 57,
+   "kb": 526,
+   "beats": 7,
+   "cues": 7
+  },
+  "videos": {
+   "dur": 44,
+   "kb": 890,
+   "beats": 6,
+   "cues": 6
+  },
+  "glossary": {
+   "dur": 43,
+   "kb": 1366,
+   "beats": 6,
+   "cues": 6
+  },
+  "cards": {
+   "dur": 40,
+   "kb": 1022,
+   "beats": 6,
+   "cues": 6
+  },
+  "assignments": {
+   "dur": 58,
+   "kb": 851,
+   "beats": 7,
+   "cues": 7
+  },
+  "career": {
+   "dur": 68,
+   "kb": 898,
+   "beats": 8,
+   "cues": 8
+  },
+  "ecology": {
+   "dur": 49,
+   "kb": 596,
+   "beats": 6,
+   "cues": 6
+  },
+  "calendar": {
+   "dur": 46,
+   "kb": 715,
+   "beats": 6,
+   "cues": 6
+  },
+  "review": {
+   "dur": 70,
+   "kb": 1184,
+   "beats": 8,
+   "cues": 8
+  },
+  "outcomes": {
+   "dur": 62,
+   "kb": 881,
+   "beats": 7,
+   "cues": 7
+  }
+ }
+}

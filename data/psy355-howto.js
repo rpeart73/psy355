@@ -36,7 +36,9 @@ window.PSY355_HOWTO = {
    "saves": "Your visited weeks, compass activity, and program lens choice are saved only in this browser on this device. Nothing is sent anywhere.",
    "graded": "Nothing on this page is graded or reported to your professor.",
    "next": "Open the current week's station and start with its Before you begin section.",
-   "clip": "4,18"
+   "clip": "4,18",
+   "video": "videos/tour/journey.mp4",
+   "captions": "videos/tour/journey.vtt"
   },
   "station": {
    "title": "How to use a week page",
@@ -74,7 +76,9 @@ window.PSY355_HOWTO = {
    "saves": "Your ratings, quiz history, reflections, and open sections are saved only in this browser on this device.",
    "graded": "Every check on this page is practice. None of it is scored, recorded, or visible to your professor.",
    "next": "When the week feels solid, return Home and open the next station.",
-   "clip": "18,32"
+   "clip": "18,32",
+   "video": "videos/tour/station.mp4",
+   "captions": "videos/tour/station.vtt"
   },
   "site": {
    "title": "How to use this page",
@@ -100,7 +104,9 @@ window.PSY355_HOWTO = {
    "saves": "Everything you type or rate on this site stays in this browser on this device. Clear My Work wipes it.",
    "graded": "Nothing on this site is graded. Blackboard is the only official gradebook.",
    "next": "Head back Home and open the current week.",
-   "clip": "32,45"
+   "clip": "32,45",
+   "video": "videos/tour/site.mp4",
+   "captions": "videos/tour/site.vtt"
   },
   "pathways": {
    "title": "How to use Course Rhythm",
@@ -122,7 +128,9 @@ window.PSY355_HOWTO = {
    "saves": "This page stores nothing.",
    "graded": "Nothing here is graded.",
    "next": "Open Calendar and Due Dates to put exact dates against this rhythm.",
-   "clip": "45,59"
+   "clip": "45,59",
+   "video": "videos/tour/pathways.mp4",
+   "captions": "videos/tour/pathways.vtt"
   },
   "readings": {
    "title": "How to use Readings and Media",
@@ -148,7 +156,9 @@ window.PSY355_HOWTO = {
    "saves": "Your saved shelf and practice history stay in this browser on this device.",
    "graded": "Source Practice is never scored.",
    "next": "Take two or three sources into Compare Sources and hold them side by side.",
-   "clip": "59,73"
+   "clip": "59,73",
+   "video": "videos/tour/readings.mp4",
+   "captions": "videos/tour/readings.vtt"
   },
   "compare": {
    "title": "How to use Compare Sources",
@@ -174,7 +184,9 @@ window.PSY355_HOWTO = {
    "saves": "Your comparison notes stay in this browser on this device.",
    "graded": "Comparisons are never graded. They exist to sharpen your written work.",
    "next": "Carry your comparison insight into this week's reflection or your next assignment.",
-   "clip": "73,87"
+   "clip": "73,87",
+   "video": "videos/tour/compare.mp4",
+   "captions": "videos/tour/compare.vtt"
   },
   "walkthroughs": {
    "title": "How to use Weekly Experiences",
@@ -200,7 +212,9 @@ window.PSY355_HOWTO = {
    "saves": "Your position in each experience is saved in this browser on this device.",
    "graded": "Experiences are teaching, not testing. Nothing is scored.",
    "next": "After an experience, open the same week's Study Guide to lock the idea in.",
-   "clip": "87,100"
+   "clip": "87,100",
+   "video": "videos/tour/walkthroughs.mp4",
+   "captions": "videos/tour/walkthroughs.vtt"
   },
   "videos": {
    "title": "How to use Videos and Podcasts",
@@ -222,7 +236,9 @@ window.PSY355_HOWTO = {
    "saves": "This page stores nothing beyond your program lens choice.",
    "graded": "Watching is never tracked or graded.",
    "next": "Open the reading the video connects to in Readings and Media.",
-   "clip": "100,114"
+   "clip": "100,114",
+   "video": "videos/tour/videos.mp4",
+   "captions": "videos/tour/videos.vtt"
   },
   "glossary": {
    "title": "How to use the Glossary",
@@ -244,7 +260,9 @@ window.PSY355_HOWTO = {
    "saves": "This page stores nothing.",
    "graded": "Nothing here is graded.",
    "next": "Turn terms into memory with Concept Flashcards.",
-   "clip": "114,128"
+   "clip": "114,128",
+   "video": "videos/tour/glossary.mp4",
+   "captions": "videos/tour/glossary.vtt"
   },
   "cards": {
    "title": "How to use Concept Flashcards",
@@ -266,7 +284,9 @@ window.PSY355_HOWTO = {
    "saves": "This page stores nothing.",
    "graded": "Cards are pure practice.",
    "next": "Take the week's Knowledge Check and see what stuck.",
-   "clip": "128,142"
+   "clip": "128,142",
+   "video": "videos/tour/cards.mp4",
+   "captions": "videos/tour/cards.vtt"
   },
   "assignments": {
    "title": "How to use Starting Your Assignment",
@@ -292,7 +312,9 @@ window.PSY355_HOWTO = {
    "saves": "Your lab plan and notes stay in this browser on this device.",
    "graded": "Nothing here is submitted or graded. Blackboard is the only submission channel.",
    "next": "Block one hour, open the lab, and leave with a plan.",
-   "clip": "142,155"
+   "clip": "142,155",
+   "video": "videos/tour/assignments.mp4",
+   "captions": "videos/tour/assignments.vtt"
   },
   "career": {
    "title": "How to use Career Choices",
@@ -322,7 +344,9 @@ window.PSY355_HOWTO = {
    "saves": "Your field choice and reflection stay in this browser on this device. The chip follows you around the site until you turn it off.",
    "graded": "The graded curriculum is identical for every student. The lens changes examples and framing only.",
    "next": "Visit a week the page recommends for your field and watch the framing follow you.",
-   "clip": "155,169"
+   "clip": "155,169",
+   "video": "videos/tour/career.mp4",
+   "captions": "videos/tour/career.vtt"
   },
   "ecology": {
    "title": "How to use Resilience Ecology",
@@ -344,7 +368,9 @@ window.PSY355_HOWTO = {
    "saves": "Your ecology notes stay in this browser on this device.",
    "graded": "This is private reflection. It is never seen or scored.",
    "next": "Bring one insight from your map into this week's reflection.",
-   "clip": "169,183"
+   "clip": "169,183",
+   "video": "videos/tour/ecology.mp4",
+   "captions": "videos/tour/ecology.vtt"
   },
   "calendar": {
    "title": "How to use Calendar and Due Dates",
@@ -366,7 +392,9 @@ window.PSY355_HOWTO = {
    "saves": "This page stores nothing.",
    "graded": "Nothing here is graded.",
    "next": "Put the two deadline clusters into your own planner now, before they are close.",
-   "clip": "183,196"
+   "clip": "183,196",
+   "video": "videos/tour/calendar.mp4",
+   "captions": "videos/tour/calendar.vtt"
   },
   "review": {
    "title": "How to use Term Review",
@@ -396,7 +424,9 @@ window.PSY355_HOWTO = {
    "saves": "Your practice history is saved only in this browser and feeds the missed-first ordering here and in the weekly Knowledge Checks.",
    "graded": "Nothing here is scored, recorded, or visible to your professor.",
    "next": "Run one set now, then revisit the week your confident misses point at.",
-   "clip": "196,210"
+   "clip": "196,210",
+   "video": "videos/tour/review.mp4",
+   "captions": "videos/tour/review.vtt"
   },
   "outcomes": {
    "title": "How to use What This Course Builds",
@@ -422,7 +452,9 @@ window.PSY355_HOWTO = {
    "saves": "This page stores nothing.",
    "graded": "Nothing here is graded. Blackboard carries the official documents.",
    "next": "Open a week one of your shakier outcomes points at.",
-   "clip": "210,224"
+   "clip": "210,224",
+   "video": "videos/tour/outcomes.mp4",
+   "captions": "videos/tour/outcomes.vtt"
   }
  }
 };
