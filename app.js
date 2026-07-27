@@ -686,6 +686,7 @@
       + '<div class="soc-head-brand" style="display:flex;align-items:center;gap:10px;flex:none;min-width:0"><img src="./seneca-logo.png" alt="Seneca Polytechnic" style="height:34px;width:auto;display:block"><span class="soc-head-title" style="font-weight:600;font-size:1.0625rem;color:var(--ink);letter-spacing:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">PSY355 Companion</span></div>'
       + readerLensButton()
       + (D.course.mode ? '<span class="mono soc-head-mode" style="font-size:.75rem;font-weight:600;color:#474C57;background:#EFF1F4;padding:5px 10px;border-radius:6px;flex:none">' + esc(D.course.mode).toUpperCase() + '</span>' : '')
+      + (D.course.schedule ? '<span class="mono soc-head-sched" style="font-size:.75rem;font-weight:600;color:#474C57;background:#EFF1F4;padding:5px 10px;border-radius:6px;flex:none">' + esc(D.course.schedule).toUpperCase() + '</span>' : '')
       + '<span class="mono soc-head-term" style="font-size:.75rem;font-weight:600;color:var(--red);background:#F6E3E1;padding:5px 10px;border-radius:6px;flex:none">FALL 2026</span>'
       + '</header>';
   }
@@ -1582,7 +1583,7 @@
     return calendarLegend() + '<div class="cal-grids">' + grids + '</div>' + keyDatesCalendar();
   }
   function calendarPage() {
-    return '<div class="rise cal-page">'
+    return '<div class="rise cal-page">' + (D.course.scheduleDetail ? '<div style="border:1px solid var(--border);border-left:4px solid var(--red);border-radius:10px;background:#fff;padding:12px 16px;margin:0 0 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:5px">CLASS TIME</div><p style="margin:0;font-size:.92rem;line-height:1.55;color:var(--ink)">' + esc(D.course.scheduleDetail) + '</p></div>' : '') + ''
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">CALENDAR</div>'
       + '<h1 style="font-size:1.9rem;line-height:1.15;font-weight:600;margin:0 0 8px;color:var(--ink)">Every date that matters</h1>'
       + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Seneca red marks due dates. Black marks live classes. Neutral grey marks every asynchronous week with no lecture, including the office-hour weeks. A light grey outline marks Study Week. Week 4 gives you room to apply the early foundations independently. Week 11 creates a deliberate synthesis point before the final live class. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
