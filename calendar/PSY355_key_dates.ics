@@ -6,145 +6,73 @@ X-WR-CALNAME:PSY355 Key Dates (Fall 2026)
 X-WR-TIMEZONE:America/Toronto
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
-UID:psy355-1@rpeart73.github.io
-DTSTART;VALUE=DATE:20260914
-DTEND;VALUE=DATE:20260915
-SUMMARY:PSY355: Weekly Reflections begin (weekly\, Weeks 2 to 12)
-DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260708T120000Z
-UID:psy355-2@rpeart73.github.io
-DTSTART;VALUE=DATE:20261009
-DTEND;VALUE=DATE:20261010
-SUMMARY:PSY355: Mindset Evidence Check 1 (due\, end of Week 5)
-DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355 deadline in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260708T120000Z
-UID:psy355-3@rpeart73.github.io
-DTSTART;VALUE=DATE:20261023
-DTEND;VALUE=DATE:20261024
-SUMMARY:PSY355: Mid-course Practice Synthesis (due\, end of Week 7)
-DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355 deadline in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260708T120000Z
-UID:psy355-4@rpeart73.github.io
-DTSTART;VALUE=DATE:20261106
-DTEND;VALUE=DATE:20261107
-SUMMARY:PSY355: Self-Regulated Learning Case Redesign (due\, end of Week 8)
-DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355 deadline in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260708T120000Z
-UID:psy355-5@rpeart73.github.io
-DTSTART;VALUE=DATE:20261127
-DTEND;VALUE=DATE:20261128
-SUMMARY:PSY355: Mindset Evidence Check 2 (due\, end of Week 11)
-DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355 deadline in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260708T120000Z
-UID:psy355-6@rpeart73.github.io
-DTSTART;VALUE=DATE:20261204
-DTEND;VALUE=DATE:20261205
-SUMMARY:PSY355: Weekly Reflections close (end of Week 12)
-DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355 deadline in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260708T120000Z
-UID:psy355-7@rpeart73.github.io
-DTSTART;VALUE=DATE:20261211
-DTEND;VALUE=DATE:20261212
-SUMMARY:PSY355: Personal Resilience Plan (due\, your final project)
-DESCRIPTION:Details and submission on Blackboard. Guidance on the companion site: https://rpeart73.github.io/psy355/
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355 deadline in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w1@rpeart73.github.io
-DTSTART;VALUE=DATE:20260908
-DTEND;VALUE=DATE:20260909
+DTSTART;VALUE=DATE:20260910
+DTEND;VALUE=DATE:20260911
 SUMMARY:PSY355 Week 1: live class
-DESCRIPTION:Course orientation and shared start. The week page includes the class recording space.
+DESCRIPTION:Course orientation and shared start. The week page includes the
+  class recording space.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w2@rpeart73.github.io
-DTSTART;VALUE=DATE:20260914
-DTEND;VALUE=DATE:20260915
+DTSTART;VALUE=DATE:20260917
+DTEND;VALUE=DATE:20260918
 SUMMARY:PSY355 Week 2: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w3@rpeart73.github.io
-DTSTART;VALUE=DATE:20260921
-DTEND;VALUE=DATE:20260922
+DTSTART;VALUE=DATE:20260924
+DTEND;VALUE=DATE:20260925
 SUMMARY:PSY355 Week 3: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w4@rpeart73.github.io
-DTSTART;VALUE=DATE:20260928
-DTEND;VALUE=DATE:20260929
-SUMMARY:PSY355 Week 4: asynchronous independent learning
-DESCRIPTION:Flexible independent application of the early course foundations. No live class.
+DTSTART;VALUE=DATE:20261001
+DTEND;VALUE=DATE:20261002
+SUMMARY:PSY355 Week 4: live class
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w5@rpeart73.github.io
-DTSTART;VALUE=DATE:20261005
-DTEND;VALUE=DATE:20261006
+DTSTART;VALUE=DATE:20261008
+DTEND;VALUE=DATE:20261009
 SUMMARY:PSY355 Week 5: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w6@rpeart73.github.io
-DTSTART;VALUE=DATE:20261013
-DTEND;VALUE=DATE:20261014
-SUMMARY:PSY355 Week 6: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261016
+SUMMARY:PSY355 Week 6: asynchronous independent learning
+DESCRIPTION:Use the flexible class time to extend resilience into context
+  and culture independently. No live class.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w7@rpeart73.github.io
-DTSTART;VALUE=DATE:20261019
-DTEND;VALUE=DATE:20261020
+DTSTART;VALUE=DATE:20261022
+DTEND;VALUE=DATE:20261023
 SUMMARY:PSY355 Week 7: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
@@ -156,51 +84,63 @@ DESCRIPTION:Use the week to rest. No graded work is due.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w8@rpeart73.github.io
-DTSTART;VALUE=DATE:20261102
-DTEND;VALUE=DATE:20261103
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261106
 SUMMARY:PSY355 Week 8: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w9@rpeart73.github.io
-DTSTART;VALUE=DATE:20261109
-DTEND;VALUE=DATE:20261110
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
 SUMMARY:PSY355 Week 9: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w10@rpeart73.github.io
-DTSTART;VALUE=DATE:20261116
-DTEND;VALUE=DATE:20261117
-SUMMARY:PSY355 Week 10: live class
-DESCRIPTION:Prepare on the week page and return after class for reflection and the recording.
+DTSTART;VALUE=DATE:20261119
+DTEND;VALUE=DATE:20261120
+SUMMARY:PSY355 Week 10: asynchronous independent learning
+DESCRIPTION:Use the flexible class time for unhurried reflective writing
+  and journaling. No live class.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w11@rpeart73.github.io
-DTSTART;VALUE=DATE:20261123
-DTEND;VALUE=DATE:20261124
-SUMMARY:PSY355 Week 11: asynchronous independent learning
-DESCRIPTION:Self-regulated synthesis before the final substantive live class. No live class.
+DTSTART;VALUE=DATE:20261126
+DTEND;VALUE=DATE:20261127
+SUMMARY:PSY355 Week 11: live class
+DESCRIPTION:Prepare on the week page and return after class for reflection
+  and the recording.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w12@rpeart73.github.io
-DTSTART;VALUE=DATE:20261130
-DTEND;VALUE=DATE:20261201
+DTSTART;VALUE=DATE:20261203
+DTEND;VALUE=DATE:20261204
 SUMMARY:PSY355 Week 12: final substantive live class
-DESCRIPTION:Bring the synthesis prepared in Week 11. The week page includes the class recording space.
+DESCRIPTION:Bring the synthesis prepared in Week 11. The week page includes
+  the class recording space.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
+SEQUENCE:1
 UID:psy355-mode-w13@rpeart73.github.io
-DTSTART;VALUE=DATE:20261207
-DTEND;VALUE=DATE:20261208
+DTSTART;VALUE=DATE:20261210
+DTEND;VALUE=DATE:20261211
 SUMMARY:PSY355 Week 13: office hours and supported asynchronous completion
-DESCRIPTION:No lecture. The usual class window becomes office hours for focused completion and consultation. Office hours are not recorded.
+DESCRIPTION:No lecture. The usual class window becomes office hours for
+  focused completion and consultation. Office hours are not recorded.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260708T120000Z
@@ -208,6 +148,132 @@ UID:psy355-mode-w14@rpeart73.github.io
 DTSTART;VALUE=DATE:20261214
 DTEND;VALUE=DATE:20261217
 SUMMARY:PSY355 Week 14: asynchronous office hours and course closure
-DESCRIPTION:No lecture. Optional office hours, feedback, and final questions. No graded work is due. Office hours are not recorded.
+DESCRIPTION:No lecture. Optional office hours\, feedback\, and final
+  questions. No graded work is due. Office hours are not recorded.
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-assessment-path-available@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20260908
+DTEND;VALUE=DATE:20260909
+SUMMARY:PSY355: all six assessment guides visible on the companion site
+DESCRIPTION:All six assessment guides are visible on the companion site.
+  This does not indicate that every Blackboard submission area is open.
+URL:https://rpeart73.github.io/psy355/?screen=assignments
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-weekly-reflections-begin@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20260914
+DTEND;VALUE=DATE:20260915
+SUMMARY:PSY355: Weekly Reflections begin
+DESCRIPTION:Complete one 150 to 250 word entry for each of Weeks 2 to 12.
+  The best 10 of 11 entries count. Submit each entry in Blackboard.
+URL:https://rpeart73.github.io/psy355/?screen=assignment-details&
+ asg=weekly-reflections
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-mindset-evidence-check-1-due@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20261009
+DTEND;VALUE=DATE:20261010
+SUMMARY:PSY355: Mindset Evidence Check 1 due (20 percent)
+DESCRIPTION:Due by 11:59 p.m. Eastern Time. Blackboard is the official
+  submission record.
+URL:https://rpeart73.github.io/psy355/?screen=assignment-details&
+ asg=mindset-evidence-check-1
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:PSY355 deadline in 2 days
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-midcourse-practice-synthesis-due@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20261023
+DTEND;VALUE=DATE:20261024
+SUMMARY:PSY355: Mid-course Practice Synthesis due (10 percent)
+DESCRIPTION:Due by 11:59 p.m. Eastern Time. Blackboard is the official
+  submission record.
+URL:https://rpeart73.github.io/psy355/?screen=assignment-details&
+ asg=midcourse-practice-synthesis
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:PSY355 deadline in 2 days
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-srl-case-redesign-due@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20261106
+DTEND;VALUE=DATE:20261107
+SUMMARY:PSY355: Self-Regulated Learning Case Redesign due (20 percent)
+DESCRIPTION:Due by 11:59 p.m. Eastern Time. Blackboard is the official
+  submission record.
+URL:https://rpeart73.github.io/psy355/?screen=assignment-details&
+ asg=srl-case-redesign
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:PSY355 deadline in 2 days
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-mindset-evidence-check-2-due@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20261127
+DTEND;VALUE=DATE:20261128
+SUMMARY:PSY355: Mindset Evidence Check 2 due (20 percent)
+DESCRIPTION:Due by 11:59 p.m. Eastern Time. Blackboard is the official
+  submission record.
+URL:https://rpeart73.github.io/psy355/?screen=assignment-details&
+ asg=mindset-evidence-check-2
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:PSY355 deadline in 2 days
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-weekly-reflections-close@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20261204
+DTEND;VALUE=DATE:20261205
+SUMMARY:PSY355: Weekly Reflections close (10 percent)
+DESCRIPTION:The best 10 of 11 entries count. The Blackboard thread closes
+  at 11:59 p.m. Eastern Time.
+URL:https://rpeart73.github.io/psy355/?screen=assignment-details&
+ asg=weekly-reflections
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:PSY355 deadline in 2 days
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20260827T120000Z
+UID:psy355-personal-resilience-plan-due@rpeart73.github.io
+SEQUENCE:2
+DTSTART;VALUE=DATE:20261211
+DTEND;VALUE=DATE:20261212
+SUMMARY:PSY355: Personal Resilience Plan due (20 percent)
+DESCRIPTION:Due by 11:59 p.m. Eastern Time. Blackboard is the official
+  submission record.
+URL:https://rpeart73.github.io/psy355/?screen=assignment-details&
+ asg=personal-resilience-plan
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:PSY355 deadline in 2 days
+END:VALARM
 END:VEVENT
 END:VCALENDAR

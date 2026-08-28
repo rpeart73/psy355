@@ -1,10 +1,9 @@
 /* PSY355 per-page how-to registry (2026-07-25). Every screen carries its own
    "How to use this page" panel so students can teach themselves each surface.
-   tour.file is the chaptered video tour; each page's clip value is a
-   media-fragment time range inside that one file. Plain language, no dashes. */
+   Pages with a current tour name their own captioned video. Plain language,
+   no dashes. */
 window.PSY355_HOWTO = {
  "tour": {
-  "file": "videos/howto-tour.mp4",
   "note": "Silent screen tour with on-screen captions."
  },
  "byScreen": {
@@ -33,12 +32,9 @@ window.PSY355_HOWTO = {
      "detail": "The Viewing as chip personalizes examples to your field of study. The course content stays the same for everyone; only the framing changes. You can turn it off any time."
     }
    ],
-   "saves": "Your visited weeks, compass activity, and program lens choice are saved only in this browser on this device. Nothing is sent anywhere.",
+   "saves": "When browser storage is available, your visited weeks, compass activity, and program lens choice may remain in this browser on this device. The site does not transmit them to the instructor or Seneca.",
    "graded": "Nothing on this page is graded or reported to your professor.",
-   "next": "Open the current week's station and start with its Before you begin section.",
-   "clip": "4,18",
-   "video": "videos/tour/journey.mp4",
-   "captions": "videos/tour/journey.vtt"
+   "next": "Open the current week's station and start with its Before you begin section."
   },
   "station": {
    "title": "How to use a week page",
@@ -50,7 +46,7 @@ window.PSY355_HOWTO = {
     },
     {
      "do": "Open sections one at a time.",
-     "detail": "Each heading has an open and close control. Expand all and Collapse all live at the top. The page remembers what you left open on this device."
+     "detail": "Each heading has an open and close control. Expand all and Collapse all live at the top. Up to two sections stay open while you use the week; leaving and returning starts from the folded map."
     },
     {
      "do": "Rate the ideas in Before you begin.",
@@ -73,12 +69,9 @@ window.PSY355_HOWTO = {
      "detail": "Type your reflection, then generate the Word file. It collects your week into one organized record on Seneca letterhead."
     }
    ],
-   "saves": "Your ratings, quiz history, reflections, and open sections are saved only in this browser on this device.",
-   "graded": "Every check on this page is practice. None of it is scored, recorded, or visible to your professor.",
-   "next": "When the week feels solid, return Home and open the next station.",
-   "clip": "18,32",
-   "video": "videos/tour/station.mp4",
-   "captions": "videos/tour/station.vtt"
+   "saves": "When browser storage is available, your ratings, quiz history, and reflections may remain in this browser on this device until site data is cleared. Open sections remain open only while you stay on that week.",
+   "graded": "Every check on this page is practice and may show a practice score. Nothing is graded, submitted, worth course marks, or reported to your professor; browser-stored practice may remain visible on a shared device until cleared.",
+   "next": "When the week feels solid, return Home and open the next station."
   },
   "site": {
    "title": "How to use this page",
@@ -93,20 +86,17 @@ window.PSY355_HOWTO = {
      "detail": "Every page carries its own version of this panel with steps for that page. Open it whenever a page feels unfamiliar."
     },
     {
-     "do": "Watch a page's video tour when reading is not enough.",
-     "detail": "The video plays a silent captioned tour of the page you are on."
+     "do": "Use the written guidance first.",
+     "detail": "Every covered page has current written steps. A silent captioned tour will appear only when one is available and current."
     },
     {
      "do": "Back up your saved work.",
-     "detail": "The Take your saved work with you box on this page downloads everything you have typed and rated as one file, and restores it on any device. The accessibility statement lives here too."
+     "detail": "When browser storage is available, the Take your saved work with you box downloads the records this site has stored as one file. You can restore that file in another compatible browser or device. The accessibility statement lives here too."
     }
    ],
-   "saves": "Everything you type or rate on this site stays in this browser on this device. Clear My Work wipes it.",
+   "saves": "When browser storage is available, what you type or rate may remain in this browser on this device until you use Clear My Work or clear site data. Browser settings can also prevent or remove it.",
    "graded": "Nothing on this site is graded. Blackboard is the only official gradebook.",
-   "next": "Head back Home and open the current week.",
-   "clip": "32,45",
-   "video": "videos/tour/site.mp4",
-   "captions": "videos/tour/site.vtt"
+   "next": "Head back Home and open the current week."
   },
   "pathways": {
    "title": "How to use Course Rhythm",
@@ -125,12 +115,9 @@ window.PSY355_HOWTO = {
      "detail": "Use the rhythm to spot where readings stack up against your other courses, then start those weeks earlier."
     }
    ],
-   "saves": "This page stores nothing.",
+   "saves": "This page does not collect or submit student work.",
    "graded": "Nothing here is graded.",
-   "next": "Open Calendar and Due Dates to put exact dates against this rhythm.",
-   "clip": "45,59",
-   "video": "videos/tour/pathways.mp4",
-   "captions": "videos/tour/pathways.vtt"
+   "next": "Open Calendar and Due Dates to put exact dates against this rhythm."
   },
   "readings": {
    "title": "How to use Readings and Media",
@@ -153,12 +140,9 @@ window.PSY355_HOWTO = {
      "detail": "The saved shelf collects sources you want to come back to, for example for an assignment."
     }
    ],
-   "saves": "Your saved shelf and practice history stay in this browser on this device.",
-   "graded": "Source Practice is never scored.",
-   "next": "Take two or three sources into Compare Sources and hold them side by side.",
-   "clip": "59,73",
-   "video": "videos/tour/readings.mp4",
-   "captions": "videos/tour/readings.vtt"
+   "saves": "When browser storage is available, your saved shelf and practice history may remain in this browser on this device until site data is cleared.",
+   "graded": "Source Practice may show which responses match the source evidence, but it is not graded, submitted, or worth course marks.",
+   "next": "Take two or three sources into Compare Sources and hold them side by side."
   },
   "compare": {
    "title": "How to use Compare Sources",
@@ -181,12 +165,9 @@ window.PSY355_HOWTO = {
      "detail": "One or two sentences in your own words is worth more than the whole generated frame."
     }
    ],
-   "saves": "Your comparison notes stay in this browser on this device.",
+   "saves": "When browser storage is available, your comparison notes may remain in this browser on this device until site data is cleared.",
    "graded": "Comparisons are never graded. They exist to sharpen your written work.",
-   "next": "Carry your comparison insight into this week's reflection or your next assignment.",
-   "clip": "73,87",
-   "video": "videos/tour/compare.mp4",
-   "captions": "videos/tour/compare.vtt"
+   "next": "Carry your comparison insight into this week's reflection or your next assignment."
   },
   "walkthroughs": {
    "title": "How to use Weekly Experiences",
@@ -206,15 +187,12 @@ window.PSY355_HOWTO = {
     },
     {
      "do": "Leave any time; return any time.",
-     "detail": "Close returns you to the page you came from. The experience remembers where you left off on this device."
+     "detail": "Close returns you to the page you came from. When browser storage is available, the experience may remember where you left off on this device."
     }
    ],
-   "saves": "Your position in each experience is saved in this browser on this device.",
+   "saves": "When browser storage is available, your position in each experience may remain in this browser on this device until site data is cleared.",
    "graded": "Experiences are teaching, not testing. Nothing is scored.",
-   "next": "After an experience, open the same week's Study Guide to lock the idea in.",
-   "clip": "87,100",
-   "video": "videos/tour/walkthroughs.mp4",
-   "captions": "videos/tour/walkthroughs.vtt"
+   "next": "After an experience, open the same week's Study Guide to lock the idea in."
   },
   "videos": {
    "title": "How to use Videos and Podcasts",
@@ -226,19 +204,16 @@ window.PSY355_HOWTO = {
     },
     {
      "do": "Play inside the page.",
-     "detail": "Videos are embedded with privacy-friendly players. Nothing tracks you into another site while you stay here."
+     "detail": "No external player loads until you choose a video. When you do, the media provider receives the request under its own privacy practices."
     },
     {
      "do": "Connect what you watch to the week's reading.",
      "detail": "A talk is a way into a source, not a replacement for reading it."
     }
    ],
-   "saves": "This page stores nothing beyond your program lens choice.",
-   "graded": "Watching is never tracked or graded.",
-   "next": "Open the reading the video connects to in Readings and Media.",
-   "clip": "100,114",
-   "video": "videos/tour/videos.mp4",
-   "captions": "videos/tour/videos.vtt"
+   "saves": "The companion site does not record which media you play. When browser storage is available, your media notes and program lens may remain on this device; gallery filters may remain for the browser session.",
+   "graded": "Watching is not graded by the companion site. Loading external media contacts its provider under that provider's privacy practices.",
+   "next": "Open the reading the video connects to in Readings and Media."
   },
   "glossary": {
    "title": "How to use the Glossary",
@@ -257,12 +232,9 @@ window.PSY355_HOWTO = {
      "detail": "Each entry names its home week, so you can revisit the fuller context."
     }
    ],
-   "saves": "This page stores nothing.",
+   "saves": "Your current search and week filter may remain for this browser session. The page does not submit graded work.",
    "graded": "Nothing here is graded.",
-   "next": "Turn terms into memory with Concept Flashcards.",
-   "clip": "114,128",
-   "video": "videos/tour/glossary.mp4",
-   "captions": "videos/tour/glossary.vtt"
+   "next": "Turn terms into memory with Concept Flashcards."
   },
   "cards": {
    "title": "How to use Concept Flashcards",
@@ -281,20 +253,17 @@ window.PSY355_HOWTO = {
      "detail": "If you can only repeat the card's wording, flip it again tomorrow."
     }
    ],
-   "saves": "This page stores nothing.",
+   "saves": "Your current week filter may remain for this browser session. The cards do not submit graded work.",
    "graded": "Cards are pure practice.",
-   "next": "Take the week's Knowledge Check and see what stuck.",
-   "clip": "128,142",
-   "video": "videos/tour/cards.mp4",
-   "captions": "videos/tour/cards.vtt"
+   "next": "Take the week's Knowledge Check and see what stuck."
   },
   "assignments": {
    "title": "How to use Starting Your Assignment",
-   "intro": "This page turns each assessment into a concrete starting path so the blank page never wins.",
+   "intro": "This page shows all six graded pieces from day one and turns each one into a concrete starting path.",
    "steps": [
     {
      "do": "Pick the assessment you are starting.",
-     "detail": "Each one shows what it asks, when it is due, and which weeks feed it."
+     "detail": "Open any assessment guide to see its weight, date, evidence anchor, submission shape, and first moves. Blackboard remains the official brief and submission area."
     },
     {
      "do": "Follow the start path step by step.",
@@ -302,19 +271,16 @@ window.PSY355_HOWTO = {
     },
     {
      "do": "Open the Assignment Start Lab when you want a working session.",
-     "detail": "The lab walks you through building a personal plan you can print or save. It is private and never submitted."
+     "detail": "The lab walks you through building a personal plan you can print or save. The companion site does not submit it; when browser storage is available, answers may remain visible on a shared device until cleared."
     },
     {
      "do": "Submit on Blackboard, always.",
      "detail": "This site helps you start and plan. The official assignment, rubric, and submission all live on Blackboard."
     }
    ],
-   "saves": "Your lab plan and notes stay in this browser on this device.",
+   "saves": "Lab answers may remain in this browser when storage is available. Browser settings or cleared site data can remove them, and they do not sync automatically.",
    "graded": "Nothing here is submitted or graded. Blackboard is the only submission channel.",
-   "next": "Block one hour, open the lab, and leave with a plan.",
-   "clip": "142,155",
-   "video": "videos/tour/assignments.mp4",
-   "captions": "videos/tour/assignments.vtt"
+   "next": "Choose a realistic work block, open the lab, and leave with a plan."
   },
   "career": {
    "title": "How to use Career Choices",
@@ -341,12 +307,9 @@ window.PSY355_HOWTO = {
      "detail": "One honest paragraph about how this course touches your field is a seed for assignments later."
     }
    ],
-   "saves": "Your field choice and reflection stay in this browser on this device. The chip follows you around the site until you turn it off.",
+   "saves": "When browser storage is available, your field choice and reflection may remain in this browser on this device. The chip follows you around the site until you turn it off or the browser clears that state.",
    "graded": "The graded curriculum is identical for every student. The lens changes examples and framing only.",
-   "next": "Visit a week the page recommends for your field and watch the framing follow you.",
-   "clip": "155,169",
-   "video": "videos/tour/career.mp4",
-   "captions": "videos/tour/career.vtt"
+   "next": "Visit a week the page recommends for your field and watch the framing follow you."
   },
   "ecology": {
    "title": "How to use Resilience Ecology",
@@ -365,12 +328,9 @@ window.PSY355_HOWTO = {
      "detail": "A thin ring is information about your environment, not a verdict on you. Navigating toward resources is the skill the course teaches."
     }
    ],
-   "saves": "Your ecology notes stay in this browser on this device.",
-   "graded": "This is private reflection. It is never seen or scored.",
-   "next": "Bring one insight from your map into this week's reflection.",
-   "clip": "169,183",
-   "video": "videos/tour/ecology.mp4",
-   "captions": "videos/tour/ecology.vtt"
+   "saves": "When browser storage is available, your ecology notes may remain in this browser on this device until site data is cleared.",
+   "graded": "This reflection is not submitted or scored by the site. On a shared device, browser-stored notes may remain visible until you clear them.",
+   "next": "Bring one insight from your map into this week's reflection."
   },
   "calendar": {
    "title": "How to use Calendar and Due Dates",
@@ -382,19 +342,16 @@ window.PSY355_HOWTO = {
     },
     {
      "do": "Download the calendar file.",
-     "detail": "The download button gives you a file your phone or computer calendar can subscribe to, so the dates live where you already look."
+     "detail": "The download button gives you a static file to import into your phone or computer calendar. It will not update automatically. On a phone, use the separate live subscription link when you want calendar updates."
     },
     {
      "do": "Treat Blackboard as the official source.",
      "detail": "If anything ever differs, Blackboard and your professor's announcements win."
     }
    ],
-   "saves": "This page stores nothing.",
+   "saves": "This page does not collect or submit student work.",
    "graded": "Nothing here is graded.",
-   "next": "Put the two deadline clusters into your own planner now, before they are close.",
-   "clip": "183,196",
-   "video": "videos/tour/calendar.mp4",
-   "captions": "videos/tour/calendar.vtt"
+   "next": "Put the two deadline clusters into your own planner now, before they are close."
   },
   "review": {
    "title": "How to use Term Review",
@@ -421,12 +378,9 @@ window.PSY355_HOWTO = {
      "detail": "Two short mixed sets a week beat one long cram. The pool grows as the course does."
     }
    ],
-   "saves": "Your practice history is saved only in this browser and feeds the missed-first ordering here and in the weekly Knowledge Checks.",
-   "graded": "Nothing here is scored, recorded, or visible to your professor.",
-   "next": "Run one set now, then revisit the week your confident misses point at.",
-   "clip": "196,210",
-   "video": "videos/tour/review.mp4",
-   "captions": "videos/tour/review.vtt"
+   "saves": "When browser storage is available, your practice history may remain in this browser and feed the missed-first ordering here and in the weekly Knowledge Checks until site data is cleared.",
+   "graded": "Term Review may show a scored practice result for calibration. It is not graded, submitted, worth course marks, or sent to your professor.",
+   "next": "Run one set now, then revisit the week your confident misses point at."
   },
   "outcomes": {
    "title": "How to use What This Course Builds",
@@ -449,12 +403,9 @@ window.PSY355_HOWTO = {
      "detail": "The Essential Employability Skills list is what Ontario colleges promise every graduate. This course practises the ones shown."
     }
    ],
-   "saves": "This page stores nothing.",
+   "saves": "This page does not collect or submit student work.",
    "graded": "Nothing here is graded. Blackboard carries the official documents.",
-   "next": "Open a week one of your shakier outcomes points at.",
-   "clip": "210,224",
-   "video": "videos/tour/outcomes.mp4",
-   "captions": "videos/tour/outcomes.vtt"
+   "next": "Open a week one of your shakier outcomes points at."
   }
  }
 };

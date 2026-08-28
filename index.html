@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; frame-src 'self' https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#DA291C">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="build" content="20260727-041852">
+<meta name="build" content="20260828-090223">
 <script>
-(function(){try{var m=document.querySelector('meta[name="build"]');var L=m?(m.content||''):'';if(!L)return;function chk(){fetch('build.txt?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():null;}).then(function(t){if(!t)return;t=(t||'').trim();if(!t||t===L)return;if(sessionStorage.getItem('bf_reload_for')===t)return;sessionStorage.setItem('bf_reload_for',t);location.reload();}).catch(function(){});}chk();setInterval(function(){if(!document.hidden)chk();},2500);}catch(e){}})();
+(function(){try{var m=document.querySelector('meta[name="build"]');var L=m?(m.content||''):'';if(!L)return;function cleanMarker(t){try{var u=new URL(location.href);if(t===L&&u.searchParams.has('_bf_build')){u.searchParams.delete('_bf_build');history.replaceState(history.state,'',u.href);}}catch(e){}}function chk(){fetch('build.txt?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():null;}).then(function(t){if(!t)return;t=(t||'').trim();if(!t)return;if(t===L){cleanMarker(t);return;}var seen=false,storageOK=true;try{seen=sessionStorage.getItem('bf_reload_for')===t;if(!seen)sessionStorage.setItem('bf_reload_for',t);}catch(e){storageOK=false;}if(seen)return;if(storageOK){location.reload();return;}try{var u=new URL(location.href);if(u.searchParams.get('_bf_build')===t)return;u.searchParams.set('_bf_build',t);location.replace(u.href);}catch(e){}}).catch(function(){});}chk();document.addEventListener('visibilitychange',function(){if(!document.hidden)chk();});window.addEventListener('focus',chk);setInterval(function(){if(!document.hidden)chk();},60000);}catch(e){}})();
 </script>
 <title>PSY355 Companion: weekly learning pathway</title>
 <meta name="description" content="Instructor-created PSY355 companion website for weekly learning pathways, readings, concepts, immersive experiences, and study supports. Blackboard remains the official Seneca course platform.">
-<link rel="stylesheet" href="./fonts/fonts.css?v=20260727-041852">
+<link rel="stylesheet" href="./fonts/fonts.css?v=20260828-090223">
 <style>
   :root{
     --navy:#1B2A4A; --red:#DA291C; --red-dark:#961A13; --amber:#F2A900; --page:#F7F8FA; --surface:#fff;
@@ -24,7 +24,7 @@
   *{box-sizing:border-box}
   html,body{margin:0;padding:0;overflow-x:hidden}
   body{font-family:var(--sans);background:var(--page);color:var(--ink);-webkit-font-smoothing:antialiased}
-  button{font-family:inherit;cursor:pointer}
+  button{font-family:inherit;cursor:pointer;min-height:24px}
   input{font-family:inherit}
   ::selection{background:#FCEFD2}
   *:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
@@ -72,8 +72,8 @@
   textarea:focus-visible{outline:3px solid #1552D8!important;outline-offset:2px}
   .vid-load:focus-visible{outline:3px solid #7EB8FF!important;outline-offset:2px}
   .vid-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#1B2A4A 0%,#27436e 55%,#961A13 100%)}
-  .vid-cover-play{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.75);position:relative}
-  .vid-cover-play:after{content:"";position:absolute;left:21px;top:15px;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
+  .vid-cover-play{width:56px;height:56px;border-radius:50%;background:#DA291C;box-shadow:0 6px 18px rgba(0,0,0,.45);position:relative}
+  .vid-cover-play:after{content:"";position:absolute;left:23px;top:17px;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
   .vid-cover-note{font-size:.72rem;font-weight:600;letter-spacing:.04em;color:rgba(255,255,255,.85)}
   .wk-coll-btn{float:right;margin-left:12px;min-width:30px;min-height:30px;border:1px solid #DEE3EA;background:#fff;color:#474C57;border-radius:8px;font-size:1.05rem;font-weight:600;line-height:1;cursor:pointer}
   .wk-coll-btn:hover{background:#EEF1F5}
@@ -464,8 +464,10 @@
   .cal-sw-study{background:#fff;border:2px solid #6B7280}.cal-study{background:#FAFAFA}.cal-study .cal-tag{background:#fff;color:#15171C;border:1px solid #6B7280}
   .cal-sw-open{background:#961A13;border:0;border-radius:1px;transform:rotate(45deg)}.cal-open{background:#FBF3F2}.cal-open .cal-tag{background:#961A13;color:#fff}.kd-open .kd-dot{background:#961A13;border-radius:1px;transform:rotate(45deg)}
   .cal-sw-support{background:#474C57}.cal-support{background:#F4F4F4}.cal-support .cal-tag{background:#474C57;color:#fff}.kd-support .kd-dot{background:#474C57}
+  .kd-link,.vid-copy>a{display:inline-flex;align-items:center;min-height:24px}
+  #soc-search{min-height:24px}
 </style>
-<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260727-041852">
+<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260828-090223">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body>
@@ -474,26 +476,26 @@
   <main id="soc-main" style="max-width:760px;margin:48px auto;padding:28px;background:#fff;border:1px solid #DEE3EA;border-radius:14px;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#15171C;line-height:1.6">
     <h1 style="margin-top:0">PSY355 companion website</h1>
     <p>This instructor-created companion website uses JavaScript for weekly navigation and study tools. Blackboard remains the official Seneca course platform for submissions, grades, announcements, discussions, and course records.</p>
-    <p>This site does not require an account, collect student submissions, store grades, or send personal student information to the instructor, Seneca, or any server.</p>
+    <p>This site does not require an account, collect course submissions, or store grades. Its own code does not transmit the optional first name, notes, or check answers. Browser storage may be unavailable or cleared, and opening an external link or media item contacts that provider.</p>
   </main>
 </noscript>
 <div id="app"></div>
 <div id="soc-live" role="status" aria-live="polite" class="skip"></div>
-<script src="./data/corpus-data.js?v=20260727-041852"></script>
-<script src="./data/psy355-mc.js?v=20260727-041852"></script>
-<script src="./data/psy355-kc.js?v=20260727-041852"></script>
-<script src="./data/psy355-kc-additions.js?v=20260727-041852"></script>
-<script src="./data/psy355-career.js?v=20260727-041852"></script>
-<script src="./data/seneca-programs.js?v=20260727-041852"></script>
-<script src="./data/psy355-lens.js?v=20260727-041852"></script>
-<script src="./data/psy355-howto.js?v=20260727-041852"></script>
-<script src="./data/psy355-interpersonal.js?v=20260727-041852"></script>
-<script src="./data/psy355-outcomes.js?v=20260727-041852"></script>
-<script src="./data/psy355-field-examples.js?v=20260727-041852"></script>
-<script src="./data/psy355-walkfigs.js?v=20260727-041852"></script>
-<script src="./data/psy355-images.js?v=20260727-041852"></script>
-<script src="./data/psy355-recordings.js?v=20260727-041852"></script>
-<script src="./app.js?v=20260727-041852"></script>
-<script defer src="assets/img-viewer.js?v=20260727-041852"></script>
+<script src="./data/corpus-data.js?v=20260828-090223"></script>
+<script src="./data/psy355-mc.js?v=20260828-090223"></script>
+<script src="./data/psy355-kc.js?v=20260828-090223"></script>
+<script src="./data/psy355-kc-additions.js?v=20260828-090223"></script>
+<script src="./data/psy355-career.js?v=20260828-090223"></script>
+<script src="./data/seneca-programs.js?v=20260828-090223"></script>
+<script src="./data/psy355-lens.js?v=20260828-090223"></script>
+<script src="./data/psy355-howto.js?v=20260828-090223"></script>
+<script src="./data/psy355-interpersonal.js?v=20260828-090223"></script>
+<script src="./data/psy355-outcomes.js?v=20260828-090223"></script>
+<script src="./data/psy355-field-examples.js?v=20260828-090223"></script>
+<script src="./data/psy355-walkfigs.js?v=20260828-090223"></script>
+<script src="./data/psy355-images.js?v=20260828-090223"></script>
+<script src="./data/psy355-recordings.js?v=20260828-090223"></script>
+<script src="./app.js?v=20260828-090223"></script>
+<script defer src="assets/img-viewer.js?v=20260828-090223"></script>
 </body>
 </html>

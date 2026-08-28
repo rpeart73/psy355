@@ -2,8 +2,8 @@
  * PSY355 interpersonal layer.
  * Every prompt below is derived from the authored WEEKPAGE guiding questions in
  * Workbench/Seneca/Courses/Fall/2026/PSY355/_app/app.js (WEEKPAGE.PSY355, weeks 1 to 12).
- * Live weeks (1 to 3, 5 to 10, 12) get a think-pair-share spec and a small-group move.
- * Asynchronous weeks (4 and 11) get a Blackboard discussion prompt.
+ * Live weeks (1 to 5, 7 to 9, 11, and 12) get a think-pair-share spec and a small-group move.
+ * Asynchronous weeks (6 and 10) get a Blackboard discussion prompt.
  * Named citations (Panadero 2017; Yeager et al. 2019; Owen) appear here only because they
  * appear in the authored guiding questions themselves. No findings are added beyond them.
  */
@@ -37,13 +37,14 @@ window.PSY355_INTERPERSONAL = {
       team: "In small groups, work from this week's reading on the national experiment (Yeager et al., 2019). Each group answers, from the reading itself, where and for whom a growth mindset improved achievement, then names one situation from student life where mindset stops explaining things. Groups report both answers and the class checks them against the reading."
     },
 
-    // Week 4 (asynchronous). Grounded in guiding questions: "confidence becomes useful when
+    // Week 4 (live). Grounded in guiding questions: "confidence becomes useful when
     // it is tied to action rather than performance", "where does academic self-efficacy
     // actually come from, and which source is strongest", "when does encouragement from
     // others help, and when does it need real evidence behind it", "the smallest action you
     // could take that would count as proof you can do the next step".
     4: {
-      discussion: "First post: describe the smallest action you could take this week that would count as proof you can do the next step in one of your courses. Say which source of academic self-efficacy it draws on and why you think that source is strongest for you. Then reply to two classmates. For the first, say whether their action ties confidence to action or to performance, and why that difference matters for them. For the second, offer encouragement that has real evidence behind it: point at something specific in their post that supports it. Replies that only say good idea do not count. End the week by adding a short note to your own thread about whether a reply changed your planned action."
+      pair: "Think on your own for two minutes: choose one task in one of your courses and write the smallest action that would count as proof you can take the next step. In pairs, exchange actions, identify which source of academic self-efficacy each action draws on, and check whether it ties confidence to action rather than performance. Help each other make the action more specific. Bring back one example of encouragement that points to real evidence rather than general praise.",
+      team: "In groups of three or four, choose one shared academic task and build a four-source map for it: mastery experience, vicarious experience, social persuasion, and physiological or affective states. For each source, name one realistic move that could support the next step. Decide which move would provide the clearest evidence for action in this case and explain why, without pretending that confidence removes the task's barriers."
     },
 
     // Week 5 (live). Grounded in guiding questions: "resilience as a process rather than a
@@ -55,14 +56,13 @@ window.PSY355_INTERPERSONAL = {
       team: "In small groups, take one shared student scenario the instructor provides and map it onto the disruption and reintegration model. Mark the stage the student is in, what would move them forward, and one resource the model by itself does not supply. Groups post their maps side by side and compare where they placed the same student differently."
     },
 
-    // Week 6 (live). Grounded in guiding questions: "who gets called resilient, and what
+    // Week 6 (asynchronous). Grounded in guiding questions: "who gets called resilient, and what
     // context is being ignored when that label is used", the shift "from what is wrong with
     // me to what in my environment helps or blocks adaptation", "where does a single
     // definition of coping need cultural and contextual fit", "one concrete support a
     // student could draw on".
     6: {
-      pair: "On your own, think of someone who gets called resilient, in your life or in public, and jot down what context that label ignores. In pairs, swap examples, then shift the question together from what is wrong with the person to what in their environment helps or blocks adaptation. Bring back one concrete support a student in this course could draw on, named specifically, without pretending the barrier is simple.",
-      team: "In small groups, build an environment map for a typical student in this course: on one side, what in the environment helps adaptation, and on the other, what blocks it. Then take one definition of coping from this week and test it against the map: where does a single definition hold, and where does it need cultural and contextual fit. Each group reports one place their definition broke."
+      discussion: "First post: describe a fictional or general student learning situation in which someone might be called resilient. Map one support and one barrier in the student's environment, explain what context the label could miss, and test one definition of coping against the situation: where does it help, and where does it need cultural or contextual fit? End with one concrete support the student could draw on without pretending the barrier is simple. Then reply to two classmates. In one reply, add a relationship, system, or cultural layer that could change their map. In the other, ask whether the proposed support fits the student's context and explain what you would check. Return to your post and name one way the replies widened your view of the student's social ecology."
     },
 
     // Week 7 (live). Grounded in guiding questions: "recognize pressure without letting
@@ -92,23 +92,23 @@ window.PSY355_INTERPERSONAL = {
       team: "In small groups, collect real coursework examples and sort them into two piles: quitting the method and quitting the goal. Then agree on a short test, two or three questions, that any student in the class could use to tell when continuing has stopped being wise. Groups trade tests and try them on each other's examples."
     },
 
-    // Week 10 (live). Grounded in guiding questions: "reflection turns experience into
+    // Week 10 (asynchronous). Grounded in guiding questions: "reflection turns experience into
     // learning rather than memory alone", "what makes a reflective journal different from a
     // diary, and why the structure matters", "where does a reflection model help, and where
     // does it need real context", "which reflective-practice approaches you would actually
     // keep using on real coursework".
     10: {
-      pair: "On your own, pick one recent course experience and write it two ways: first as a diary line that records what happened, then as a reflective line that turns it into learning. In pairs, swap both versions and identify exactly what the structure of the reflective version added, since the structure is what separates a reflective journal from a diary. Bring back the one reflective-practice approach your pair would actually keep using on real coursework, and why that one.",
-      team: "In small groups, apply one reflection model from this week to the same shared experience, provided by the instructor so every group works from identical material. Each group reports two things: where the model helped turn the experience into learning, and where it needed real context to work. The class compares reports to see whether different groups hit the model's limits in the same place."
+      discussion: "First post: choose a recent, low-stakes learning experience or use an invented example. Write it first as a diary line that records what happened. Then use the four-part reflection. State the event and your interpretation. Name the evidence and your next action. Explain what the structure adds. Identify where it still needs context, and say what evidence you would check after the next attempt. Then reply to two classmates. In one reply, identify the point where their entry moves from memory to learning and ask one question about the evidence. In the other, test whether the next action follows from the reflection and suggest one precise revision. Return to your post and revise one part. Name the reflective-practice approach you would keep using on real coursework."
     },
 
-    // Week 11 (asynchronous). Grounded in guiding questions: "how do you ask for help
+    // Week 11 (live). Grounded in guiding questions: "how do you ask for help
     // without treating help as failure", "where does help seeking fit inside how you already
     // manage your own learning", "what makes a request actionable for its reader: who you
     // ask, how clearly you name the problem, or both", "one concrete request you could send
     // this week".
     11: {
-      discussion: "First post: draft one concrete help request you could actually send this week. Name who you would ask and state the problem as clearly as you can, without pretending the barrier is simple. Add one line on where this request fits inside how you already manage your own learning. Then reply to two classmates as the reader of their request: tell them honestly whether their request is actionable, say whether the fix is who they are asking, how clearly the problem is named, or both, and suggest one specific edit. Also note if any part of their wording still treats help as failure. If a reply improves your request, revise your original post and say what you changed. The goal is that every request in the thread leaves the week more sendable than it arrived."
+      pair: "On your own, draft a short academic help request based on a real or invented course problem. Name the issue, the step already tried, and the specific help needed. In pairs, read each request from the intended recipient's point of view. Check who is being asked, whether the request is actionable, and how well it accounts for purpose, audience, and impact. Suggest one exact edit. Bring back one revision that made a request easier to act on without treating help as failure.",
+      team: "In small groups, take a fictional student scenario and walk it through a problem-solving sequence: name the problem, consider the options, choose the right person to ask, draft the academic request, and decide how the student will check the result. Each group presents its request. The class identifies what makes it clear and mindful, and where the student's context needs to be acknowledged rather than treated as a personal failure."
     },
 
     // Week 12 (live). Grounded in guiding questions: "resources and relationships treated as

@@ -1,4 +1,4 @@
-/* PSY355 official outcomes registry (2026-07-25). CLO and EES wording extracted VERBATIM from the official course outline documents; week and assessment mappings only where a document states them. Sources: /mnt/c/Users/raymo/Tresorit/Tresorit Ecosystem/Workbench/Seneca/Courses/Fall/2026/PSY355/Course Outline/PSY355_Course_Outline_Fall2026_DRAFT.docx; /mnt/c/Users/raymo/Tresorit/Tresorit Ecosystem/Workbench/Seneca/Courses/Fall/2026/PSY355/_Course_Plans/PSY355_Curriculum_Alignment_Map_Fall2026.md; /mnt/c/Users/raymo/Tresorit/Tresorit Ecosystem/Workbench/Seneca/Courses/Fall/2026/PSY355/Assessments/PSY355_Evaluation_Addenda_Fall2026.docx */
+/* PSY355 official outcomes registry (2026-07-25). CLO and EES wording extracted VERBATIM from the official course outline documents; week and assessment mappings only where a document states them. Sources: PSY355 Fall 2026 draft course outline; PSY355 Fall 2026 curriculum alignment map; PSY355 Fall 2026 evaluation addenda. */
 window.PSY355_OUTCOMES = {
  "note": "Wording is taken verbatim from the official course outline. Blackboard carries the official documents; if anything differs, Blackboard wins.",
  "clos": [

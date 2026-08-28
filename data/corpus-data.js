@@ -1,7 +1,7 @@
 window.PSY355 = {
  "course": {
   "code": "PSY355",
-  "mode": "Synchronous · Live online classes", "schedule": "OLB · Thu 1:30-2:30", "scheduleDetail": "Section OLB (LEC 8000). Timetabled Thursday 1:30 to 4:10. Our live class runs Thursdays 1:30 to 2:30. Some weeks are asynchronous with no live class, and those weeks are marked below.",
+  "mode": "Synchronous · Live online classes", "schedule": "OLB · Thu 2:00-3:00", "scheduleDetail": "Section OLB (LEC 8000). Timetabled Thursday 1:30 to 4:10. Our live class runs Thursdays 2:00 to 3:00. Some weeks are asynchronous with no live class, and those weeks are marked below.",
   "name": "Psychology of Learning: Mindset and Resilience",
   "frame": "",
   "blackboardNote": "A companion to Blackboard. Official records, discussion, and submission live in Blackboard."

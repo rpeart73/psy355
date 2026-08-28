@@ -15,6 +15,114 @@
   var VKEY = SKEY + '.view.v1';
   var HKEY = SKEY + '.hardResetNext';
   var WKKEY = SKEY + '.walk.v1';
+  var PSY_ASSESSMENTS = [
+    {
+      id: 'weekly-reflections',
+      title: 'Weekly Reflections',
+      weight: '10 percent',
+      schedule: 'Entries begin the week of September 14. The thread closes December 4.',
+      due: 'Closes Friday, December 4, 2026',
+      weeks: 'Weeks 2 to 12; best 10 of 11 entries count',
+      summary: 'Build a connected record of course moments, strategies tried, and honest observations about your own learning practice.',
+      steps: [
+        'Write one 150 to 250 word entry each week from Week 2 through Week 12.',
+        'Connect the entry to your own previous record and explain what has changed. In Week 2, use your first impression or state that this is your first entry.',
+        'Name one specific weekly learning or participation moment, whether the week is live or asynchronous.',
+        'Add one honest observation about what you tried, avoided, or noticed in your own practice.'
+      ],
+      submit: ['Eleven short Blackboard entries across Weeks 2 to 12.', 'Your best 10 entries count at 1 mark each, so one missed week costs nothing.'],
+      evidence: 'Your own dated reflection record and specific course participation moments'
+    },
+    {
+      id: 'mindset-evidence-check-1',
+      title: 'Mindset Evidence Check 1',
+      weight: '20 percent',
+      schedule: 'Due October 9 at the end of Week 5.',
+      due: 'Friday, October 9, 2026',
+      weeks: 'Evidence from Weeks 3 and 4',
+      summary: 'Examine one real learning struggle through growth-mindset and self-efficacy evidence, including the limits of those ideas.',
+      steps: [
+        'Choose one real, recent learning struggle and anchor it to a privacy-safe artifact of your own.',
+        'Use the Week 3 growth-mindset and Week 4 self-efficacy evidence, including where the evidence does not apply.',
+        'End with one concrete next move and name the evidence that supports it.'
+      ],
+      submit: ['A 500 to 700 word analysis anchored to one real artifact.', 'At least two assigned sources from Weeks 3 and 4, cited in APA.', 'A document or structured voice recording; keep the citation list in text.'],
+      evidence: 'One real learning struggle, one privacy-safe artifact, and at least two assigned sources'
+    },
+    {
+      id: 'midcourse-practice-synthesis',
+      title: 'Mid-course Practice Synthesis',
+      weight: '10 percent',
+      schedule: 'Due October 23 at the end of Week 7, before Study Week.',
+      due: 'Friday, October 23, 2026',
+      weeks: 'Your Weekly Reflections from Weeks 2 to 7',
+      summary: 'Read your own first-half record as evidence, name a pattern, and set two testable changes for the second half of the term.',
+      steps: [
+        'Re-read your Weeks 2 to 7 Weekly Reflections from start to finish.',
+        'Quote at least three exact lines from your own entries.',
+        'Name where your practice holds, where it slips, and what tends to be true when it slips.',
+        'Set two specific changes that your later reflections can check.'
+      ],
+      submit: ['A 600 to 800 word synthesis.', 'At least three exact, verifiable quotations from your own Weekly Reflections.', 'Two concrete changes for Weeks 8 to 12.'],
+      evidence: 'At least three verified lines from your own reflection record'
+    },
+    {
+      id: 'srl-case-redesign',
+      title: 'Self-Regulated Learning Case Redesign',
+      weight: '20 percent',
+      schedule: 'Due November 6 at the end of Week 8.',
+      due: 'Friday, November 6, 2026',
+      weeks: 'Evidence from Weeks 2 and 5 to 7',
+      summary: 'Diagnose one real study routine, redesign it with the self-regulated learning cycle and resilience as process, then test it for seven days.',
+      steps: [
+        'Choose one real routine and describe honestly where it breaks down.',
+        'Redesign it through planning, monitoring, adjustment, and resilience-as-process thinking.',
+        'Run the redesigned routine for seven days and log what you planned, what happened, and what you adjusted.'
+      ],
+      submit: ['A 600 to 800 word diagnosis and redesign.', 'A real seven-day implementation log as an appendix; the log may use voice notes.', 'At least two assigned sources from Weeks 2, 5, 6, or 7, cited in APA.'],
+      evidence: 'One real routine, an honest seven-day log, and at least two assigned sources'
+    },
+    {
+      id: 'mindset-evidence-check-2',
+      title: 'Mindset Evidence Check 2',
+      weight: '20 percent',
+      schedule: 'Due November 27 at the end of Week 11.',
+      due: 'Friday, November 27, 2026',
+      weeks: 'Evidence from Weeks 8 to 11',
+      summary: 'Examine one hard learning moment through self-compassion, psychological flexibility, perseverance, and help seeking without clinical disclosure.',
+      steps: [
+        'Choose one real moment from this term when you considered quitting or scaling back, using only what you are comfortable sharing.',
+        'Apply the Week 8 to 11 evidence on self-compassion, flexibility, perseverance, and help seeking.',
+        'End with three sentences: what you did, what the research suggests, and what you take from the gap.'
+      ],
+      submit: ['A 500 to 700 word analysis of one real moment.', 'A closing three-sentence comparison.', 'At least two assigned sources from Weeks 8 to 11, cited in APA; a structured voice recording is an option with the citation list in text.'],
+      evidence: 'One real term experience and at least two assigned sources from Weeks 8 to 11'
+    },
+    {
+      id: 'personal-resilience-plan',
+      title: 'Personal Resilience Plan',
+      weight: '20 percent',
+      schedule: 'Introduced in Week 13 and due December 11. Nothing is due in Week 14.',
+      due: 'Friday, December 11, 2026',
+      weeks: 'Final project drawing on the full course record',
+      summary: 'Build a forward plan from course evidence and your own Weekly Reflections so the term becomes a set of practices you can use next term.',
+      steps: [
+        'Set three to five concrete, scheduled commitments you could realistically keep next term.',
+        'Back each commitment with a course concept or source and exact evidence from your own Weekly Reflections.',
+        'Add a support map naming the people and resources you will use and what you will say to them.',
+        'Close with what should travel with you beyond school and why.'
+      ],
+      submit: ['A 1,000 to 1,300 word plan quoting at least six of your own Weekly Reflections, with each week named.', 'At least three assigned sources, cited in APA.', 'A document, or a structured question-and-answer version with a recorded walkthrough.'],
+      evidence: 'At least six verified Weekly Reflection quotations and at least three assigned sources'
+    }
+  ];
+  function assessmentById(id) {
+    id = String(id || '');
+    for (var i = 0; i < PSY_ASSESSMENTS.length; i++) if (PSY_ASSESSMENTS[i].id === id) return PSY_ASSESSMENTS[i];
+    return null;
+  }
+  function cleanAssessmentId(id) { var a = assessmentById(id); return a ? a.id : null; }
+  function assessmentHref(id) { return '?screen=assignment-details&asg=' + encodeURIComponent(id); }
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, rl: state.rl, studentName: state.studentName, visits: state.visits })); } catch (e) {} }
   function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
@@ -26,12 +134,35 @@
     return !!(v && v.screen);
   }
   function cleanScreen(s) {
-    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'career', 'walkthroughs', 'ecology', 'calendar', 'review', 'activity', 'outcomes'].indexOf(s) >= 0 ? s : 'journey';
+    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'assignment-details', 'career', 'walkthroughs', 'ecology', 'calendar', 'review', 'activity', 'outcomes'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
     w = Number(w);
-    return (isFinite(w) && w >= 1 && w <= 20) ? w : null;
+    return (isFinite(w) && w % 1 === 0 && w >= 1 && w <= 14) ? w : null;
   }
+  function cleanText(v, fallback, max) {
+    if (typeof v !== 'string') return fallback == null ? '' : fallback;
+    return v.slice(0, max || 500);
+  }
+  function cleanTextOrNull(v, max) { return typeof v === 'string' && v ? v.slice(0, max || 200) : null; }
+  function cleanTextList(v, maxItems, maxLength) {
+    return Array.isArray(v) ? v.filter(function (x) { return typeof x === 'string'; }).slice(0, maxItems || 20).map(function (x) { return x.slice(0, maxLength || 200); }) : [];
+  }
+  function cleanPlainObject(v) { return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }
+  function cleanTextMap(v, maxEntries, maxLength) {
+    var src = cleanPlainObject(v), out = {}, keys = Object.keys(src).slice(0, maxEntries || 1000);
+    keys.forEach(function (k) { if (k !== '__proto__' && k !== 'constructor' && k !== 'prototype' && typeof src[k] === 'string') out[k.slice(0, 250)] = src[k].slice(0, maxLength || 10000); });
+    return out;
+  }
+  function cleanVisits(v) {
+    var src = cleanPlainObject(v), rawDays = cleanPlainObject(src.days), rawWeeks = cleanPlainObject(src.weeks), days = {}, weeks = {};
+    Object.keys(rawDays).slice(0, 500).forEach(function (k) { if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(k)) days[k] = 1; });
+    Object.keys(rawWeeks).slice(0, 20).forEach(function (k) { var w = cleanWeek(k), item = cleanPlainObject(rawWeeks[k]); if (w) weeks[w] = { n: Math.max(0, Math.min(100000, Number(item.n) || 0)), last: Math.max(0, Number(item.last) || 0) }; });
+    return { days: days, weeks: weeks };
+  }
+  function cleanWeekFilter(v) { if (v === 'all') return 'all'; var w = cleanWeek(v); return w ? String(w) : 'all'; }
+  function cleanLens(v) { return ['thematic', 'stylistic', 'contextual', 'theoretical'].indexOf(v) >= 0 ? v : 'thematic'; }
+  function cleanEcoLayer(v) { return ['you', 'strategies', 'people', 'course', 'context'].indexOf(v) >= 0 ? v : 'you'; }
   function cleanWeekPart(part) {
     part = String(part || '');
     return ['ov', 'pre', 'learn', 'out', 'gq', 'lens', 'con', 'term', 'read', 'watch', 'case', 'do', 'reflect', 'sg', 'kc', 'notes', 'how', 'catch'].indexOf(part) >= 0 ? part : null;
@@ -39,15 +170,32 @@
   function initialRoute() {
     try {
       var p = new URLSearchParams(location.search || '');
+      var invalidRoute = { screen: 'journey', week: null, part: null, experience: false, assignmentId: null, invalid: true };
+      var known = { screen: 1, week: 1, w: 1, part: 1, experience: 1, asg: 1, _bf_build: 1 }, badKey = false, hasRouteKey = false;
+      p.forEach(function (_, key) { if (!known[key] || p.getAll(key).length !== 1) badKey = true; if (key !== '_bf_build') hasRouteKey = true; });
+      if (badKey || (p.has('week') && p.has('w'))) return invalidRoute;
+      var rawScreen = p.get('screen');
+      if (p.has('screen') && (!rawScreen || cleanScreen(rawScreen) !== rawScreen)) return invalidRoute;
+      var hasWeek = p.has('week') || p.has('w');
       var w = cleanWeek(p.get('week') || p.get('w'));
-      if (w) return { screen: 'station', week: w, part: cleanWeekPart(p.get('part')), experience: p.get('experience') === '1' };
-      var s = p.get('screen');
-      if (s && cleanScreen(s) === s) return { screen: s, week: null, part: null, experience: false };
+      if (hasWeek && !w) return invalidRoute;
+      var part = cleanWeekPart(p.get('part'));
+      if ((p.has('part') && !part) || (p.has('experience') && p.get('experience') !== '1')) return invalidRoute;
+      if ((p.has('part') || p.has('experience')) && !hasWeek) return invalidRoute;
+      if (p.has('part') && p.has('experience')) return invalidRoute;
+      if (hasWeek && p.has('screen')) return invalidRoute;
+      if (p.has('asg') && rawScreen !== 'assignment-details') return invalidRoute;
+      if (w) return { screen: 'station', week: w, part: part, experience: p.get('experience') === '1', assignmentId: null };
+      var s = rawScreen;
+      if (s && cleanScreen(s) === s) return (s === 'activity' || s === 'station')
+        ? invalidRoute
+        : { screen: s, week: null, part: null, experience: false, assignmentId: s === 'assignment-details' ? cleanAssessmentId(p.get('asg')) : null };
+      if (p.has('screen') || hasRouteKey) return invalidRoute;
     } catch (e) {}
     return null;
   }
   /* Term shell URL: replace with the exact Blackboard course link once the Fall shell is published. */
-  var BB_URL = 'https://learn.senecapolytechnic.ca';
+  var BB_URL = 'https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/outline'; /* PSY355 course shell. Section/course specific: do NOT copy this id to another course or section. */
   var saved0 = load();
   var view0 = loadView();
   var route0 = initialRoute();
@@ -68,14 +216,14 @@
     readerLensY: 86,
     journeyWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.journeyWeek) : null),
     stationWeek: route0 ? route0.week : (resumeView0 ? cleanWeek(view0.stationWeek) : null),
-    sgNotes: (saved0.sgNotes || {}),
-    sgTick: (saved0.sgTick || {}),
+    sgNotes: cleanTextMap(saved0.sgNotes),
+    sgTick: cleanPlainObject(saved0.sgTick),
     wkCheck: (saved0.wkCheck && typeof saved0.wkCheck === 'object') ? saved0.wkCheck : {},
-    wkReflect: (saved0.wkReflect && typeof saved0.wkReflect === 'object') ? saved0.wkReflect : {},
+    wkReflect: cleanTextMap(saved0.wkReflect, 100, 10000),
     wkOpen: {},
     studentName: typeof saved0.studentName === 'string' ? saved0.studentName.slice(0, 40) : '',
-    visits: (saved0.visits && typeof saved0.visits === 'object') ? saved0.visits : {},
-    act: (resumeView0 && view0.act && typeof view0.act === 'object') ? view0.act : {},
+    visits: cleanVisits(saved0.visits),
+    act: resumeView0 ? cleanPlainObject(view0.act) : {},
     actResult: (saved0.actResult && typeof saved0.actResult === 'object') ? saved0.actResult : {},
     layout: 'byweek',
     search: '',
@@ -89,48 +237,55 @@
     savedView: false,
     showSynthesis: false,
     lens: 'thematic',
-    cmpNotes: (saved0.cmpNotes && typeof saved0.cmpNotes === 'object') ? saved0.cmpNotes : {},
+    cmpNotes: cleanTextMap(saved0.cmpNotes),
     showModel: false,
     exampleOpen: false,
     rcReading: null,
-    rcNotes: (saved0.rcNotes && typeof saved0.rcNotes === 'object') ? saved0.rcNotes : {},
-    ecoChallenge: saved0.ecoChallenge || '',
-    ecoNotes: (saved0.ecoNotes && typeof saved0.ecoNotes === 'object') ? saved0.ecoNotes : {},
+    rcNotes: cleanTextMap(saved0.rcNotes),
+    ecoChallenge: cleanText(saved0.ecoChallenge, '', 5000),
+    ecoNotes: cleanTextMap(saved0.ecoNotes),
     ecoLayer: 'you',
     revealed: {},
     mcSel: (saved0.mcSel && typeof saved0.mcSel === 'object') ? saved0.mcSel : {},
     mcConf: (saved0.mcConf && typeof saved0.mcConf === 'object') ? saved0.mcConf : {},
     kcReveal: {},
-    kcShort: (saved0.kcShort && typeof saved0.kcShort === 'object') ? saved0.kcShort : {},
+    kcShort: cleanTextMap(saved0.kcShort),
     kcShortShown: {},
     kcShortRate: (saved0.kcShortRate && typeof saved0.kcShortRate === 'object') ? saved0.kcShortRate : {},
     kcHist: (saved0.kcHist && typeof saved0.kcHist === 'object') ? saved0.kcHist : {},
-    careerField: resumeView0 ? (view0.careerField || '') : '',
-    careerReflect: (saved0.careerReflect && typeof saved0.careerReflect === 'object') ? saved0.careerReflect : {},
-    mediaNotes: (saved0.mediaNotes && typeof saved0.mediaNotes === 'object') ? saved0.mediaNotes : {},
+    careerField: resumeView0 ? cleanText(view0.careerField, '', 200) : '',
+    careerReflect: cleanTextMap(saved0.careerReflect),
+    mediaNotes: cleanTextMap(saved0.mediaNotes),
     libScroll: 0,
     toast: null,
     cardWeek: resumeView0 ? cleanWeek(view0.cardWeek) : null,
-    glossWeek: resumeView0 ? (view0.glossWeek || 'all') : 'all',
-    glossSearch: resumeView0 ? (view0.glossSearch || '') : '',
-    videoWeek: resumeView0 ? (view0.videoWeek || 'all') : 'all',
-    mediaKind: resumeView0 ? (view0.mediaKind || 'all') : 'all',
+    glossWeek: resumeView0 ? cleanWeekFilter(view0.glossWeek) : 'all',
+    glossSearch: resumeView0 ? cleanText(view0.glossSearch, '', 500) : '',
+    videoWeek: resumeView0 ? cleanWeekFilter(view0.videoWeek) : 'all',
+    mediaKind: resumeView0 ? (cleanText(view0.mediaKind, 'all', 80) || 'all') : 'all',
+    assignmentId: route0 ? route0.assignmentId : (resumeView0 ? cleanAssessmentId(view0.assignmentId) : null),
     tickerPaused: false,
   };
   if (resumeView0) {
     state.activityReturn = cleanWeek(view0.activityReturn);
-    state.detailId = view0.detailId || null;
-    state.activeTypes = Array.isArray(view0.activeTypes) ? view0.activeTypes : [];
+    state.detailId = cleanTextOrNull(view0.detailId);
+    state.activeTypes = cleanTextList(view0.activeTypes, 20, 100);
     state.activeWeek = cleanWeek(view0.activeWeek);
-    state.search = view0.search || '';
+    state.search = cleanText(view0.search, '', 500);
     state.savedView = !!view0.savedView;
-    state.rcReading = view0.rcReading || null;
-    state.lens = view0.lens || state.lens || 'thematic';
-    state.compareIds = Array.isArray(view0.compareIds) ? view0.compareIds : [];
+    state.rcReading = cleanTextOrNull(view0.rcReading);
+    state.lens = cleanLens(view0.lens);
+    state.compareIds = cleanTextList(view0.compareIds, 3, 200);
     state.showSynthesis = !!view0.showSynthesis;
     state.galWeek = cleanWeek(view0.galWeek);
-    state.galTopic = view0.galTopic || null;
-    state.ecoLayer = view0.ecoLayer || state.ecoLayer || 'you';
+    state.galTopic = cleanTextOrNull(view0.galTopic, 100);
+    state.ecoLayer = cleanEcoLayer(view0.ecoLayer);
+  }
+  if ((state.screen === 'activity' && !state.activityReturn) || (state.screen === 'station' && !state.stationWeek)) {
+    state.screen = 'journey';
+    state.stationWeek = null;
+    state.activityReturn = null;
+    state.prevView = null;
   }
   function saveView() {
     try {
@@ -158,7 +313,8 @@
         ecoLayer: state.ecoLayer || 'you',
         act: state.act || {},
         videoWeek: state.videoWeek || 'all',
-        mediaKind: state.mediaKind || 'all'
+        mediaKind: state.mediaKind || 'all',
+        assignmentId: state.assignmentId || null
       }));
     } catch (e) {}
   }
@@ -598,7 +754,7 @@
       : '';
     return '<section id="rl-panel" class="rl-panel" role="dialog" aria-label="Reading Lens: reading supports" tabindex="-1" onkeydown="SOC.rlPanelKey(event)">'
       + '<div class="rl-head"><strong>Reading Lens</strong><button type="button" class="rl-btn rl-close" onclick="SOC.rlPanel()" aria-label="Close Reading Lens panel">' + ic('x', 16, 2) + '</button></div>'
-      + '<p class="rl-sub">Reading supports for this site. Your choices apply everywhere here and save only in this browser.</p>'
+      + '<p class="rl-sub">Reading supports for this site. Your choices apply everywhere here and may remain in this browser when storage is available.</p>'
       + '<div class="rl-row"><b>Text size</b>' + zoomBtns + '</div>'
       + '<div class="rl-row"><b>Comfortable spacing</b>' + rlBtn('', r.space ? 'On' : 'Off', r.space, 'SOC.rlSpace()') + '</div>'
       + '<div class="rl-row"><b>High-legibility font</b>' + rlBtn('', r.font ? 'On' : 'Off', r.font, 'SOC.rlFont()') + '</div>'
@@ -608,7 +764,7 @@
       + '<span class="rl-hint">' + (r.rulerPin ? 'Pinned: drag the band by hand, or press Alt plus Up or Down.' : 'Follows your pointer. Pin it to drag it by hand. Alt plus Up or Down also moves it.') + '</span></div>'
       + '<div class="rl-row"><b>Magnifier</b>' + rlBtn('', state.readerLensOpen ? 'On' : 'Off', !!state.readerLensOpen, 'SOC.toggleReaderLens()') + '<span class="rl-hint">A movable lens that repeats the text under it in large print.</span></div>'
       + speech
-      + '<div class="rl-row"><b>Start fresh</b>' + rlBtn('', 'Reset all supports', false, 'SOC.rlReset()') + '<span class="rl-hint">Everything back to default. Your settings otherwise stay on, even with this panel closed, and are remembered for your next visit.</span></div>'
+      + '<div class="rl-row"><b>Start fresh</b>' + rlBtn('', 'Reset all supports', false, 'SOC.rlReset()') + '<span class="rl-hint">Everything back to default. Your settings otherwise stay on while this page is open and may be available on a later visit if browser storage keeps them.</span></div>'
       + '<p class="rl-hint" style="margin:10px 0 0">Escape closes this panel. If any part of the site is still hard to use, use Blackboard and contact the instructor so access can be supported.</p>'
       + '</section>';
   }
@@ -695,7 +851,7 @@
     var navDefs = [['journey', 'Home', 'gauge'], ['site', 'How This Site Works', 'file'], ['pathways', 'Course Rhythm', 'map'], ['readings', 'Readings and Media', 'gallery'], ['compare', 'Compare Sources', 'columns'], ['reading', 'Source Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['review', 'Term Review', 'check'], ['outcomes', 'What This Course Builds', 'columns'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
-      var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || s.screen === key;
+      var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || (key === 'assignments' && s.screen === 'assignment-details') || s.screen === key;
       var badge = '';
       if (key === 'compare' && s.compareIds.length) badge = '<span class="mono" style="font-size:.6875rem;font-weight:600;color:#1552D8;background:#E7EEFB;padding:1px 7px;border-radius:999px">' + s.compareIds.length + '</span>';
       var click = "SOC.go('" + key + "')";
@@ -766,7 +922,7 @@
     html += '<section style="background:#fff;border:1px solid #DEE3EA;border-radius:14px;padding:16px 18px;margin-bottom:18px;box-shadow:0 1px 2px rgba(21,23,28,.04)">'
       + '<div style="display:flex;align-items:center;gap:10px;background:#F7F8FA;border:1px solid #DEE3EA;border-radius:10px;padding:11px 14px">'
       + '<span style="display:flex;color:#6B7280;flex:none">' + ic('search', 18) + '</span>'
-      + '<input id="soc-search" value="' + esc(s.search) + '" oninput="SOC.search(this.value)" placeholder="Search by title, author, idea, or week..." aria-label="Search readings" style="flex:1;border:none;background:none;outline:none;font-size:1rem;color:#15171C;min-width:0" />'
+      + '<input id="soc-search" value="' + esc(s.search) + '" oninput="SOC.search(this.value)" placeholder="Search by title, author, idea, or week..." aria-label="Search readings" style="flex:1;border:none;background:none;font-size:1rem;color:#15171C;min-width:0" />'
       + (s.search ? '<button onclick="SOC.clearSearch()" aria-label="Clear search" style="background:none;border:none;color:#6B7280;display:flex;padding:2px">' + ic('x', 16) + '</button>' : '')
       + '</div>'
       + '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid #EEF1F5">'
@@ -828,7 +984,6 @@
     return '<div class="rgvideo" style="position:relative;width:100%;aspect-ratio:16/9;background:#15171C;overflow:hidden">'
       + '<button onclick="SOC.playVideo(this,\'' + v.yt + '\')" aria-label="Play a talk by ' + esc(v.scholar || r.authors) + '" style="position:absolute;inset:0;width:100%;height:100%;border:none;padding:0;cursor:pointer;background:none">'
       + '<div class="vid-cover" aria-hidden="true"><span class="vid-cover-play"></span><span class="vid-cover-note">Loads only when you choose</span></div>'
-      + '<span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><span style="display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:999px;background:rgba(218,41,28,.94);color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.45)">' + ic('play', 24) + '</span></span>'
       + '<span style="position:absolute;left:0;right:0;bottom:0;padding:22px 13px 10px;background:linear-gradient(transparent,rgba(0,0,0,.9));color:#fff;text-align:left">'
       + '<span class="mono" style="display:block;font-size:.6rem;letter-spacing:.08em;color:#f3b0a8;font-weight:600;margin-bottom:2px">WATCH</span>'
       + '<span style="display:block;font-size:.8125rem;font-weight:700;line-height:1.2">' + esc(v.scholar || r.authors) + '</span>'
@@ -976,7 +1131,7 @@
       return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px">'
         + '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:5px"><span style="display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;background:#15171C;color:#fff;border-radius:50%;font-size:.8rem;font-weight:700;flex:none">' + n + '</span><h3 style="margin:0;font-size:1.0625rem">' + title + '</h3></div>'
         + '<p style="margin:0 0 8px;font-size:.875rem;color:#474C57">' + prompt + '</p>'
-        + '<textarea oninput="SOC.cmpNote(\'' + key + '\',this.value)" placeholder="' + ph + '" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">' + v + '</textarea></div>';
+        + '<textarea oninput="SOC.cmpNote(\'' + key + '\',this.value)" aria-label="' + esc(title + ' comparison response') + '" placeholder="' + ph + '" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">' + v + '</textarea></div>';
     }
     var chips = Object.keys(LENSES).map(function (k) {
       var on = state.lens === k;
@@ -987,7 +1142,7 @@
         + CMP_EXAMPLE.map(function (r) { return '<div style="margin-bottom:8px"><div class="mono" style="font-size:.6875rem;letter-spacing:.04em;color:#9aa3b2">' + esc(r[0]).toUpperCase() + '</div><div style="font-size:.875rem;line-height:1.5;color:rgba(255,255,255,.93)">' + esc(r[1]) + '</div></div>'; }).join('') + '</div>'
       : '<button onclick="SOC.toggleExample()" style="background:none;border:1px solid #DEE3EA;border-radius:9px;padding:9px 14px;font-size:.875rem;font-weight:600;color:#15171C;margin-bottom:15px">See a worked example</button>';
     var model = state.showModel
-      ? '<div style="background:#15171C;color:#fff;border-radius:14px;padding:18px 20px;margin-top:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="display:flex;color:#fff">' + ic('sparkle', 16) + '</span><span class="mono" style="font-size:.72rem;letter-spacing:.04em;color:#fff">A MODEL COMPARISON</span><button onclick="SOC.hideModel()" aria-label="Hide" style="margin-left:auto;background:rgba(255,255,255,.14);border:none;border-radius:7px;color:#fff;width:26px;height:26px">' + ic('x', 14) + '</button></div>'
+      ? '<div style="background:#15171C;color:#fff;border-radius:14px;padding:18px 20px;margin-top:12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="display:flex;color:#fff">' + ic('sparkle', 16) + '</span><span class="mono" style="font-size:.72rem;letter-spacing:.04em;color:#fff">A MODEL COMPARISON</span><button onclick="SOC.hideModel()" aria-label="Hide model comparison" style="margin-left:auto;background:rgba(255,255,255,.14);border:none;border-radius:7px;color:#fff;width:26px;height:26px">' + ic('x', 14) + '</button></div>'
         + buildSynthesis(recs).paras.map(function (p) { return '<p style="font-size:.95rem;line-height:1.6;margin:0 0 10px;color:rgba(255,255,255,.94)">' + esc(p) + '</p>'; }).join('')
         + '<p style="font-size:.82rem;margin:6px 0 0;color:#9aa3b2">One way to read it. Compare it with yours, do not copy it.</p></div>'
       : '<button onclick="SOC.revealModel()" style="background:none;border:1px solid #15171C;color:#15171C;border-radius:9px;padding:10px 16px;font-size:.9rem;font-weight:600">Reveal a model comparison</button>';
@@ -1064,7 +1219,7 @@
     return { label: 'Worth another read', color: '#b23121', bg: '#FBE9E7', icon: 'book', msg: 'This reading has not fully landed yet. The read-out below shows exactly where to focus your next pass.' };
   }
   function readingComp() {
-    var practiceNote = '<div style="display:flex;align-items:flex-start;gap:9px;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:10px;padding:11px 14px;margin:0 0 16px;font-size:.85rem;line-height:1.5;color:#474C57"><span style="display:flex;color:#6B7280;flex:none;margin-top:1px">' + ic('book', 16) + '</span><span>This is a private space for practice and self-study. Nothing here is graded, recorded, or counted toward a mark. It is here to help you check your own understanding and see where to focus.</span></div>';
+    var practiceNote = '<div style="display:flex;align-items:flex-start;gap:9px;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:10px;padding:11px 14px;margin:0 0 16px;font-size:.85rem;line-height:1.5;color:#474C57"><span style="display:flex;color:#6B7280;flex:none;margin-top:1px">' + ic('book', 16) + '</span><span>This is a companion-site space for practice and self-study. The site does not submit this work for grading or count it toward a mark. It is here to help you check your own understanding and see where to focus.</span></div>';
     var r = state.rcReading ? rec(state.rcReading) : null;
     if (!r) {
       var picks = D.records.map(function (rd) {
@@ -1084,7 +1239,7 @@
       var rev = state.revealed[key]
         ? '<div style="margin-top:10px;background:#15171C;color:#fff;border-radius:10px;padding:13px 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.05em;color:#9aa3b2;margin-bottom:8px">A STRONG RESPONSE COVERS</div><ul style="margin:0;padding-left:17px;font-size:.875rem;line-height:1.55;color:rgba(255,255,255,.93)">' + crit.map(function (c) { return '<li style="margin-bottom:5px">' + esc(c) + '</li>'; }).join('') + '</ul>' + (coreIdea ? '<div style="margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.16);font-size:.85rem;line-height:1.5;color:rgba(255,255,255,.9)"><span style="color:#F2A900;font-weight:600">From this reading: </span>the central idea is ' + coreIdea + '</div>' : '') + '<div style="margin-top:11px;font-size:.78rem;color:#9aa3b2">Compare your answer against this. There is no single right wording.</div><button onclick="SOC.rcReveal(\'' + key + '\')" style="margin-top:9px;background:rgba(255,255,255,.14);border:none;color:#fff;border-radius:7px;padding:5px 11px;font-size:.78rem;font-weight:600">Hide</button></div>'
         : '<button onclick="SOC.rcReveal(\'' + key + '\')" style="margin-top:10px;background:none;border:1px solid #DEE3EA;border-radius:8px;padding:7px 13px;font-size:.82rem;font-weight:600;color:#15171C">Reveal a strong response</button>';
-      return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:7px"><span style="display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;background:#15171C;color:#fff;border-radius:50%;font-size:.8rem;font-weight:700;flex:none">' + (i + 1) + '</span><p style="margin:0;font-size:.95rem;color:#15171C">' + esc(q) + '</p></div><textarea oninput="SOC.rcNote(\'' + key + '\',this.value)" placeholder="Your answer" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">' + v + '</textarea>' + rev + '</div>';
+      return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:7px"><span style="display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;background:#15171C;color:#fff;border-radius:50%;font-size:.8rem;font-weight:700;flex:none">' + (i + 1) + '</span><p id="rc-question-' + i + '" style="margin:0;font-size:.95rem;color:#15171C">' + esc(q) + '</p></div><textarea oninput="SOC.rcNote(\'' + key + '\',this.value)" aria-labelledby="rc-question-' + i + '" placeholder="Your answer" style="width:100%;min-height:68px;font:inherit;font-size:.9rem;line-height:1.5;padding:10px 12px;border:1px solid #DEE3EA;border-radius:8px;color:#15171C;background:#fff;resize:vertical">' + v + '</textarea>' + rev + '</div>';
     }).join('');
     var mcItems = MC[r.id] || [];
     var mcHtml = '';
@@ -1154,7 +1309,7 @@
         var tm = typeMeta(r.type);
         var rows = [['WEEK', 'Week ' + r.week + ': ' + weekTitle(r.week)], ['YEAR', String(r.year)], ['ORIGIN', r.origin], ['LENGTH', r.len], ['LEVEL', D.levels[r.diff] || ''], ['THE CORE IDEA', r.coreIdea], ['EVIDENCE TYPE', r.evidenceType || r.type], ['SAMPLE OR SOURCE BASE', r.sample || 'See the assigned source'], ['WHAT THIS DOES NOT PROVE', r.evidenceLimit || 'Check the source method and context before applying this claim']]
           .map(function (row) { return '<div style="padding:11px 17px;border-top:1px solid #EEF1F5"><div class="mono" style="font-size:.625rem;letter-spacing:.05em;color:#6B7280;margin-bottom:4px">' + row[0] + '</div><div style="font-size:.875rem;line-height:1.45;color:#15171C">' + esc(row[1]) + '</div></div>'; }).join('');
-        return '<div style="flex:none;width:280px;background:#fff;border:1px solid #DEE3EA;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04);display:flex;flex-direction:column"><div style="height:5px;background:' + tm.color + '"></div><div style="padding:16px 17px 14px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><span style="display:inline-flex;align-items:center;gap:6px;background:' + tm.soft + ';color:' + tm.color + ';font-size:.6875rem;font-weight:600;padding:4px 9px;border-radius:999px">' + ic(tm.icon, 13) + esc(r.type) + '</span><button onclick="SOC.compare(\'' + r.id + '\')" class="removebtn" aria-label="Remove" style="margin-left:auto;background:none;border:none;color:#6b7280;display:flex;padding:6px">' + ic('x', 16) + '</button></div><button onclick="SOC.open(\'' + r.id + '\')" style="text-align:left;background:none;border:none;padding:0;display:block;margin-bottom:4px"><h3 style="font-size:1.0625rem;line-height:1.3;font-weight:600;margin:0;color:#15171C">' + esc(r.title) + '</h3></button><div style="font-size:.8125rem;color:#474C57">' + esc(r.authors) + '</div></div>' + rows + '</div>';
+        return '<div style="flex:none;width:280px;background:#fff;border:1px solid #DEE3EA;border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(21,23,28,.04);display:flex;flex-direction:column"><div style="height:5px;background:' + tm.color + '"></div><div style="padding:16px 17px 14px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><span style="display:inline-flex;align-items:center;gap:6px;background:' + tm.soft + ';color:' + tm.color + ';font-size:.6875rem;font-weight:600;padding:4px 9px;border-radius:999px">' + ic(tm.icon, 13) + esc(r.type) + '</span><button onclick="SOC.compare(\'' + r.id + '\')" class="removebtn" aria-label="Remove ' + esc(r.title) + ' from compare" style="margin-left:auto;background:none;border:none;color:#6b7280;display:flex;padding:6px">' + ic('x', 16) + '</button></div><button onclick="SOC.open(\'' + r.id + '\')" style="text-align:left;background:none;border:none;padding:0;display:block;margin-bottom:4px"><h3 style="font-size:1.0625rem;line-height:1.3;font-weight:600;margin:0;color:#15171C">' + esc(r.title) + '</h3></button><div style="font-size:.8125rem;color:#474C57">' + esc(r.authors) + '</div></div>' + rows + '</div>';
       }).join('');
       var hint = recs.length < 2 ? '<p style="font-size:.875rem;color:#6B7280;margin:0 0 12px">Pick one more reading on the right to compare it against this one.</p>' : '';
       var synthBlock = '';
@@ -1162,14 +1317,14 @@
         if (state.showSynthesis) {
           var syn = buildSynthesis(recs);
           synthBlock = '<div style="background:#15171C;color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:18px">'
-            + '<div style="display:flex;align-items:center;gap:9px;margin-bottom:12px"><span style="display:flex;color:#fff">' + ic('sparkle', 17) + '</span><span class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#fff">HOW THESE CONNECT</span><button onclick="SOC.hideSynthesis()" aria-label="Hide" style="margin-left:auto;background:rgba(255,255,255,.12);border:none;border-radius:7px;color:#fff;width:26px;height:26px;display:flex;align-items:center;justify-content:center">' + ic('x', 15) + '</button></div>'
+            + '<div style="display:flex;align-items:center;gap:9px;margin-bottom:12px"><span style="display:flex;color:#fff">' + ic('sparkle', 17) + '</span><span class="mono" style="font-size:.75rem;letter-spacing:.04em;color:#fff">HOW THESE CONNECT</span><button onclick="SOC.hideSynthesis()" aria-label="Hide reading synthesis" style="margin-left:auto;background:rgba(255,255,255,.12);border:none;border-radius:7px;color:#fff;width:26px;height:26px;display:flex;align-items:center;justify-content:center">' + ic('x', 15) + '</button></div>'
             + '<div id="syn-body">' + syn.paras.map(function (p) { return '<p style="font-size:1rem;line-height:1.6;margin:0 0 12px;color:rgba(255,255,255,.92)">' + esc(p) + '</p>'; }).join('') + '</div>'
             + '<div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:6px;border-top:1px solid rgba(255,255,255,.14);padding-top:14px">'
             + '<button type="button" onclick="SOC.synCopy()" style="border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Copy</button>'
             + '<button type="button" onclick="SOC.synPrint()" style="border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Print</button>'
             + '<button type="button" onclick="SOC.synSave()" style="border:1px solid rgba(255,255,255,.35);background:#fff;color:#15171C;border-radius:8px;font-size:.85rem;font-weight:600;padding:8px 14px;cursor:pointer">Save to my notes</button>'
             + '</div>'
-            + (state.cmpNotes && state.cmpNotes['saved-synthesis'] ? '<div style="margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.7)">Saved to your notes on this device. Copy or print it above to keep a copy anywhere.</div>' : '')
+            + (state.cmpNotes && state.cmpNotes['saved-synthesis'] ? '<div style="margin-top:10px;font-size:.78rem;color:rgba(255,255,255,.7)">Added to your notes on this page. When browser storage is available, it may remain for a later visit. Copy or print it above to keep a separate copy.</div>' : '')
             + '</div>';
         } else {
           synthBlock = '<button onclick="SOC.synthesize()" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:12px 22px;font-size:1rem;font-weight:600;color:#fff;background:#15171C;margin-bottom:18px">' + ic('sparkle', 16) + 'Synthesize their relationship</button>';
@@ -1248,6 +1403,8 @@
       + '</span></button>';
   }
   function courseCode() { return (D.course && D.course.code) || ''; }
+  function isAssignmentLabKey(k) { var code = courseCode(); return !!code && (k === 'assignment-start-lab.v2.' + code || k === 'assignment-start-lab.v1.' + code); }
+  function isPortableWorkKey(k) { return typeof k === 'string' && (k === SKEY || k.indexOf(SKEY + '.') === 0 || isAssignmentLabKey(k)); }
   function courseTitle() { return (D.course && (D.course.name || D.course.title)) || courseCode() || 'this course'; }
   function siteCard(kicker, title, text) {
     return '<article style="border:1px solid #DEE3EA;border-radius:12px;background:#fff;padding:15px 16px"><div class="mono" style="font-size:.64rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:6px">' + esc(kicker) + '</div><h3 style="font-size:1rem;line-height:1.25;margin:0 0 6px;color:var(--ink)">' + esc(title) + '</h3><p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0">' + esc(text) + '</p></article>';
@@ -1303,13 +1460,13 @@
     var code = courseCode() || 'this course';
     var svg = '<svg viewBox="0 0 760 260" role="img" aria-labelledby="bbd-t bbd-d" style="width:100%;height:auto;display:block;max-width:760px">'
       + '<title id="bbd-t">How this site and Blackboard work together</title>'
-      + '<desc id="bbd-d">Two panels. This site is for learning and practice and saves only to your device. Blackboard is the official platform where you submit work and receive grades. Arrows show moving between them: submit on Blackboard, come back here to study.</desc>'
+      + '<desc id="bbd-d">Two panels. This site is for learning and practice and uses temporary browser storage when it is available. Blackboard is the official platform where you submit work and receive grades. Arrows show moving between them: submit on Blackboard, come back here to study.</desc>'
       + '<rect x="10" y="20" width="330" height="190" rx="14" fill="#F7F9FB" stroke="#1B2A4A" stroke-width="2"/>'
       + '<text x="30" y="52" font-size="15" font-weight="700" fill="#1B2A4A" style="letter-spacing:.06em">THIS SITE</text>'
       + '<text x="30" y="82" font-size="13.5" fill="#15171C">Weekly pathway, readings, key concepts</text>'
       + '<text x="30" y="108" font-size="13.5" fill="#15171C">Practice checks, notes, study supports</text>'
       + '<text x="30" y="134" font-size="13.5" fill="#15171C">Never graded, nothing submitted here</text>'
-      + '<text x="30" y="160" font-size="13.5" fill="#15171C">Saves only to this device</text>'
+      + '<text x="30" y="160" font-size="13.5" fill="#15171C">Uses temporary browser storage</text>'
       + '<text x="30" y="192" font-size="12" font-weight="600" fill="#6B7280">LEARN AND PRACTICE</text>'
       + '<rect x="420" y="20" width="330" height="190" rx="14" fill="#FFF6F5" stroke="#DA291C" stroke-width="2"/>'
       + '<text x="440" y="52" font-size="15" font-weight="700" fill="#DA291C" style="letter-spacing:.06em">BLACKBOARD</text>'
@@ -1328,7 +1485,7 @@
       + '</svg>';
     return '<section class="node" aria-labelledby="bbd-h" style="margin:16px 0">'
       + '<h2 id="bbd-h" class="wk-sec">How this site works with Blackboard</h2>'
-      + '<p style="margin:0 0 14px;font-size:.95rem;line-height:1.6;color:var(--ink-dim)">Think of the two as one loop. You learn and practice here: the weekly pathway, readings, concepts, checks, and notes. You act on Blackboard: every submission, discussion post, grade, and official date lives there. Nothing you do on this site is graded or visible to anyone, and nothing here replaces a Blackboard step.</p>'
+      + '<p style="margin:0 0 14px;font-size:.95rem;line-height:1.6;color:var(--ink-dim)">Think of the two as one loop. You learn and practice here: the weekly pathway, readings, concepts, checks, and notes. You act on Blackboard: every submission, discussion post, grade, and official date lives there. This site does not submit your practice work for grading, and nothing here replaces a Blackboard step.</p>'
       + svg
       + '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">'
       + '<a href="' + BB_URL + '" target="_blank" rel="noopener" class="wk-cta" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">Open Blackboard <span aria-hidden="true">&#8599;</span></a>'
@@ -1341,15 +1498,15 @@
     var title = courseTitle();
     var cards = [
       ['BLACKBOARD', 'Where official course work happens', 'Blackboard remains the official Seneca course platform for announcements, assignment submission, discussions, grades, course records, and required administrative functions.'],
-      ['PRIVACY', 'What this site does not send', 'This site does not require an account, does not collect student submissions, does not store grades, and does not send personal student information to the instructor, Seneca, or any server. The optional first name, notes, and check answers stay in this browser unless you remove or export them.'],
+      ['PRIVACY', 'What this site does not send', 'This site does not require an account, collect course submissions, or store grades. Its own code does not transmit the optional first name, notes, or check answers to the instructor or Seneca. When browser storage is available, those entries may remain in this browser until you clear its site data; browser settings and private-browsing modes can prevent or remove that local copy.'],
       ['COPYRIGHT', 'How readings and media are used', 'Course readings and media are linked for educational use. Copyright remains with the original creators and publishers. Access readings through the provided links, Seneca library access, or Blackboard where applicable.'],
-      ['MEDIA', 'External media', 'Nothing on this site contacts an external service until you choose to load or play a video. When you press a load button, that platform (YouTube in privacy-enhanced mode) applies its own privacy practices inside its player.'],
+      ['MEDIA', 'External media', 'No third-party content loads automatically. A third-party service is contacted only when you choose to open an external link or load external media. YouTube uses its privacy-enhanced player, and each external service applies its own privacy practices.'],
       ['LANGUAGE', 'Reading in another language', 'Your browser can translate this whole site: right click the page and choose Translate (Chrome, Edge, and Safari all offer this, in more than one hundred languages). It is your choice and happens in your browser. One caution: machine translation can bend key course terms and citations, so check important ideas against the English original before you use them in graded work.'],
       ['ACCESS', 'Accessibility support', 'This site is designed to support accessible course navigation. The Reading Lens button at the top of every page offers text size, spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. If you experience a barrier, use Blackboard and contact the instructor so access can be supported.'],
       ['STUDY', 'What this site is for', 'Use this companion website for weekly learning pathways, readings, key concepts, immersive weekly experiences, self-checks, glossary materials, and study supports.'],
-      ['TECHNICAL', 'How this site is built', 'This is a static website: plain HTML, CSS, and JavaScript served from GitHub Pages, with no server, no database, no accounts, and no third-party trackers or analytics. All fonts and scripts load from this site itself.'],
+      ['TECHNICAL', 'How this site is built', 'This is a static website: plain HTML, CSS, and JavaScript served from GitHub Pages, with no application database or accounts and no embedded third-party trackers or analytics. All fonts and scripts load from this site itself.'],
       ['MAINTENANCE', 'How this site is maintained', 'The instructor maintains this site and updates it alongside Blackboard postings each term. If anything here ever looks out of date, Blackboard is the source of truth, and the instructor can be reached through Blackboard.'],
-      ['LIMITS', 'Known limits', 'Saved notes and check answers live only in this browser on this device: clearing browser data removes them, and they do not move between devices. Some week videos may not yet have captions; their full scripts are posted in Blackboard. This site needs JavaScript; everything required for the course also remains available through Blackboard.']
+      ['LIMITS', 'Known limits', 'Notes and check answers use this browser\'s storage when it is available. Browser settings, private-browsing modes, clearing site data, or changing browsers or devices can remove them, and they do not sync automatically. Download a backup or generate weekly notes before relying on them. Class recordings appear only when available and after processing; check the player or Blackboard for current caption and transcript options. This site needs JavaScript; everything required for the course also remains available through Blackboard.']
     ];
     return '<div class="rise path-page">'
       + '<section class="path-hero"><div><div class="mono">COMPANION WEBSITE</div><h1>How This Site Works</h1><p>This page explains how the ' + esc(code) + ' companion website supports ' + esc(title) + ', what belongs on Blackboard, and how readings, privacy, accessibility, and media are handled.</p></div><div class="path-compass" aria-label="Companion website and Blackboard relationship"><span>THIS SITE</span><b>weekly learning pathway</b><i></i><span>BLACKBOARD</span><b>official course platform</b></div></section>'
@@ -1378,6 +1535,7 @@
     if (state.screen === 'glossary') return 'Glossary';
     if (state.screen === 'cards') return 'Concept Flashcards';
     if (state.screen === 'assignments') return 'Starting Your Assignment';
+    if (state.screen === 'assignment-details') { var a = assessmentById(state.assignmentId); return a ? a.title : 'Assessment Guide'; }
     if (state.screen === 'career') return 'Career Choices';
     if (state.screen === 'ecology') return 'Resilience Ecology';
     if (state.screen === 'detail') return 'Reading Details';
@@ -1393,28 +1551,30 @@
       + '</div></section>';
   }
   function keyDatesList() {
-    /* schema: [label, subtext, category, assignmentIndex?] category = 'due' | 'open' | 'class' */
+    /* schema: [label, subtext, category, assignmentId?] */
     return [
-      { d: '2026-09-08', it: [['Week 1 live class', 'Course orientation and shared start', 'class']] },
-      { d: '2026-09-14', it: [['Week 2 live class', '', 'class'], ['Weekly Reflections begin', 'weekly, Weeks 2 to 12', 'open']] },
-      { d: '2026-09-21', it: [['Week 3 live class', '', 'class']] },
-      { d: '2026-09-28', it: [['Week 4 asynchronous learning', 'Independent application of the early foundations', 'async']] },
-      { d: '2026-10-05', it: [['Week 5 live class', '', 'class']] },
-      { d: '2026-10-09', it: [['Mindset Evidence Check 1', 'due, end of Week 5', 'due']] },
-      { d: '2026-10-13', it: [['Week 6 live class', '', 'class']] },
-      { d: '2026-10-19', it: [['Week 7 live class', '', 'class']] },
-      { d: '2026-10-23', it: [['Mid-course Practice Synthesis', 'due, end of Week 7', 'due']] },
+      { d: '2026-09-08', it: [['All six graded pieces visible', 'The full assessment path is available on this site from day one', 'open']] },
+      { d: '2026-09-10', it: [['Week 1 live class', 'Course orientation and shared start', 'class']] },
+      { d: '2026-09-14', it: [['Weekly Reflections begin', 'Weeks 2 to 12; best 10 of 11 entries count', 'open', 'weekly-reflections']] },
+      { d: '2026-09-17', it: [['Week 2 live class', '', 'class']] },
+      { d: '2026-09-24', it: [['Week 3 live class', '', 'class']] },
+      { d: '2026-10-01', it: [['Week 4 live class', '', 'class']] },
+      { d: '2026-10-08', it: [['Week 5 live class', '', 'class']] },
+      { d: '2026-10-09', it: [['Mindset Evidence Check 1', 'due, end of Week 5; 20 percent', 'due', 'mindset-evidence-check-1']] },
+      { d: '2026-10-15', it: [['Week 6 asynchronous learning', 'Independent extension of resilience into context and culture', 'async']] },
+      { d: '2026-10-22', it: [['Week 7 live class', '', 'class']] },
+      { d: '2026-10-23', it: [['Mid-course Practice Synthesis', 'due, end of Week 7; 10 percent', 'due', 'midcourse-practice-synthesis']] },
       { d: '2026-10-26', it: [['Study Week', 'Oct 26 to 30. No class and no new module.', 'support']] },
-      { d: '2026-11-02', it: [['Week 8 live class', '', 'class']] },
-      { d: '2026-11-06', it: [['Self-Regulated Learning Case Redesign', 'due, end of Week 8', 'due']] },
-      { d: '2026-11-09', it: [['Week 9 live class', '', 'class']] },
-      { d: '2026-11-16', it: [['Week 10 live class', '', 'class']] },
-      { d: '2026-11-23', it: [['Week 11 asynchronous learning', 'Self-regulated synthesis before the final live class', 'async']] },
-      { d: '2026-11-27', it: [['Mindset Evidence Check 2', 'due, end of Week 11', 'due']] },
-      { d: '2026-11-30', it: [['Week 12 live class', 'Final substantive class meeting', 'class']] },
-      { d: '2026-12-04', it: [['Weekly Reflections close', 'due, end of Week 12', 'due']] },
-      { d: '2026-12-07', it: [['Week 13 asynchronous office hours and supported completion', 'No lecture; focused work and consultation', 'async']] },
-      { d: '2026-12-11', it: [['Personal Resilience Plan', 'due, your final project', 'due']] },
+      { d: '2026-11-05', it: [['Week 8 live class', '', 'class']] },
+      { d: '2026-11-06', it: [['Self-Regulated Learning Case Redesign', 'due, end of Week 8; 20 percent', 'due', 'srl-case-redesign']] },
+      { d: '2026-11-12', it: [['Week 9 live class', '', 'class']] },
+      { d: '2026-11-19', it: [['Week 10 asynchronous learning', 'Independent reflective writing and journaling', 'async']] },
+      { d: '2026-11-26', it: [['Week 11 live class', '', 'class']] },
+      { d: '2026-11-27', it: [['Mindset Evidence Check 2', 'due, end of Week 11; 20 percent', 'due', 'mindset-evidence-check-2']] },
+      { d: '2026-12-03', it: [['Week 12 live class', 'Final substantive class meeting', 'class']] },
+      { d: '2026-12-04', it: [['Weekly Reflections close', 'best 10 of 11 entries count; 10 percent', 'due', 'weekly-reflections']] },
+      { d: '2026-12-10', it: [['Week 13 asynchronous office hours and supported completion', 'No lecture; focused work and consultation', 'async']] },
+      { d: '2026-12-11', it: [['Personal Resilience Plan', 'due, final project; 20 percent', 'due', 'personal-resilience-plan']] },
       { d: '2026-12-14', it: [['Week 14 asynchronous office hours and course closure', 'No lecture; optional consultation, feedback, and final questions', 'async']] },
       { d: '2026-12-16', it: [['Last day of the term', 'No graded work is due in Week 14', 'support']] }
     ];
@@ -1426,13 +1586,13 @@
   function kdMonthDay(iso) { var p = iso.split('-'); return KD_MON[+p[1] - 1] + ' ' + (+p[2]); }
   function deadlineRule() { return '<aside class="deadline-rule" role="note" style="border:1px solid #E7C3BF;border-left:5px solid #DA291C;border-radius:0 11px 11px 0;background:#fff;padding:12px 14px;margin:0 0 16px;color:#15171C"><strong style="color:#961A13">Submission time:</strong> All assignments are due by 11:59 p.m. Eastern Time, EDT or EST as applicable, on the date shown. Blackboard remains the official submission record.</aside>'; }
   function mobileCalendarSubscription() { var code = courseCode(), base = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, ''), feed = (base + 'calendar/' + code + '_key_dates.ics').replace(/^https?:/i, 'webcal:'); return '<section class="mobile-cal-sub" aria-labelledby="mobile-cal-title"><div class="mono">MOBILE CALENDAR</div><h2 id="mobile-cal-title">Keep these dates on your phone</h2><p>This is a live calendar subscription, not a downloaded copy. Your calendar app can refresh it when the course schedule changes. Blackboard remains the official source.</p><a href="' + esc(feed) + '">Subscribe on this phone <span aria-hidden="true">&#8594;</span></a></section>'; }
-  function mobileAccessPanel() { var url = (location.origin + location.pathname).replace(/index\.html$/i, ''); return '<section class="mobile-access-panel" aria-labelledby="mobile-access-title"><div class="mono">PHONE OR TABLET</div><h2 id="mobile-access-title">Use the same site on any device</h2><p>There is no separate app. This responsive site is the mobile version too. Share or copy the link, then open it on your phone or tablet.</p><div><a href="' + esc(url) + '">Open the site link</a><button type="button" onclick="SOC.shareMobileSite()">Share or copy the link</button></div><small>Your saved notes stay on the device and browser where you typed them.</small></section>'; }
+  function mobileAccessPanel() { var url = (location.origin + location.pathname).replace(/index\.html$/i, ''); return '<section class="mobile-access-panel" aria-labelledby="mobile-access-title"><div class="mono">PHONE OR TABLET</div><h2 id="mobile-access-title">Use the same site on any device</h2><p>There is no separate app. This responsive site is the mobile version too. Share or copy the link, then open it on your phone or tablet.</p><div><a href="' + esc(url) + '">Open the site link</a><button type="button" onclick="SOC.shareMobileSite()">Share or copy the link</button></div><small>Notes do not sync automatically. Each browser keeps its own temporary copy when storage is available.</small></section>'; }
   function upcomingParts(e) {
     var title = String(e.title || ''), note = String(e.note || ''), label = 'Course date', name = title, m;
-    if (e.kind === 'open') { label = 'Assignment released'; m = title.match(/^(.*?)\s+(?:opens|begins)(?:\s+(.*))?$/i); if (m) { name = m[1]; if (!note && m[2]) note = m[2]; } }
+    if (e.kind === 'open') { label = /visible/i.test(title) ? 'Assessment path available' : 'Assessment begins'; m = title.match(/^(.*?)\s+(?:opens|begins)(?:\s+(.*))?$/i); if (m) { name = m[1]; if (!note && m[2]) note = m[2]; } }
     else if (e.kind === 'due') { label = 'Assignment due'; name = title.replace(/\s+(?:due|close|closes)$/i, ''); note = note.replace(/^due,?\s*/i, ''); }
     else if (/study week/i.test(title)) label = 'Study Week';
-    else if (e.kind === 'class') label = 'Live class';
+    else if (e.kind === 'class') label = /^(?:(?:First|Last) day of classes|Course opens)$/i.test(title) ? 'Term marker' : 'Live class';
     else if (e.kind === 'async') label = 'Asynchronous week';
     return { label: label, name: name, note: note, date: kdMonthDay(e.date) };
   }
@@ -1459,8 +1619,10 @@
       + '<button type="button" class="upcoming-pause" onclick="SOC.tickerPause()" aria-pressed="' + paused + '">' + (paused ? 'Resume' : 'Pause') + '</button>'
       + '</section>';
   }
-  var upcomingReminderFocus = null;
+  var upcomingReminderFocus = null, upcomingReminderLock = [], upcomingReminderOverflow = '';
   function showUpcomingReminder() {
+    /* Never place a second modal over an active learning experience or dialog. */
+    if (_walk || document.getElementById('walk-overlay') || document.querySelector('[aria-modal="true"]')) return;
     var key = SKEY + '.upcomingReminder.session.v1';
     try { if (sessionStorage.getItem(key) === '1') return; sessionStorage.setItem(key, '1'); } catch (e) {}
     if (document.getElementById('upcoming-reminder')) return;
@@ -1472,6 +1634,8 @@
     });
     if (!entries.length) return;
     upcomingReminderFocus = document.activeElement;
+    upcomingReminderOverflow = document.body.style.overflow;
+    upcomingReminderLock = Array.prototype.slice.call(document.body.children).map(function (node) { return { node: node, inert: !!node.inert, hidden: node.getAttribute('aria-hidden') }; });
     var box = document.createElement('div');
     box.id = 'upcoming-reminder'; box.className = 'upcoming-reminder';
     box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-labelledby', 'upcoming-reminder-title');
@@ -1480,7 +1644,10 @@
       + '<p>The banner at the top of every page stays current. Blackboard remains the official source for announcements and changed dates.</p>'
       + '<div><button type="button" onclick="SOC.closeUpcomingReminder();SOC.go(\'calendar\')">Open full calendar</button><button type="button" class="secondary" onclick="SOC.closeUpcomingReminder()">Continue to the site</button></div></div>';
     document.body.appendChild(box);
+    upcomingReminderLock.forEach(function (item) { item.node.inert = true; item.node.setAttribute('aria-hidden', 'true'); });
+    document.body.style.overflow = 'hidden';
     box.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); SOC.closeUpcomingReminder(); return; }
       if (e.key !== 'Tab') return;
       var focusable = box.querySelectorAll('button:not([disabled]),a[href],[tabindex]:not([tabindex="-1"])');
       if (!focusable.length) return;
@@ -1503,7 +1670,7 @@
       var badge = '<div class="kd-date' + (past ? ' kd-past' : '') + '"><span class="kd-day">' + day + '</span><span class="kd-mo">' + mon.slice(0, 3) + '</span></div>';
       var items = rowItems.map(function (x) {
         var inner = '<span class="kd-dot"></span><span class="kd-t">' + esc(x[0]) + (x[1] ? ' <em>' + esc(x[1]) + '</em>' : '') + '</span>';
-        if (x[3] != null) return '<a href="?screen=assignment-details&asg=' + x[3] + '" target="_blank" rel="noopener" class="kd-item kd-' + x[2] + ' kd-link" aria-label="Open the ' + esc(x[0]) + ' assignment in a new tab">' + inner + '<span class="kd-go" aria-hidden="true">&#8599;</span></a>';
+        if (x[3] != null) return '<a href="' + assessmentHref(x[3]) + '" target="_blank" rel="noopener" class="kd-item kd-' + x[2] + ' kd-link" aria-label="Open the ' + esc(x[0]) + ' assessment guide in a new tab">' + inner + '<span class="kd-go" aria-hidden="true">&#8599;</span></a>';
         return '<div class="kd-item kd-' + x[2] + '">' + inner + '</div>';
       }).join('');
       out += '<div class="kd-row' + (past ? ' kd-rowpast' : '') + '">' + badge + '<div class="kd-items">' + items + '</div></div>';
@@ -1515,10 +1682,10 @@
     return '<section class="node kd-cal" aria-label="Key dates for this course">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">DUE DATES</div>'
       + '<h2 class="wk-sec" style="margin:0 0 4px">What you hand in, and when</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Weekly Reflections run from Weeks 2 to 12. Mindset Evidence Check 1 is due October 9, the Mid-course Practice Synthesis is due October 23, the Case Redesign is due November 6, Mindset Evidence Check 2 is due November 27, the reflection thread closes December 4, and the Personal Resilience Plan final project is due December 11. Nothing is due in Study Week or the final week. Blackboard confirms the exact time.'
+      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Weekly Reflections run from Weeks 2 to 12 and your best 10 of 11 entries count. Mindset Evidence Check 1 is due October 9, the Mid-course Practice Synthesis is due October 23, the Case Redesign is due November 6, Mindset Evidence Check 2 is due November 27, the reflection thread closes December 4, and the Personal Resilience Plan final project is due December 11. Nothing is due in Study Week or Week 14. Blackboard confirms the exact submission time.'
       + '<div class="kd-list">' + keyDatesRows(['due']) + '</div>'
-      + '<h2 class="wk-sec" style="margin:24px 0 4px">When each assignment opens on Blackboard</h2>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">These are opening dates, not deadlines.</p>'
+      + '<h2 class="wk-sec" style="margin:24px 0 4px">Assessment availability and start dates</h2>'
+      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">All six assessment guides are visible on this site from September 8. Weekly Reflections begin the week of September 14. These are not deadlines or claims about Blackboard submission-opening dates.</p>'
       + '<div class="kd-list">' + keyDatesRows(['open']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">The class schedule</h2>'
       + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The shape of the term. Nothing here is due.</p>'
@@ -1534,12 +1701,12 @@
       var support = row.it.filter(function (x) { return x[2] === 'support'; });
       var ops = row.it.filter(function (x) { return x[2] === 'open'; });
       var asg = row.it.filter(function (x) { return x[3] != null; }).map(function (x) { return x[3]; });
-      var idx = asg.length === 1 ? asg[0] : (asg.length > 1 ? -1 : null);
-      if (dues.length) map[row.d] = { kind: 'due', label: dues.length > 1 ? (dues.length + ' assignments due') : dues[0][0] + ' due', idx: idx };
+      var assignmentId = asg.length === 1 ? asg[0] : null;
+      if (dues.length) map[row.d] = { kind: 'due', label: dues.length > 1 ? (dues.length + ' assignments due') : dues[0][0] + ' due', assignmentId: assignmentId };
       else if (asyncs.length) map[row.d] = { kind: 'async', label: asyncs[0][0], idx: null };
       else if (support.length) map[row.d] = { kind: 'support', label: support[0][0], idx: null };
       else if (cls.length) map[row.d] = { kind: 'class', label: cls[0][0], idx: null };
-      else if (ops.length) map[row.d] = { kind: 'open', label: ops[0][0], idx: idx };
+      else if (ops.length) map[row.d] = { kind: 'open', label: ops[0][0], assignmentId: assignmentId };
     });
     ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30'].forEach(function (d) { map[d] = { kind: 'study', label: 'Study Week' }; });
     return map;
@@ -1559,9 +1726,8 @@
       if (e) { cls += ' cal-' + e.kind; tag = '<span class="cal-tag">' + esc(e.label) + '</span>'; }
       if (iso === todayIso) cls += ' cal-today';
       var inner = '<span class="cal-num">' + d + '</span>' + tag;
-      if (e && e.idx != null) {
-        var href = e.idx >= 0 ? '?screen=assignment-details&asg=' + e.idx : '?screen=assignment-details';
-        cells += '<a href="' + href + '" target="_blank" rel="noopener" class="' + cls + ' cal-link" aria-label="Open assignment information in a new tab">' + inner + '</a>';
+      if (e && e.assignmentId) {
+        cells += '<a href="' + assessmentHref(e.assignmentId) + '" target="_blank" rel="noopener" class="' + cls + ' cal-link" aria-label="Open the assessment guide in a new tab">' + inner + '</a>';
       } else {
         cells += '<div class="' + cls + '">' + inner + '</div>';
       }
@@ -1571,7 +1737,7 @@
   function calendarLegend() {
     return '<div class="cal-legend">'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-due"></span>Due date</span>'
-      + '<span class="cal-lg"><span class="cal-sw cal-sw-open"></span>Assignment opens</span>'
+      + '<span class="cal-lg"><span class="cal-sw cal-sw-open"></span>Assessment available or begins</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-class"></span>Class schedule</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-async"></span>Asynchronous learning</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-support"></span>Term marker</span>'
@@ -1586,7 +1752,7 @@
     return '<div class="rise cal-page">' + (D.course.scheduleDetail ? '<div style="border:1px solid var(--border);border-left:4px solid var(--red);border-radius:10px;background:#fff;padding:12px 16px;margin:0 0 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:5px">CLASS TIME</div><p style="margin:0;font-size:.92rem;line-height:1.55;color:var(--ink)">' + esc(D.course.scheduleDetail) + '</p></div>' : '') + ''
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">CALENDAR</div>'
       + '<h1 style="font-size:1.9rem;line-height:1.15;font-weight:600;margin:0 0 8px;color:var(--ink)">Every date that matters</h1>'
-      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Seneca red marks due dates. Black marks live classes. Neutral grey marks every asynchronous week with no lecture, including the office-hour weeks. A light grey outline marks Study Week. Week 4 gives you room to apply the early foundations independently. Week 11 creates a deliberate synthesis point before the final live class. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
+      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Seneca red marks due dates. Black marks live classes. Neutral grey marks every asynchronous week with no lecture, including the office-hour weeks. A light grey outline marks Study Week. Week 6 gives you room to extend resilience into context and culture independently. Week 10 creates space for unhurried reflective writing and journaling. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
       + deadlineRule()
       + mobileCalendarSubscription()
       + calendarBody()
@@ -1614,12 +1780,12 @@
       return '<button type="button" class="pp-dot' + (done ? ' on' : '') + (cur ? ' cur' : '') + '" onclick="SOC.station(' + w + ')" title="Week ' + w + '" aria-label="Week ' + w + (done ? ', practised' : '') + '">' + (done ? '&#10003;' : w) + '</button>';
     }).join('');
     var line;
-    if (cw.phase === 'before') line = 'Your practice rhythm starts in Week 2. Eleven reflections build the record used in the Mid-course Practice Synthesis and Personal Resilience Plan.';
+    if (cw.phase === 'before') line = 'Your Weekly Reflections begin in Week 2. Together, they build the record used in your mid-course synthesis and final plan.';
     else if (entries === 0) line = 'No entries yet. One honest reflection this week starts the record used in your synthesis and final project.';
-    else line = 'You have practised in ' + entries + ' of 11 weeks. Every entry is raw material for your Personal Resilience Plan.';
+    else line = 'You have practised in ' + entries + ' of 11 weeks. Your best 10 Weekly Reflection entries count, and the full record feeds later assessments.';
     return '<section class="node practice-pulse"><div class="mono pp-kick">YOUR PRACTICE PULSE</div>'
       + '<h2 class="pp-h">This course works by practice, not cramming.</h2>'
-      + '<p class="pp-p">Weekly Reflections run from Weeks 2 to 12, and the best 10 of 11 count. This pulse mirrors your rhythm on this device: a week lights up when you have written a reflection or worked its page. The pulse is private to this browser and never submitted. Complete the graded reflection in Blackboard.</p>'
+      + '<p class="pp-p">Weekly Reflections are worth 10 percent and run from Weeks 2 to 12; your best 10 of 11 entries count. Each one begins with a specific weekly learning or participation moment, whether the week is live or asynchronous. This pulse is optional planning support: a week lights up when you have written in this site or worked its page. It is not a Blackboard submission, and it uses temporary browser storage when that storage is available.</p>'
       + '<div class="pp-dots">' + dots + '</div>'
       + '<p class="pp-line">' + line + '</p>'
       + '</section>';
@@ -1634,7 +1800,7 @@
     if (cw.phase === 'after') {
       return '<section class="node sync-rhythm"><div class="mono sr-kick">THE TERM IS COMPLETE</div>'
         + '<h2 class="sr-h">Classes have wrapped.</h2>'
-        + '<p class="sr-p">Everything stays here for review: the weekly experiences, readings, and your notes. Thank you for the term.</p></section>';
+        + '<p class="sr-p">The weekly experiences and readings remain available here for review. When browser storage is available, your notes may remain in this browser; download anything you need to keep. Thank you for the term.</p></section>';
     }
     var w = cw.week, mode = deliveryMode(w), recs = recordsForWeek(w), n = recs.length;
     if (mode.kind !== 'live') {
@@ -1645,7 +1811,7 @@
       + '<li><b>Enter the experience</b><span>Preview the core pattern, inspect the evidence, and carry one decision into the live discussion.</span></li>'
       + '<li><b>Carry one question in</b><span>The guiding question is on the week page. Bring your version of it.</span></li>';
     var after = ''
-      + '<li><b>Complete the Weekly Reflection</b><span>Use one live class moment, one honest practice observation, and the link to your previous entry while the week is still fresh.</span></li>'
+      + '<li><b>Write your weekly reflection</b><span>Use one live class moment, one honest practice observation, and the link to your previous entry while the week is still fresh.</span></li>'
       + '<li><b>Take the Knowledge Check</b><span>Find out what actually landed. Never graded.</span></li>'
       + '<li><b>Save your notes</b><span>Reflect, then download your weekly notes so nothing lives only in a browser.</span></li>';
     return '<section class="node sync-rhythm"><div class="sr-top"><div><div class="mono sr-kick">AROUND THIS WEEK\'S CLASS</div>'
@@ -1690,7 +1856,7 @@
     var code = courseCode() || 'Course';
     return '<footer role="contentinfo" style="margin:28px 0 0;padding:18px 20px;border:1px solid #DEE3EA;border-top:4px solid var(--red);border-radius:14px;background:#fff;color:var(--ink-dim)">'
       + '<p style="font-size:.9rem;line-height:1.55;margin:0 0 8px"><strong style="color:var(--ink)">' + esc(code) + ' companion website.</strong> Blackboard remains the official course platform for submissions, grades, announcements, discussions, and course records.</p>'
-      + '<p style="font-size:.84rem;line-height:1.55;margin:0 0 8px">This site does not require an account, does not collect student submissions, does not store grades, and does not send personal student information to the instructor, Seneca, or any server. The optional first name, notes, and check answers stay in this browser unless you remove or export them. No external service is contacted unless you choose to play a video.</p>'
+      + '<p style="font-size:.84rem;line-height:1.55;margin:0 0 8px">This site does not require an account, collect course submissions, or store grades. Its own code does not transmit the optional first name, notes, or check answers to the instructor or Seneca. When browser storage is available, those entries may remain locally until you clear site data; opening an external link or media contacts that provider under its own privacy practices.</p>'
       + '<p style="font-size:.84rem;line-height:1.55;margin:0">This site is designed to support accessible course navigation. Students who experience barriers using the site should use Blackboard and contact the instructor so access can be supported.</p>'
       + '</footer>';
   }
@@ -1836,13 +2002,13 @@
       var vweeks = (state.visits && state.visits.weeks) || {};
       var visited = ws.filter(function (w) { return vweeks[w]; });
       if (!visited.length) {
-        recs.push({ t: 'Begin with Week ' + (ws[0] || 1), b: 'Open the first week and try one section. The site keeps your place on this device.', go: 'SOC.station(' + (ws[0] || 1) + ')', gl: 'Open Week ' + (ws[0] || 1) });
+        recs.push({ t: 'Begin with Week ' + (ws[0] || 1), b: 'Open the first week and try one section. When browser storage is available, the site may keep your place on this device.', go: 'SOC.station(' + (ws[0] || 1) + ')', gl: 'Open Week ' + (ws[0] || 1) });
         return recs;
       }
       var lastW = visited[visited.length - 1], lastTs = 0;
       visited.forEach(function (w) { if (vweeks[w].last && vweeks[w].last > lastTs) lastTs = vweeks[w].last; });
       if (lastTs && (Date.now() - lastTs) > 7 * 86400000) {
-        recs.push({ t: 'Ease back in', b: 'It has been more than a week since your last visit. Ten minutes back in your most recent week rebuilds momentum faster than starting something new.', go: 'SOC.station(' + lastW + ')', gl: 'Reopen Week ' + lastW });
+        recs.push({ t: 'Ease back in', b: 'It has been more than a week since your last visit. Returning to your most recent week can rebuild momentum before you start something new.', go: 'SOC.station(' + lastW + ')', gl: 'Reopen Week ' + lastW });
       }
       if (!(state.careerField || '')) {
         recs.push({ t: 'See yourself in this course', b: 'Pick your program area and the course starts speaking your language: each week gains a lens, a scenario, and a career link written for your field. It shapes how the material reads, never what is graded.', go: 'SOC.go(\'career\')', gl: 'Choose your field' });
@@ -1857,7 +2023,7 @@
       }
       var refl = state.wkReflect && String(state.wkReflect[lastW] || '').trim();
       if (!refl && recs.length < 3) {
-        recs.push({ t: 'Close the loop on Week ' + lastW, b: 'A one-minute written reflection is the difference between having seen an idea and being able to use it.', go: 'SOC.jumpWeek(' + lastW + ', \'reflect\')', gl: 'Write it' });
+        recs.push({ t: 'Close the loop on Week ' + lastW, b: 'Writing a brief reflection helps turn an idea you have seen into one you can use.', go: 'SOC.jumpWeek(' + lastW + ', \'reflect\')', gl: 'Write it' });
       }
       if (!recs.length) {
         var nextW = null;
@@ -1877,8 +2043,8 @@
     var recs = compassRecs();
     var greet = name ? ('Welcome back, ' + esc(name) + '.') : 'Your study compass';
     var nameUi = name
-      ? '<small class="sc-nameline">Saved as ' + esc(name) + ' in this browser only. <button type="button" class="sc-linkbtn" onclick="SOC.nameClear()">Remove my name</button></small>'
-      : '<form class="sc-nameform" onsubmit="return SOC.nameSave(event)"><label for="sc-name">Add your first name (optional)</label><div><input id="sc-name" maxlength="40" autocomplete="off" placeholder="Your name"><button type="submit">Save</button></div><small>Stays in this browser on this device, is never sent anywhere, and Clear My Work removes it.</small></form>';
+      ? '<small class="sc-nameline">Added as ' + esc(name) + ' on this device. Browser storage is temporary. <button type="button" class="sc-linkbtn" onclick="SOC.nameClear()">Remove my name</button></small>'
+      : '<form class="sc-nameform" onsubmit="return SOC.nameSave(event)"><label for="sc-name">Add your first name (optional)</label><div><input id="sc-name" maxlength="40" autocomplete="off" placeholder="Your name"><button type="submit">Save</button></div><small>The site does not submit your name. It may remain in this browser when storage is available, and Clear My Work removes the local copy.</small></form>';
     var scField = selLabel(state.careerField || '');
     var stats = (days || scField)
       ? '<div class="sc-stats">' + (days ? '<span><b>' + days + '</b> day' + (days === 1 ? '' : 's') + ' here</span><span><b>' + touched + '</b> of ' + total + ' weeks opened</span>' : '') + (scField ? '<span>Your lens: <b>' + esc(scField) + '</b></span>' : '') + '</div>'
@@ -1889,7 +2055,7 @@
     return '<section class="node sc-panel jfade" aria-label="Your study compass">'
       + '<h2 class="wk-sec" style="margin-top:0">' + greet + '</h2>'
       + stats + recHtml + nameUi
-      + '<details class="sc-how"><summary>How these suggestions work</summary><p>No AI and no server. A few fixed rules run in your browser over what you have done on this device: which weeks you opened, whether you tried checks and guides, and whether you wrote reflections. None of it leaves this page, none of it is graded, and Clear My Work in How This Site Works erases all of it.</p></details>'
+      + '<details class="sc-how"><summary>How these suggestions work</summary><p>No AI or application backend creates these suggestions. A few fixed rules run in your browser over what you have done on this device: which weeks you opened, whether you tried checks and guides, and whether you wrote reflections. This site does not submit that activity for grading. When browser storage is available, Clear My Work in How This Site Works removes its local copy.</p></details>'
       + '</section>';
   }
   function weekHasWork(w) {
@@ -1960,7 +2126,7 @@
         ? '<div style="margin-top:12px;background:#15171C;color:#fff;border-radius:11px;padding:14px 16px"><div class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#9aa3b2;margin-bottom:6px">ONE GROUNDED WEAVE</div><p style="font-size:.86rem;line-height:1.55;color:rgba(255,255,255,.92);margin:0">' + esc(syn) + '</p><p style="font-size:.72rem;color:#9aa3b2;margin:9px 0 0">One way the course sources have been held together, not the answer. Two-Eyed Seeing keeps both eyes distinct (Etuaptmumk), never blended. <button onclick="SOC.rcReveal(\'' + wk2 + '\')" style="background:none;border:none;color:#f3b0a8;font-weight:600;cursor:pointer;padding:0">Hide</button></p></div>'
         : '<button onclick="SOC.rcReveal(\'' + wk2 + '\')" style="margin-top:12px;background:#fff;border:1px solid #DEE3EA;color:#15171C;border-radius:9px;padding:9px 14px;font-size:.84rem;font-weight:600;cursor:pointer">Reflect first, then see one grounded weave &#8595;</button>';
     }
-    var save = '<div style="margin-top:14px"><button onclick="SOC.saveStudio()" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:9px 16px;font-size:.875rem;font-weight:600;cursor:pointer">Save my work to the Personal Cartography (.docx)</button></div>';
+    var save = '<div style="margin-top:14px"><button onclick="SOC.saveStudio()" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:9px 16px;font-size:.875rem;font-weight:600;cursor:pointer">Save my Self-Check Studio work (.docx)</button></div>';
     return studioShell('Two attributed eyes', 'Read the two source frames as attributed readings, then bring Two-Eyed Seeing yourself. If you want a worked example of the practice, the Compare view can model one weaving; here, the weaving is yours.', '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">' + panels + '</div>' + soloNote + practice + check + woven + save);
   }
   function psyStudio(sel) {
@@ -1993,7 +2159,7 @@
       answer: 0,
       why: 'The mechanism sits in the design and data, not in intent or luck: ' + lcFirst(String(r.coreIdea).replace(/\s*\.?\s*$/, '')) + '. That is the New Jim Code, harm built into how the system is made.'
     });
-    var save = '<div style="margin-top:14px"><button onclick="SOC.saveStudio()" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:9px 16px;font-size:.875rem;font-weight:600;cursor:pointer">Save my work to the Personal Cartography (.docx)</button></div>';
+    var save = '<div style="margin-top:14px"><button onclick="SOC.saveStudio()" style="background:var(--red);border:none;color:#fff;border-radius:9px;padding:9px 16px;font-size:.875rem;font-weight:600;cursor:pointer">Save my Self-Check Studio work (.docx)</button></div>';
     return studioShell('Accountability Chain Lab', 'Trace techno-racism through mechanism and responsibility. A strong answer names structure, not only intent.', '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">' + chain + '</div>' + anchor + (g ? '<div style="font-size:.75rem;color:#6B7280;margin-top:10px">Concept anchor: ' + esc(g.term) + '</div>' : '') + check + save);
   }
   function selfCheckStudio(sel) {
@@ -2011,7 +2177,7 @@
     return '<div class="rise">'
       + '<div class="mono" style="font-size:.75rem;letter-spacing:.06em;color:#6B7280;margin-bottom:8px">SELF-CHECK</div>'
       + '<h1 style="font-size:1.75rem;font-weight:600;margin:0 0 8px">Recall the concepts</h1>'
-      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;">Read the concept, define it in your own words, then flip the card to check yourself. Each card is one concept. Private study, never a test.</p>'
+      + '<p style="font-size:.9375rem;color:#474C57;margin:0 0 18px;">Read the concept, define it in your own words, then flip the card to check yourself. Each card is one concept. Self-study, never a test.</p>'
       + '<label for="soc-cardweek" style="font-size:.8125rem;font-weight:600;color:#474C57;display:block;margin-bottom:6px">Show concepts for</label>'
       + '<select id="soc-cardweek" onchange="SOC.cardWeek(this.value)" style="max-width:360px;padding:9px 12px;border:1px solid #DEE3EA;border-radius:9px;background:#fff;font-size:.9375rem;color:#15171C;margin-bottom:20px">' + opts + '</select>'
       + selfCheckStudio(sel)
@@ -2182,7 +2348,7 @@
   }
   function stationDo(w) {
     var tiles = [['See it for yourself', 'Work this week\'s readings in the Self-Check Studio.', 'clipboard', 'SOC.goWeek(\'cards\',' + w + ')']];
-    if (D.course && D.course.frame) tiles.push(['Locate it on your map', 'Add this week to your Personal Cartography.', 'globe', 'SOC.go(\'map\')']);
+    if (D.course && D.course.frame) tiles.push(['Locate it on your map', 'Add this week to your course map.', 'globe', 'SOC.go(\'map\')']);
     if (D.course && D.course.code === 'BFS218') tiles.push(['Audit a system', 'Watch a racialized harm appear in the sandbox, then name it.', 'search', 'SOC.go(\'sandbox\')']);
     if (D.course && D.course.code === 'PSY355') tiles.push(['Build your resilience', 'Bring this week into your Resilience Ecology.', 'layers', 'SOC.go(\'ecology\')']);
     tiles.push(['Hold two readings together', 'Compare any two readings, side by side.', 'columns', 'SOC.go(\'compare\')']);
@@ -2215,7 +2381,7 @@
     var sel = state.wkCheck[key], opts = ['New to me', 'Getting it', 'I can'];
     return opts.map(function (o, i) { var on = sel === i; return '<button onclick="SOC.wkCheck(\'' + key + '\',' + i + ')" aria-pressed="' + on + '" class="wk-opt' + (on ? ' on' : '') + '">' + o + '</button>'; }).join('');
   }
-  function wkOpts(key) { return '<div class="wk-opts" id="opts-' + key + '">' + wkOptBtns(key) + '</div>'; }
+  function wkOpts(key, labelId) { return '<div class="wk-opts" id="opts-' + key + '" role="group" aria-labelledby="' + labelId + '">' + wkOptBtns(key) + '</div>'; }
   // a check is {t: a key idea from the week, look?: where to revisit it}. The student rates their OWN grasp:
   // New to me (0) / Getting it (1) / I can (2). This monitors understanding; there is no right or wrong.
   function checkText(c) { return (typeof c === 'string') ? c : c.t; }
@@ -2262,6 +2428,7 @@
   }
   function refreshWeekChecks(w, d) {
     if (!d) return;
+    var retainedFocus = captureFocus();
     ['pre', 'post'].forEach(function (ph) {
       d.checks.forEach(function (c, i) {
         var key = ph + '|' + w + '|' + i, el = document.getElementById('opts-' + key);
@@ -2270,9 +2437,10 @@
       var m = document.getElementById('wkmeter-' + ph + '-' + w);
       if (m) m.innerHTML = checkMeter(w, ph, d);
     });
+    restoreFocus(retainedFocus, 'soc-main');
   }
   function wkChecks(w, phase, d) {
-    var qs = d.checks.map(function (c, i) { return '<div class="wk-q">' + (i + 1) + '. ' + esc(checkText(c)) + wkOpts(phase + '|' + w + '|' + i) + '</div>'; }).join('');
+    var qs = d.checks.map(function (c, i) { var qid = 'wkq-' + phase + '-' + w + '-' + i; return '<div class="wk-q"><span id="' + qid + '">' + (i + 1) + '. ' + esc(checkText(c)) + '</span>' + wkOpts(phase + '|' + w + '|' + i, qid) + '</div>'; }).join('');
     var label = phase === 'pre' ? 'Before' : 'Now';
     var reset = '<div class="wk-resetrow"><button onclick="SOC.wkClear(' + w + ',\'' + phase + '\')" class="wk-reset">Reset ' + label + ' ratings</button><span>Click a selected rating again to clear only that idea.</span></div>';
     return qs + reset + '<div id="wkmeter-' + phase + '-' + w + '">' + checkMeter(w, phase, d) + '</div>';
@@ -2301,14 +2469,14 @@
         }).join('') + '</div>';
     }
     /* 2. explain-it-back tiles: one per key concept */
-    var tiles = '<div style="margin:0 0 18px"><h3 style="font-size:1rem;margin:0 0 8px">Explain it back</h3><p class="wk-hint" style="margin:0 0 10px">The real test of understanding: explain each idea to a classmate who missed the week, in your own words. Then compare with the reading\'s version. Nothing you type is recorded or graded.</p>'
+    var tiles = '<div style="margin:0 0 18px"><h3 style="font-size:1rem;margin:0 0 8px">Explain it back</h3><p class="wk-hint" style="margin:0 0 10px">The real test of understanding: explain each idea to a classmate who missed the week, in your own words. Then compare with the reading\'s version. Nothing you type is submitted or graded. When browser storage is available, your notes may remain only in this browser until you clear them.</p>'
       + d.concepts.map(function (c, ci) {
         var nk = 'sg' + w + '|c|' + ci;
         var val = state.sgNotes[nk] || '';
         var show = state.sgShow[nk];
         return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px">'
           + '<div style="font-weight:700;margin-bottom:8px">' + esc(c.h) + '</div>'
-          + '<textarea oninput="SOC.sgNote(\'' + nk + '\', this.value)" placeholder="Your explanation, one or two sentences..." style="width:100%;min-height:64px;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem;resize:vertical">' + esc(val) + '</textarea>'
+          + '<textarea oninput="SOC.sgNote(\'' + nk + '\', this.value)" aria-label="Explain ' + esc(c.h) + ' in your own words" placeholder="Your explanation, one or two sentences..." style="width:100%;min-height:64px;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem;resize:vertical">' + esc(val) + '</textarea>'
           + '<button onclick="SOC.sgCompare(\'' + nk + '\',' + w + ')" style="margin-top:8px;border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 12px;font-size:.82rem;cursor:pointer">' + (show ? 'Hide the reading\'s version' : 'Compare with the reading') + '</button>'
           + (show ? '<div style="margin-top:9px;padding:10px 13px;border-radius:9px;background:#FBF8F3;border:1px solid var(--border);font-size:.875rem;line-height:1.55">' + esc(c.body) + ' <span class="wk-cite">(' + esc(c.cite) + ')</span></div>' : '')
           + '</div>';
@@ -2328,7 +2496,7 @@
         rows += '<div style="background:#fff;border:1.5px solid ' + (ticked ? '#961A13' : 'var(--border)') + ';border-radius:12px;padding:14px 16px;margin-bottom:10px">'
           + '<div class="mono" style="font-size:.62rem;letter-spacing:.06em;color:' + (ticked ? '#2c6b3f' : '#6B7280') + '">RUNG ' + (ri + 1) + ' \u00B7 ' + rungNames[Math.min(ri, 2)].toUpperCase() + (ticked ? ' \u2713' : '') + '</div>'
           + '<div style="font-weight:600;margin:5px 0 8px;line-height:1.5">' + esc(gqs[ri]) + '</div>'
-          + '<textarea oninput="SOC.sgNote(\'' + rk + '\', this.value)" placeholder="Work it out here..." style="width:100%;min-height:56px;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem;resize:vertical">' + esc(rv) + '</textarea>'
+          + '<textarea oninput="SOC.sgNote(\'' + rk + '\', this.value)" aria-label="' + esc(rungNames[Math.min(ri, 2)] + ': ' + gqs[ri]) + '" placeholder="Work it out here..." style="width:100%;min-height:56px;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font:inherit;font-size:.9rem;resize:vertical">' + esc(rv) + '</textarea>'
           + (ticked ? '' : '<button onclick="SOC.sgTickRung(\'' + rk + '\',' + w + ')" style="margin-top:8px;border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 12px;font-size:.82rem;cursor:pointer">Done, next rung</button>')
           + '</div>';
       }
@@ -2339,7 +2507,7 @@
         + '</div>';
     }
     var html = '<section id="wk-sg" class="node"><h2 class="wk-sec">Study Guide</h2>'
-      + '<p class="wk-hint">Your rehearsal space before the Knowledge Check. Nothing here is recorded or graded; it lives only in your browser.</p>'
+      + '<p class="wk-hint">Your rehearsal space before the Knowledge Check. Nothing here is submitted or graded. When browser storage is available, your responses may remain only in this browser until you clear them.</p>'
       + warm + tiles + ladder + '</section>';
     return { html: html };
   }
@@ -2480,9 +2648,10 @@
           ? '<div style="background:#15171C;color:#fff;border-radius:12px;padding:15px 18px;margin-top:11px"><div class="mono" style="font-size:.68rem;letter-spacing:.05em;color:#9aa3b2;margin-bottom:8px">A MODEL ANSWER</div><p style="margin:0;font-size:.92rem;line-height:1.6;color:rgba(255,255,255,.94)">' + esc(m.model || '') + '</p><p style="font-size:.8rem;margin:9px 0 0;color:#9aa3b2">One strong answer. Compare it with yours, do not copy it. How close were you?</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:11px">' + [['got', 'I had this'], ['part', 'Partly there'], ['not', 'Not yet']].map(function (r) { var on = rated === r[0]; return '<button onclick="SOC.kcShortRate(\'' + skey + '\',\'' + r[0] + '\',' + w + ')" aria-pressed="' + on + '" style="border:1px solid ' + (on ? '#fff' : 'rgba(255,255,255,.35)') + ';background:' + (on ? '#fff' : 'transparent') + ';color:' + (on ? '#15171C' : '#fff') + ';border-radius:999px;padding:6px 13px;font-size:.82rem;font-weight:600;cursor:pointer">' + r[1] + '</button>'; }).join('') + '</div></div>'
           : '<button onclick="SOC.kcShortReveal(\'' + skey + '\',' + w + ')" style="margin-top:10px;background:none;border:1px solid #15171C;color:#15171C;border-radius:9px;padding:9px 15px;font-size:.88rem;font-weight:600;cursor:pointer">Reveal a model answer</button>';
         var ratedLine = (shown && rated) ? '<p style="margin:9px 0 0;font-size:.82rem;color:var(--ink-faint)">You rated yourself: ' + (rated === 'got' ? 'I had this.' : rated === 'part' ? 'Partly there.' : 'Not yet, and that is fine, that is what the reading is for.') + '</p>' : '';
-        return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + esc(m.q) + '</p><textarea oninput="SOC.kcShortText(\'' + skey + '\',this.value)" aria-label="Your answer" class="wk-ta" placeholder="Write your answer, then reveal a model to compare..." style="min-height:80px">' + esc(txt) + '</textarea>' + model + ratedLine + '</div>';
+        var qid = 'kc-short-q-' + w + '-' + kcVer + '-' + si;
+        return '<div style="background:#F7F8FA;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p id="' + qid + '" style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + esc(m.q) + '</p><textarea oninput="SOC.kcShortText(\'' + skey + '\',this.value)" aria-labelledby="' + qid + '" class="wk-ta" placeholder="Write your answer, then reveal a model to compare..." style="min-height:80px">' + esc(txt) + '</textarea>' + model + ratedLine + '</div>';
       }).join('');
-      shortHtml = '<div style="margin-top:6px"><h3 style="margin:14px 0 4px;font-size:1.05rem">Reflect and compare</h3><p class="wk-hint" style="margin-bottom:11px">Not scored, nothing recorded. Write your own answer first, then reveal a model answer and rate how close you were. The point is the comparison, not a mark.</p>' + srows + '</div>';
+      shortHtml = '<div style="margin-top:6px"><h3 style="margin:14px 0 4px;font-size:1.05rem">Reflect and compare</h3><p class="wk-hint" style="margin-bottom:11px">Not scored or submitted. When browser storage is available, your response may remain only in this browser until you clear it. Write your own answer first, then reveal a model answer and rate how close you were. The point is the comparison, not a mark.</p>' + srows + '</div>';
     }
 
     var setMeta = [['A', 'multiple choice'], ['B', 'more multiple choice'], ['C', 'applied and different']];
@@ -2530,7 +2699,7 @@
 
     var badge = '<span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #F0C8C3;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span>';
     var kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check ' + badge + '</h2>'
-      + '<p class="wk-hint">Nothing here counts toward your grade and nothing is recorded. Three sets: Set A and Set B are multiple choice; Set C brings scenarios, matching, and short written reflections. Answer, say how sure you were, and the check shows you not just what you got right but where a confident answer was actually wrong, the thing most worth fixing.</p>'
+      + '<p class="wk-hint">Nothing here is submitted or counts toward your grade. When browser storage is available, responses may remain only in this browser until you clear them. Three sets: Set A and Set B are multiple choice; Set C brings scenarios, matching, and short written reflections. Answer, say how sure you were, and the check shows you not just what you got right but where a confident answer was actually wrong, the thing most worth fixing.</p>'
       + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px">' + vers + retake + '</div>'
       + setNote + progress + revealCta + summary + kRows + shortHtml + '</section>';
     return { html: kc, items: kcItems.concat(shortItems) };
@@ -2553,7 +2722,7 @@
       + '<h1>' + esc(opt.title || weekTitle(w)) + '</h1>'
       + (sub ? '<p>' + esc(sub) + '</p>' : '')
       + (q ? '<div class="wk-hero-question">' + esc(q) + '</div>' : '')
-      + '<div class="wk-hero-actions"><button type="button" onclick="SOC.jumpWeek(' + w + ',\'' + startPart + '\')">' + esc(startLabel) + '</button><span>' + ic('clock', 13) + ' ' + esc((d.time || opt.time || 'Work at your own pace')) + '</span></div></div>'
+      + '<div class="wk-hero-actions"><button type="button" onclick="SOC.jumpWeek(' + w + ',\'' + startPart + '\')">' + esc(startLabel) + '</button><span>Work at your own pace. Use breaks, accessibility tools, and approved accommodations as needed.</span></div></div>'
       + '<aside class="wk-hero-route" aria-label="Weekly route"><div class="mono">MODULE ROUTE</div>' + routeHtml + '</aside>'
       + '</section>';
   }
@@ -2590,10 +2759,10 @@
       + '<div class="wk-ocheck"><div class="mono" style="font-size:.78rem;font-weight:700;color:var(--ink-faint);margin-bottom:7px">YOU CAN NOW</div>' + d.youcan.map(function (y) { return '<div class="wk-row"><span class="t">' + ic('check', 14, 2.6) + '</span>' + esc(y) + '</div>'; }).join('') + '</div>'
       + '<h3 style="margin:16px 0 4px">Now, what do you think?</h3><p class="wk-hint" style="margin-bottom:8px">The same ideas from the start. Rate them again to see where your understanding sits now, and how far it moved.</p>' + wkChecks(w, 'post', d)
       + '<h3 style="margin:16px 0 4px">Your reflection</h3><p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt) + '</p>'
-      + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" class="wk-ta" placeholder="Your reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
+      + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" aria-label="Week ' + w + ' reflection" class="wk-ta" placeholder="Your reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
       + '</section>';
     var notes = '<section id="wk-notes" class="node"><h2 class="wk-sec">Generate Your Weekly Notes</h2>'
-      + '<div class="wk-savebox" style="margin-top:0"><h3>Your organized Week ' + w + ' record</h3><p style="margin:0 0 4px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead. It organizes your private weekly check answers, practice notes, and reflection for review before Blackboard work.</p><ul><li>your before-and-after answers to the five check questions</li><li>a summary of what you practised this week</li><li>your answer to the reflection question</li></ul><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Generate Your Weekly Notes</button></div>'
+      + '<div class="wk-savebox" style="margin-top:0"><h3>Your organized Week ' + w + ' record</h3><p style="margin:0 0 4px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead. It organizes your personal weekly check answers, practice notes, and reflection for review before Blackboard work.</p><ul><li>your before-and-after answers to the five check questions</li><li>a summary of what you practised this week</li><li>your answer to the reflection question</li></ul><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Generate Your Weekly Notes</button></div>'
       + '</section>';
     var navRow = '<div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">'
       + (prev != null ? '<button onclick="SOC.station(' + prev + ')" style="flex:1;min-width:180px;text-align:left;border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 16px;cursor:pointer"><div class="mono" style="font-size:.66rem;color:var(--ink-faint)">&larr; PREVIOUS</div><div style="font-size:.92rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + prev + ': ' + esc(weekTitle(prev)) + '</div></button>' : '')
@@ -2604,9 +2773,9 @@
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['mode', 'How this week works'], ['rec', deliveryMode(w).kind === 'live' ? 'Class recording' : 'Instructor update'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Experience']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
-      + '<div class="wk-railt">' + ic('clock', 12) + ' ' + esc(d.time.split('(')[0].trim()) + '</div></div></aside>';
+      + '<div class="wk-railt">Flexible pacing</div></div></aside>';
     var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><span>Weeks start folded so you can see the whole map. Up to two sections stay open at once; opening a third closes the earliest one. Sections fold again when you leave the week.</span></div>';
-    return '<div class="rise">' + hero + deliveryNotice(w) + interpersonalSection(w) + recordingSection(w) + '<div class="wk-grid"><main>' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</main>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + deliveryNotice(w) + interpersonalSection(w) + recordingSection(w) + '<div class="wk-grid"><div class="wk-primary">' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</div>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -2618,11 +2787,11 @@
   var WORK_WEEKS = [13, 14];
   function weekDate(w) { return WEEK_DATES[w] || ''; }
   function deliveryMode(w) {
-    if (w === 4) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Use the flexible class time to apply the early foundations independently and notice how the ideas work in your own learning.' };
-    if (w === 11) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Use this deliberate self-regulated synthesis point to connect the second-half ideas and prepare one question to carry into Week 12.' };
+    if (w === 6) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Use the flexible class time to extend last week\'s view of resilience into context and culture at your own pace, and notice where your own supports actually sit.' };
+    if (w === 10) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Reflective writing works best unhurried, so use the flexible class time to journal properly rather than fitting it around a class.' };
     if (w === 13) return { kind: 'async', label: 'OFFICE HOURS + SUPPORTED ASYNCHRONOUS COMPLETION', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes office hours for focused final-work support and consultation. Office hours are not recorded by default.' };
     if (w === 14) return { kind: 'async', label: 'OFFICE HOURS + ASYNCHRONOUS COURSE CLOSURE', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes optional office hours for feedback and final questions. No graded work is due, and office hours are not recorded by default.' };
-    return { kind: 'live', label: 'SYNCHRONOUS LIVE CLASS', short: 'Live class', reason: w === 12 ? 'This is the final substantive live class. Bring the synthesis you prepared in Week 11 and use the meeting to test and strengthen it.' : 'Our class meets live this week. Use the week page before class to prepare and return after class to reflect and save what matters.' };
+    return { kind: 'live', label: 'SYNCHRONOUS LIVE CLASS', short: 'Live class', reason: w === 12 ? 'This is the final substantive live class. Bring the connections you drew in Week 11 and use the meeting to test and strengthen them.' : 'Our class meets live this week. Use the week page before class to prepare and return after class to reflect and save what matters.' };
   }
   function deliveryNotice(w) {
     var m = deliveryMode(w);
@@ -2661,7 +2830,7 @@
       route: ['Reflect', 'Save notes'],
       startPart: 'reflect',
       startLabel: 'Start reflection',
-      question: 'No new teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and close out the course. Nothing is due.' : '. Your final project is due this week.') + ((d.readings && d.readings.length) ? ' The readings below are revisit anchors from earlier weeks, not new assignments.' : ''),
+      question: 'No new teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and close out the course. Nothing is due.' : '. Any assessment due this week is confirmed on Blackboard.') + ((d.readings && d.readings.length) ? ' The readings below are revisit anchors from earlier weeks, not new assignments.' : ''),
       time: 'No new material'
     });
     var A = authoredWeekSections(w, d, { readingsTitle: 'Revisit readings', readingsIntro: '<p class="wk-hint">Nothing here is new. These are the anchors worth rereading as you finish your work; each one names why it earns the revisit.</p>' });
@@ -2670,9 +2839,9 @@
     act = act + actLaunch;
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Your reflection</h2>'
       + ((d.youcan && d.youcan.length) ? '<div class="wk-ocheck"><div class="mono" style="font-size:.78rem;font-weight:700;color:var(--ink-faint);margin-bottom:7px">YOU CAN NOW</div>' + d.youcan.map(function (y) { return '<div class="wk-row"><span class="t">' + ic('check', 14, 2.6) + '</span>' + esc(y) + '</div>'; }).join('') + '</div>' : '')
-      + ((d.checks && d.checks.length) ? '<h3 style="margin:16px 0 4px">Where does your understanding sit now?</h3><p class="wk-hint" style="margin-bottom:8px">Rate each idea from the course. No grade, saved only in this browser.</p>' + wkChecks(w, 'post', d) : '')
+      + ((d.checks && d.checks.length) ? '<h3 style="margin:16px 0 4px">Where does your understanding sit now?</h3><p class="wk-hint" style="margin-bottom:8px">Rate each idea from the course. No grade; browser storage is temporary and may be unavailable or cleared.</p>' + wkChecks(w, 'post', d) : '')
       + (d.reflectPrompt ? '<h3 style="margin:16px 0 4px">Your reflection</h3><p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt) + '</p>' : '')
-      + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" class="wk-ta" placeholder="Your reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
+      + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" aria-label="Week ' + w + ' reflection" class="wk-ta" placeholder="Your reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
       + '</section>';
     var notes = '<section id="wk-notes" class="node"><h2 class="wk-sec">Generate Your Weekly Notes</h2>'
       + '<div class="wk-savebox" style="margin-top:0"><h3>Your organized Week ' + w + ' record</h3><p style="margin:0 0 6px;font-size:.9rem">This makes one Word file (.docx) on Seneca letterhead, your organized weekly record.</p><button onclick="SOC.saveWeek(' + w + ')" class="wk-save">Generate Your Weekly Notes</button></div></section>';
@@ -2708,12 +2877,12 @@
       time: 'Overview, no readings'
     });
     var how = '<section id="wk-how" class="node"><h2 class="wk-sec">How this course works</h2>'
-      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">This is a blended synchronous course. Weeks 1 to 3, 5 to 10, and 12 meet live. Weeks 4 and 11 are independent asynchronous learning weeks. Week 13 is supported asynchronous completion with office hours, and Week 14 is asynchronous course closure with optional consultation and no graded deadline. Every week page names its mode and purpose. Live weeks include a class-recording space; asynchronous weeks may carry a short instructor update. Study Week, October 26 to 30, has no class and no new module. Blackboard remains the official Seneca course platform.</p>'
+      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">This is a blended synchronous course. Weeks 1 to 5, 7 to 9, 11, and 12 meet live. Weeks 6 and 10 are independent asynchronous learning weeks. Week 13 is supported asynchronous completion with office hours, and Week 14 is asynchronous course closure with optional consultation and no graded deadline. Every week page names its mode and purpose. Live weeks include a class-recording space; asynchronous weeks may carry a short instructor update. Study Week, October 26 to 30, has no class and no new module. Blackboard remains the official Seneca course platform.</p>'
       + '<p style="margin:0;font-size:1rem;line-height:1.6">This week is your orientation. There are no readings and nothing to submit. When you are ready, begin with Week ' + (next != null ? next : 2) + '.</p></section>';
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Starting reflection</h2>'
       + '<p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt || 'What is one learning habit you already have that deserves to be strengthened rather than judged?') + '</p>'
-      + '<p class="wk-hint">This is private, ungraded, and saved only in this browser. It gives you a starting point to revisit later in the course.</p>'
-      + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" class="wk-ta" placeholder="Your starting reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
+      + '<p class="wk-hint">This is ungraded and not submitted by the site. It uses temporary browser storage when that storage is available, so generate or export a copy before relying on it later.</p>'
+      + '<textarea oninput="SOC.wkReflect(' + w + ',this.value)" aria-label="Week ' + w + ' starting reflection" class="wk-ta" placeholder="Your starting reflection...">' + esc(state.wkReflect[w] || '') + '</textarea>'
       + '</section>';
     var beginRow = (next != null) ? '<div style="margin-top:18px"><button onclick="SOC.station(' + next + ')" style="border:1px solid var(--border);background:#fff;border-radius:12px;padding:13px 18px;cursor:pointer;text-align:left;min-width:220px"><div class="mono" style="font-size:.66rem;color:var(--red)">BEGIN &rarr;</div><div style="font-size:.95rem;font-weight:700;color:var(--ink);margin-top:2px">Week ' + next + ': ' + esc(weekTitle(next)) + '</div></button></div>' : '';
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
@@ -3163,17 +3332,17 @@
     var steps = [
       ['Prepare', 'Before class', 'Open the week, complete the readings, enter the weekly experience, and choose one question to bring with you.'],
       ['Meet or work independently', 'Follow the week label', 'Live weeks use discussion. Asynchronous weeks use the week page for independent application, synthesis, completion, or closure.'],
-      ['Reflect', 'After class', 'Complete the Weekly Reflection in Blackboard while the discussion and your own practice are still clear.'],
-      ['Rehearse', 'Private study', 'Use Source Practice, flashcards, the Study Guide, or the Knowledge Check only when they help you check your understanding.'],
-      ['Carry forward', 'Your learning record', 'Use verified lines from your Weekly Reflections in the Mid-course Practice Synthesis and Personal Resilience Plan final project.']
+      ['Reflect', 'Each week', 'Complete your graded Weekly Reflection in Blackboard while the week\'s learning and your own practice are still clear.'],
+      ['Rehearse', 'Self-study', 'Use Source Practice, flashcards, the Study Guide, or the Knowledge Check only when they help you check your understanding.'],
+      ['Carry forward', 'Your learning record', 'Quote verified lines from your Weekly Reflections in the Mid-course Practice Synthesis and Personal Resilience Plan.']
     ];
-    var route = '<section class="path-route path-sync"><div class="path-route-head"><div class="mono">BLENDED SYNCHRONOUS COURSE</div><h2>One rhythm, two ways of learning</h2><p>Most weeks meet live. Weeks 4 and 11 are independent asynchronous learning. Week 13 protects supported completion, and Week 14 provides low-pressure closure and optional consultation.</p></div><ol>'
+    var route = '<section class="path-route path-sync"><div class="path-route-head"><div class="mono">BLENDED SYNCHRONOUS COURSE</div><h2>One rhythm, two ways of learning</h2><p>Most weeks meet live. Weeks 6 and 10 are independent asynchronous learning. Week 13 protects supported completion, and Week 14 provides low-pressure closure and optional consultation.</p></div><ol>'
       + steps.map(function (s, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(s[0]) + '</b><em>' + esc(s[1]) + '</em><p>' + esc(s[2]) + '</p></div></li>'; }).join('') + '</ol></section>';
     return '<div class="rise path-page">'
       + '<section class="path-hero"><div><div class="mono">COURSE RHYTHM</div><h1>Prepare, meet or work independently, reflect, and carry it forward</h1><p>PSY355 uses live discussion and four purposeful asynchronous weeks around a continuing reflection record. The week label tells you exactly how that week works.</p></div><div class="path-compass" aria-label="PSY355 weekly rhythm"><span>PREPARE</span><b>read and orient</b><i></i><span>REFLECT</span><b>connect and carry forward</b></div></section>'
-      + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 4 applies, Week 11 synthesizes, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your Weekly Reflections create the record used in the synthesis and final project.</span></div></section>'
+      + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 6 extends resilience into context and culture, Week 10 makes room for reflective practice, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your graded Weekly Reflections create the record used in the mid-course synthesis and final plan.</span></div></section>'
       + '<div class="path-routes">' + route + '</div>'
-      + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week, check its delivery label and purpose, then follow the route on that page. Complete graded Weekly Reflections in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>See the mode and weekly route.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Experiences</b><small>Enter or revisit the week\'s immersive teaching experience.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Calendar and Due Dates</b><small>See delivery modes and deadlines.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Understand the graded work.</small></button></div></section>'
+      + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week, check its delivery label and purpose, then follow the route on that page. Submit graded work in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>See the mode and weekly route.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Experiences</b><small>Enter or revisit the week\'s immersive teaching experience.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Calendar and Due Dates</b><small>See delivery modes and deadlines.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Understand the graded work.</small></button></div></section>'
       + '</div>';
   }
   function assignmentIntegrityNotice() {
@@ -3187,19 +3356,26 @@
     }).join('') + '</section>';
   }
   function assignmentStartLabLaunch() {
-    return '<section class="path-close" aria-label="Assignment Start Lab"><div class="mono">PRIVATE PLANNING SUPPORT</div><h2>Not sure how to begin?</h2><p>Add your assignment, progress, exact sticking point, and available time. Fixed course rules create a personal start plan without using AI. Nothing is submitted, and your answers stay in this browser on this device.</p><div class="path-actions"><button type="button" onclick="location.href=\'assignment-start-lab.html\'"><b>Open Assignment Start Lab</b><small>Create a plan you can print or save as PDF.</small></button></div></section>';
+    return '<section class="path-close" aria-label="Assignment Start Lab"><div class="mono">PERSONAL PLANNING SUPPORT</div><h2>Not sure how to begin?</h2><p>Add your assignment, progress, exact sticking point, and available time. Fixed course rules create a personal start plan without using AI. The site does not submit your answers; any browser-stored copy is temporary and device-specific.</p><div class="path-actions"><button type="button" onclick="location.href=\'assignment-start-lab.html\'"><b>Open Assignment Start Lab</b><small>Create a plan you can print or save as PDF.</small></button></div></section>';
   }
   function assignmentsPage() {
-    var items = [
-      ['Weekly Reflections', 'Weeks 2 to 12, closes December 4, 10 percent', 'Complete 11 connected entries in Blackboard. Your best 10 count, and each entry uses your previous record, one live class moment, and one honest practice observation.'],
-      ['Mindset Evidence Check 1', 'Due October 9, 20 percent', 'Use evidence from Weeks 3 and 4 to examine one real learning struggle without turning growth mindset into a slogan.'],
-      ['Mid-course Practice Synthesis', 'Due October 23, 10 percent', 'Quote at least three of your own Weekly Reflections, name a pattern, and set a concrete plan for the second half.'],
-      ['Self-Regulated Learning Case Redesign', 'Due November 6, 20 percent', 'Redesign one real study routine with the self-regulated learning cycle, resilience as process, and an honest implementation record.'],
-      ['Mindset Evidence Check 2', 'Due November 27, 20 percent', 'Use self-compassion, flexibility, and help seeking without turning the work into a clinical account.'],
-      ['Personal Resilience Plan', 'Due December 11, 20 percent', 'Build the final project from course evidence and at least six verified quotes from your own Weekly Reflections.']
-    ];
-    var steps = items.map(function (x, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(x[0]) + '</b><em>' + esc(x[1]) + '</em><p>' + esc(x[2]) + '</p></div></li>'; }).join('');
-    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Understanding Your Assignment</h1><p>Find the official assignment in Blackboard, use this site to gather concepts and evidence, then write and submit the final work yourself. The site supports your process; Blackboard holds the requirements and submission.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Your record matters</b><span>Weekly Reflections become evidence for the synthesis and final project.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section>' + assignmentIntegrityNotice() + assignmentStartLabLaunch() + '<section class="path-route"><div class="path-route-head"><div class="mono">THE SIX GRADED PIECES</div><h2>Understand the full assessment path</h2><p>Use this as a planning map. Always check Blackboard for the complete instructions and exact submission time.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then return here when you are ready to plan the graded work.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Week 2</b><small>Begin the reflection record.</small></button><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Evidence Check 1.</small></button><button type="button" onclick="SOC.station(7)"><b>Week 7</b><small>Mid-course synthesis.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>Case redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Evidence Check 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Final project planning.</small></button></div></section></div>';
+    var steps = PSY_ASSESSMENTS.map(function (a, i) {
+      return '<li><span>' + (i + 1) + '</span><div><b>' + esc(a.title) + '</b><em>' + esc(a.weight + ' | ' + a.schedule) + '</em><p>' + esc(a.summary) + '</p><a class="wk-cta" style="display:inline-flex;margin:4px 0 0;text-decoration:none" href="' + assessmentHref(a.id) + '">Open assessment guide <span aria-hidden="true">&#8594;</span></a></div></li>';
+    }).join('');
+    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Understanding Your Assignments</h1><p>All six graded pieces are visible here from day one. Use this site to understand the path and gather concepts and evidence, then use Blackboard for the official brief, rubric, submission, and grade.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Your record matters</b><span>Weekly Reflections are graded and become evidence for the mid-course synthesis and final plan.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section>' + assignmentIntegrityNotice() + assignmentStartLabLaunch() + '<section class="path-route"><div class="path-route-head"><div class="mono">THE SIX GRADED PIECES</div><h2>See the whole assessment path</h2><p>The guide for every piece is available here from September 8. This does not claim that every Blackboard dropbox is open; always check Blackboard for the official brief and submission status.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then return here when you are ready to plan the graded work.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Week 2</b><small>Begin the reflection record.</small></button><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Evidence Check 1.</small></button><button type="button" onclick="SOC.station(7)"><b>Week 7</b><small>Mid-course synthesis.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>Case redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Evidence Check 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Final project planning.</small></button></div></section></div>';
+  }
+  function assignmentDetailsPage() {
+    var a = assessmentById(state.assignmentId);
+    if (!a) {
+      return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">ASSESSMENT GUIDE</div><h1>That assessment guide was not found</h1><p>The link may be incomplete or out of date. Open the full assessment path to choose one of the six graded pieces.</p></div></section><section class="path-close"><div class="path-actions"><a class="wk-cta" style="text-decoration:none" href="?screen=assignments">Open all assessments</a></div></section></div>';
+    }
+    var steps = a.steps.map(function (step, i) { return '<li><span>' + (i + 1) + '</span><div><b>Step ' + (i + 1) + '</b><p>' + esc(step) + '</p></div></li>'; }).join('');
+    var submit = a.submit.map(function (item) { return '<li>' + esc(item) + '</li>'; }).join('');
+    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">ASSESSMENT GUIDE</div><h1>' + esc(a.title) + '</h1><p>' + esc(a.summary) + '</p></div><div class="path-compass" aria-label="Assessment timing and weight"><span>WEIGHT</span><b>' + esc(a.weight) + '</b><i></i><span>DATE</span><b>' + esc(a.due) + '</b></div></section>'
+      + '<section class="path-summary"><div><b>When</b><span>' + esc(a.schedule) + '</span></div><div><b>Course record</b><span>' + esc(a.weeks) + '</span></div><div><b>Evidence anchor</b><span>' + esc(a.evidence) + '</span></div></section>'
+      + deadlineRule()
+      + '<section class="path-route"><div class="path-route-head"><div class="mono">A CONCRETE START PATH</div><h2>Move from evidence to a first draft</h2><p>This page is a planning guide. Read the official Blackboard brief and rubric before you begin, and follow Blackboard if any detail differs.</p></div><ol>' + steps + '</ol></section>'
+      + '<section class="path-close"><div class="mono">WHAT YOU SUBMIT</div><h2>Check the shape of the finished work</h2><ul style="margin:10px 0 18px;padding-left:22px;line-height:1.65">' + submit + '</ul><div class="path-actions"><a class="wk-cta" style="text-decoration:none" href="assignment-start-lab.html?assignment=' + encodeURIComponent(a.id) + '"><b>Open the Assignment Start Lab</b><small>Build a personal plan you can print or save.</small></a><a class="wk-cta" style="text-decoration:none" href="' + BB_URL + '" target="_blank" rel="noopener"><b>Open Blackboard</b><small>Use the official brief, rubric, and submission area.</small></a><a class="wk-cta" style="text-decoration:none" href="?screen=assignments"><b>View all six pieces</b><small>Return to the full assessment path.</small></a></div></section></div>';
   }
   function scholarMedia() {
     var out = [];
@@ -3245,7 +3421,14 @@
     var man = (typeof window !== 'undefined' && window[code + '_WALKFIGS']) || {};
     var list = man[w] || man[String(w)];
     if (!list || !list[idx]) return null;
-    return 'walkthroughs/' + d.deck + '/images/' + list[idx];
+    var entry = list[idx];
+    if (typeof entry === 'string') entry = { file: entry };
+    if (!entry || !entry.file) return null;
+    return {
+      src: 'walkthroughs/' + d.deck + '/images/' + entry.file,
+      alt: String(entry.alt || ''),
+      longText: String(entry.longText || '')
+    };
   }
   function walkPrefs() {
     var r = rlState();
@@ -3256,12 +3439,16 @@
     r.walkMotion = !!r.walkMotion;
     return r;
   }
+  function cleanWalkResume(saved, w) {
+    saved = cleanPlainObject(saved);
+    var week = typeof saved.week === 'number' ? cleanWeek(saved.week) : null;
+    var index = saved.i;
+    if (!week || (w && week !== w) || typeof index !== 'number' || !isFinite(index) || Math.floor(index) !== index || index < 0 || saved.entered !== true) return null;
+    return { week: week, i: index, entered: true };
+  }
   function experienceResumeFor(w) {
-    var p = walkPrefs(), all = p.walkResumeByWeek && typeof p.walkResumeByWeek === 'object' ? p.walkResumeByWeek : {};
-    var saved = all[String(w)];
-    if (!saved && p.walkResume && Number(p.walkResume.week) === Number(w)) saved = p.walkResume;
-    if (!saved || Number(saved.week) !== Number(w) || (!saved.entered && !(Number(saved.i) > 0))) return null;
-    return saved;
+    var p = walkPrefs(), all = cleanPlainObject(p.walkResumeByWeek);
+    return cleanWalkResume(all[String(w)], w) || cleanWalkResume(p.walkResume, w);
   }
   function experienceActionLabel(w) { return experienceResumeFor(w) ? 'Re-enter the experience' : 'Enter the experience'; }
   function walkSaveResume(w, i, entered) {
@@ -3283,11 +3470,22 @@
   }
   function walkSlideText() {
     var el = document.querySelector('#walk-overlay .walk-slide[aria-hidden="false"]');
-    return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : '';
+    return el ? String(el.innerText || '').replace(/\s+/g, ' ').trim() : '';
   }
   function walkSlideName(s) {
-    if (!s) return 'Experience chapter';
-    return String(s.title || s.h || (s.kind === 'terms' ? 'The words to know' : s.kind === 'questions' ? 'Carry these questions' : s.kind === 'close' ? 'You can now' : 'Experience chapter'));
+    if (!s) return 'Chapter';
+    if (s.kind === 'cover') return 'Week ' + (_walk ? _walk.week : '') + ': ' + (s.title || 'Introduction');
+    if (s.kind === 'scene') return 'Enter the week: ' + (s.title || 'Weekly scene');
+    if (s.kind === 'context') return 'What this week asks you to notice';
+    if (s.kind === 'concept') return 'Key idea: ' + (s.h || 'Weekly concept');
+    if (s.kind === 'figure') return 'Diagram: ' + (s.h || 'Weekly concept');
+    if (s.kind === 'terms') return 'The words to know';
+    if (s.kind === 'readings') return 'Open the sources';
+    if (s.kind === 'program') return 'Your field enters the story: ' + (s.label || 'Program lens');
+    if (s.kind === 'activity') return 'Action room: ' + (s.title || 'Weekly activity');
+    if (s.kind === 'decisions') return 'Choose where to pause';
+    if (s.kind === 'close') return 'Carry one idea back with you';
+    return String(s.title || s.h || 'Chapter');
   }
   function walkControlSync() {
     var b = document.getElementById('walk-speak'), stop = document.getElementById('walk-stop');
@@ -3325,13 +3523,13 @@
     if (!_walk || !_walk.panel) return '';
     var p = walkPrefs(), themes = [['light', 'Light'], ['soft', 'Soft grey'], ['warm', 'Warm'], ['contrast', 'High contrast']];
     return '<section id="walk-access-panel" class="walk-access-panel" role="region" aria-label="Experience accessibility settings" tabindex="-1">'
-      + '<div class="walk-access-head"><h2>Accessibility</h2><button type="button" onclick="SOC.walkPanel()" aria-label="Close accessibility settings">' + ic('x', 17, 2) + '</button></div>'
-      + '<div class="walk-access-group"><b>Screen</b><div>' + themes.map(function (x) { return '<button type="button" onclick="SOC.walkSetting(\'theme\',\'' + x[0] + '\')" aria-pressed="' + (p.walkTheme === x[0]) + '">' + x[1] + '</button>'; }).join('') + '</div></div>'
-      + '<div class="walk-access-group"><b>Text size</b><div>' + [100, 115, 130, 150, 175, 200].map(function (n) { return '<button type="button" onclick="SOC.walkSetting(\'size\',' + n + ')" aria-pressed="' + (p.walkSize === n) + '">' + n + '%</button>'; }).join('') + '</div></div>'
-      + '<div class="walk-access-group"><b>Reading display</b><div><button type="button" onclick="SOC.walkSetting(\'font\',' + (!p.walkFont) + ')" aria-pressed="' + p.walkFont + '">High-legibility font</button><button type="button" onclick="SOC.walkSetting(\'motion\',' + (!p.walkMotion) + ')" aria-pressed="' + p.walkMotion + '">Reduce motion</button></div></div>'
-      + (('speechSynthesis' in window) ? '<div class="walk-access-group"><b>Voice narration</b><label>Voice<select onchange="SOC.walkVoice(this.value)">' + walkVoiceOptions() + '</select></label><label>Speed<select onchange="SOC.walkRate(Number(this.value))"><option value="75"' + (p.walkRate === 75 ? ' selected' : '') + '>0.75x</option><option value="100"' + (p.walkRate === 100 ? ' selected' : '') + '>1x</option><option value="125"' + (p.walkRate === 125 ? ' selected' : '') + '>1.25x</option><option value="150"' + (p.walkRate === 150 ? ' selected' : '') + '>1.5x</option></select></label><div><button id="walk-speak" type="button" onclick="SOC.walkSpeak()">Read this chapter</button><button id="walk-stop" type="button" onclick="SOC.walkStop()" disabled>Stop</button></div><small>Voice options come from your device. Narration reads only the current chapter.</small></div>' : '<p class="walk-access-note">Voice narration is not available in this browser.</p>')
-      + '<div class="walk-access-group"><b>Experience</b><div><button type="button" onclick="SOC.walkRestart()">Restart from the beginning</button></div></div>'
-      + '<p class="walk-access-note">Your choices stay on this device. They do not change the course content or send information anywhere.</p></section>';
+      + '<div class="walk-access-head"><h2>Accessibility</h2><button id="walk-panel-close" type="button" onclick="SOC.walkPanel()" aria-label="Close accessibility settings">' + ic('x', 17, 2) + '</button></div>'
+      + '<div class="walk-access-group"><b>Screen</b><div>' + themes.map(function (x) { return '<button id="walk-theme-' + x[0] + '" type="button" onclick="SOC.walkSetting(\'theme\',\'' + x[0] + '\')" aria-pressed="' + (p.walkTheme === x[0]) + '">' + x[1] + '</button>'; }).join('') + '</div></div>'
+      + '<div class="walk-access-group"><b>Text size</b><div>' + [100, 115, 130, 150, 175, 200].map(function (n) { return '<button id="walk-size-' + n + '" type="button" onclick="SOC.walkSetting(\'size\',' + n + ')" aria-pressed="' + (p.walkSize === n) + '">' + n + '%</button>'; }).join('') + '</div></div>'
+      + '<div class="walk-access-group"><b>Reading display</b><div><button id="walk-font" type="button" onclick="SOC.walkSetting(\'font\',' + (!p.walkFont) + ')" aria-pressed="' + p.walkFont + '">High-legibility font</button><button id="walk-motion" type="button" onclick="SOC.walkSetting(\'motion\',' + (!p.walkMotion) + ')" aria-pressed="' + p.walkMotion + '">Reduce motion</button></div></div>'
+      + (('speechSynthesis' in window) ? '<div class="walk-access-group"><b>Voice narration</b><label>Voice<select id="walk-voice" onchange="SOC.walkVoice(this.value)">' + walkVoiceOptions() + '</select></label><label>Speed<select id="walk-rate" onchange="SOC.walkRate(Number(this.value))"><option value="75"' + (p.walkRate === 75 ? ' selected' : '') + '>0.75x</option><option value="100"' + (p.walkRate === 100 ? ' selected' : '') + '>1x</option><option value="125"' + (p.walkRate === 125 ? ' selected' : '') + '>1.25x</option><option value="150"' + (p.walkRate === 150 ? ' selected' : '') + '>1.5x</option></select></label><div><button id="walk-speak" type="button" onclick="SOC.walkSpeak()">Read this chapter</button><button id="walk-stop" type="button" onclick="SOC.walkStop()" disabled>Stop</button></div><small>Voice options come from your device. Narration reads only the current chapter.</small></div>' : '<p class="walk-access-note">Voice narration is not available in this browser.</p>')
+      + '<div class="walk-access-group"><b>Experience</b><div><button id="walk-panel-restart" type="button" onclick="SOC.walkRestart()">Restart from the beginning</button></div></div>'
+      + '<p class="walk-access-note">This site does not transmit your accessibility choices. They affect this browser session and any browser storage available on this device; they do not change the course content.</p></section>';
   }
   function walkSlides(w) {
     var d = weekData(w);
@@ -3346,7 +3544,7 @@
     (d.concepts || []).forEach(function (c, ci) {
       s.push({ kind: 'concept', h: c.h, body: c.body, cite: c.cite, number: ci + 1 });
       var fig = walkFig(w, ci);
-      if (fig) s.push({ kind: 'figure', src: fig, h: c.h });
+      if (fig) s.push({ kind: 'figure', src: fig.src, alt: fig.alt || ('Diagram for ' + c.h), longText: fig.longText, h: c.h });
     });
     if (d.terms && d.terms.length) s.push({ kind: 'terms', items: d.terms.slice(0, 6) });
     if (d.readings && d.readings.length) s.push({ kind: 'readings', items: d.readings.slice(0, 6) });
@@ -3374,7 +3572,15 @@
       return '<div class="walk-kicker">ORIENTATION ROOM</div><h2 class="walk-h">What this week asks you to notice</h2><p class="walk-body">' + esc(s.purpose) + '</p><div class="walk-context-grid">' + (s.outcomes || []).map(function (x, i) { return '<div><b>' + (i + 1) + '. A move you will make</b><p>' + esc(x) + '</p></div>'; }).join('') + '</div>';
     }
     if (s.kind === 'readings') {
-      return '<div class="walk-kicker">EVIDENCE ROOM</div><h2 class="walk-h">Open the sources</h2><p class="walk-body">Each drawer holds a different piece of the week. Open them in any order, then ask what each source can support and what it cannot settle on its own.</p><div class="walk-evidence">' + (s.items || []).map(function (r, i) { return '<details><summary>' + (i + 1) + '. ' + esc((r.apa || r.title || 'Weekly source').split('. ').slice(0, 2).join('. ')) + '</summary><div>' + esc(r.scope || r.why || 'Use this source for the claim and context named in the weekly reading guide.') + '</div></details>'; }).join('') + '</div>';
+      return '<div class="walk-kicker">EVIDENCE ROOM</div><h2 class="walk-h">Open the sources</h2><p class="walk-body">Each drawer holds a different piece of the week. Open them in any order, then ask what each source can support and what it cannot settle on its own.</p><div class="walk-evidence">' + (s.items || []).map(function (r, i) {
+        var rr = (r && r.id && rec(r.id)) || r || {};
+        var full = rr.apa || (r && r.apa) || rr.title || (r && r.title) || 'Weekly source';
+        var title = rr.title || (r && r.title) || full;
+        var scope = rr.scope || (r && r.scope) || rr.why || (r && r.why) || 'Use this source for the claim and context named in the weekly reading guide.';
+        var url = readUrl(rr) || readUrl(r || {});
+        var access = url ? '<a class="walk-source-link" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Open the source <span aria-hidden="true">&#8599;</span></a>' : '<p class="walk-source-access">Use Blackboard or the Seneca Library to access this course reading.</p>';
+        return '<details><summary>' + (i + 1) + '. ' + esc(title) + '</summary><div><p class="walk-source-apa">' + esc(full) + '</p><p>' + esc(scope) + '</p>' + access + '</div></details>';
+      }).join('') + '</div>';
     }
     if (s.kind === 'program') {
       return '<div class="walk-kicker">YOUR FIELD ENTERS THE STORY</div><h2 class="walk-h">' + esc(s.label) + '</h2><p class="walk-body">' + esc(s.intro) + '</p><div class="walk-program-grid"><div><b>The course idea</b><p>' + esc(s.concept) + ': ' + esc(s.conceptMove) + '</p></div><div><b>The pressure point</b><p>' + esc(s.focus) + '</p></div></div><div class="walk-decisions">' + (s.questions || []).map(function (q, i) { return '<div class="walk-decision"><button type="button" aria-expanded="false" onclick="SOC.walkReveal(this)">Field decision ' + (i + 1) + ': ' + esc(q) + '</button><div hidden>Trace the people, evidence, default, and accountability point before deciding what should happen next.</div></div>'; }).join('') + '</div>';
@@ -3402,9 +3608,11 @@
         + '<div class="walk-figtext">'
         + '<div class="walk-kicker">THE DIAGRAM</div>'
         + '<h2 class="walk-fighead">' + esc(s.h) + '</h2>'
-        + '<p class="walk-figcap">A visual map of this idea. Follow how each part connects.</p>'
+        + '<p class="walk-figcap">' + esc(s.alt || ('Diagram for ' + s.h)) + '</p>'
+        + (s.longText ? '<details class="walk-figdesc"><summary>Read a detailed text description</summary><p>' + esc(s.longText) + '</p></details>' : '')
+        + '<div class="walk-figctl" role="group" aria-label="Diagram view controls"><button type="button" onclick="SOC.walkFig(\'zout\')" aria-label="Zoom diagram out">&#8722;</button><button type="button" onclick="SOC.walkFig(\'zin\')" aria-label="Zoom diagram in">+</button><button type="button" onclick="SOC.walkFig(\'rl\')" aria-label="Rotate diagram left">&#8634;</button><button type="button" onclick="SOC.walkFig(\'rr\')" aria-label="Rotate diagram right">&#8635;</button><button type="button" onclick="SOC.walkFig(\'reset\')">Reset view</button></div>'
         + '</div>'
-        + '<div class="walk-figview"><img class="walk-figimg" src="' + esc(s.src) + '" alt="Diagram for ' + esc(s.h) + '" onerror="var f=this.closest(&quot;.walk-figwrap&quot;);if(f){var v=f.querySelector(&quot;.walk-figview&quot;);if(v)v.innerHTML=&quot;<p class=walk-fignote>The diagram could not load.</p>&quot;;}"></div>'
+        + '<div class="walk-figview" aria-label="Pan the diagram with a pointer; use the adjacent buttons for keyboard zoom and rotation"><img class="walk-figimg" src="' + esc(s.src) + '" alt="' + esc(s.alt || ('Diagram for ' + s.h)) + '" onerror="var f=this.closest(&quot;.walk-figwrap&quot;);if(f){var v=f.querySelector(&quot;.walk-figview&quot;);if(v)v.innerHTML=&quot;<p class=walk-fignote>The diagram could not load. Use the detailed text description beside it.</p>&quot;;}"></div>'
         + '</div>';
     }
     if (s.kind === 'model') {
@@ -3438,7 +3646,7 @@
     }
     var notes = walkPrefs().walkNotes || {}, savedNote = notes[String(_walk.week)] || '';
     return '<div class="walk-kicker">EXIT REFLECTION</div><h2 class="walk-h">Carry one idea back with you</h2><ul class="walk-can">' + (s.youcan || []).map(function (y) { return '<li>' + esc(y) + '</li>'; }).join('') + '</ul>'
-      + (s.reflect ? '<div class="walk-reflect"><span>Before you leave</span><p>' + esc(s.reflect) + '</p><textarea class="walk-reflection-box" oninput="SOC.walkNote(this.value)" placeholder="Write a private note for yourself...">' + esc(savedNote) + '</textarea></div>' : '')
+      + (s.reflect ? '<div class="walk-reflect"><span>Before you leave</span><p>' + esc(s.reflect) + '</p><textarea class="walk-reflection-box" aria-label="Personal reflection for Week ' + _walk.week + '" oninput="SOC.walkNote(this.value)" placeholder="Write a note for yourself...">' + esc(savedNote) + '</textarea></div>' : '')
       + '<button type="button" class="walk-cta" onclick="SOC.walkGoWeek()">Return to Week ' + _walk.week + '</button>';
   }
   function walkFigApply() {
@@ -3451,15 +3659,20 @@
     if (!view || !img) return;
     _walk.fig = { scale: 1, rot: 0, tx: 0, ty: 0 };
     var drag = null;
-    view.addEventListener('pointerdown', function (e) { drag = { x: e.clientX - _walk.fig.tx, y: e.clientY - _walk.fig.ty }; try { view.setPointerCapture(e.pointerId); } catch (er) {} view.style.cursor = 'grabbing'; });
-    view.addEventListener('pointermove', function (e) { if (!drag) return; _walk.fig.tx = e.clientX - drag.x; _walk.fig.ty = e.clientY - drag.y; walkFigApply(); });
-    view.addEventListener('pointerup', function () { drag = null; view.style.cursor = 'grab'; });
-    view.addEventListener('wheel', function (e) { e.preventDefault(); _walk.fig.scale = Math.max(0.4, Math.min(6, _walk.fig.scale * (e.deltaY < 0 ? 1.12 : 0.89))); walkFigApply(); }, { passive: false });
+    view.addEventListener('pointerdown', function (e) { e.stopPropagation(); drag = { x: e.clientX - _walk.fig.tx, y: e.clientY - _walk.fig.ty }; try { view.setPointerCapture(e.pointerId); } catch (er) {} view.style.cursor = 'grabbing'; });
+    view.addEventListener('pointermove', function (e) { if (!drag) return; e.stopPropagation(); _walk.fig.tx = e.clientX - drag.x; _walk.fig.ty = e.clientY - drag.y; walkFigApply(); });
+    view.addEventListener('pointerup', function (e) { e.stopPropagation(); drag = null; view.style.cursor = 'grab'; });
+    view.addEventListener('pointercancel', function () { drag = null; view.style.cursor = 'grab'; });
+    view.addEventListener('wheel', function (e) { e.preventDefault(); e.stopPropagation(); _walk.fig.scale = Math.max(0.4, Math.min(6, _walk.fig.scale * (e.deltaY < 0 ? 1.12 : 0.89))); walkFigApply(); }, { passive: false });
+  }
+  function walkInteractiveGestureTarget(target) {
+    return !!(target && target.closest && target.closest('button,a,input,textarea,select,summary,details,.walk-figview,.walk-modelview,.wk-model-shell,[contenteditable="true"]'));
   }
   function walkMount() {
     var ov = document.getElementById('walk-overlay');
     if (!ov || !_walk) return;
     var slides = _walk.slides, i = Math.max(0, Math.min(slides.length - 1, _walk.i)), s = slides[i], p = walkPrefs();
+    var restoreFocusId = _walk.restoreFocusId || (document.activeElement && document.activeElement.id) || '';
     var levels = [100, 115, 130, 150, 175, 200], levelIndex = levels.indexOf(p.walkSize);
     if (levelIndex < 0) levelIndex = 0;
     var smaller = levels[Math.max(0, levelIndex - 1)], larger = levels[Math.min(levels.length - 1, levelIndex + 1)];
@@ -3468,13 +3681,13 @@
     ov.className = 'walk-immersive walk-' + walkTheme() + ' walk-size-' + p.walkSize + (p.walkFont ? ' walk-font' : '') + (p.walkMotion ? ' walk-reduce' : '');
     var chapters = slides.map(function (slide, k) {
       var dense = ['context', 'terms', 'readings', 'program', 'activity', 'decisions', 'close'].indexOf(slide.kind) >= 0;
-      return '<section class="walk-slide wkslide-' + slide.kind + '" aria-hidden="' + (k === i ? 'false' : 'true') + '"' + (k === i ? '' : ' inert') + ' tabindex="' + (k === i ? '0' : '-1') + '"><div class="walk-fit" data-dense="' + dense + '">' + walkSlideHtml(slide, _walk.week) + '</div></section>';
+      return '<section id="walk-chapter-' + k + '" class="walk-slide wkslide-' + slide.kind + '" aria-label="' + esc(walkSlideName(slide) + '. Chapter ' + (k + 1) + ' of ' + slides.length) + '" aria-hidden="' + (k === i ? 'false' : 'true') + '"' + (k === i ? '' : ' inert') + ' tabindex="' + (k === i ? '0' : '-1') + '"><div class="walk-fit" data-dense="' + dense + '">' + walkSlideHtml(slide, _walk.week) + '</div></section>';
     }).join('');
-    var dots = slides.map(function (_, k) { var disabled = !_walk.entered && k !== 0; return '<button type="button" class="walk-dot' + (k === i ? ' on' : '') + '" onclick="SOC.walkGoto(' + k + ')"' + (disabled ? ' disabled' : '') + ' aria-label="Chapter ' + (k + 1) + ' of ' + slides.length + '"></button>'; }).join('');
+    var dots = slides.map(function (slide, k) { var disabled = !_walk.entered && k !== 0; return '<button type="button" class="walk-dot' + (k === i ? ' on' : '') + '" onclick="SOC.walkGoto(' + k + ')"' + (disabled ? ' disabled' : '') + (k === i ? ' aria-current="step"' : '') + ' aria-controls="walk-chapter-' + k + '" aria-label="Chapter ' + (k + 1) + ' of ' + slides.length + ': ' + esc(walkSlideName(slide)) + '"></button>'; }).join('');
     var progress = Math.round(((i + 1) / slides.length) * 100);
-    ov.innerHTML = '<header class="walk-head"><div class="walk-brand"><b>' + esc(code) + '</b> | WEEK ' + _walk.week + ' | IMMERSIVE EXPERIENCE</div><div class="walk-progress" role="progressbar" aria-label="Experience progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + progress + '"><i style="width:' + progress + '%"></i></div><div class="walk-text-tools" role="group" aria-label="Experience text size"><span>Text size</span><button type="button" onclick="SOC.walkSetting(\'size\',' + smaller + ')"' + (levelIndex === 0 ? ' disabled' : '') + ' aria-label="Make experience text smaller">A&#8722;</button><output aria-live="polite">' + p.walkSize + '%</output><button type="button" onclick="SOC.walkSetting(\'size\',' + larger + ')"' + (levelIndex === levels.length - 1 ? ' disabled' : '') + ' aria-label="Make experience text larger">A+</button></div><button type="button" class="walk-theme" onclick="SOC.walkPanel()" aria-expanded="' + (!!_walk.panel) + '" aria-controls="walk-access-panel">Accessibility</button><button type="button" class="walk-close" onclick="SOC.walkClose()" aria-label="Close the experience">' + ic('x', 20) + '</button></header>'
+    ov.innerHTML = '<header class="walk-head"><div class="walk-brand"><b>' + esc(code) + '</b> | WEEK ' + _walk.week + ' | IMMERSIVE EXPERIENCE</div><div class="walk-progress" role="progressbar" aria-label="Experience progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + progress + '" aria-valuetext="Chapter ' + (i + 1) + ' of ' + slides.length + ': ' + esc(walkSlideName(s)) + '"><i style="width:' + progress + '%"></i></div><div class="walk-text-tools" role="group" aria-label="Experience text size and reset"><span>Text size</span><button id="walk-size-down" type="button" onclick="SOC.walkSetting(\'size\',' + smaller + ')"' + (levelIndex === 0 ? ' disabled' : '') + ' aria-label="Make experience text smaller">A&#8722;</button><output aria-live="polite">' + p.walkSize + '%</output><button id="walk-size-up" type="button" onclick="SOC.walkSetting(\'size\',' + larger + ')"' + (levelIndex === levels.length - 1 ? ' disabled' : '') + ' aria-label="Make experience text larger">A+</button><button id="walk-reset" class="walk-reset" type="button" onclick="SOC.walkRestart()" aria-label="Restart this experience">Reset</button></div><button id="walk-access-toggle" type="button" class="walk-theme" onclick="SOC.walkPanel()" aria-expanded="' + (!!_walk.panel) + '" aria-controls="walk-access-panel">Accessibility</button><button type="button" class="walk-close" onclick="SOC.walkClose()" aria-label="Close the experience">' + ic('x', 20) + '</button></header>'
       + walkPanelHtml()
-      + '<div id="walk-live" class="vh" role="status" aria-live="polite" aria-atomic="true">Chapter ' + (i + 1) + ' of ' + slides.length + '</div>'
+      + '<div id="walk-live" class="vh" role="status" aria-live="polite" aria-atomic="true">Chapter ' + (i + 1) + ' of ' + slides.length + ': ' + esc(walkSlideName(s)) + '</div>'
       + '<div class="walk-viewport"><div class="walk-track" style="--walk-index:' + i + '">' + chapters + '</div></div>'
       + '<footer class="walk-bar"><button type="button" class="walk-prev" onclick="SOC.walkNav(-1)"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous chapter">' + ic('chevron', 20, 2.4) + '</button><div class="walk-dots">' + dots + '</div><div class="walk-count">' + (i + 1) + ' / ' + slides.length + '</div><button type="button" class="walk-next" onclick="SOC.walkNav(1)"' + (locked || i === slides.length - 1 ? ' disabled' : '') + ' aria-label="Next chapter">' + ic('chevron', 20, 2.4) + '</button></footer>';
     if (s.kind === 'model') { try { initTopicModels(); } catch (e) {} }
@@ -3484,20 +3697,27 @@
     if (active) active.scrollTop = 0;
     var viewport = ov.querySelector('.walk-viewport'), gesture = null;
     if (viewport) {
-      viewport.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse' && e.button !== 0) return; gesture = { x: e.clientX, y: e.clientY }; });
+      viewport.addEventListener('pointerdown', function (e) { if (walkInteractiveGestureTarget(e.target) || (e.pointerType === 'mouse' && e.button !== 0)) { gesture = null; return; } gesture = { x: e.clientX, y: e.clientY }; });
       viewport.addEventListener('pointerup', function (e) { if (!gesture) return; var dx = e.clientX - gesture.x, dy = e.clientY - gesture.y; gesture = null; if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.35) SOC.walkNav(dx < 0 ? 1 : -1); });
       viewport.addEventListener('pointercancel', function () { gesture = null; });
     }
     setTimeout(function () {
-      var target = _walk && _walk.panel ? document.getElementById('walk-access-panel') : (_walk && _walk.focusSlide ? active : null);
-      if (target) { target.focus(); if (_walk) _walk.focusSlide = false; }
+      if (!_walk) return;
+      var target = _walk.focusSlide ? active : (restoreFocusId && document.getElementById(restoreFocusId));
+      if (!target && _walk.panel) target = document.getElementById('walk-panel-close') || document.getElementById('walk-access-panel');
+      if (target && target.focus) target.focus();
+      _walk.focusSlide = false;
+      _walk.restoreFocusId = '';
+      var currentDot = ov.querySelector('.walk-dot[aria-current="step"]');
+      if (currentDot && currentDot.scrollIntoView) currentDot.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
     }, 0);
     walkSaveResume(_walk.week, _walk.i, _walk.entered); persist();
     try { sessionStorage.setItem(WKKEY, JSON.stringify({ w: _walk.week, i: _walk.i, entered: !!_walk.entered })); } catch (e) {}
   }
   function walkKey(e) {
     if (!_walk) return;
-    if (e.key === 'Escape') { e.preventDefault(); if (_walk.panel) { _walk.panel = false; walkMount(); } else SOC.walkClose(); }
+    if (document.querySelector('[aria-modal="true"]:not(#walk-overlay)')) return;
+    if (e.key === 'Escape') { e.preventDefault(); if (_walk.panel) { _walk.panel = false; _walk.restoreFocusId = 'walk-access-toggle'; walkMount(); } else SOC.walkClose(); }
     else if (e.key === 'Tab') {
       var ov = document.getElementById('walk-overlay'), f = ov && ov.querySelectorAll('button:not([disabled]),select:not([disabled]),[href],[tabindex]:not([tabindex="-1"])');
       if (!f || !f.length) return;
@@ -3505,35 +3725,38 @@
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
-    else if (!_walk.panel && !/^(SELECT|INPUT|TEXTAREA|BUTTON)$/.test(String(e.target && e.target.tagName)) && (e.key === 'ArrowRight' || e.key === 'PageDown')) { e.preventDefault(); SOC.walkNav(1); }
-    else if (!_walk.panel && !/^(SELECT|INPUT|TEXTAREA|BUTTON)$/.test(String(e.target && e.target.tagName)) && (e.key === 'ArrowLeft' || e.key === 'PageUp')) { e.preventDefault(); SOC.walkNav(-1); }
+    else if (!_walk.panel && !walkInteractiveGestureTarget(e.target) && (e.key === 'ArrowRight' || e.key === 'PageDown')) { e.preventDefault(); SOC.walkNav(1); }
+    else if (!_walk.panel && !walkInteractiveGestureTarget(e.target) && (e.key === 'ArrowLeft' || e.key === 'PageUp')) { e.preventDefault(); SOC.walkNav(-1); }
   }
-  function walkOpen(w) {
+  function walkOpen(w, resumeOverride) {
+    var activeModal = document.querySelector('[aria-modal="true"]');
+    if (activeModal && activeModal.id !== 'walk-overlay') { announce('Close the open dialog before starting the experience.'); return; }
     walkCloseDom();
     var slides = walkSlides(w);
     if (!slides.length) return;
-    var resume = experienceResumeFor(w) || {}, startIndex = Number(resume.week) === Number(w) ? Math.max(0, Math.min(slides.length - 1, Number(resume.i) || 0)) : 0, startEntered = resume.week === w && !!resume.entered;
-    var shell = document.getElementById('app');
-    _walk = { week: w, i: startIndex, entered: startEntered || startIndex > 0, slides: slides, fig: null, panel: false, focusSlide: true, returnFocus: document.activeElement, bodyOverflow: document.body.style.overflow, shell: shell, shellHidden: shell && shell.getAttribute('aria-hidden'), shellInert: !!(shell && shell.inert) };
+    var resume = cleanWalkResume(resumeOverride, w) || experienceResumeFor(w) || {}, startIndex = resume.week === w ? Math.max(0, Math.min(slides.length - 1, resume.i)) : 0, startEntered = resume.week === w && resume.entered === true;
+    var background = Array.prototype.slice.call(document.body.children).map(function (node) { return { node: node, inert: !!node.inert, hidden: node.getAttribute('aria-hidden') }; });
+    _walk = { week: w, i: startIndex, entered: startEntered || startIndex > 0, slides: slides, fig: null, panel: false, focusSlide: true, restoreFocusId: '', returnFocus: document.activeElement, bodyOverflow: document.body.style.overflow, background: background };
     var ov = document.createElement('div');
     ov.id = 'walk-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', 'Week ' + w + ' learning experience'); ov.tabIndex = -1;
     document.body.appendChild(ov);
-    if (shell) { shell.inert = true; shell.setAttribute('aria-hidden', 'true'); }
+    background.forEach(function (item) { item.node.inert = true; item.node.setAttribute('aria-hidden', 'true'); });
     document.body.style.overflow = 'hidden';
     walkMount();
     document.addEventListener('keydown', walkKey, true);
   }
   function walkCloseDom() {
-    var ret = _walk && _walk.returnFocus, oldOverflow = _walk && _walk.bodyOverflow, shell = _walk && _walk.shell;
+    var ret = _walk && _walk.returnFocus, oldOverflow = _walk && _walk.bodyOverflow, background = (_walk && _walk.background) || [];
     walkSpeakStop();
     var ov = document.getElementById('walk-overlay');
     if (ov) ov.remove();
-    if (shell) {
-      shell.inert = !!_walk.shellInert;
-      if (_walk.shellHidden === null || _walk.shellHidden === undefined) shell.removeAttribute('aria-hidden');
-      else shell.setAttribute('aria-hidden', _walk.shellHidden);
-    }
-    if (document.body) document.body.style.overflow = oldOverflow || '';
+    background.forEach(function (item) {
+      if (!item.node || !item.node.isConnected) return;
+      item.node.inert = item.inert;
+      if (item.hidden === null) item.node.removeAttribute('aria-hidden');
+      else item.node.setAttribute('aria-hidden', item.hidden);
+    });
+    if (document.body) document.body.style.overflow = oldOverflow == null ? '' : oldOverflow;
     document.removeEventListener('keydown', walkKey, true);
     try { sessionStorage.removeItem(WKKEY); } catch (e) {}
     if (ret && ret.focus) setTimeout(function () { try { ret.focus(); } catch (e) {} }, 0);
@@ -3656,7 +3879,7 @@
   }
   function activityScreen() {
     var w = state.activityReturn, d = weekData(w);
-    if (!d || !d.activity) return '<div style="padding:30px 0;color:var(--ink-dim)">No activity here. <button onclick="SOC.go(\'journey\')" style="background:none;border:none;color:var(--red);font-weight:600;cursor:pointer">Back to your journey</button></div>';
+    if (!d || !d.activity) return '<section class="node rise" aria-labelledby="no-activity-title" style="padding:28px 30px"><div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">ACTIVITY</div><h1 id="no-activity-title" style="font-size:1.55rem;line-height:1.2;margin:0 0 10px">No activity is available for this link</h1><p style="margin:0 0 16px;color:var(--ink-dim)">Return to the course journey to continue.</p><button type="button" onclick="SOC.go(\'journey\')" class="wk-cta" style="margin:0">Back to your journey</button></section>';
     var a = d.activity;
     var head = '<section class="jhero" style="margin:0 0 18px;padding:26px 28px"><div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">WEEK ' + w + ' ACTIVITY</div><h1 style="font-size:1.7rem;line-height:1.15;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(a.title) + '</h1><div class="wk-whatwhy" style="margin:0"><b>What this is:</b> ' + esc(a.what) + '<br><br><b>Why you are doing it:</b> ' + esc(a.why) + '</div></section>';
     var inner = '';
@@ -3741,7 +3964,7 @@
       return '<div style="border:1px solid var(--border);border-left:4px solid ' + accent + ';border-radius:0 10px 10px 0;background:#fff;padding:12px 16px;margin:0 0 10px"><div style="font-weight:700;font-size:.95rem;color:var(--ink)">' + title + ' (' + list.length + ')</div><p style="font-size:.82rem;color:var(--ink-dim);margin:4px 0 8px">' + hint + '</p>'
         + list.map(function (e) { return '<div style="display:flex;gap:10px;align-items:flex-start;font-size:.86rem;color:var(--ink);padding:5px 0;border-top:1px dashed var(--border)"><span style="flex:1">' + esc(e.q) + '</span><button type="button" onclick="SOC.station(' + e.w + ')" class="wk-scope" style="flex:none">Revisit Week ' + e.w + '</button></div>'; }).join('') + '</div>';
     };
-    return '<section class="node"><h2 class="wk-sec">Your calibration report</h2><p class="wk-hint">Where confidence and accuracy disagree is where your next hour of study earns the most.</p>'
+    return '<section class="node"><h2 class="wk-sec">Your calibration report</h2><p class="wk-hint">Where confidence and accuracy disagree is where your next study block can help the most.</p>'
       + block('Start here: confident misses', 'You were sure and the answer says otherwise. These ideas feel settled but are not yet; they are worth unlearning first.', b.confmiss, '#B11722')
       + block('Fragile: right but unsure', 'You got these right without trusting yourself. One more pass turns them solid.', b.fragile, '#B77400')
       + block('Growing edge', 'Missed while unsure. Normal learning territory; revisit the weeks and try again.', b.growing, '#6B7280')
@@ -3751,7 +3974,7 @@
   function reviewPage() {
     if (!state.trs) trStart();
     var S = state.trs;
-    var head = '<section class="node" style="margin-bottom:14px"><div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:6px">TERM REVIEW &middot; NEVER SCORED</div><h1 style="font-size:1.55rem;line-height:1.15;margin:0 0 8px;color:var(--ink)">Mixed practice across the whole course</h1><p style="font-size:.92rem;line-height:1.55;color:var(--ink-dim);margin:0">Up to twelve questions drawn from every week so far. Ideas you have missed before come first. Mark how sure you are before revealing; your calibration report at the end shows where confidence and accuracy disagree. Nothing here is scored or seen by anyone.</p></section>';
+    var head = '<section class="node" style="margin-bottom:14px"><div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:6px">TERM REVIEW &middot; NEVER GRADED</div><h1 style="font-size:1.55rem;line-height:1.15;margin:0 0 8px;color:var(--ink)">Mixed practice across the whole course</h1><p style="font-size:.92rem;line-height:1.55;color:var(--ink-dim);margin:0">Up to twelve questions drawn from every week so far. Ideas you have missed before come first. Mark how sure you are before revealing; your scored practice and calibration report at the end show where confidence and accuracy disagree. It is worth no course marks and is not submitted to the instructor.</p></section>';
     if (!S.items.length) return '<div class="rise">' + head + '<section class="node"><p style="font-size:.95rem;color:var(--ink)">No practice items are available yet. Come back once the first content weeks are open.</p></section></div>';
     if (S.i >= S.items.length) return '<div class="rise">' + head + trReport() + '</div>';
     var it = S.items[S.i], m = it.m;
@@ -3777,14 +4000,14 @@
     return '<section class="node" id="wk-access" style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0 0">'
       + '<h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Accessibility on this site</h2>'
       + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0 0 8px">This site is built to work for every student: it adapts to any screen size, works with keyboard navigation, keeps text resizable, gives every image a text description, and never puts course content behind a timed or scored gate. The Reading Lens offers text sizing, comfortable spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. The weekly experiences include adjustable text size and keyboard movement.</p>'
-      + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0">The page walkthrough videos are silent with on-screen captions by design. If any material is not accessible to you, contact your professor through Blackboard; barriers get fixed, not explained away.</p>'
+      + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0">When a current page walkthrough video is available, it is silent with on-screen captions. If any material is not accessible to you, contact your professor through Blackboard; barriers get fixed, not explained away.</p>'
       + '</section>';
   }
   /* ---------- saved-work export/restore (2026-07-25): device-bound loss fix ---------- */
   function dataPortSection() {
     return '<section class="node" id="wk-dataport" style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0 0">'
       + '<h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Take your saved work with you</h2>'
-      + '<p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0 0 10px">Everything you type and rate on this site is saved only in this browser. On a shared or lab computer that work can disappear. Download a backup file here, then restore it on any device to carry your work across. The file stays with you; nothing is uploaded anywhere.</p>'
+      + '<p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0 0 10px">Entries and ratings use this browser\'s storage when it is available. Browser settings, private browsing, clearing site data, or using a shared computer can remove them. Download a backup here, then restore it in another browser or device to carry your work across. This site does not upload the backup; you control where the downloaded file is stored or shared.</p>'
       + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
       + '<button type="button" class="wk-save" onclick="SOC.exportWork()">Download my saved work</button>'
       + '<label class="wk-scope" style="cursor:pointer;display:inline-block">Restore from a backup file<input type="file" accept="application/json,.json" style="display:none" onchange="SOC.importWork(this)"></label>'
@@ -3796,6 +4019,7 @@
     if (s === 'library') return 'journey';
     if (s === 'reading' || s === 'detail') return 'readings';
     if (s === 'activity') return 'station';
+    if (s === 'assignment-details') return 'assignments';
     return s;
   }
   function howtoSection() {
@@ -3818,7 +4042,7 @@
         inner = '<div style="border:1px solid var(--border);border-top:none;border-left:4px solid var(--red);border-radius:0 0 10px 10px;background:#fff;padding:14px 18px 16px">'
           + (d.intro ? '<p style="margin:0 0 10px;font-size:.92rem;line-height:1.55;color:var(--ink)">' + esc(d.intro) + '</p>' : '')
           + '<ol style="margin:0 0 12px;padding-left:20px">' + (d.steps || []).map(function (s) { return '<li style="margin:0 0 8px;font-size:.9rem;line-height:1.5;color:var(--ink)"><b>' + esc(s.do) + '</b>' + (s.detail ? ' <span style="color:var(--ink-dim)">' + esc(s.detail) + '</span>' : '') + '</li>'; }).join('') + '</ol>'
-          + (d.saves ? '<p style="margin:0 0 6px;font-size:.82rem;line-height:1.5;color:var(--ink-dim)"><b style="color:var(--ink)">On this device:</b> ' + esc(d.saves) + '</p>' : '')
+          + (d.saves ? '<p style="margin:0 0 6px;font-size:.82rem;line-height:1.5;color:var(--ink-dim)"><b style="color:var(--ink)">Storage and privacy:</b> ' + esc(d.saves) + '</p>' : '')
           + (d.graded ? '<p style="margin:0 0 6px;font-size:.82rem;line-height:1.5;color:var(--ink-dim)"><b style="color:var(--ink)">Grading:</b> ' + esc(d.graded) + '</p>' : '')
           + (d.next ? '<p style="margin:0 0 10px;font-size:.82rem;line-height:1.5;color:var(--ink-dim)"><b style="color:var(--ink)">Where next:</b> ' + esc(d.next) + '</p>' : '')
           + (vidSrc
@@ -3847,6 +4071,7 @@
     if (state.screen === 'glossary') return homeBar() + glossaryScreen();
     if (state.screen === 'cards') return homeBar() + cardsScreen();
     if (state.screen === 'assignments') return homeBar() + assignmentsPage();
+    if (state.screen === 'assignment-details') return homeBar() + assignmentDetailsPage();
     if (state.screen === 'career') return homeBar() + careerScreen();
     if (state.screen === 'ecology' && D.course && D.course.code === 'PSY355') return homeBar() + ecologyScreen();
     return journeyHome();
@@ -3910,24 +4135,85 @@
     }
     if (f.roles && f.roles.length) out += card('WHERE THIS SHOWS UP', 'Possible roles and settings', '<p style="margin:0;font-size:.95rem;line-height:1.6;color:var(--ink)">' + f.roles.map(esc).join(' | ') + '</p>');
     var rk = 'career|' + (program || area), rv = esc((state.careerReflect && state.careerReflect[rk]) || '');
-    out += '<div class="career-note"><h3 style="margin:10px 0 4px;font-size:1.02rem">What do you want to remember?</h3><p class="wk-hint" style="margin-bottom:8px">A quick note to yourself, saved in this browser on this device. Nothing is submitted, and it will be here when you come back in this browser. Use Generate Your Weekly Notes to keep a permanent copy.</p>'
+    out += '<div class="career-note"><h3 style="margin:10px 0 4px;font-size:1.02rem">What do you want to remember?</h3><p class="wk-hint" style="margin-bottom:8px">A quick note to yourself. The site does not submit it, and it may remain in this browser when storage is available. Browser data can be cleared, so use Generate Your Weekly Notes to keep a separate copy.</p>'
       + '<textarea oninput="SOC.careerReflect(\'' + rk + '\',this.value)" aria-label="Your reflection" class="wk-ta" placeholder="One place I can already picture this showing up in my field...">' + rv + '</textarea></div></section>';
     return wrap(out);
   }
   var __fromPop = false, __lastNavKey = null, __pushed = false;
   function navKey() {
-    return [state.screen, state.stationWeek, state.journeyWeek, state.detailId, state.cardWeek, state.activeWeek, state.galWeek, state.galTopic, state.assignmentTab, state.assignmentFaq, state.rcReading, state.showSynthesis ? 1 : 0, (state.compareIds || []).length].join('~');
+    return [state.screen, state.stationWeek, state.journeyWeek, state.detailId, state.cardWeek, state.activeWeek, state.galWeek, state.galTopic, state.assignmentId, state.rcReading, state.showSynthesis ? 1 : 0, (state.compareIds || []).length].join('~');
   }
   function navHistorySync() {
     if (__fromPop) return;
     var k = navKey();
     try {
       if (__lastNavKey === null) history.replaceState(viewSnapshot(), '');
-      else if (k !== __lastNavKey) { history.pushState(viewSnapshot(), ''); __pushed = true; }
+      else if (k !== __lastNavKey) { history.pushState(viewSnapshot(), '', location.pathname); __pushed = true; }
     } catch (e) {}
     __lastNavKey = k;
   }
+  function focusMatches(root, snap) {
+    if (!root || !snap || !snap.tag) return [];
+    var nodes = root.querySelectorAll(snap.tag), out = [];
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      if (snap.key) { if ((n.getAttribute('data-focus-key') || '') !== snap.key) continue; }
+      else if (snap.id) { if ((n.id || '') !== snap.id) continue; }
+      else if (snap.click || snap.change) {
+        if ((n.getAttribute('onclick') || '') !== snap.click || (n.getAttribute('onchange') || '') !== snap.change) continue;
+      } else if (snap.label) { if ((n.getAttribute('aria-label') || '') !== snap.label) continue; }
+      else if (snap.text) { if ((n.textContent || '').replace(/\s+/g, ' ').trim() !== snap.text) continue; }
+      else continue;
+      out.push(n);
+    }
+    return out;
+  }
+  function captureFocus() {
+    try {
+      var root = document.getElementById('app'), el = document.activeElement;
+      if (!root || !el || el === document.body || !root.contains(el)) return null;
+      var snap = {
+        tag: (el.tagName || '').toLowerCase(), id: el.id || '', key: el.getAttribute('data-focus-key') || '',
+        click: el.getAttribute('onclick') || '', change: el.getAttribute('onchange') || '',
+        label: el.getAttribute('aria-label') || '', text: (el.textContent || '').replace(/\s+/g, ' ').trim()
+      };
+      var matches = focusMatches(root, snap);
+      snap.index = matches.indexOf(el);
+      return snap;
+    } catch (e) { return null; }
+  }
+  function restoreFocus(snap, fallbackId) {
+    if (!snap) return false;
+    try {
+      var root = document.getElementById('app'), matches = focusMatches(root, snap), target = null;
+      if (snap.index >= 0 && snap.index < matches.length) target = matches[snap.index];
+      else if (matches.length === 1) target = matches[0];
+      if (target && (target.disabled || target.getAttribute('aria-hidden') === 'true' || target.hidden)) target = null;
+      if (!target && fallbackId) target = document.getElementById(fallbackId);
+      if (!target) return false;
+      if (!target.hasAttribute('tabindex') && !/^(a|button|input|select|textarea|summary)$/i.test(target.tagName || '')) target.setAttribute('tabindex', '-1');
+      try { target.focus({ preventScroll: true }); } catch (e1) { target.focus(); }
+      if (document.activeElement === target) return true;
+      var fallback = fallbackId && document.getElementById(fallbackId);
+      if (!fallback || fallback === target) return false;
+      if (!fallback.hasAttribute('tabindex') && !/^(a|button|input|select|textarea|summary)$/i.test(fallback.tagName || '')) fallback.setAttribute('tabindex', '-1');
+      try { fallback.focus({ preventScroll: true }); } catch (e3) { fallback.focus(); }
+      return document.activeElement === fallback;
+    } catch (e2) { return false; }
+  }
+  function replaceOuterKeepingFocus(id, html, fallbackId) {
+    var snap = captureFocus(), el = document.getElementById(id);
+    if (!el) return false;
+    el.outerHTML = html;
+    wkEnhanceSections();
+    restoreFocus(snap, fallbackId || 'soc-main');
+    return true;
+  }
   function render() {
+    var retainedFocus = captureFocus(), focusRestored = false;
+    var nextStationWeek = state.screen === 'station' ? cleanWeek(state.stationWeek) : null;
+    if (render._stationWeek && render._stationWeek !== nextStationWeek) wkOpenResetWeek(render._stationWeek);
+    render._stationWeek = nextStationWeek;
     if (state.screen !== 'compare' && render._prev !== undefined && render._prev !== state.screen && (state.compareIds.length || state.showSynthesis)) { state.compareIds = []; state.showSynthesis = false; }
     render._prev = state.screen;
     var toast = state.toast ? '<div role="status" style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:80;background:#15171C;color:#fff;font-size:.9375rem;font-weight:500;padding:12px 20px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.24);display:flex;align-items:center;gap:10px"><span style="display:flex;color:#F2A900">' + ic('check', 16, 2.2) + '</span>' + esc(state.toast) + '</div>' : '';
@@ -3939,14 +4225,15 @@
       + '</div>' + readerLensOverlay() + rlPanelOverlay() + listenOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
-      if (el) { el.focus(); var v = el.value; el.setSelectionRange(v.length, v.length); }
+      if (el) { el.focus(); var v = el.value; el.setSelectionRange(v.length, v.length); focusRestored = true; }
       refocusSearch = false;
     }
     if (focusTarget) {
       var ft = document.getElementById(focusTarget);
-      if (ft) { if (!ft.hasAttribute('tabindex')) ft.setAttribute('tabindex', '-1'); ft.focus(); }
+      if (ft) { if (!ft.hasAttribute('tabindex')) ft.setAttribute('tabindex', '-1'); ft.focus(); focusRestored = true; }
       focusTarget = null;
     }
+    if (!focusRestored && retainedFocus) restoreFocus(retainedFocus, 'soc-main');
     var ann = screenAnnounceText();
     if (ann && render._announced !== ann) {
       render._announced = ann;
@@ -3956,7 +4243,6 @@
     }
     saveView();
     wkEnhanceSections();
-    setTimeout(showUpcomingReminder, 80);
     navHistorySync();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
@@ -4007,7 +4293,8 @@
       ecoLayer: state.ecoLayer || 'you',
       act: state.act || {},
       videoWeek: state.videoWeek || 'all',
-      mediaKind: state.mediaKind || 'all'
+      mediaKind: state.mediaKind || 'all',
+      assignmentId: state.assignmentId || null
     };
   }
   function sameView(a, b) {
@@ -4023,25 +4310,31 @@
     state.journeyWeek = cleanWeek(v.journeyWeek);
     state.stationWeek = cleanWeek(v.stationWeek);
     state.activityReturn = cleanWeek(v.activityReturn);
-    state.detailId = v.detailId || null;
+    state.detailId = cleanTextOrNull(v.detailId);
     state.cardWeek = cleanWeek(v.cardWeek);
-    state.activeTypes = Array.isArray(v.activeTypes) ? v.activeTypes.slice() : [];
+    state.activeTypes = cleanTextList(v.activeTypes, 20, 100);
     state.activeWeek = cleanWeek(v.activeWeek);
-    state.search = v.search || '';
+    state.search = cleanText(v.search, '', 500);
     state.savedView = !!v.savedView;
-    state.rcReading = v.rcReading || null;
-    state.lens = v.lens || 'thematic';
-    state.compareIds = Array.isArray(v.compareIds) ? v.compareIds.slice() : [];
+    state.rcReading = cleanTextOrNull(v.rcReading);
+    state.lens = cleanLens(v.lens);
+    state.compareIds = cleanTextList(v.compareIds, 3, 200);
     state.showSynthesis = !!v.showSynthesis;
     state.galWeek = cleanWeek(v.galWeek);
-    state.galTopic = v.galTopic || null;
-    state.glossWeek = v.glossWeek || 'all';
-    state.glossSearch = v.glossSearch || '';
-    state.ecoLayer = v.ecoLayer || 'you';
-    state.act = (v.act && typeof v.act === 'object') ? v.act : (state.act || {});
-    state.videoWeek = v.videoWeek || 'all';
-    state.mediaKind = v.mediaKind || 'all';
+    state.galTopic = cleanTextOrNull(v.galTopic, 100);
+    state.glossWeek = cleanWeekFilter(v.glossWeek);
+    state.glossSearch = cleanText(v.glossSearch, '', 500);
+    state.ecoLayer = cleanEcoLayer(v.ecoLayer);
+    state.act = cleanPlainObject(v.act);
+    state.videoWeek = cleanWeekFilter(v.videoWeek);
+    state.mediaKind = cleanText(v.mediaKind, 'all', 80) || 'all';
+    state.assignmentId = cleanAssessmentId(v.assignmentId);
     state.navOpen = false;
+    if ((state.screen === 'activity' && !state.activityReturn) || (state.screen === 'station' && !state.stationWeek)) {
+      state.screen = 'journey';
+      state.stationWeek = null;
+      state.activityReturn = null;
+    }
   }
   function goPrevious() {
     if (__pushed) { try { history.back(); return; } catch (e) {} }
@@ -4157,7 +4450,7 @@
       state.studentName = v;
       persist();
       render();
-      announce('Saved. Your name stays in this browser only.');
+      announce('Name added for this visit. It may remain here when browser storage is available.');
       return false;
     },
     nameClear: function () {
@@ -4175,10 +4468,16 @@
     },
     clearMyWork: function () {
       if (!window.confirm('Remove all notes, check answers, and settings saved by this site in this browser? Downloaded files are not affected.')) return;
+      var cleared = true;
       try {
         var prefix = SKEY; /* full site-scoped key: never touch another course site's saves on the shared github.io origin */
-        Object.keys(localStorage).forEach(function (k) { if (k.indexOf(prefix) === 0) localStorage.removeItem(k); });
-      } catch (e) {}
+        Object.keys(localStorage).forEach(function (k) { if (k === prefix || k.indexOf(prefix + '.') === 0 || isAssignmentLabKey(k)) localStorage.removeItem(k); });
+      } catch (e) { cleared = false; }
+      try {
+        [VKEY, WKKEY, SKEY + '.upcomingReminder.session.v1'].forEach(function (k) { sessionStorage.removeItem(k); });
+        sessionStorage.setItem(HKEY, '1'); /* pagehide may save the old view again; the next boot must discard it */
+      } catch (e) { cleared = false; }
+      if (!cleared) window.alert('The browser prevented confirmation that every saved item was removed. Clear this site\'s browser data before leaving a shared device.');
       location.reload();
     },
     tickerPause: function () {
@@ -4195,6 +4494,14 @@
     closeUpcomingReminder: function () {
       var box = document.getElementById('upcoming-reminder');
       if (box) box.remove();
+      upcomingReminderLock.forEach(function (item) {
+        if (!item.node || !item.node.isConnected) return;
+        item.node.inert = item.inert;
+        if (item.hidden === null) item.node.removeAttribute('aria-hidden');
+        else item.node.setAttribute('aria-hidden', item.hidden);
+      });
+      upcomingReminderLock = [];
+      if (document.body) document.body.style.overflow = upcomingReminderOverflow == null ? '' : upcomingReminderOverflow;
       if (upcomingReminderFocus && upcomingReminderFocus.focus) { try { upcomingReminderFocus.focus(); } catch (e) {} }
       upcomingReminderFocus = null;
     },
@@ -4262,13 +4569,13 @@
       announce('Opening your email app with the page details filled in. Add what happened, then send.');
     },
     go: function (s) {
-      var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
-    howtoToggle: function (k) { state.howtoOpen = state.howtoOpen || {}; state.howtoOpen[k] = !state.howtoOpen[k]; var el = document.getElementById('howto-panel'); if (el && el.outerHTML !== undefined) { el.outerHTML = howtoSection(); } else { render(); } },
+      var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } if (target !== 'assignment-details') state.assignmentId = null; state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
+    howtoToggle: function (k) { state.howtoOpen = state.howtoOpen || {}; state.howtoOpen[k] = !state.howtoOpen[k]; if (!replaceOuterKeepingFocus('howto-panel', howtoSection(), 'soc-main')) render(); },
     exportWork: function () {
       try {
         var pre = SKEY.split('corpus')[0];
         var out = { site: SKEY, savedAt: new Date().toISOString(), keys: {} };
-        for (var xi = 0; xi < localStorage.length; xi++) { var xk = localStorage.key(xi); if (xk && xk.indexOf(pre) === 0) out.keys[xk] = localStorage.getItem(xk); }
+        for (var xi = 0; xi < localStorage.length; xi++) { var xk = localStorage.key(xi); if (isPortableWorkKey(xk)) out.keys[xk] = localStorage.getItem(xk); }
         var blob = new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' });
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -4280,15 +4587,14 @@
     importWork: function (inp) {
       try {
         var f = inp.files && inp.files[0]; if (!f) return;
-        var pre = SKEY.split('corpus')[0];
         var rd = new FileReader();
         rd.onload = function () {
           try {
             var data = JSON.parse(String(rd.result));
             var xm = document.getElementById('dataport-msg');
-            if (!data || !data.keys || String(data.site || '').indexOf(pre) !== 0) { if (xm) xm.textContent = 'That file is not a saved-work backup for this site.'; return; }
+            if (!data || data.site !== SKEY || !data.keys || typeof data.keys !== 'object' || Array.isArray(data.keys)) { if (xm) xm.textContent = 'That file is not a saved-work backup for this site.'; return; }
             var n = 0;
-            Object.keys(data.keys).forEach(function (xk) { if (xk.indexOf(pre) === 0) { localStorage.setItem(xk, data.keys[xk]); n++; } });
+            Object.keys(data.keys).forEach(function (xk) { if (isPortableWorkKey(xk) && typeof data.keys[xk] === 'string') { localStorage.setItem(xk, data.keys[xk]); n++; } });
             if (xm) xm.textContent = 'Restored ' + n + ' saved records. Reloading the site with your work in place.';
             setTimeout(function () { location.reload(); }, 900);
           } catch (e2) { var xe2 = document.getElementById('dataport-msg'); if (xe2) xe2.textContent = 'That file could not be read.'; }
@@ -4296,7 +4602,7 @@
         rd.readAsText(f);
       } catch (e) {}
     },
-    startActivity: function (sc, w) { rememberPrevious(); state.activityReturn = cleanWeek(w) || w; state.screen = 'activity'; focusTarget = 'soc-main'; persist(); render(); topScroll(); },
+    startActivity: function (sc, w) { w = cleanWeek(w); if (!w || !weekData(w)) { SOC.go('journey'); return; } rememberPrevious(); state.activityReturn = w; state.screen = 'activity'; focusTarget = 'soc-main'; persist(); render(); topScroll(); },
     actPick: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; state.act[key] = idx; state.actResult = state.actResult || {}; state.actResult[key] = idx; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     actToggle: function (key) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var val = !state.act[key]; state.act[key] = val; state.actResult = state.actResult || {}; state.actResult[key] = val; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     actAdd: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || []; if (arr.indexOf(idx) < 0) arr.push(idx); state.act[key] = arr; state.actResult = state.actResult || {}; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
@@ -4315,24 +4621,23 @@
     },
     trNext: function () { var S = state.trs; if (!S) return; S.i++; S.sel = null; S.conf = null; S.revealed = false; render(); topScroll(); },
     trAgain: function () { trStart(); render(); topScroll(); },
-    careerField: function (v) { state.careerField = v; persist(); render(); topScroll(); },
+    careerField: function (v) { state.careerField = cleanText(v, '', 200); persist(); render(); topScroll(); },
     lensOff: function () { state.careerField = ''; persist(); render(); },
-    careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = v; persist(); },
-    mediaNote: function (k, v) { state.mediaNotes = state.mediaNotes || {}; state.mediaNotes[k] = v; persist(); },
-    videoWeek: function (w) { state.videoWeek = w || 'all'; render(); topScroll(); },
-    mediaKind: function (k) { state.mediaKind = k || 'all'; render(); topScroll(); },
+    careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = cleanText(v, '', 10000); persist(); },
+    mediaNote: function (k, v) { state.mediaNotes = state.mediaNotes || {}; state.mediaNotes[k] = cleanText(v, '', 10000); persist(); },
+    videoWeek: function (w) { state.videoWeek = cleanWeekFilter(w); render(); topScroll(); },
+    mediaKind: function (k) { state.mediaKind = cleanText(k, 'all', 80) || 'all'; render(); topScroll(); },
     careerLens: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-sel'); },
     careerChoices: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-choices'); },
-    station: function (w) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); topScroll(); },
-    jumpWeek: function (w, part) { w = cleanWeek(w) || w; if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
+    station: function (w) { w = cleanWeek(w); if (!w || !weekData(w)) { SOC.go('journey'); return; } if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); topScroll(); },
+    jumpWeek: function (w, part) { w = cleanWeek(w); if (!w || !weekData(w)) { SOC.go('journey'); return; } if (state.screen !== 'station' || state.stationWeek !== w) rememberPrevious(); state.navOpen = false; state.stationWeek = w; state.journeyWeek = w; state.activityReturn = null; state.screen = 'station'; trackVisit(w); persist(); focusTarget = 'soc-main'; render(); scrollWeekPart(part); },
     wkCheck: function (k, o) {
       if (state.wkCheck[k] === o) delete state.wkCheck[k]; else state.wkCheck[k] = o;
       persist();
-      var el = document.getElementById('opts-' + k); if (el) el.innerHTML = wkOptBtns(k);
       var parts = k.split('|'), w = +parts[1], d = weekData(w);
       refreshWeekChecks(w, d);
     },
-    wkReflect: function (w, v) { state.wkReflect[w] = v; persist(); },
+    wkReflect: function (w, v) { w = cleanWeek(w); if (!w) return; state.wkReflect[w] = cleanText(v, '', 10000); persist(); },
     wkClear: function (w, phase) {
       var d = weekData(w); if (!d) return;
       d.checks.forEach(function (c, i) { delete state.wkCheck[phase + '|' + w + '|' + i]; });
@@ -4361,19 +4666,19 @@
       ];
       senecaDoc((D.course && D.course.code) || '', weekTitle(w) + ' (Week ' + w + ')', ['Seneca ' + ((D.course && D.course.code) || ''), 'Your week record'], sections, ((D.course && D.course.code) || '') + '_Week' + w + '_my_work');
     },
-    goWeek: function (s, w) { if (state.screen !== cleanScreen(s) || state.cardWeek !== w) rememberPrevious(); state.cardWeek = w; state.screen = cleanScreen(s); focusTarget = 'soc-main'; render(); topScroll(); },
-    galWeek: function (w) { var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galWeek = (state.galWeek === w) ? null : w; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
-    galTopic: function (t) { var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galTopic = (state.galTopic === t) ? null : t; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
+    goWeek: function (s, w) { w = cleanWeek(w); if (!w) { SOC.go('journey'); return; } if (state.screen !== cleanScreen(s) || state.cardWeek !== w) rememberPrevious(); state.cardWeek = w; state.screen = cleanScreen(s); focusTarget = 'soc-main'; render(); topScroll(); },
+    galWeek: function (w) { w = cleanWeek(w); if (!w) return; var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galWeek = (state.galWeek === w) ? null : w; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
+    galTopic: function (t) { t = cleanTextOrNull(t, 100); var m = document.getElementById('soc-main'); var y = m ? m.scrollTop : 0; state.galTopic = (state.galTopic === t) ? null : t; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = y; },
     galClear: function () { state.galWeek = null; state.galTopic = null; render(); },
     playVideo: function (el, id, title) { var box = el.closest ? el.closest('.rgvideo, .vid-frame, .wk-rec-frame') : el.parentNode; if (box && /^[A-Za-z0-9_-]{6,20}$/.test(String(id || ''))) { box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1&cc_load_policy=1&cc_lang_pref=en" referrerpolicy="strict-origin-when-cross-origin" title="' + esc(title || 'Scholar talk') + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; } },
     back: function () { if (state.screen !== 'library') rememberPrevious(); state.screen = 'library'; focusTarget = 'soc-main'; render(); var m = document.getElementById('soc-main'); if (m) m.scrollTop = state.libScroll || 0; },
-    open: function (id) { rememberPrevious(); var m = document.getElementById('soc-main'); if (m) state.libScroll = m.scrollTop; state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); },
+    open: function (id) { id = cleanTextOrNull(id); if (!id || !rec(id)) { SOC.go('library'); return; } rememberPrevious(); var m = document.getElementById('soc-main'); if (m) state.libScroll = m.scrollTop; state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); },
     layout: function (l) { state.layout = l; persist(); render(); },
     sort: function (s) { state.sort = s; render(); },
-    search: function (v) { state.search = v; refocusSearch = true; render(); },
+    search: function (v) { state.search = cleanText(v, '', 500); refocusSearch = true; render(); },
     clearSearch: function () { state.search = ''; render(); },
-    type: function (t) { state.activeTypes = (state.activeTypes.length === 1 && state.activeTypes[0] === t) ? [] : [t]; render(); },
-    week: function (w) { if (state.screen !== 'library' || state.activeWeek !== w) rememberPrevious(); state.activeWeek = (state.activeWeek === w) ? null : w; state.savedView = false; state.screen = 'library'; focusTarget = 'soc-main'; render(); topScroll(); },
+    type: function (t) { t = cleanText(t, '', 100); if (!t) return; state.activeTypes = (state.activeTypes.length === 1 && state.activeTypes[0] === t) ? [] : [t]; render(); },
+    week: function (w) { w = cleanWeek(w); if (!w) return; if (state.screen !== 'library' || state.activeWeek !== w) rememberPrevious(); state.activeWeek = (state.activeWeek === w) ? null : w; state.savedView = false; state.screen = 'library'; focusTarget = 'soc-main'; render(); topScroll(); },
     clearFilters: function () { state.activeTypes = []; state.activeWeek = null; state.search = ''; state.savedView = false; render(); },
     dismissIntro: function () { state.introOpen = false; persist(); render(); },
     save: function (id) { var a = state.saved, i = a.indexOf(id); var msg; if (i >= 0) { a.splice(i, 1); msg = 'Removed from saved.'; } else { a.push(id); msg = 'Saved to your shelf.'; } persist(); flash(msg); },
@@ -4400,23 +4705,23 @@
       state.cmpNotes['saved-synthesis'] = txt;
       persist();
       renderKeepScroll();
-      announce('Saved to your notes on this device. It will be here when you come back in this browser.');
+      announce('Added to your notes. It may remain here when browser storage is available.');
     },
     clearCompare: function () { state.compareIds = []; state.showSynthesis = false; render(); },
     synthesize: function () { state.showSynthesis = true; render(); },
-    enterExperience: function (w) { walkOpen(cleanWeek(w) || w); },
-    playWalk: function (w) { walkOpen(cleanWeek(w) || w); },
+    enterExperience: function (w) { w = cleanWeek(w); if (!w) { SOC.go('journey'); return; } walkOpen(w); },
+    playWalk: function (w) { w = cleanWeek(w); if (!w) { SOC.go('journey'); return; } walkOpen(w); },
     walkEnter: function () { if (!_walk) return; _walk.entered = true; _walk.i = Math.min(1, _walk.slides.length - 1); _walk.focusSlide = true; walkMount(); announce('You entered the Week ' + _walk.week + ' experience.'); },
     walkRestart: function () { if (!_walk) return; walkSpeakStop(); _walk.i = 0; _walk.entered = false; _walk.panel = false; _walk.focusSlide = true; walkSaveResume(_walk.week, 0, false); persist(); walkMount(); announce('Week ' + _walk.week + ' experience restarted. Select Enter the experience to begin.'); },
     walkReveal: function (btn) { if (!btn) return; var panel = btn.nextElementSibling, open = btn.getAttribute('aria-expanded') === 'true'; btn.setAttribute('aria-expanded', String(!open)); if (panel) panel.hidden = open; },
     walkNote: function (value) { if (!_walk) return; var p = walkPrefs(); p.walkNotes = p.walkNotes || {}; p.walkNotes[String(_walk.week)] = String(value || '').slice(0, 4000); persist(); },
     walkNav: function (dir) { if (!_walk || (!_walk.entered && _walk.i === 0 && dir > 0)) return; var n = Math.max(0, Math.min(_walk.slides.length - 1, _walk.i + dir)); if (n === _walk.i) return; walkSpeakStop(); _walk.i = n; _walk.focusSlide = true; walkMount(); announce('Chapter ' + (n + 1) + ' of ' + _walk.slides.length + ': ' + walkSlideName(_walk.slides[n]) + '.'); },
     walkGoto: function (k) { if (!_walk || (!_walk.entered && k !== 0)) return; walkSpeakStop(); _walk.i = Math.max(0, Math.min(_walk.slides.length - 1, k)); _walk.focusSlide = true; walkMount(); announce('Chapter ' + (_walk.i + 1) + ' of ' + _walk.slides.length + ': ' + walkSlideName(_walk.slides[_walk.i]) + '.'); },
-    walkClose: function () { walkCloseDom(); _walk = null; refreshExperienceEntryLabels(); },
+    walkClose: function () { walkCloseDom(); _walk = null; refreshExperienceEntryLabels(); try { if (/[?&](?:walk|experience)=/i.test(location.search)) history.replaceState(viewSnapshot(), '', location.pathname); } catch (e) {} },
     walkGoWeek: function () { var w = _walk && _walk.week; walkCloseDom(); _walk = null; if (w) SOC.station(w); },
-    walkPanel: function () { if (!_walk) return; _walk.panel = !_walk.panel; walkMount(); announce(_walk.panel ? 'Accessibility settings opened.' : 'Accessibility settings closed.'); },
-    walkSetting: function (key, value) { var p = walkPrefs(); if (key === 'theme') p.walkTheme = String(value); else if (key === 'size') p.walkSize = Number(value); else if (key === 'font') p.walkFont = !!value; else if (key === 'motion') p.walkMotion = !!value; persist(); walkMount(); announce('Experience display updated.'); },
-    walkTheme: function () { if (!_walk) return; _walk.panel = true; walkMount(); },
+    walkPanel: function () { if (!_walk) return; _walk.panel = !_walk.panel; _walk.restoreFocusId = _walk.panel ? 'walk-panel-close' : 'walk-access-toggle'; walkMount(); announce(_walk.panel ? 'Accessibility settings opened.' : 'Accessibility settings closed.'); },
+    walkSetting: function (key, value) { if (!_walk) return; _walk.restoreFocusId = (document.activeElement && document.activeElement.id) || 'walk-access-toggle'; var p = walkPrefs(); if (key === 'theme') p.walkTheme = String(value); else if (key === 'size') p.walkSize = Number(value); else if (key === 'font') p.walkFont = !!value; else if (key === 'motion') p.walkMotion = !!value; persist(); walkMount(); announce('Experience display updated.'); },
+    walkTheme: function () { if (!_walk) return; _walk.panel = true; _walk.restoreFocusId = 'walk-panel-close'; walkMount(); },
     walkSpeak: function () { walkSpeakToggle(); },
     walkStop: function () { walkSpeakStop(); announce('Voice narration stopped.'); },
     walkRate: function (v) { walkPrefs().walkRate = Number(v); persist(); walkSpeakStop(); announce('Narration speed updated.'); },
@@ -4433,13 +4738,13 @@
 
 
     hideSynthesis: function () { state.showSynthesis = false; render(); },
-    setLens: function (l) { state.lens = l; render(); },
-    rcPick: function (id) { state.rcReading = id; state.lens = 'thematic'; persist(); render(); topScroll(); },
+    setLens: function (l) { state.lens = cleanLens(l); render(); },
+    rcPick: function (id) { id = cleanTextOrNull(id); if (!id || !rec(id)) return; state.rcReading = id; state.lens = 'thematic'; persist(); render(); topScroll(); },
     rcClear: function () { state.rcReading = null; render(); topScroll(); },
-    rcNote: function (k, v) { state.rcNotes[k] = v; persist(); },
-    ecoLayer: function (id) { state.ecoLayer = id; var p = document.getElementById('psy-ecopanel'); if (p) p.innerHTML = ecoLayerPanel(id); var r = document.getElementById('psy-ecorings'); if (r) r.innerHTML = ecoRingsSVG(); var c = document.getElementById('psy-ecochips'); if (c) c.innerHTML = ecoChips(); },
-    ecoNote: function (id, v) { state.ecoNotes[id] = v; persist(); var L = ecoById(id), done = (v + '').trim().length > 0; var ring = document.getElementById('psy-ring-' + id); if (ring) ring.setAttribute('fill', done ? L.color : '#E8EBF0'); var c = document.getElementById('psy-ecochips'); if (c) c.innerHTML = ecoChips(); var cn = document.getElementById('psy-ecocount'); if (cn) cn.textContent = ecoCount() + ' of 5'; },
-    ecoChallenge: function (v) { state.ecoChallenge = v; persist(); },
+    rcNote: function (k, v) { state.rcNotes[k] = cleanText(v, '', 10000); persist(); },
+    ecoLayer: function (id) { id = cleanEcoLayer(id); var retainedFocus = captureFocus(); state.ecoLayer = id; var p = document.getElementById('psy-ecopanel'); if (p) p.innerHTML = ecoLayerPanel(id); var r = document.getElementById('psy-ecorings'); if (r) r.innerHTML = ecoRingsSVG(); var c = document.getElementById('psy-ecochips'); if (c) c.innerHTML = ecoChips(); restoreFocus(retainedFocus, 'soc-main'); },
+    ecoNote: function (id, v) { id = cleanEcoLayer(id); v = cleanText(v, '', 10000); state.ecoNotes[id] = v; persist(); var L = ecoById(id), done = v.trim().length > 0; var ring = document.getElementById('psy-ring-' + id); if (ring) ring.setAttribute('fill', done ? L.color : '#E8EBF0'); var c = document.getElementById('psy-ecochips'); if (c) c.innerHTML = ecoChips(); var cn = document.getElementById('psy-ecocount'); if (cn) cn.textContent = ecoCount() + ' of 5'; },
+    ecoChallenge: function (v) { state.ecoChallenge = cleanText(v, '', 5000); persist(); },
     saveResiliencePlan: function () {
       var sections = [
         { h: 'My academic challenge', t: (state.ecoChallenge || '').trim() || '(not named yet)' },
@@ -4450,31 +4755,31 @@
       senecaDoc('PSY355', 'Personal Resilience Plan', ['PSY355 Psychology of Learning: Mindset and Resilience', 'Built from your Resilience Ecology'], sections, 'PSY355_personal_resilience_plan');
     },
     rcReveal: function (k) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; state.revealed[k] = !state.revealed[k]; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
-    sgNote: function (k, v) { state.sgNotes = state.sgNotes || {}; state.sgNotes[k] = v; persist(); },
-    sgCompare: function (k, w) { state.sgShow = state.sgShow || {}; state.sgShow[k] = !state.sgShow[k]; var sec = document.getElementById('wk-sg'); if (sec) sec.outerHTML = sgSection(w).html; },
-    sgFlip: function (k, w) { state.sgFlip = state.sgFlip || {}; state.sgFlip[k] = !state.sgFlip[k]; var sec = document.getElementById('wk-sg'); if (sec) sec.outerHTML = sgSection(w).html; },
-    sgTickRung: function (k, w) { state.sgTick = state.sgTick || {}; state.sgTick[k] = true; persist(); var sec = document.getElementById('wk-sg'); if (sec) sec.outerHTML = sgSection(w).html; },
+    sgNote: function (k, v) { state.sgNotes = state.sgNotes || {}; state.sgNotes[k] = cleanText(v, '', 10000); persist(); },
+    sgCompare: function (k, w) { state.sgShow = state.sgShow || {}; state.sgShow[k] = !state.sgShow[k]; replaceOuterKeepingFocus('wk-sg', sgSection(w).html, 'soc-main'); },
+    sgFlip: function (k, w) { state.sgFlip = state.sgFlip || {}; state.sgFlip[k] = !state.sgFlip[k]; replaceOuterKeepingFocus('wk-sg', sgSection(w).html, 'soc-main'); },
+    sgTickRung: function (k, w) { state.sgTick = state.sgTick || {}; state.sgTick[k] = true; persist(); replaceOuterKeepingFocus('wk-sg', sgSection(w).html, 'soc-main'); },
     mcPick: function (k, i) {
       if (state.mcSel[k] === i) { delete state.mcSel[k]; } else { state.mcSel[k] = i; }
+      persist();
       var kcm = /^wk(\d+)\|kc/.exec(k);
       if (kcm) {
-        var sec = document.getElementById('wk-kc');
-        if (sec) { sec.outerHTML = kcSection(Number(kcm[1])).html; return; }
+        if (replaceOuterKeepingFocus('wk-kc', kcSection(Number(kcm[1])).html, 'soc-main')) return;
       }
       var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var wy = window.scrollY;
       render();
       var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top;
       window.scrollTo(0, wy);
     },
-    kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(w).html; } },
-    kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; [state.mcSel, state.mcConf].forEach(function (map) { if (!map) return; Object.keys(map).forEach(function (k) { if (k.indexOf(pre) === 0) delete map[k]; }); }); if (state.kcReveal) delete state.kcReveal[w + '|' + v]; var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(w).html; } },
-    mcConf: function (k, c, w) { state.mcConf = state.mcConf || {}; if (state.mcConf[k] === c) delete state.mcConf[k]; else state.mcConf[k] = c; var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
-    mcPickSel: function (k, v) { v = Number(v); if (isNaN(v) || v < 0) delete state.mcSel[k]; else state.mcSel[k] = v; var kcm = /^wk(\d+)\|kc/.exec(k); if (kcm) { var sec = document.getElementById('wk-kc'); if (sec) { sec.outerHTML = kcSection(Number(kcm[1])).html; return; } } render(); },
-    kcShow: function (w) { var v = (state.kcVersion && state.kcVersion[w]) || 0; state.kcReveal = state.kcReveal || {}; state.kcReveal[w + '|' + v] = true; var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
-    kcShortText: function (k, v) { state.kcShort = state.kcShort || {}; state.kcShort[k] = v; persist(); },
-    kcShortReveal: function (k, w) { state.kcShortShown = state.kcShortShown || {}; state.kcShortShown[k] = !state.kcShortShown[k]; var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
-    kcShortRate: function (k, r, w) { state.kcShortRate = state.kcShortRate || {}; state.kcShortRate[k] = r; persist(); var sec = document.getElementById('wk-kc'); if (sec) sec.outerHTML = kcSection(w).html; },
-    mcReset: function (id) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var keep = {}; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(id + '|mc|') !== 0) keep[k] = state.mcSel[k]; }); state.mcSel = keep; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
+    kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; [state.mcSel, state.mcConf].forEach(function (map) { if (!map) return; Object.keys(map).forEach(function (k) { if (k.indexOf(pre) === 0) delete map[k]; }); }); if (state.kcReveal) delete state.kcReveal[w + '|' + v]; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
+    mcConf: function (k, c, w) { state.mcConf = state.mcConf || {}; if (state.mcConf[k] === c) delete state.mcConf[k]; else state.mcConf[k] = c; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
+    mcPickSel: function (k, v) { v = Number(v); if (isNaN(v) || v < 0) delete state.mcSel[k]; else state.mcSel[k] = v; persist(); var kcm = /^wk(\d+)\|kc/.exec(k); if (kcm && replaceOuterKeepingFocus('wk-kc', kcSection(Number(kcm[1])).html, 'soc-main')) return; render(); },
+    kcShow: function (w) { var v = (state.kcVersion && state.kcVersion[w]) || 0; state.kcReveal = state.kcReveal || {}; state.kcReveal[w + '|' + v] = true; replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
+    kcShortText: function (k, v) { state.kcShort = state.kcShort || {}; state.kcShort[k] = cleanText(v, '', 10000); persist(); },
+    kcShortReveal: function (k, w) { state.kcShortShown = state.kcShortShown || {}; state.kcShortShown[k] = !state.kcShortShown[k]; replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
+    kcShortRate: function (k, r, w) { state.kcShortRate = state.kcShortRate || {}; state.kcShortRate[k] = r; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
+    mcReset: function (id) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var keep = {}; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(id + '|mc|') !== 0) keep[k] = state.mcSel[k]; }); state.mcSel = keep; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     saveReadingNotes: function () {
       var r = state.rcReading && rec(state.rcReading); if (!r) { flash('Pick a reading first.'); return; }
       var cc = (D.course && D.course.code) || 'Course';
@@ -4537,19 +4842,24 @@
     read: function (id) { var r = rec(id); var u = r && readUrl(r); if (u) { window.open(u, '_blank', 'noopener'); } else { rememberPrevious(); state.screen = 'detail'; state.detailId = id; focusTarget = 'soc-main'; render(); topScroll(); } },
     source: function (id) { var r = rec(id); var u = r && sourceUrl(r); if (u) window.open(u, '_blank', 'noopener'); },
     openSaved: function () { if (state.screen !== 'library') rememberPrevious(); state.screen = 'library'; state.activeTypes = []; state.activeWeek = null; state.search = ''; state.savedView = state.saved.length > 0; flash(state.saved.length ? 'Your saved shelf.' : 'Nothing saved yet. Tap the bookmark on any reading.'); topScroll(); },
-    cardWeek: function (v) { state.cardWeek = (v === '' ? null : parseInt(v, 10)); render(); },
-    glossWeek: function (v) { state.glossWeek = v; var o = document.getElementById('soc-gout'); if (o) o.innerHTML = glossaryByWeek(v); },
-    glossSearch: function (v) { state.glossSearch = v; var o = document.getElementById('soc-gsearchout'); if (o) o.innerHTML = glossarySearchHTML(v); },
+    cardWeek: function (v) { state.cardWeek = v === '' ? null : cleanWeek(v); focusTarget = 'soc-cardweek'; render(); },
+    glossWeek: function (v) { v = cleanWeekFilter(v); state.glossWeek = v; var o = document.getElementById('soc-gout'); if (o) o.innerHTML = glossaryByWeek(v); },
+    glossSearch: function (v) { v = cleanText(v, '', 500); state.glossSearch = v; var o = document.getElementById('soc-gsearchout'); if (o) o.innerHTML = glossarySearchHTML(v); },
     glossWeekGo: function (w) { state.glossWeek = String(w); var sel = document.getElementById('soc-gweek'); if (sel) sel.value = String(w); var o = document.getElementById('soc-gout'); if (o) { o.innerHTML = glossaryByWeek(String(w)); o.scrollIntoView({ behavior: 'smooth', block: 'start' }); } },
     flip: function (el) { var c = el && (el.classList && el.classList.contains('flip') ? el : (el.closest ? el.closest('.flip') : null)); if (c) c.classList.toggle('flipped'); },
   };
 
   state.wkOpen = {};
   render();
-  try { if (location.search) history.replaceState(viewSnapshot(), '', location.pathname + location.hash); } catch (e) {}
+  try {
+    if (location.search) {
+      if (route0 && route0.invalid) history.replaceState(viewSnapshot(), '', location.pathname);
+      else history.replaceState(viewSnapshot(), '');
+    }
+  } catch (e) {}
   window.addEventListener('popstate', function (e) {
     var __ov = document.getElementById('walk-overlay');
-    if (__ov) { try { walkCloseDom(); _walk = null; } catch (er) {} try { history.pushState(viewSnapshot(), ''); } catch (er) {} return; }
+    if (__ov) { try { walkCloseDom(); _walk = null; } catch (er) {} try { history.pushState(viewSnapshot(), '', location.pathname); } catch (er) {} return; }
     __fromPop = true;
     try { restoreView(e.state && typeof e.state === 'object' && e.state.screen ? e.state : { screen: 'journey' }); } catch (er) {}
     __lastNavKey = navKey();
@@ -4559,8 +4869,18 @@
   if (routePart0) scrollWeekPart(routePart0);
   if (route0 && route0.experience && route0.week) {
     try { walkOpen(route0.week); } catch (e) {}
+  } else if (!route0) {
+    try {
+      var __wkRaw = sessionStorage.getItem(WKKEY);
+      var __wk = __wkRaw === null ? null : JSON.parse(__wkRaw);
+      var __resume = __wk && typeof __wk === 'object' && !Array.isArray(__wk)
+        ? cleanWalkResume({ week: __wk.w, i: __wk.i, entered: __wk.entered })
+        : null;
+      if (__resume) walkOpen(__resume.week, __resume);
+      else if (__wkRaw !== null) sessionStorage.removeItem(WKKEY);
+    } catch (e) { try { sessionStorage.removeItem(WKKEY); } catch (er) {} }
   } else {
-    try { var __wk = JSON.parse(sessionStorage.getItem(WKKEY) || 'null'); if (__wk && __wk.w) { walkOpen(cleanWeek(__wk.w) || __wk.w); if (_walk && __wk.i) { _walk.i = Math.max(0, Math.min(_walk.slides.length - 1, __wk.i)); walkMount(); } } } catch (e) {}
+    try { sessionStorage.removeItem(WKKEY); } catch (e) {}
   }
 
   /* Reading Supports boot: apply saved settings, keep them across renders, stop speech on navigation */
