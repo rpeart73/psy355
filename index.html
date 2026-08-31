@@ -6,13 +6,13 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#DA291C">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="build" content="20260828-090223">
+<meta name="build" content="20260831-150748">
 <script>
 (function(){try{var m=document.querySelector('meta[name="build"]');var L=m?(m.content||''):'';if(!L)return;function cleanMarker(t){try{var u=new URL(location.href);if(t===L&&u.searchParams.has('_bf_build')){u.searchParams.delete('_bf_build');history.replaceState(history.state,'',u.href);}}catch(e){}}function chk(){fetch('build.txt?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():null;}).then(function(t){if(!t)return;t=(t||'').trim();if(!t)return;if(t===L){cleanMarker(t);return;}var seen=false,storageOK=true;try{seen=sessionStorage.getItem('bf_reload_for')===t;if(!seen)sessionStorage.setItem('bf_reload_for',t);}catch(e){storageOK=false;}if(seen)return;if(storageOK){location.reload();return;}try{var u=new URL(location.href);if(u.searchParams.get('_bf_build')===t)return;u.searchParams.set('_bf_build',t);location.replace(u.href);}catch(e){}}).catch(function(){});}chk();document.addEventListener('visibilitychange',function(){if(!document.hidden)chk();});window.addEventListener('focus',chk);setInterval(function(){if(!document.hidden)chk();},60000);}catch(e){}})();
 </script>
 <title>PSY355 Companion: weekly learning pathway</title>
 <meta name="description" content="Instructor-created PSY355 companion website for weekly learning pathways, readings, concepts, immersive experiences, and study supports. Blackboard remains the official Seneca course platform.">
-<link rel="stylesheet" href="./fonts/fonts.css?v=20260828-090223">
+<link rel="stylesheet" href="./fonts/fonts.css?v=20260831-150748">
 <style>
   :root{
     --navy:#1B2A4A; --red:#DA291C; --red-dark:#961A13; --amber:#F2A900; --page:#F7F8FA; --surface:#fff;
@@ -252,7 +252,7 @@
   .soc-nav-group{display:grid;gap:2px;margin:0;padding:0 0 13px;border-bottom:1px solid #E6E9EE}.soc-nav-group+.soc-nav-group{padding-top:12px}.soc-nav-label{padding:0 12px 7px;font-family:var(--mono);font-size:.68rem;line-height:1.35;font-weight:800;letter-spacing:.09em;color:#606875}.soc-nav-group button,.soc-nav-weekgroup button{position:relative;transition:background-color .16s ease,color .16s ease}.soc-nav-group button:hover,.soc-nav-weekgroup button:hover{background:#F5F6F8!important;color:#15171C!important}.soc-nav-group button[aria-current="page"]::before,.soc-nav-weekgroup button[style*="font-weight:600"]::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:0 4px 4px 0;background:#DA291C}
   .soc-nav-weekgroup{margin:0;padding:12px 0 13px;border-bottom:1px solid #E6E9EE}.soc-nav-weekgroup>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:36px;padding:7px 12px;border-radius:10px;color:#5B6370;cursor:pointer;list-style:none;user-select:none}.soc-nav-weekgroup>summary::-webkit-details-marker{display:none}.soc-nav-weekgroup>summary::before{content:"";width:7px;height:7px;flex:none;border-right:2px solid #DA291C;border-bottom:2px solid #DA291C;transform:rotate(-45deg);transition:transform .16s ease;order:3}.soc-nav-weekgroup[open]>summary::before{transform:rotate(45deg) translate(-1px,-1px)}.soc-nav-weekgroup>summary:hover{background:#F5F6F8;color:#15171C}.soc-nav-weekgroup>summary:focus-visible{outline:3px solid rgba(218,41,28,.2);outline-offset:1px}.soc-nav-weekgroup>summary span{order:1;font-family:var(--mono);font-size:.68rem;line-height:1.35;font-weight:800;letter-spacing:.09em}.soc-nav-weekgroup>summary b{order:2;margin-left:auto;font-family:var(--mono);font-size:.64rem;font-weight:650;color:#69717D;white-space:nowrap}.soc-nav-weekgroup>div{display:grid;gap:1px;margin-top:4px;padding:3px 0 1px 8px;border-left:1px solid #E2E6EB}.soc-nav-weekgroup>div button{align-items:flex-start!important}.soc-nav-weekgroup>div button>span:nth-child(2){display:-webkit-box!important;overflow:hidden!important;white-space:normal!important;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.28}.soc-sidebar>.soc-nav-group:last-of-type{border-bottom:0}
   .soc-nav-weekgroup:not([open])>div{display:none}
-  .soc-nav-weekgroup+.soc-nav-group{padding-top:12px}.soc-nav-weekgroup>summary{display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:9px}.soc-nav-weekgroup>summary::marker{content:""}.soc-nav-weekgroup>summary::before{grid-column:1;order:initial}.soc-nav-weekgroup>summary span{grid-column:2;order:initial;min-width:0;white-space:nowrap}.soc-nav-weekgroup>summary b{grid-column:3;order:initial;margin-left:0}
+  .soc-nav-weekgroup+.soc-nav-group{padding-top:12px}.soc-nav-weekgroup>summary{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:9px;row-gap:10px}.soc-nav-weekgroup>summary::marker{content:""}.soc-nav-weekgroup>summary::before{grid-column:1;grid-row:1/3;align-self:center;order:initial}.soc-nav-weekgroup>summary span{grid-column:2;grid-row:1;order:initial;min-width:0;white-space:normal;overflow-wrap:anywhere}.soc-nav-weekgroup>summary b{grid-column:2;grid-row:2;order:initial;min-width:0;margin-left:0;white-space:normal;overflow-wrap:anywhere;line-height:1.35}
   @media(max-width:760px){.soc-nav-label,.soc-nav-weekgroup>summary span{font-size:.7rem}.soc-nav-group{padding-bottom:11px}.soc-nav-group+.soc-nav-group{padding-top:10px}.soc-nav-weekgroup{padding:10px 0 11px}}@media(prefers-reduced-motion:reduce){.soc-nav-group button,.soc-nav-weekgroup button,.soc-nav-weekgroup>summary::before{transition:none}}
   html.rl-z75{font-size:75%}html.rl-z87{font-size:87%}html.rl-z115{font-size:115%}html.rl-z130{font-size:130%}html.rl-z150{font-size:150%}html.rl-z175{font-size:175%}
   html.rl-space #soc-main p,html.rl-space #soc-main li{line-height:1.9!important;letter-spacing:.045em!important;word-spacing:.12em!important}
@@ -467,7 +467,7 @@
   .kd-link,.vid-copy>a{display:inline-flex;align-items:center;min-height:24px}
   #soc-search{min-height:24px}
 </style>
-<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260828-090223">
+<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260831-150748">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body>
@@ -481,21 +481,21 @@
 </noscript>
 <div id="app"></div>
 <div id="soc-live" role="status" aria-live="polite" class="skip"></div>
-<script src="./data/corpus-data.js?v=20260828-090223"></script>
-<script src="./data/psy355-mc.js?v=20260828-090223"></script>
-<script src="./data/psy355-kc.js?v=20260828-090223"></script>
-<script src="./data/psy355-kc-additions.js?v=20260828-090223"></script>
-<script src="./data/psy355-career.js?v=20260828-090223"></script>
-<script src="./data/seneca-programs.js?v=20260828-090223"></script>
-<script src="./data/psy355-lens.js?v=20260828-090223"></script>
-<script src="./data/psy355-howto.js?v=20260828-090223"></script>
-<script src="./data/psy355-interpersonal.js?v=20260828-090223"></script>
-<script src="./data/psy355-outcomes.js?v=20260828-090223"></script>
-<script src="./data/psy355-field-examples.js?v=20260828-090223"></script>
-<script src="./data/psy355-walkfigs.js?v=20260828-090223"></script>
-<script src="./data/psy355-images.js?v=20260828-090223"></script>
-<script src="./data/psy355-recordings.js?v=20260828-090223"></script>
-<script src="./app.js?v=20260828-090223"></script>
-<script defer src="assets/img-viewer.js?v=20260828-090223"></script>
+<script src="./data/corpus-data.js?v=20260831-150748"></script>
+<script src="./data/psy355-mc.js?v=20260831-150748"></script>
+<script src="./data/psy355-kc.js?v=20260831-150748"></script>
+<script src="./data/psy355-kc-additions.js?v=20260831-150748"></script>
+<script src="./data/psy355-career.js?v=20260831-150748"></script>
+<script src="./data/seneca-programs.js?v=20260831-150748"></script>
+<script src="./data/psy355-lens.js?v=20260831-150748"></script>
+<script src="./data/psy355-howto.js?v=20260831-150748"></script>
+<script src="./data/psy355-interpersonal.js?v=20260831-150748"></script>
+<script src="./data/psy355-outcomes.js?v=20260831-150748"></script>
+<script src="./data/psy355-field-examples.js?v=20260831-150748"></script>
+<script src="./data/psy355-walkfigs.js?v=20260831-150748"></script>
+<script src="./data/psy355-images.js?v=20260831-150748"></script>
+<script src="./data/psy355-recordings.js?v=20260831-150748"></script>
+<script src="./app.js?v=20260831-150748"></script>
+<script defer src="assets/img-viewer.js?v=20260831-150748"></script>
 </body>
 </html>
