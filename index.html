@@ -6,13 +6,13 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#DA291C">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="build" content="20260831-150748">
+<meta name="build" content="20260901-010227">
 <script>
 (function(){try{var m=document.querySelector('meta[name="build"]');var L=m?(m.content||''):'';if(!L)return;function cleanMarker(t){try{var u=new URL(location.href);if(t===L&&u.searchParams.has('_bf_build')){u.searchParams.delete('_bf_build');history.replaceState(history.state,'',u.href);}}catch(e){}}function chk(){fetch('build.txt?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():null;}).then(function(t){if(!t)return;t=(t||'').trim();if(!t)return;if(t===L){cleanMarker(t);return;}var seen=false,storageOK=true;try{seen=sessionStorage.getItem('bf_reload_for')===t;if(!seen)sessionStorage.setItem('bf_reload_for',t);}catch(e){storageOK=false;}if(seen)return;if(storageOK){location.reload();return;}try{var u=new URL(location.href);if(u.searchParams.get('_bf_build')===t)return;u.searchParams.set('_bf_build',t);location.replace(u.href);}catch(e){}}).catch(function(){});}chk();document.addEventListener('visibilitychange',function(){if(!document.hidden)chk();});window.addEventListener('focus',chk);setInterval(function(){if(!document.hidden)chk();},60000);}catch(e){}})();
 </script>
 <title>PSY355 Companion: weekly learning pathway</title>
 <meta name="description" content="Instructor-created PSY355 companion website for weekly learning pathways, readings, concepts, immersive experiences, and study supports. Blackboard remains the official Seneca course platform.">
-<link rel="stylesheet" href="./fonts/fonts.css?v=20260831-150748">
+<link rel="stylesheet" href="./fonts/fonts.css?v=20260901-010227">
 <style>
   :root{
     --navy:#1B2A4A; --red:#DA291C; --red-dark:#961A13; --amber:#F2A900; --page:#F7F8FA; --surface:#fff;
@@ -466,8 +466,49 @@
   .cal-sw-support{background:#474C57}.cal-support{background:#F4F4F4}.cal-support .cal-tag{background:#474C57;color:#fff}.kd-support .kd-dot{background:#474C57}
   .kd-link,.vid-copy>a{display:inline-flex;align-items:center;min-height:24px}
   #soc-search{min-height:24px}
+  /* Student-authored activity workspaces */
+  .act-workspace{width:100%;box-sizing:border-box;margin:0 0 18px}
+  .act-instruction{font-size:.95rem;line-height:1.6;color:var(--ink-dim);margin:0 0 16px}
+  .act-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(290px,100%),1fr));gap:14px;margin-top:18px}
+  .act-field{display:flex;min-width:0;flex-direction:column;gap:6px;border:1px solid var(--border);border-radius:12px;background:#fff;padding:14px}
+  .act-field>span{font-size:.94rem;font-weight:800;color:var(--ink)}
+  .act-field>small{font-size:.82rem;line-height:1.45;color:var(--ink-dim)}
+  .act-field textarea{box-sizing:border-box;width:100%;min-height:112px;resize:vertical;border:1px solid #AEB6C2;border-radius:9px;background:#fff;color:var(--ink);font:inherit;line-height:1.5;padding:10px 11px}
+  .act-field textarea:focus{outline:3px solid rgba(218,41,28,.2);border-color:var(--red)}
+  .act-field>em{font-size:.7rem;line-height:1.35;color:var(--ink-faint);font-style:normal}
+  .act-decision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:14px}
+  .act-decision{min-width:0;border:1px solid var(--border);border-top:4px solid var(--red);border-radius:12px;background:#fff;padding:15px}
+  .act-decision-no{font-family:var(--mono);font-size:.68rem;font-weight:800;letter-spacing:.07em;color:var(--red);margin-bottom:7px}
+  .act-decision h3{font-size:.98rem;line-height:1.5;margin:0 0 12px}
+  .act-choice-row{display:flex;flex-wrap:wrap;gap:8px}
+  .act-choice-row button,.act-option-bank button,.act-sequence-choice,.act-reset{min-height:40px;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:.83rem;font-weight:700;line-height:1.35;padding:9px 11px;cursor:pointer}
+  .act-choice-row button:focus-visible,.act-option-bank button:focus-visible,.act-sequence-choice:focus-visible,.act-reset:focus-visible{outline:3px solid rgba(218,41,28,.22);outline-offset:2px}
+  .act-feedback{font-size:.84rem;line-height:1.5;border-radius:9px;padding:10px 11px;margin-top:10px}
+  .act-feedback.is-correct{background:#E7F3EC;color:#155F34}.act-feedback.is-retry{background:#FFF2F1;color:#781018}
+  .act-sequence-layout{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(300px,1.2fr);gap:18px;align-items:start}
+  .act-sequence-layout h2,.act-audit-write h2,.act-evidence-write h2,.act-map-conclusion h2{font-size:1rem;margin:0 0 10px}
+  .act-sequence-choice{display:flex;width:100%;justify-content:space-between;align-items:center;text-align:left;margin:0 0 8px}
+  .act-sequence-choice span{font-size:.7rem;color:var(--ink-faint);margin-left:12px}.act-sequence-choice:disabled{opacity:.58;cursor:default}
+  .act-sequence-layout ol{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+  .act-sequence-layout li{display:grid;grid-template-columns:34px 1fr;gap:10px;border:1px solid var(--border);border-radius:10px;background:#fff;padding:11px}
+  .act-sequence-layout li>span,.act-trace-node>span,.act-layer-index{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font-weight:900}
+  .act-sequence-layout li b{font-size:.9rem}.act-sequence-layout li p{font-size:.81rem;line-height:1.45;color:var(--ink-dim);margin:3px 0 0}
+  .act-complete,.act-source-boundary{border:1px solid #1E7B34;border-radius:10px;background:#E7F3EC;color:#155F34;padding:12px 14px;margin-top:14px;font-size:.88rem;line-height:1.5}
+  .act-map-stack,.act-trace-line{display:grid;gap:12px}
+  .act-map-layer,.act-trace-node{display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;border:1px solid var(--border);border-radius:13px;background:#fff;padding:15px}
+  .act-map-layer h3,.act-trace-node h3{font-size:1rem;margin:2px 0 5px}.act-map-layer p,.act-trace-node p{font-size:.86rem;line-height:1.5;color:var(--ink-dim);margin:0}
+  .act-map-layer .act-field,.act-trace-node .act-field{border:0;border-top:1px solid var(--border);border-radius:0;margin-top:10px;padding:12px 0 0}
+  .act-trace-node{position:relative}.act-trace-node:not(:last-child):after{content:"";position:absolute;left:29px;bottom:-13px;width:2px;height:13px;background:var(--red)}
+  .act-option-bank{display:flex;flex-wrap:wrap;gap:8px;border:1px solid var(--border);border-radius:12px;background:#fff;padding:14px;margin:0}
+  .act-option-bank legend{font-size:.86rem;font-weight:800;padding:0 5px}.act-option-bank button.selected{background:#FDECEC;border-color:var(--red);color:#781018}.act-option-bank small{flex-basis:100%;color:var(--ink-faint)}
+  .act-builder-message .act-fields{grid-template-columns:1fr}.act-builder-message .act-field{border-left:5px solid var(--red)}
+  .act-builder-timeline .act-field,.act-builder-plan .act-field,.act-builder-transfer .act-field,.act-builder-briefing .act-field,.act-builder-cartography .act-field,.act-builder-synthesis .act-field{border-top:4px solid var(--red)}
+  .act-audit-write,.act-evidence-write,.act-map-conclusion{margin-top:18px;border:1px solid var(--border);border-radius:13px;background:#F7F8FA;padding:16px}
+  @supports (height:100dvh){#soc-main{height:calc(100dvh - 62px)!important}.soc-sidebar{height:calc(100dvh - 62px)!important}.walk-access-panel,.rl-panel{max-height:calc(100dvh - 100px)!important}}
+  @media (max-width:760px){.act-sequence-layout{grid-template-columns:1fr}.act-decision-grid{grid-template-columns:1fr}.act-fields{grid-template-columns:1fr}.act-map-layer,.act-trace-node{grid-template-columns:34px minmax(0,1fr)}}
+  @media (pointer:coarse){button,.act-choice-row button,.act-option-bank button,.act-sequence-choice,.act-reset,a{min-height:44px}}
 </style>
-<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260831-150748">
+<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260901-010227">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 </head>
 <body>
@@ -481,21 +522,21 @@
 </noscript>
 <div id="app"></div>
 <div id="soc-live" role="status" aria-live="polite" class="skip"></div>
-<script src="./data/corpus-data.js?v=20260831-150748"></script>
-<script src="./data/psy355-mc.js?v=20260831-150748"></script>
-<script src="./data/psy355-kc.js?v=20260831-150748"></script>
-<script src="./data/psy355-kc-additions.js?v=20260831-150748"></script>
-<script src="./data/psy355-career.js?v=20260831-150748"></script>
-<script src="./data/seneca-programs.js?v=20260831-150748"></script>
-<script src="./data/psy355-lens.js?v=20260831-150748"></script>
-<script src="./data/psy355-howto.js?v=20260831-150748"></script>
-<script src="./data/psy355-interpersonal.js?v=20260831-150748"></script>
-<script src="./data/psy355-outcomes.js?v=20260831-150748"></script>
-<script src="./data/psy355-field-examples.js?v=20260831-150748"></script>
-<script src="./data/psy355-walkfigs.js?v=20260831-150748"></script>
-<script src="./data/psy355-images.js?v=20260831-150748"></script>
-<script src="./data/psy355-recordings.js?v=20260831-150748"></script>
-<script src="./app.js?v=20260831-150748"></script>
-<script defer src="assets/img-viewer.js?v=20260831-150748"></script>
+<script src="./data/corpus-data.js?v=20260901-010227"></script>
+<script src="./data/psy355-mc.js?v=20260901-010227"></script>
+<script src="./data/psy355-kc.js?v=20260901-010227"></script>
+<script src="./data/psy355-kc-additions.js?v=20260901-010227"></script>
+<script src="./data/psy355-career.js?v=20260901-010227"></script>
+<script src="./data/seneca-programs.js?v=20260901-010227"></script>
+<script src="./data/psy355-lens.js?v=20260901-010227"></script>
+<script src="./data/psy355-howto.js?v=20260901-010227"></script>
+<script src="./data/psy355-interpersonal.js?v=20260901-010227"></script>
+<script src="./data/psy355-outcomes.js?v=20260901-010227"></script>
+<script src="./data/psy355-field-examples.js?v=20260901-010227"></script>
+<script src="./data/psy355-walkfigs.js?v=20260901-010227"></script>
+<script src="./data/psy355-images.js?v=20260901-010227"></script>
+<script src="./data/psy355-recordings.js?v=20260901-010227"></script>
+<script src="./app.js?v=20260901-010227"></script>
+<script defer src="assets/img-viewer.js?v=20260901-010227"></script>
 </body>
 </html>

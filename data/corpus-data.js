@@ -736,7 +736,7 @@ window.PSY355 = {
     "stephenson2018"
    ],
    "doi": "10.1080/15298860309032",
-   "url": "https://self-compassion.org/wp-content/uploads/publications/SCtheoryarticle.pdf",
+   "url": "https://doi.org/10.1080/15298860309032",
    "fulltext": true
   },
   {
@@ -762,7 +762,7 @@ window.PSY355 = {
    "related": [
     "neff2003"
    ],
-   "url": "https://self-compassion.org/wp-content/uploads/2018/05/Stephenson2017.pdf",
+   "url": "https://link.springer.com/article/10.1007/s12144-017-9563-2",
    "doi": "10.1007/s12144-017-9563-2",
    "fulltext": true
   },
@@ -789,8 +789,8 @@ window.PSY355 = {
    "evidenceLimit": "The paths are consistent with the authors' model but remain associations; the study cannot establish mediation over time or causal effects.",
    "related": [],
    "doi": "10.1186/s40359-025-03757-y",
-   "url": "https://bmcpsychology.biomedcentral.com/articles/10.1186/s40359-025-03757-y",
-   "pdfUrl": "https://bmcpsychology.biomedcentral.com/counter/pdf/10.1186/s40359-025-03757-y.pdf",
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12777148/",
+   "pdfUrl": "https://link.springer.com/content/pdf/10.1186/s40359-025-03757-y.pdf",
    "fulltext": true
   },
   {
@@ -845,7 +845,7 @@ window.PSY355 = {
    "related": [
     "jadmiko2024"
    ],
-   "url": "https://journal.unisza.edu.my/jonus/index.php/jonus/article/download/921/570/2338",
+   "url": "https://journal.unisza.edu.my/jonus/index.php/jonus/article/view/921",
    "fulltext": true
   },
   {
