@@ -333,10 +333,8 @@
   var COURSE_IMAGES = window.PSY355_IMAGES || {};
   function weekImage(n) { return COURSE_IMAGES['wk' + (n < 10 ? '0' : '') + n] || {}; }
   function weekHeroAlt(n) { return weekImage(n).alt || weekTitle(n); }
-  function weekHeroCredit() {
-    return '<p class="wk-hero-credit">Instructor-created AI-generated conceptual image. It does not depict a real learner, event, institution, or research finding.</p>';
-  }
-  function courseHeroCredit() { return '<p class="wk-hero-credit home-hero-credit">Instructor-created AI-generated conceptual image. It does not depict a real learner, class, institution, or research finding.</p>'; }
+  function weekHeroCredit() { return ''; }
+  function courseHeroCredit() { return ''; }
   function courseImage(key, className, eager) {
     var image = COURSE_IMAGES[key];
     if (!image || !image.src) return '';
@@ -2739,6 +2737,40 @@
       readings: (d.readings && d.readings.length) ? sec('read', opts.readingsTitle || 'Readings', (opts.readingsIntro || '') + d.readings.map(function (r) { var resolves = (typeof rec === 'function') && r.id && rec(r.id); var tail = resolves ? '<button onclick="SOC.read(\'' + r.id + '\')" class="wk-scope">' + esc(r.scope || 'Open the reading') + ' &#8599;</button>' : (r.scope ? '<div class="wk-scope" style="background:none;border:none;color:var(--ink-faint);padding:6px 0;cursor:default">' + esc(r.scope) + '</div>' : ''); return '<div class="wk-read"><div class="ref">' + r.apa + '</div>' + tail + '</div>'; }).join('') + readingRescueSection(w, d)) : ''
     };
   }
+  var OPTIONAL_COACHING = {
+    2: {
+      focus: 'Turn a large outcome into one small learning system',
+      idea: 'The Mindset Mentor often shifts attention from a distant result to a small action that can be repeated. In self-regulated learning, the useful part of that move is making the action specific enough to plan, monitor, and adjust.',
+      tryIt: 'Choose one task for this week. Write the smallest useful next action, when you will do it, how you will check whether it worked, and who or what you will ask for help if the plan stalls. Finish with two sentences about what you will keep or change next time.'
+    },
+    3: {
+      focus: 'Use language that leaves room for change',
+      idea: 'A recurring Rob Dial coaching move is to separate a temporary state from a fixed identity. Saying “I am feeling stuck on this topic” leaves more room for strategy and support than saying “I am bad at this.”',
+      tryIt: 'Notice one fixed statement you make after a setback. Rewrite it as a description of the current situation, then add one evidence-based next move from this week. The goal is not forced positivity. It is more accurate, flexible language.'
+    },
+    7: {
+      focus: 'Name the next move without ignoring the stressor',
+      idea: 'Mindset coaching often asks for one constructive action when discomfort is high. This course adds an important condition: the action can include rest, accommodation, a changed plan, or help from another person. Recovery does not have to mean pushing through alone.',
+      tryIt: 'Name the stressor, one condition you cannot control, one condition you may be able to change, and one support you can contact. Then choose the smallest next move that protects both learning and recovery.'
+    },
+    9: {
+      focus: 'Stay committed to the purpose, flexible about the method',
+      idea: 'Rob Dial’s process-focused coaching can be useful when persistence starts to look like repeating a strategy that is not working. A strong process includes permission to change the route while keeping the larger purpose in view.',
+      tryIt: 'Choose one goal you are working toward. Keep the purpose, then list two different strategies that could move you toward it. Decide what evidence would tell you to continue, adjust, pause, or seek support.'
+    }
+  };
+  function optionalCoachingSection(w) {
+    var item = OPTIONAL_COACHING[w];
+    if (!item) return '';
+    return '<section id="wk-coach" class="node" aria-labelledby="wk-coach-h">'
+      + '<div class="mono" style="font-size:.68rem;font-weight:800;letter-spacing:.08em;color:var(--red);margin-bottom:6px">OPTIONAL COACHING CONNECTION</div>'
+      + '<h2 id="wk-coach-h" class="wk-sec" style="margin-top:0">' + esc(item.focus) + '</h2>'
+      + '<p style="margin:0 0 10px">' + esc(item.idea) + '</p>'
+      + '<div style="border-left:4px solid var(--red);background:#FFF8F7;border-radius:0 10px 10px 0;padding:12px 14px;margin:0 0 11px"><b style="display:block;margin-bottom:4px">Try it</b><span style="font-size:.92rem;line-height:1.55;color:var(--ink-dim)">' + esc(item.tryIt) + '</span></div>'
+      + '<p class="wk-hint" style="margin:0 0 8px"><b>Evidence boundary:</b> This is an optional coaching prompt, not peer-reviewed evidence. Use this week’s assigned readings to evaluate it, keep what helps, and set aside what does not fit your circumstances.</p>'
+      + '<a href="https://robdial.com/podcast/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;min-height:32px;color:var(--focus);font-size:.86rem;font-weight:800;text-decoration:none">Visit The Mindset Mentor podcast page <span aria-hidden="true">&#8599;</span></a>'
+      + '</section>';
+  }
   function weekPage(w, d) {
     var ws = journeyWeeks(), idx = ws.indexOf(w), prev = idx > 0 ? ws[idx - 1] : null, next = idx < ws.length - 1 ? ws[idx + 1] : null;
     var sec = function (id, title, inner) { return '<section id="wk-' + id + '" class="node"><h2 class="wk-sec">' + esc(title) + '</h2>' + inner + '</section>'; };
@@ -2751,6 +2783,7 @@
     var programLens = lensProgramSection(w, d);
     var programCase = lensCaseStudySection(w, d);
     var concepts = A.concepts;
+    var coaching = optionalCoachingSection(w);
     var terms = A.terms;
     var readings = A.readings;
     var watch = d.deck ? '<section id="wk-watch" class="node"><h2 class="wk-sec">Weekly experience</h2><p style="margin:0 0 12px;font-size:.92rem">Enter this week\'s idea as a sequence of scenes, evidence rooms, decisions, diagrams, and reflection.</p><button type="button" class="wk-cta" style="margin:0" data-experience-week="' + w + '" onclick="SOC.enterExperience(' + w + ')">' + esc(experienceActionLabel(w)) + '</button></section>' : '';
@@ -2772,10 +2805,10 @@
     var kcR = kcSection(w);
     var kc = kcR.html, kcItems = kcR.items;
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
-      + [['ov', 'Overview'], ['mode', 'How this week works'], ['rec', deliveryMode(w).kind === 'live' ? 'Class recording' : 'Instructor update'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts'], ['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Experience']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
+      + [['ov', 'Overview'], ['mode', 'How this week works'], ['rec', deliveryMode(w).kind === 'live' ? 'Class recording' : 'Instructor update'], ['pre', 'Before you begin'], ['learn', 'Purpose'], ['out', 'Learning outcomes'], ['gq', 'Guiding questions']].concat(programLens ? [['lens', 'For your program']] : []).concat([['con', 'Key concepts']]).concat(coaching ? [['coach', 'Optional coaching']] : []).concat([['term', 'Key terms'], ['read', 'Readings']]).concat(d.deck ? [['watch', 'Experience']] : []).concat(programCase ? [['case', 'Case study']] : []).concat([['reflect', 'Reflection']]).concat(sg ? [['sg', 'Study Guide']] : []).concat(kcItems.length ? [['kc', 'Knowledge Check']] : []).concat([['notes', 'Generate notes']]).map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">Flexible pacing</div></div></aside>';
     var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><span>Weeks start folded so you can see the whole map. Up to two sections stay open at once; opening a third closes the earliest one. Sections fold again when you leave the week.</span></div>';
-    return '<div class="rise">' + hero + deliveryNotice(w) + interpersonalSection(w) + recordingSection(w) + '<div class="wk-grid"><div class="wk-primary">' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</div>' + rail + '</div></div>';
+    return '<div class="rise">' + hero + deliveryNotice(w) + interpersonalSection(w) + recordingSection(w) + '<div class="wk-grid"><div class="wk-primary">' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + coaching + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</div>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }

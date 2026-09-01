@@ -1,3 +1,9 @@
+window.PSY355_IMAGE_PROVENANCE = {
+  method: 'Instructor-created AI-generated conceptual imagery',
+  purpose: 'Decorative course imagery, not research evidence',
+  rightsPosture: 'Instructor-created asset with no third-party media source recorded',
+  depictsRealPeopleOrEvents: false
+};
 window.PSY355_IMAGES = {
   hero: {
     src: 'images/hero.jpg',
