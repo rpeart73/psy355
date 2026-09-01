@@ -124,7 +124,7 @@
   function cleanAssessmentId(id) { var a = assessmentById(id); return a ? a.id : null; }
   function assessmentHref(id) { return '?screen=assignment-details&asg=' + encodeURIComponent(id); }
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, rl: state.rl, studentName: state.studentName, visits: state.visits })); } catch (e) {} }
+  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, noteVaultUpdated: state.noteVaultUpdated, rl: state.rl, studentName: state.studentName, visits: state.visits })); } catch (e) {} }
   function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function clearView() { try { sessionStorage.removeItem(VKEY); sessionStorage.removeItem(HKEY); } catch (e) {} }
   function shouldResumeView(v) {
@@ -183,8 +183,10 @@
       if ((p.has('part') && !part) || (p.has('experience') && p.get('experience') !== '1')) return invalidRoute;
       if ((p.has('part') || p.has('experience')) && !hasWeek) return invalidRoute;
       if (p.has('part') && p.has('experience')) return invalidRoute;
-      if (hasWeek && p.has('screen')) return invalidRoute;
+      if (w && p.has('screen') && rawScreen !== 'activity' && rawScreen !== 'station') return invalidRoute;
+      if (w && rawScreen === 'activity' && (p.has('part') || p.has('experience'))) return invalidRoute;
       if (p.has('asg') && rawScreen !== 'assignment-details') return invalidRoute;
+      if (w && rawScreen === 'activity') return { screen: 'activity', week: w, part: null, experience: false, assignmentId: null, activityReturn: w };
       if (w) return { screen: 'station', week: w, part: part, experience: p.get('experience') === '1', assignmentId: null };
       var s = rawScreen;
       if (s && cleanScreen(s) === s) return (s === 'activity' || s === 'station')
@@ -223,8 +225,9 @@
     wkOpen: {},
     studentName: typeof saved0.studentName === 'string' ? saved0.studentName.slice(0, 40) : '',
     visits: cleanVisits(saved0.visits),
-    act: resumeView0 ? cleanPlainObject(view0.act) : {},
+    act: Object.assign({}, cleanPlainObject(saved0.actResult), resumeView0 ? cleanPlainObject(view0.act) : {}),
     actResult: (saved0.actResult && typeof saved0.actResult === 'object') ? saved0.actResult : {},
+    activityReturn: (route0 && route0.activityReturn) ? cleanWeek(route0.activityReturn) : null,
     layout: 'byweek',
     search: '',
     activeTypes: [],
@@ -256,6 +259,7 @@
     careerField: resumeView0 ? cleanText(view0.careerField, '', 200) : '',
     careerReflect: cleanTextMap(saved0.careerReflect),
     mediaNotes: cleanTextMap(saved0.mediaNotes),
+    noteVaultUpdated: Number(saved0.noteVaultUpdated) || 0,
     libScroll: 0,
     toast: null,
     cardWeek: resumeView0 ? cleanWeek(view0.cardWeek) : null,
@@ -266,7 +270,7 @@
     assignmentId: route0 ? route0.assignmentId : (resumeView0 ? cleanAssessmentId(view0.assignmentId) : null),
     tickerPaused: false,
   };
-  if (resumeView0) {
+  if (resumeView0 && !route0) {
     state.activityReturn = cleanWeek(view0.activityReturn);
     state.detailId = cleanTextOrNull(view0.detailId);
     state.activeTypes = cleanTextList(view0.activeTypes, 20, 100);
@@ -327,6 +331,70 @@
     }
   }, true);
   var refocusSearch = false, focusTarget = null, toastTimer = null;
+  /* Student-authored notes use three browser-local layers. The site preserves exact text;
+     it may add headings for organization but never rewrites a student's words. */
+  var STUDENT_NOTE_SESSION_KEY = SKEY + '.allStudentNotesMirror.v1';
+  var STUDENT_NOTE_IMPORT_MARKER = SKEY + '.restoredBackupNext.v1';
+  var STUDENT_NOTE_DB = 'seneca-student-notes-v1';
+  var STUDENT_NOTE_STORE = 'student-note-vault';
+  var STUDENT_NOTE_FIELDS = ['cmpNotes', 'rcNotes', 'sgNotes', 'ecoChallenge', 'ecoNotes', 'wkReflect', 'actResult', 'kcShort', 'careerReflect', 'mediaNotes'];
+  var studentNoteBackupTimer = null;
+  function studentNoteClone(value) { try { return JSON.parse(JSON.stringify(value)); } catch (e) { return null; } }
+  function studentNoteSnapshot() {
+    var values = {};
+    STUDENT_NOTE_FIELDS.forEach(function (field) { values[field] = studentNoteClone(state[field]); });
+    return { version: 1, savedAt: Number(state.noteVaultUpdated) || 0, values: values };
+  }
+  function studentNoteHasContent() {
+    return STUDENT_NOTE_FIELDS.some(function (field) { var value = state[field]; return typeof value === 'string' ? value !== '' : !!(value && typeof value === 'object' && Object.keys(value).length); });
+  }
+  function studentNoteApplySnapshot(snapshot) {
+    if (!snapshot || snapshot.version !== 1 || !snapshot.values || typeof snapshot.values !== 'object') return false;
+    var savedAt = Number(snapshot.savedAt) || 0;
+    if (!savedAt || savedAt <= (Number(state.noteVaultUpdated) || 0)) return false;
+    STUDENT_NOTE_FIELDS.forEach(function (field) {
+      var value = snapshot.values[field];
+      if (typeof value === 'string' || (value && typeof value === 'object' && !Array.isArray(value))) state[field] = studentNoteClone(value);
+    });
+    state.noteVaultUpdated = savedAt;
+    return true;
+  }
+  function studentNoteDbOpen() {
+    return new Promise(function (resolve, reject) {
+      if (!window.indexedDB) { reject(new Error('IndexedDB unavailable')); return; }
+      var request = indexedDB.open(STUDENT_NOTE_DB, 2);
+      request.onupgradeneeded = function () { var db = request.result; if (!db.objectStoreNames.contains('walkthrough-notes')) db.createObjectStore('walkthrough-notes', { keyPath: 'id' }); if (!db.objectStoreNames.contains(STUDENT_NOTE_STORE)) db.createObjectStore(STUDENT_NOTE_STORE, { keyPath: 'id' }); };
+      request.onsuccess = function () { resolve(request.result); };
+      request.onerror = function () { reject(request.error || new Error('IndexedDB unavailable')); };
+      request.onblocked = function () { reject(new Error('Close another course tab so note recovery storage can update')); };
+    });
+  }
+  function studentNoteIdbWrite(snapshot) {
+    return studentNoteDbOpen().then(function (db) { return new Promise(function (resolve, reject) { var tx = db.transaction(STUDENT_NOTE_STORE, 'readwrite'); tx.objectStore(STUDENT_NOTE_STORE).put({ id: SKEY, snapshot: snapshot }); tx.oncomplete = function () { db.close(); resolve(true); }; tx.onerror = function () { db.close(); reject(tx.error || new Error('Note backup failed')); }; tx.onabort = tx.onerror; }); });
+  }
+  function studentNoteIdbRead() {
+    return studentNoteDbOpen().then(function (db) { return new Promise(function (resolve) { var tx = db.transaction(STUDENT_NOTE_STORE, 'readonly'), request = tx.objectStore(STUDENT_NOTE_STORE).get(SKEY); request.onsuccess = function () { var result = request.result; db.close(); resolve(result && result.snapshot ? result.snapshot : null); }; request.onerror = function () { db.close(); resolve(null); }; }); }).catch(function () { return null; });
+  }
+  function studentNoteIdbClear() {
+    return studentNoteDbOpen().then(function (db) { return new Promise(function (resolve, reject) { var tx = db.transaction(STUDENT_NOTE_STORE, 'readwrite'); tx.objectStore(STUDENT_NOTE_STORE).delete(SKEY); tx.oncomplete = function () { db.close(); resolve(true); }; tx.onerror = function () { db.close(); reject(tx.error || new Error('Could not clear note recovery copy')); }; tx.onabort = tx.onerror; }); }).catch(function () { return false; });
+  }
+  function studentNotesChanged() {
+    state.noteVaultUpdated = Math.max(Date.now(), (Number(state.noteVaultUpdated) || 0) + 1);
+    persist();
+    var snapshot = studentNoteSnapshot();
+    try { sessionStorage.setItem(STUDENT_NOTE_SESSION_KEY, JSON.stringify(snapshot)); } catch (e) {}
+    if (studentNoteBackupTimer) clearTimeout(studentNoteBackupTimer);
+    studentNoteBackupTimer = setTimeout(function () { studentNoteIdbWrite(studentNoteSnapshot()).catch(function () {}); }, 180);
+  }
+  function studentNoteRecoverSession() {
+    var snapshot = null;
+    try { snapshot = JSON.parse(sessionStorage.getItem(STUDENT_NOTE_SESSION_KEY) || 'null'); } catch (e) {}
+    if (!studentNoteApplySnapshot(snapshot)) return false;
+    persist(); return true;
+  }
+  function studentNoteRecover() {
+    return studentNoteIdbRead().then(function (snapshot) { if (!studentNoteApplySnapshot(snapshot)) return false; persist(); try { sessionStorage.setItem(STUDENT_NOTE_SESSION_KEY, JSON.stringify(studentNoteSnapshot())); } catch (e) {} return true; });
+  }
 
   /* ---------- helpers ---------- */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -1328,7 +1396,8 @@
           synthBlock = '<button onclick="SOC.synthesize()" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:9px;padding:12px 22px;font-size:1rem;font-weight:600;color:#fff;background:#15171C;margin-bottom:18px">' + ic('sparkle', 16) + 'Synthesize their relationship</button>';
         }
       }
-      left = hint + synthBlock + '<div class="hshelf" style="display:flex;gap:16px;align-items:stretch;overflow-x:auto;padding-bottom:10px">' + cols + '</div>';
+      left = hint + synthBlock + '<div class="hshelf" style="display:flex;gap:16px;align-items:stretch;overflow-x:auto;padding-bottom:10px">' + cols + '</div>'
+        + (recs.length >= 2 ? '<div style="margin-top:24px">' + comparativeStudio(recs) + '</div>' : '');
     } else {
       left = '<div style="background:#fff;border:1px dashed #DEE3EA;border-radius:14px;padding:48px 26px;text-align:center;color:#474C57"><div style="display:inline-flex;color:#C9D1DC;margin-bottom:12px">' + ic('columns', 40, 1.4) + '</div><div style="font-size:1.0625rem;font-weight:600;color:#15171C;margin-bottom:6px">Nothing selected yet.</div><p style="font-size:.9375rem;margin:0">Choose two or three readings from the list on the right.</p></div>';
     }
@@ -1584,7 +1653,7 @@
   function kdMonthDay(iso) { var p = iso.split('-'); return KD_MON[+p[1] - 1] + ' ' + (+p[2]); }
   function deadlineRule() { return '<aside class="deadline-rule" role="note" style="border:1px solid #E7C3BF;border-left:5px solid #DA291C;border-radius:0 11px 11px 0;background:#fff;padding:12px 14px;margin:0 0 16px;color:#15171C"><strong style="color:#961A13">Submission time:</strong> All assignments are due by 11:59 p.m. Eastern Time, EDT or EST as applicable, on the date shown. Blackboard remains the official submission record.</aside>'; }
   function mobileCalendarSubscription() { var code = courseCode(), base = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, ''), feed = (base + 'calendar/' + code + '_key_dates.ics').replace(/^https?:/i, 'webcal:'); return '<section class="mobile-cal-sub" aria-labelledby="mobile-cal-title"><div class="mono">MOBILE CALENDAR</div><h2 id="mobile-cal-title">Keep these dates on your phone</h2><p>This is a live calendar subscription, not a downloaded copy. Your calendar app can refresh it when the course schedule changes. Blackboard remains the official source.</p><a href="' + esc(feed) + '">Subscribe on this phone <span aria-hidden="true">&#8594;</span></a></section>'; }
-  function mobileAccessPanel() { var url = (location.origin + location.pathname).replace(/index\.html$/i, ''); return '<section class="mobile-access-panel" aria-labelledby="mobile-access-title"><div class="mono">PHONE OR TABLET</div><h2 id="mobile-access-title">Use the same site on any device</h2><p>There is no separate app. This responsive site is the mobile version too. Share or copy the link, then open it on your phone or tablet.</p><div><a href="' + esc(url) + '">Open the site link</a><button type="button" onclick="SOC.shareMobileSite()">Share or copy the link</button></div><small>Notes do not sync automatically. Each browser keeps its own temporary copy when storage is available.</small></section>'; }
+  function mobileAccessPanel() { var url = location.origin + canonicalRouteUrl(_walk && _walk.week); return '<section class="mobile-access-panel" aria-labelledby="mobile-access-title"><div class="mono">PHONE OR TABLET</div><h2 id="mobile-access-title">Use the same site on any device</h2><p>There is no separate app. This responsive site is the mobile version too. Share or copy this page link, then open it on your phone or tablet.</p><div><a href="' + esc(url) + '">Open this page link</a><button type="button" onclick="SOC.shareMobileSite()">Share or copy this page</button></div><small>Notes do not sync automatically. Each browser keeps its own temporary copy when storage is available.</small></section>'; }
   function upcomingParts(e) {
     var title = String(e.title || ''), note = String(e.note || ''), label = 'Course date', name = title, m;
     if (e.kind === 'open') { label = /visible/i.test(title) ? 'Assessment path available' : 'Assessment begins'; m = title.match(/^(.*?)\s+(?:opens|begins)(?:\s+(.*))?$/i); if (m) { name = m[1]; if (!note && m[2]) note = m[2]; } }
@@ -2374,6 +2443,161 @@
       14: {"deck": "", "time": "Follow the week's readings, live or independent learning, reflection, and practice in the order that supports you", "overview": "This final week is about transfer: what you take with you when the course ends. You will not read anything new. Instead you revisit three ideas you already met and ask what each one is good for outside this class. A learning process you can run on your own (Panadero, 2017), a view of resilience that depends on the settings and people around you (Ungar, 2011), and a practical-philosophy stance on living well day to day (Owen, 2023). The work is to name the few things that actually travel into your job, your next program, and the rest of your life, and to say how each one shows up there. Closure here means consolidating, not summarizing for a test. The point is to leave with a short, honest list of what you will keep using.", "purpose": "Week 14 closes the course by asking what transfers. It pulls together a transferable learning process, a context-aware view of resilience, and a practical-philosophy stance on well-being, then has you state how each one applies beyond the classroom. The aim is consolidation: a small set of takeaways you can name, defend, and actually carry into work and life, rather than a recap you forget after the term.", "outcomes": ["Name a learning process you can run on your own and explain where it applies outside this course (Panadero, 2017).", "Explain why what helps you cope depends on the settings and people around you, not only on you (Ungar, 2011).", "Describe a practical-philosophy stance on well-being that you can use in everyday life (Owen, 2023).", "Assemble a short list of course takeaways that travel into work and life, with a clear use for each (Panadero, 2017)."], "guiding": ["Which one or two things from this course would you still use a year from now (Panadero, 2017)?", "Where does the same setting that supports you in one place stop supporting you in another (Ungar, 2011)?", "What does living well look like for you on an ordinary day, not just a hard one (Owen, 2023)?", "If you had to hand someone three takeaways from this course, which would you keep and why (Panadero, 2017)?"], "checks": [{"t": "Transfer means using something you learned here in a new setting, which is the test of whether it was worth keeping", "look": "the Key Concepts"}, {"t": "A self-regulated learning process is portable: you can run plan, monitor, and adjust on any task, not just this course (Panadero, 2017)", "look": "the Panadero (2017) reading revisited and the Key Concepts"}, {"t": "Resilience is shaped by the resources and relationships in a setting, so what supports you can change when the setting changes (Ungar, 2011)", "look": "the Ungar (2011) reading revisited"}, {"t": "A practical-philosophy stance treats well-being as something you practise in ordinary life, not a state you wait to arrive (Owen, 2023)", "look": "the Owen (2023) reading revisited"}, {"t": "Closure is consolidation, not a recap for a test: the goal is a short, honest list of what you will keep using", "look": "the reflection prompt"}], "concepts": [{"h": "What travels: transfer as the real test", "body": "Transfer is using something learned in one place in a new place. The course uses transfer as a question: can you identify where and how an idea might be used in a new setting? Panadero (2017) reviews models of self-regulated learning, including planning, monitoring, and adjustment, but does not test whether this course's takeaways transfer into each student's work or life. The closing activity therefore asks for a proposed use and a way to check it, not a promise that transfer occurred.", "cite": "Panadero, 2017"}, {"h": "A portable learning process", "body": "Self-regulated learning is the process of planning a task, monitoring how it is going, and adjusting along the way. Panadero (2017) reviews several models that share this loop. The value at the end of the course is that the loop is portable: you can run it on a work project, a new program, or a personal goal, not only on graded coursework. That makes the process itself, more than any single topic, one of the most transferable things you take with you.", "cite": "Panadero, 2017"}, {"h": "Resilience travels with its context", "body": "Ungar (2011) describes resilience as a social ecology: what helps you cope depends on the resources, relationships, and meanings available in a setting, not only on individual strength. The practical lesson for transfer is that a strategy that worked in one environment may need different supports in another. When you change jobs, programs, or cities, part of staying resilient is reading the new setting and finding the supports it offers, rather than assuming the old ones come with you.", "cite": "Ungar, 2011"}, {"h": "Living well as a daily practice", "body": "Owen (2023) connects contemporary resilience psychology to ancient practical philosophy, where well-being is something you practise rather than a state you wait to reach. The stance that travels is treating living well as ordinary, repeatable action: how you respond to a setback, what you give attention to, how you steady yourself on a normal day. This is non-clinical and everyday. It is a way of carrying the course into life long after the readings and deadlines are gone.", "cite": "Owen, 2023"}], "terms": [{"term": "Transfer", "def": "using knowledge or a skill learned in one situation in a new and different situation; using learning in a different setting; in this course, a proposed use that still needs to be tried and checked beyond the class.", "cite": "Panadero, 2017"}, {"term": "Self-regulated learning", "def": "a process of directing your own learning by planning a task, monitoring how it is going, and adjusting; portable across courses, work, and personal goals.", "cite": "Panadero, 2017"}, {"term": "Social ecology of resilience", "def": "the view that coping depends on the resources, relationships, and meanings available in a setting, so what supports you can change when the setting changes.", "cite": "Ungar, 2011"}, {"term": "Practical philosophy of well-being", "def": "treating living well as an everyday, repeatable practice rather than a state you wait to arrive at; a non-clinical stance you can use day to day.", "cite": "Owen, 2023"}], "readings": [{"apa": "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research. Frontiers in Psychology, 8, 422. https://doi.org/10.3389/fpsyg.2017.00422", "scope": "Revisit from an earlier week", "id": "panadero2017"}, {"apa": "Ungar, M. (2011). The social ecology of resilience: Addressing contextual and cultural ambiguity of a nascent construct. American Journal of Orthopsychiatry, 81(1), 1-17.", "scope": "Revisit from an earlier week", "id": "ungar2011"}, {"apa": "Owen, J. (2023). Psychological resilience: Connecting contemporary psychology to ancient practical philosophy.", "scope": "Revisit from an earlier week", "id": "owen2023"}], "youcan": ["You can now name a learning process you can run on your own and say where it applies outside this course", "You can now explain why what helps you cope depends on the settings and people around you, not only on you", "You can now assemble a short list of course takeaways that travel into work and life, with a clear use for each"], "reflectPrompt": "In a sentence or two: of everything in this course, what are the one or two things you will still be using a year from now, and where in your work or life will you use them?", "activity": {"screen": "activity", "archetype": "assemble", "title": "What travels with you", "what": "You assemble the transferable takeaways of the whole course into one picture, naming for each how it transfers to work or life beyond this class, then end on a short list you would actually keep using.", "why": "so closure becomes a decision about what you carry forward, not a recap you forget after the term: you leave with a small, honest set of takeaways and a clear use for each.", "data": {"goal": "Assemble the things from this course that actually travel with you into one working picture. For each takeaway, name how it transfers into your work, your next program, or your everyday life, so that by the end you have a short, honest list of what you will keep using rather than a recap you forget after the term.", "components": [{"label": "A learning process you can run yourself", "role": "transfers as a portable plan, monitor, and adjust loop you can use on a work project, a new program, or a personal goal, not only on graded coursework.", "cite": "Panadero, 2017"}, {"label": "A context-aware view of resilience", "role": "transfers as a habit of reading each new setting for the resources and relationships it offers, so that when the setting changes you look for new supports instead of assuming the old ones come with you.", "cite": "Ungar, 2011"}, {"label": "A practical-philosophy stance on well-being", "role": "transfers as an everyday, non-clinical practice of living well: how you respond to a setback and steady yourself on an ordinary day, long after the course ends.", "cite": "Owen, 2023"}, {"label": "Asking what actually transfers", "role": "transfers as a filter you can apply to any course or training: identify what you might try in a new place, then check whether it actually helps there.", "cite": "Panadero, 2017"}, {"label": "Naming the supports a setting gives you", "role": "transfers as a practical move when you start a job, program, or city: locate the people, resources, and meanings that help you cope in that specific place.", "cite": "Ungar, 2011"}, {"label": "A short list you will keep using", "role": "transfers as the consolidation itself: a small, defensible set of takeaways with a clear use for each, which is what closure is for.", "cite": "Owen, 2023"}]}}},
     }
   };
+  /* Activities below replace reveal-and-check interactions with work the learner
+     actually performs. Responses stay in this browser and are never submitted. */
+  var PSY_ACTIVITY_REPAIRS = {
+    2: {
+      screen: 'activity', archetype: 'sequence', title: 'Run a real learning cycle',
+      what: 'Choose the six self-regulated learning moves in a defensible order, then apply the completed cycle to one real assignment.',
+      why: 'so planning, monitoring, adjustment, and reflection become actions you can use, not labels you only recognize.',
+      data: {
+        case: 'Use a current or recent assignment. Do not enter private information about another person. If you prefer, use this fictional task: a 1,000-word analysis due in seven days.',
+        prompt: 'Build the cycle in order. An out-of-order choice gives feedback but is not added.',
+        steps: [
+          { label: 'Set the goal and success criteria', role: 'Define the task and what a credible result would contain before beginning.', cite: 'Panadero, 2017' },
+          { label: 'Choose a task-fitting strategy', role: 'Match the approach to the task instead of repeating one study habit everywhere.', cite: 'Panadero, 2017' },
+          { label: 'Monitor while the work is open', role: 'Check progress early enough to notice a gap while it can still be changed.', cite: 'Panadero, 2017' },
+          { label: 'Adjust the strategy', role: 'Use what monitoring revealed to change the method, support, or schedule.', cite: 'Panadero, 2017' },
+          { label: 'Evaluate the result', role: 'Compare the result with the success criteria without turning it into a verdict about ability.', cite: 'Panadero, 2017' },
+          { label: 'Feed the evidence into the next plan', role: 'Carry one specific lesson into the next forethought phase.', cite: 'Panadero, 2017' }
+        ],
+        fields: [
+          { id: 'task', label: 'The task I am planning', prompt: 'Name the task and what a credible result needs to contain.' },
+          { id: 'check', label: 'My monitoring check', prompt: 'What will I inspect before the task is finished, and when?' },
+          { id: 'next', label: 'Evidence for my next plan', prompt: 'What result would tell me to keep or change this strategy next time?' }
+        ]
+      }
+    },
+    4: {
+      screen: 'activity', archetype: 'classify', title: 'Build confidence from evidence',
+      what: 'Classify four realistic study moments by Bandura\'s sources of self-efficacy, then design one small mastery experience.',
+      why: 'so confidence rests on task-specific evidence and a reachable next action rather than encouragement alone.',
+      data: {
+        prompt: 'For each moment, identify the source of self-efficacy doing most of the work.',
+        options: ['Mastery experience', 'Vicarious experience', 'Social persuasion', 'Physiological or emotional state'],
+        examples: [
+          { text: 'Leila completes one practice problem without the answer key and can explain every step.', answer: 0, feedback: 'She has direct evidence from performing the task. Bandura treats mastery experience as the strongest source.', cite: 'Bandura, 1997' },
+          { text: 'Marcus watches a classmate with similar experience work through the first lab procedure successfully.', answer: 1, feedback: 'A comparable peer makes the task look reachable before Marcus performs it himself.', cite: 'Bandura, 1997' },
+          { text: 'An instructor says, "Your method is sound; try the next case with the same checklist."', answer: 2, feedback: 'The message supports effort, but it becomes sturdier when performance evidence follows.', cite: 'Bandura, 1997' },
+          { text: 'Nia notices a racing heart before presenting and interprets it as readiness rather than proof she cannot present.', answer: 3, feedback: 'The bodily signal is being interpreted in a way that changes task-specific confidence.', cite: 'Bandura, 1997' }
+        ],
+        fields: [
+          { id: 'action', label: 'My smallest mastery action', prompt: 'Choose one task and name the smallest action that would produce real evidence today.' },
+          { id: 'evidence', label: 'What would count as evidence', prompt: 'What observable result would show that you completed the action?' },
+          { id: 'limit', label: 'What confidence cannot solve by itself', prompt: 'Name one support or condition the task still requires.' }
+        ]
+      }
+    },
+    6: {
+      screen: 'activity', archetype: 'map', title: 'Map resilience around a real schedule',
+      what: 'Read a fictional student case across personal, relational, institutional, cultural, and material layers, then locate one usable support and one barrier.',
+      why: 'so resilience is analysed as access to context-fitting resources, not as individual toughness.',
+      data: {
+        case: 'Jordan works 24 hours a week, commutes 75 minutes each way, shares one laptop at home, and is falling behind in a course with a daytime help session. Jordan has a supportive cousin and a supervisor willing to adjust one shift, but has not contacted the instructor.',
+        layers: [
+          { id: 'self', label: 'Personal strategy', prompt: 'What can Jordan do directly without pretending the surrounding barriers disappear?', cite: 'Ungar, 2011' },
+          { id: 'relationships', label: 'People and relationships', prompt: 'Which relationship is already a resource, and what specific help could Jordan request?', cite: 'Lopez et al., 2021' },
+          { id: 'institution', label: 'Course or institution', prompt: 'What access problem should the course or institution help address?', cite: 'Ungar, 2011' },
+          { id: 'culture', label: 'Culture and lived context', prompt: 'What would you need to ask before deciding that a support fits Jordan\'s life?', cite: 'Ungar, 2013' },
+          { id: 'material', label: 'Material conditions', prompt: 'Which concrete condition is restricting the available choices?', cite: 'Ungar, 2011' }
+        ],
+        fields: [
+          { id: 'support', label: 'A context-fitting next support', prompt: 'Name one support Jordan could realistically reach and why it fits this case.' },
+          { id: 'boundary', label: 'What remains outside Jordan\'s control', prompt: 'Name the barrier that should not be reframed as a motivation problem.' }
+        ]
+      }
+    },
+    10: {
+      screen: 'activity', archetype: 'builder', title: 'Turn reflection into an evidence check',
+      what: 'Write a five-part reflection on one ordinary academic event: event, interpretation, evidence, next action, and the result you will check.',
+      why: 'so reflection produces a testable learning decision instead of a prepared answer or a general promise to improve.',
+      data: {
+        layout: 'timeline', case: 'Use a low-stakes academic event. This is a course learning tool, not a mental-health assessment or intervention.',
+        fields: [
+          { id: 'event', label: '1. What happened', prompt: 'Describe the event without judging yourself.' },
+          { id: 'interpretation', label: '2. How I first interpreted it', prompt: 'What meaning did you give the event?' },
+          { id: 'evidence', label: '3. What the evidence supports', prompt: 'What facts support, complicate, or limit that interpretation?' },
+          { id: 'action', label: '4. My next learning action', prompt: 'Name one action that fits the evidence and the context.' },
+          { id: 'result', label: '5. What I will check', prompt: 'What result would show whether the action helped?' }
+        ]
+      }
+    },
+    11: {
+      screen: 'activity', archetype: 'builder', title: 'Draft a request someone can act on',
+      what: 'Build a respectful academic support request by naming the reader, the issue, what you tried, and the precise help you need.',
+      why: 'so help seeking becomes a deliberate learning strategy and the reader receives enough information to respond.',
+      data: {
+        layout: 'message', case: 'Fictional option: Priya understands the assignment topic but cannot tell whether the evidence table belongs in the appendix. She reread the brief and rubric before asking. Nothing is sent from this page.',
+        fields: [
+          { id: 'recipient', label: 'To', prompt: 'Who is the right person for this academic question?' },
+          { id: 'issue', label: 'The issue', prompt: 'State the stuck point in one or two precise sentences.' },
+          { id: 'tried', label: 'What I already tried', prompt: 'Name the brief, example, strategy, or support you checked first.' },
+          { id: 'request', label: 'The help I need', prompt: 'Ask one question the reader can answer or act on.' },
+          { id: 'timing', label: 'Useful timing', prompt: 'Add the real deadline or decision point without demanding an immediate reply.' }
+        ],
+        callout: 'Review the message for purpose, audience, and impact. Clarity can make a request more actionable; it cannot guarantee a response. (Wrench et al., 2020)'
+      }
+    },
+    13: {
+      screen: 'activity', archetype: 'builder', title: 'Build your evidence-backed resilience plan',
+      what: 'Write the six parts of a resilience plan using your course evidence, supports, and actual constraints.',
+      why: 'so the plan is specific enough to use and honest about context, rather than a checklist that appears complete when clicked.',
+      data: {
+        layout: 'plan', case: 'Use an academic challenge you are comfortable recording on this device. You may use a fictional course challenge instead. This is not a clinical plan.',
+        fields: [
+          { id: 'challenge', label: 'The academic challenge', prompt: 'Describe the task or setback plainly.' },
+          { id: 'pattern', label: 'The pattern I notice', prompt: 'What tends to happen before, during, or after this challenge?' },
+          { id: 'strategy', label: 'A strategy I can test', prompt: 'Name one action and the course idea supporting it.' },
+          { id: 'people', label: 'People I can reach', prompt: 'Who can help, and what will you ask?' },
+          { id: 'conditions', label: 'Conditions that must change', prompt: 'Name a material, scheduling, access, or institutional barrier.' },
+          { id: 'evidence', label: 'Evidence I will check', prompt: 'What observable result will tell you whether the plan needs adjustment?' }
+        ]
+      }
+    },
+    14: {
+      screen: 'activity', archetype: 'builder', title: 'Decide what will travel with you',
+      what: 'Choose a small set of course takeaways, place each in a new setting, and state how you will test whether it transfers.',
+      why: 'so course closure produces a defensible next use, not a generic recap or a promise that transfer has already happened.',
+      data: {
+        layout: 'transfer', case: 'Choose two or three ideas you could realistically use beyond PSY355. A proposed use is not evidence of transfer until you try it and inspect the result.',
+        options: ['Plan, monitor, and adjust', 'Task-specific self-efficacy', 'Context-aware resilience', 'Self-compassion after a setback', 'Help seeking as a learning strategy'], pick: 3,
+        fields: [
+          { id: 'setting', label: 'The new setting', prompt: 'Where outside this course could the selected ideas be useful?' },
+          { id: 'firstuse', label: 'The first use', prompt: 'What exactly will you do first?' },
+          { id: 'evidence', label: 'The transfer check', prompt: 'What result would show that the idea helped in this new setting?' },
+          { id: 'limit', label: 'The contextual limit', prompt: 'What difference in the new setting may require you to adapt or stop the approach?' }
+        ]
+      }
+    }
+  };
+  Object.keys(PSY_ACTIVITY_REPAIRS).forEach(function (w) { if (WEEKPAGE.PSY355[w]) WEEKPAGE.PSY355[w].activity = PSY_ACTIVITY_REPAIRS[w]; });
+  var PSY_READING_CITATIONS = {
+    'yeager-dweck2020': 'Yeager, D. S., & Dweck, C. S. (2020). What can be learned from growth mindset controversies? American Psychologist, 75(9), 1269-1284. https://doi.org/10.1037/amp0000794',
+    ungar2011: 'Ungar, M. (2011). The social ecology of resilience: Addressing contextual and cultural ambiguity of a nascent construct. American Journal of Orthopsychiatry, 81(1), 1-17. https://doi.org/10.1111/j.1939-0025.2010.01067.x',
+    ungar2013: 'Ungar, M. (2013). Resilience, trauma, context, and culture. Trauma, Violence, & Abuse, 14(3), 255-266. https://doi.org/10.1177/1524838013487805',
+    panadero2017: 'Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research. Frontiers in Psychology, 8, Article 422. https://doi.org/10.3389/fpsyg.2017.00422',
+    lopez2021: 'Lopez, M., Ruiz, M. O., Rovnaghi, C. R., Tam, G. K. Y., Hiscox, J., Gotlib, I. H., Barr, D. A., Carrion, V. G., & Anand, K. J. S. (2021). The social ecology of childhood and early life adversity. Pediatric Research, 89(2), 353-367. https://doi.org/10.1038/s41390-020-01264-x',
+    richardson2011: 'Richardson, G. E. (2011). Applications of the metatheory of resilience and resiliency in rehabilitation and medicine. Développement humain, handicap et changement social / Human Development, Disability, and Social Change, 19(1), 35-42. https://doi.org/10.7202/1087261ar',
+    neff2003: 'Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself. Self and Identity, 2(2), 85-101. https://doi.org/10.1080/15298860309032',
+    stephenson2018: 'Stephenson, E., Watson, P. J., Chen, Z. J., & Morris, R. J. (2018). Self-compassion, self-esteem, and irrational beliefs. Current Psychology, 37(4), 809-815. https://doi.org/10.1007/s12144-017-9563-2',
+    nas2025: 'Nas, E., Taytaş, M., & Vangölü, M. S. (2025). The role of self-compassion and psychological flexibility in the relationship between perseverance and life satisfaction among academics. BMC Psychology, 14(1), Article 9. https://doi.org/10.1186/s40359-025-03757-y',
+    jadmiko2024: 'Jadmiko, A. W., Mustika, R., & Bashiruddin, J. (2024). Reflective learning with constructivism theory approaches through reflective writing journal to enhance nursing students\' resilience. Education in Medicine Journal, 16(4), 127-134. https://doi.org/10.21315/eimj2024.16.4.9',
+    kamarulzaman2026: 'Kamarulzaman, W., & Ibrahim, H. (2026). Uncovering critical thinking dispositions through reflective journaling: A qualitative study of Malaysian undergraduates. Journal of Nusantara Studies, 11(1), 291-310. https://doi.org/10.24200/jonus.vol11iss1pp291-310',
+    owen2023: 'Owen, J. (2023). Psychological resilience: Connecting contemporary psychology to ancient practical philosophy. Theory & Psychology, 33(3), 366-385. https://doi.org/10.1177/09593543231153820'
+  };
+  Object.keys(WEEKPAGE.PSY355).forEach(function (w) {
+    var week = WEEKPAGE.PSY355[w];
+    (week.readings || []).forEach(function (reading) { if (PSY_READING_CITATIONS[reading.id]) reading.apa = PSY_READING_CITATIONS[reading.id]; });
+    function boundLanguage(value) {
+      if (typeof value === 'string') return value
+        .replace(/naming a barrier as contextual protects students from being blamed for obstacles they did not create/g, 'naming a barrier as contextual avoids placing blame on students for obstacles they did not create')
+        .replace(/This prevents a whole-person frame from becoming private willpower/g, 'This keeps a whole-person frame from collapsing into private willpower');
+      if (Array.isArray(value)) return value.map(boundLanguage);
+      if (value && typeof value === 'object') Object.keys(value).forEach(function (key) { value[key] = boundLanguage(value[key]); });
+      return value;
+    }
+    boundLanguage(week);
+  });
   function weekData(w) { var c = (D.course && D.course.code) || ''; return (WEEKPAGE[c] && WEEKPAGE[c][w]) || null; }
   function wkOptBtns(key) {
     var sel = state.wkCheck[key], opts = ['New to me', 'Getting it', 'I can'];
@@ -3845,6 +4069,69 @@
   function actCite(c) { return c ? '<div style="font-size:.74rem;color:var(--ink-faint);margin-top:6px">(' + esc(c) + ')</div>' : ''; }
   function actBadge(harm) { return harm ? '<span style="display:inline-block;background:#FBE9EA;color:#B11722;font-size:.7rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px">a weaker move</span>' : '<span style="display:inline-block;background:#E7F3EC;color:#1E7B34;font-size:.7rem;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:8px">a stronger move</span>'; }
   function actCaseBox(label, txt) { return txt ? '<div style="background:#15171C;color:#fff;border-radius:12px;padding:14px 18px;margin:0 0 16px"><div style="font-size:.7rem;font-weight:700;color:#6B7280;margin-bottom:4px">' + label + '</div><div style="font-size:.98rem;line-height:1.5">' + esc(txt) + '</div></div>' : ''; }
+  function actStored(key) {
+    if (state.act && Object.prototype.hasOwnProperty.call(state.act, key)) return state.act[key];
+    if (state.actResult && Object.prototype.hasOwnProperty.call(state.actResult, key)) return state.actResult[key];
+    return null;
+  }
+  function actField(key, field, group) {
+    var value = actStored(key);
+    return '<label class="act-field"><span>' + esc(field.label) + '</span><small>' + esc(field.prompt) + '</small><textarea rows="4" maxlength="2000" data-activity-field="' + esc(key) + '" oninput="SOC.actText(\'' + key + '\',this.value)" placeholder="Write your own response here.">' + esc(typeof value === 'string' ? value : '') + '</textarea><em>Your wording is kept exactly on this device when browser storage is available.</em></label>';
+  }
+  function actFields(w, fields, group) {
+    return '<div class="act-fields act-fields-' + esc(group || 'form') + '">' + (fields || []).map(function (f) { return actField('a|' + w + '|' + (group || 'f') + '|' + f.id, f, group); }).join('') + '</div>';
+  }
+  function actDecisionRows(w, data, group) {
+    var rows = data.records || data.examples || [], options = data.options || [];
+    return '<div class="act-decision-grid">' + rows.map(function (r, i) {
+      var key = 'a|' + w + '|' + group + '|' + i, sel = actStored(key);
+      var buttons = options.map(function (option, oi) {
+        var picked = sel === oi, correct = oi === r.answer, border = picked ? (correct ? '#1E7B34' : '#B11722') : 'var(--border)', bg = picked ? (correct ? '#E7F3EC' : '#FBE9EA') : '#fff';
+        return '<button type="button" data-activity-choice="' + key + '|' + oi + '" aria-pressed="' + picked + '" onclick="SOC.actPick(\'' + key + '\',' + oi + ')" style="border-color:' + border + ';background:' + bg + '">' + esc(option) + '</button>';
+      }).join('');
+      var feedback = sel == null ? '' : '<div class="act-feedback ' + (sel === r.answer ? 'is-correct' : 'is-retry') + '"><b>' + (sel === r.answer ? 'Supported.' : 'Look again.') + '</b> ' + esc(r.feedback || '') + actCite(r.cite) + '</div>';
+      return '<article class="act-decision"><div class="act-decision-no">' + (r.source ? esc(r.source) : 'CASE ' + (i + 1)) + '</div><h3>' + esc(r.text) + '</h3><div class="act-choice-row">' + buttons + '</div>' + feedback + '</article>';
+    }).join('') + '</div>';
+  }
+  function actSequence(w, a) {
+    var d = a.data || {}, key = 'a|' + w + '|sequence', order = actStored(key) || [], attempt = actStored(key + '|try'), steps = d.steps || [];
+    var choices = steps.map(function (step, i) {
+      var used = order.indexOf(i) >= 0;
+      return '<button type="button" data-activity-choice="' + key + '|' + i + '" ' + (used ? 'disabled' : '') + ' onclick="SOC.actSequencePick(\'' + key + '\',' + i + ')" class="act-sequence-choice"><b>' + esc(step.label) + '</b><span>' + (used ? 'Placed in the cycle' : 'Choose as the next move') + '</span></button>';
+    }).join('');
+    var built = order.map(function (i, n) { var s = steps[i] || {}; return '<li><span>' + (n + 1) + '</span><div><b>' + esc(s.label) + '</b><p>' + esc(s.role) + '</p>' + actCite(s.cite) + '</div></li>'; }).join('');
+    var note = attempt == null ? '' : '<div class="act-feedback is-retry"><b>Not next yet.</b> ' + esc((steps[attempt] || {}).label || 'That move') + ' belongs later in the cycle. Use the completed phases to decide what has to happen first.</div>';
+    return '<section class="act-workspace act-sequence" data-archetype="sequence">' + actCaseBox('THE TASK', d['case']) + '<p class="act-instruction">' + esc(d.prompt) + '</p><div class="act-sequence-layout"><div><h2>Moves available</h2>' + choices + note + '</div><div><h2>Your cycle</h2><ol>' + (built || '<li class="act-empty">Choose the move that turns intention into a concrete plan.</li>') + '</ol><button type="button" class="act-reset" onclick="SOC.actSequenceReset(\'' + key + '\')">Reset the cycle</button></div></div>' + (order.length === steps.length ? '<div class="act-complete"><b>Cycle complete.</b> Now apply it to a real task below.</div>' : '') + actFields(w, d.fields, 'f') + '</section>';
+  }
+  function actClassify(w, a) {
+    var d = a.data || {};
+    return '<section class="act-workspace act-classify" data-archetype="classify">' + actCaseBox('THE EVIDENCE', d['case']) + '<p class="act-instruction">' + esc(d.prompt) + '</p>' + actDecisionRows(w, d, 'class') + actFields(w, d.fields, 'f') + '</section>';
+  }
+  function actMap(w, a) {
+    var d = a.data || {};
+    var layers = (d.layers || []).map(function (layer, i) {
+      return '<article class="act-map-layer"><div class="act-layer-index">' + (i + 1) + '</div><div><h3>' + esc(layer.label) + '</h3><p>' + esc(layer.prompt) + '</p>' + actCite(layer.cite) + actField('a|' + w + '|map|' + layer.id, { label: 'Your reading of this layer', prompt: 'Use only the facts in the fictional case. Name what is present, missing, or still unknown.' }, 'map') + '</div></article>';
+    }).join('');
+    return '<section class="act-workspace act-map" data-archetype="map">' + actCaseBox('FICTIONAL CASE', d['case']) + '<div class="act-map-stack">' + layers + '</div><div class="act-map-conclusion"><h2>Make the map useful</h2>' + actFields(w, d.fields, 'f') + '</div></section>';
+  }
+  function actBuilder(w, a) {
+    var d = a.data || {}, options = d.options || [], optionKey = 'a|' + w + '|options', chosen = actStored(optionKey) || [], pick = Math.min(Number(d.pick) || options.length, options.length);
+    var optionHtml = options.length ? '<fieldset class="act-option-bank"><legend>Choose up to ' + pick + ' takeaways</legend>' + options.map(function (option, i) { var on = chosen.indexOf(i) >= 0; return '<button type="button" aria-pressed="' + on + '" onclick="SOC.actLabPick(\'' + optionKey + '\',' + i + ',' + pick + ')" class="' + (on ? 'selected' : '') + '">' + esc(option) + '</button>'; }).join('') + '<small>' + chosen.length + ' of ' + pick + ' selected</small></fieldset>' : '';
+    return '<section class="act-workspace act-builder act-builder-' + esc(d.layout || 'form') + '" data-archetype="builder">' + actCaseBox('WORKING BOUNDARY', d['case']) + optionHtml + actFields(w, d.fields, 'f') + (d.callout ? '<div class="act-source-boundary">' + esc(d.callout) + '</div>' : '') + '</section>';
+  }
+  function actAudit(w, a) {
+    var d = a.data || {};
+    return '<section class="act-workspace act-audit" data-archetype="audit">' + actCaseBox('FICTIONAL FILE', d['case']) + actDecisionRows(w, d, 'audit') + '<div class="act-audit-write"><h2>Turn the audit into a responsibility</h2>' + actFields(w, d.fields, 'f') + '</div></section>';
+  }
+  function actEvidenceWall(w, a) {
+    var d = a.data || {};
+    return '<section class="act-workspace act-evidence-wall" data-archetype="evidencewall">' + actCaseBox('INSTITUTIONAL QUESTION', d['case']) + actDecisionRows(w, d, 'evidence') + '<div class="act-evidence-write"><h2>From source to action</h2>' + actFields(w, d.fields, 'f') + '</div></section>';
+  }
+  function actTrace(w, a) {
+    var d = a.data || {};
+    var nodes = (d.nodes || []).map(function (node, i) { return '<article class="act-trace-node"><span>' + (i + 1) + '</span><div><h3>' + esc(node.label) + '</h3><p>' + esc(node.prompt) + '</p>' + actCite(node.cite) + actField('a|' + w + '|trace|' + node.id, { label: 'Your evidence-based entry', prompt: 'Write the link in the pathway. Do not add facts the source does not establish.' }, 'trace') + '</div></article>'; }).join('');
+    return '<section class="act-workspace act-trace" data-archetype="trace">' + actCaseBox('SOURCE CASE', d['case']) + '<div class="act-trace-line">' + nodes + '</div>' + actFields(w, d.fields, 'f') + '</section>';
+  }
   function actMatch(w, a) {
     var d = a.data || {}, pairs = d.pairs || [], uniq = [], seen = {};
     pairs.forEach(function (p) { if (!seen[p.match]) { seen[p.match] = 1; uniq.push(p.match); } });
@@ -3916,9 +4203,28 @@
     var a = d.activity;
     var head = '<section class="jhero" style="margin:0 0 18px;padding:26px 28px"><div class="mono" style="font-size:.7rem;letter-spacing:.06em;color:var(--red);font-weight:700;margin-bottom:7px">WEEK ' + w + ' ACTIVITY</div><h1 style="font-size:1.7rem;line-height:1.15;font-weight:700;margin:0 0 12px;color:var(--ink)">' + esc(a.title) + '</h1><div class="wk-whatwhy" style="margin:0"><b>What this is:</b> ' + esc(a.what) + '<br><br><b>Why you are doing it:</b> ' + esc(a.why) + '</div></section>';
     var inner = '';
-    switch (a.archetype) { case 'match': inner = actMatch(w, a); break; case 'scenario': inner = actScenario(w, a); break; case 'toggle': inner = actToggle(w, a); break; case 'assemble': inner = actAssemble(w, a); break; case 'lab': inner = actLab(w, a); break; case 'capstone': inner = actCapstone(w, a); break; default: inner = '<p style="color:var(--ink-dim)">This activity is not set up yet.</p>'; }
+    switch (a.archetype) { case 'match': inner = actMatch(w, a); break; case 'scenario': inner = actScenario(w, a); break; case 'toggle': inner = actToggle(w, a); break; case 'assemble': inner = actAssemble(w, a); break; case 'lab': inner = actLab(w, a); break; case 'capstone': inner = actCapstone(w, a); break; case 'sequence': inner = actSequence(w, a); break; case 'classify': inner = actClassify(w, a); break; case 'map': inner = actMap(w, a); break; case 'builder': inner = actBuilder(w, a); break; case 'audit': inner = actAudit(w, a); break; case 'evidencewall': inner = actEvidenceWall(w, a); break; case 'trace': inner = actTrace(w, a); break; default: inner = '<p style="color:var(--ink-dim)">This activity is not set up yet.</p>'; }
     var foot = '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><div style="font-size:.86rem;color:var(--ink-dim)">When you are done, go back to the week to answer the reflection and save your work.</div><button onclick="SOC.station(' + w + ')" class="wk-cta" style="margin:0">Back to Week ' + w + ' ' + ic('chevron', 16, 2.4) + '</button></div>';
     return '<div class="rise" style="margin:0 auto">' + head + inner + foot + '</div>';
+  }
+  function activityResponseLines(w, a) {
+    var d = (a && a.data) || {}, out = [];
+    function add(key, label) { var value = actStored(key); if (typeof value === 'string' && value.trim()) out.push(label + ':\n' + value); }
+    (d.fields || []).forEach(function (f) { add('a|' + w + '|f|' + f.id, f.label); });
+    (d.layers || []).forEach(function (f) { add('a|' + w + '|map|' + f.id, f.label); });
+    (d.nodes || []).forEach(function (f) { add('a|' + w + '|trace|' + f.id, f.label); });
+    return out;
+  }
+  function activitySummary(w, d) {
+    var a = d.activity || {}, responses = activityResponseLines(w, a), selected = actStored('a|' + w + '|options') || [];
+    var choiceGroups = { sequence: 'sequence', classify: 'class', audit: 'audit', evidencewall: 'evidence' }, prefix = choiceGroups[a.archetype], choices = 0;
+    if (prefix === 'sequence') choices = (actStored('a|' + w + '|sequence') || []).length;
+    else if (prefix) Object.keys(state.actResult || {}).forEach(function (key) { if (key.indexOf('a|' + w + '|' + prefix + '|') === 0 && typeof state.actResult[key] === 'number') choices++; });
+    var status = [];
+    if (choices) status.push(choices + ' activity decisions completed');
+    if (selected.length) status.push(selected.length + ' takeaways selected');
+    if (responses.length) status.push(responses.length + ' student-authored entries');
+    return (status.length ? status.join('; ') + '.' : '(activity not started yet)') + (responses.length ? '\n\nStudent-authored activity work, preserved exactly:\n\n' + responses.join('\n\n') : '');
   }
   /* ---------- interpersonal layer (2026-07-25): the teams EES gets a vehicle ---------- */
   function interpersonalSection(w) {
@@ -4032,7 +4338,7 @@
   function accessStatement() {
     return '<section class="node" id="wk-access" style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0 0">'
       + '<h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Accessibility on this site</h2>'
-      + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0 0 8px">This site is built to work for every student: it adapts to any screen size, works with keyboard navigation, keeps text resizable, gives every image a text description, and never puts course content behind a timed or scored gate. The Reading Lens offers text sizing, comfortable spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. The weekly experiences include adjustable text size and keyboard movement.</p>'
+      + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0 0 8px">This site is designed and tested to support different screen sizes, keyboard navigation, resizable text, text descriptions for images, and untimed, unscored course practice. The Reading Lens offers text sizing, comfortable spacing, a high-legibility font, page tints, a reading ruler, a magnifier, and read-aloud. The weekly experiences include adjustable text size and keyboard movement. If any feature creates a barrier, use Report a problem so it can be corrected.</p>'
       + '<p style="font-size:.88rem;line-height:1.6;color:var(--ink-dim);margin:0">When a current page walkthrough video is available, it is silent with on-screen captions. If any material is not accessible to you, contact your professor through Blackboard; barriers get fixed, not explained away.</p>'
       + '</section>';
   }
@@ -4040,8 +4346,9 @@
   function dataPortSection() {
     return '<section class="node" id="wk-dataport" style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0 0">'
       + '<h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Take your saved work with you</h2>'
-      + '<p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0 0 10px">Entries and ratings use this browser\'s storage when it is available. Browser settings, private browsing, clearing site data, or using a shared computer can remove them. Download a backup here, then restore it in another browser or device to carry your work across. This site does not upload the backup; you control where the downloaded file is stored or shared.</p>'
+      + '<p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0 0 10px">Your note fields are saved as you type in a primary browser copy, a session mirror, and a local recovery vault when those features are available. The site preserves your exact wording and only adds context headings when it organizes an export. Download the Seneca document for a readable copy, and download the backup file to move all saved work to another browser or device. Nothing is uploaded by this site.</p>'
       + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
+      + '<button type="button" class="wk-save" onclick="SOC.exportAllNotes()">Download all organized notes (.docx)</button>'
       + '<button type="button" class="wk-save" onclick="SOC.exportWork()">Download my saved work</button>'
       + '<label class="wk-scope" style="cursor:pointer;display:inline-block">Restore from a backup file<input type="file" accept="application/json,.json" style="display:none" onchange="SOC.importWork(this)"></label>'
       + '</div><p id="dataport-msg" role="status" style="font-size:.8rem;color:var(--ink-faint);margin:8px 0 0"></p></section>';
@@ -4176,12 +4483,22 @@
   function navKey() {
     return [state.screen, state.stationWeek, state.journeyWeek, state.detailId, state.cardWeek, state.activeWeek, state.galWeek, state.galTopic, state.assignmentId, state.rcReading, state.showSynthesis ? 1 : 0, (state.compareIds || []).length].join('~');
   }
+  function canonicalRouteUrl(walkWeek) {
+    var path = location.pathname || './', q = [], w = cleanWeek(walkWeek);
+    if (w) q.push('week=' + w, 'experience=1');
+    else if (state.screen === 'activity' && cleanWeek(state.activityReturn)) q.push('week=' + state.activityReturn, 'screen=activity');
+    else if (state.screen === 'station' && cleanWeek(state.stationWeek)) q.push('week=' + state.stationWeek);
+    else if (state.screen === 'assignment-details' && cleanAssessmentId(state.assignmentId)) q.push('screen=assignment-details', 'asg=' + encodeURIComponent(state.assignmentId));
+    else if (state.screen && state.screen !== 'journey' && state.screen !== 'detail') q.push('screen=' + encodeURIComponent(state.screen));
+    else if (state.screen === 'detail') q.push('screen=library');
+    return path + (q.length ? '?' + q.join('&') : '');
+  }
   function navHistorySync() {
     if (__fromPop) return;
     var k = navKey();
     try {
-      if (__lastNavKey === null) history.replaceState(viewSnapshot(), '');
-      else if (k !== __lastNavKey) { history.pushState(viewSnapshot(), '', location.pathname); __pushed = true; }
+      if (__lastNavKey === null) history.replaceState(viewSnapshot(), '', canonicalRouteUrl(null));
+      else if (k !== __lastNavKey) { history.pushState(viewSnapshot(), '', canonicalRouteUrl(null)); __pushed = true; }
     } catch (e) {}
     __lastNavKey = k;
   }
@@ -4444,6 +4761,46 @@
       flash('Export stopped: the Seneca logo could not be embedded.');
     });
   }
+  function studentNotePresent(value) { return typeof value === 'string' && value !== ''; }
+  function studentExactBlock(label, value) { return label + '\nStudent-authored note, preserved exactly:\n' + value; }
+  function studentMasterNoteSections() {
+    var sections = [];
+    for (var w = 1; w <= 14; w++) {
+      var blocks = [];
+      if (studentNotePresent(state.wkReflect && state.wkReflect[w])) blocks.push(studentExactBlock('Weekly reflection', state.wkReflect[w]));
+      Object.keys(state.sgNotes || {}).sort().forEach(function (key) {
+        var match = new RegExp('^sg' + w + '\\|(c|r)\\|(\\d+)$').exec(key), value = state.sgNotes[key];
+        if (!match || !studentNotePresent(value)) return;
+        blocks.push(studentExactBlock('Study guide · ' + (match[1] === 'c' ? 'concept note ' : 'guiding response ') + (Number(match[2]) + 1), value));
+      });
+      Object.keys(state.rcNotes || {}).sort().forEach(function (key) {
+        var parts = key.split('|'), reading = parts.length >= 3 ? rec(parts[0]) : null, value = state.rcNotes[key];
+        if (!reading || reading.week !== w || !studentNotePresent(value)) return;
+        var questions = RC_QUESTIONS[parts[1]] || [], question = questions[Number(parts[2])] || ('Response ' + (Number(parts[2]) + 1));
+        blocks.push(studentExactBlock('Source practice · ' + reading.title + '\n' + question, value));
+      });
+      scholarMedia().filter(function (item) { return item.week === w && state.mediaNotes && studentNotePresent(state.mediaNotes[item.key]); }).forEach(function (item) {
+        blocks.push(studentExactBlock('Scholar media · ' + item.title + (item.scholar ? ' (' + item.scholar + ')' : ''), state.mediaNotes[item.key]));
+      });
+      Object.keys(state.kcShort || {}).sort().forEach(function (key) {
+        var value = state.kcShort[key];
+        if (new RegExp('^wk' + w + '\\|').test(key) && studentNotePresent(value)) blocks.push(studentExactBlock('Knowledge check written response · ' + key, value));
+      });
+      if (blocks.length) sections.push({ h: 'Week ' + w + ': ' + weekTitle(w), t: blocks.join('\n\n----------------------------------------\n\n') });
+    }
+    var comparisons = Object.keys(state.cmpNotes || {}).filter(function (key) { return studentNotePresent(state.cmpNotes[key]); }).sort().map(function (key) {
+      var labels = { sim: 'Similarities', diff: 'Differences and evidence boundaries', ins: 'Why the differences matter', 'saved-synthesis': 'Saved on-screen synthesis' };
+      return key === 'saved-synthesis' ? labels[key] + '\n' + state.cmpNotes[key] : studentExactBlock(labels[key] || 'Comparison note', state.cmpNotes[key]);
+    });
+    if (comparisons.length) sections.push({ h: 'Compare Sources', t: comparisons.join('\n\n----------------------------------------\n\n') });
+    var ecology = [];
+    if (studentNotePresent(state.ecoChallenge)) ecology.push(studentExactBlock('Academic challenge', state.ecoChallenge));
+    (typeof ECO_LAYERS !== 'undefined' ? ECO_LAYERS : []).forEach(function (layer) { var value = state.ecoNotes && state.ecoNotes[layer.id]; if (studentNotePresent(value)) ecology.push(studentExactBlock(layer.label, value)); });
+    if (ecology.length) sections.push({ h: 'Resilience Ecology', t: ecology.join('\n\n----------------------------------------\n\n') });
+    var career = Object.keys(state.careerReflect || {}).filter(function (key) { return studentNotePresent(state.careerReflect[key]); }).sort().map(function (key) { return studentExactBlock('Program or career lens · ' + key.replace(/^career\|/, ''), state.careerReflect[key]); });
+    if (career.length) sections.push({ h: 'Program and Career Reflections', t: career.join('\n\n----------------------------------------\n\n') });
+    return sections;
+  }
   window.SOC = {
     openNav: function () { state.navOpen = true; renderKeepScroll(); },
     toggleNav: function () { state.navOpen = !state.navOpen; renderKeepScroll(); },
@@ -4501,17 +4858,18 @@
     },
     clearMyWork: function () {
       if (!window.confirm('Remove all notes, check answers, and settings saved by this site in this browser? Downloaded files are not affected.')) return;
+      if (studentNoteBackupTimer) { clearTimeout(studentNoteBackupTimer); studentNoteBackupTimer = null; }
       var cleared = true;
       try {
         var prefix = SKEY; /* full site-scoped key: never touch another course site's saves on the shared github.io origin */
         Object.keys(localStorage).forEach(function (k) { if (k === prefix || k.indexOf(prefix + '.') === 0 || isAssignmentLabKey(k)) localStorage.removeItem(k); });
       } catch (e) { cleared = false; }
       try {
-        [VKEY, WKKEY, SKEY + '.upcomingReminder.session.v1'].forEach(function (k) { sessionStorage.removeItem(k); });
+        [VKEY, WKKEY, STUDENT_NOTE_SESSION_KEY, STUDENT_NOTE_IMPORT_MARKER, SKEY + '.upcomingReminder.session.v1'].forEach(function (k) { sessionStorage.removeItem(k); });
         sessionStorage.setItem(HKEY, '1'); /* pagehide may save the old view again; the next boot must discard it */
       } catch (e) { cleared = false; }
       if (!cleared) window.alert('The browser prevented confirmation that every saved item was removed. Clear this site\'s browser data before leaving a shared device.');
-      location.reload();
+      studentNoteIdbClear().then(function () { location.reload(); });
     },
     tickerPause: function () {
       state.tickerPaused = !state.tickerPaused;
@@ -4583,8 +4941,28 @@
     readerLensPointerDown: function () {},
     readerLensKey: function () {},
     prev: goPrevious,
+    camCtl: function (ev, op, dir) {
+      if (ev && ev.preventDefault) ev.preventDefault();
+      var host = ev && ev.currentTarget && ev.currentTarget.closest ? ev.currentTarget.closest('.wk-model-shell') : null;
+      var cv = host ? host.querySelector('canvas[data-topic-model]') : null;
+      if (!cv || !cv.__camApi) return false;
+      if (op === 'zoom') cv.__camApi.zoom(dir);
+      else if (op === 'spin') cv.__camApi.spin(dir);
+      else cv.__camApi.reset();
+      return false;
+    },
+    cmpNote: function (key, value) { state.cmpNotes = state.cmpNotes || {}; state.cmpNotes[String(key || 'comparison-note')] = String(value == null ? '' : value); studentNotesChanged(); },
+    toggleExample: function () { state.exampleOpen = !state.exampleOpen; renderKeepScroll(); },
+    revealModel: function () { state.showModel = true; renderKeepScroll(); },
+    hideModel: function () { state.showModel = false; renderKeepScroll(); },
+    saveComparison: function () {
+      var labels = { sim: 'Similarities', diff: 'Differences and evidence boundaries', ins: 'Why the differences matter', 'saved-synthesis': 'Saved on-screen synthesis' };
+      var sections = Object.keys(state.cmpNotes || {}).filter(function (key) { return typeof state.cmpNotes[key] === 'string' && state.cmpNotes[key] !== ''; }).sort().map(function (key) { return { h: labels[key] || 'Comparison note', t: 'Student-authored note, preserved exactly:\n' + state.cmpNotes[key] }; });
+      if (!sections.length) { flash('Write a comparison note first.'); return; }
+      senecaDoc('PSY355', 'Compare Sources Notes', ['Psychology of Learning: Mindset and Resilience', 'Student-authored notes preserved verbatim'], sections, 'PSY355_compare_sources_notes');
+    },
     shareMobileSite: function () {
-      var url = (location.origin + location.pathname).replace(/index\.html$/i, '');
+      var url = location.origin + canonicalRouteUrl(_walk && _walk.week);
       if (navigator.share) { navigator.share({ title: courseCode() + ' companion website', url: url }).then(function () { announce('Site link shared.'); }).catch(function () {}); return; }
       if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(function () { announce('Site link copied.'); }).catch(function () { announce('Copy the address from your browser to use this site on another device.'); }); return; }
       announce('Copy the address from your browser to use this site on another device.');
@@ -4604,6 +4982,11 @@
     go: function (s) {
       var target = cleanScreen(s); if (target !== state.screen) rememberPrevious(); state.navOpen = false; if (target === 'library') { state.savedView = false; } if (target === 'reading') { state.rcReading = null; state.lens = 'thematic'; } if (target === 'readings') { state.galWeek = null; state.galTopic = null; } if (target !== 'assignment-details') state.assignmentId = null; state.screen = target; focusTarget = 'soc-main'; render(); topScroll(); },
     howtoToggle: function (k) { state.howtoOpen = state.howtoOpen || {}; state.howtoOpen[k] = !state.howtoOpen[k]; if (!replaceOuterKeepingFocus('howto-panel', howtoSection(), 'soc-main')) render(); },
+    exportAllNotes: function () {
+      var sections = studentMasterNoteSections();
+      if (!sections.length) { flash('No written notes are available to export yet.'); return; }
+      senecaDoc('PSY355', 'My Organized Course Notes', ['Psychology of Learning: Mindset and Resilience', 'Student-authored wording preserved verbatim'], sections, 'PSY355_my_organized_course_notes');
+    },
     exportWork: function () {
       try {
         var pre = SKEY.split('corpus')[0];
@@ -4629,7 +5012,8 @@
             var n = 0;
             Object.keys(data.keys).forEach(function (xk) { if (isPortableWorkKey(xk) && typeof data.keys[xk] === 'string') { localStorage.setItem(xk, data.keys[xk]); n++; } });
             if (xm) xm.textContent = 'Restored ' + n + ' saved records. Reloading the site with your work in place.';
-            setTimeout(function () { location.reload(); }, 900);
+            try { sessionStorage.setItem(STUDENT_NOTE_IMPORT_MARKER, '1'); sessionStorage.removeItem(STUDENT_NOTE_SESSION_KEY); } catch (e3) {}
+            studentNoteIdbClear().then(function () { setTimeout(function () { location.reload(); }, 450); });
           } catch (e2) { var xe2 = document.getElementById('dataport-msg'); if (xe2) xe2.textContent = 'That file could not be read.'; }
         };
         rd.readAsText(f);
@@ -4656,8 +5040,8 @@
     trAgain: function () { trStart(); render(); topScroll(); },
     careerField: function (v) { state.careerField = cleanText(v, '', 200); persist(); render(); topScroll(); },
     lensOff: function () { state.careerField = ''; persist(); render(); },
-    careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = cleanText(v, '', 10000); persist(); },
-    mediaNote: function (k, v) { state.mediaNotes = state.mediaNotes || {}; state.mediaNotes[k] = cleanText(v, '', 10000); persist(); },
+    careerReflect: function (k, v) { state.careerReflect = state.careerReflect || {}; state.careerReflect[k] = cleanText(v, '', 10000); studentNotesChanged(); },
+    mediaNote: function (k, v) { state.mediaNotes = state.mediaNotes || {}; state.mediaNotes[k] = cleanText(v, '', 10000); studentNotesChanged(); },
     videoWeek: function (w) { state.videoWeek = cleanWeekFilter(w); render(); topScroll(); },
     mediaKind: function (k) { state.mediaKind = cleanText(k, 'all', 80) || 'all'; render(); topScroll(); },
     careerLens: function () { if (state.screen !== 'career') rememberPrevious(); state.screen = 'career'; focusTarget = 'soc-main'; render(); scrollToId('career-sel'); },
@@ -4670,7 +5054,7 @@
       var parts = k.split('|'), w = +parts[1], d = weekData(w);
       refreshWeekChecks(w, d);
     },
-    wkReflect: function (w, v) { w = cleanWeek(w); if (!w) return; state.wkReflect[w] = cleanText(v, '', 10000); persist(); },
+    wkReflect: function (w, v) { w = cleanWeek(w); if (!w) return; state.wkReflect[w] = cleanText(v, '', 10000); studentNotesChanged(); },
     wkClear: function (w, phase) {
       var d = weekData(w); if (!d) return;
       d.checks.forEach(function (c, i) { delete state.wkCheck[phase + '|' + w + '|' + i]; });
@@ -4680,6 +5064,9 @@
     actToggle: function (key) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var val = !state.act[key]; state.act[key] = val; state.actResult = state.actResult || {}; state.actResult[key] = val; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     actAdd: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || []; if (arr.indexOf(idx) < 0) arr.push(idx); state.act[key] = arr; state.actResult = state.actResult || {}; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     actLabPick: function (key, idx, max) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var arr = state.act[key] || [], p = arr.indexOf(idx); if (p >= 0) arr.splice(p, 1); else { if (arr.length >= max) arr.shift(); arr.push(idx); } state.act[key] = arr; state.actResult = state.actResult || {}; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actText: function (key, value) { if (!/^a\|\d{1,2}\|(?:f|map|trace)\|[a-z0-9_-]{1,40}$/i.test(String(key || ''))) return; value = cleanText(String(value == null ? '' : value), '', 2000); state.act[key] = value; state.actResult = state.actResult || {}; state.actResult[key] = value; studentNotesChanged(); },
+    actSequencePick: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0, arr = actStored(key) || []; arr = Array.isArray(arr) ? arr.slice() : []; if (idx === arr.length) { arr.push(idx); state.act[key + '|try'] = null; state.actResult[key + '|try'] = null; } else { state.act[key + '|try'] = idx; state.actResult[key + '|try'] = idx; } state.act[key] = arr; state.actResult[key] = arr.slice(); persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
+    actSequenceReset: function (key) { state.act[key] = []; state.act[key + '|try'] = null; state.actResult[key] = []; state.actResult[key + '|try'] = null; persist(); renderKeepScroll(); },
     saveWeek: function (w) {
       var d = weekData(w); if (!d) { flash('Open a week first.'); return; }
       var lab = ['New to me', 'Getting it', 'I can'];
@@ -4691,11 +5078,12 @@
         return (i + 1) + '. ' + checkText(q) + '\n   Before: ' + rate('pre|' + w + '|' + i) + '   After: ' + rate('post|' + w + '|' + i);
       }).join('\n\n');
       var scoreLine = 'Where your understanding sits: after the week you can speak to ' + postStat.g.can + ' of ' + postStat.total + ' of these ideas (getting there on ' + postStat.g.getting + ', new to ' + postStat.g.newto + '), and your read moved forward on ' + moved + ' of ' + postStat.total + ' since the start.';
-      var auditText = '';
+      var auditText = activitySummary(w, d);
       var sections = [
         { h: 'Week ' + w + ': ' + weekTitle(w), t: d.purpose },
         { h: 'Before and after, your check answers', t: scoreLine + '\n\n' + checkLines },
-        { h: 'Your reflection', t: (state.wkReflect[w] || '').trim() || '(not written yet)' }
+        { h: 'The activity: ' + d.activity.title, t: auditText },
+        { h: 'Your reflection', t: studentNotePresent(state.wkReflect[w]) ? state.wkReflect[w] : '(not written yet)' }
       ];
       senecaDoc((D.course && D.course.code) || '', weekTitle(w) + ' (Week ' + w + ')', ['Seneca ' + ((D.course && D.course.code) || ''), 'Your week record'], sections, ((D.course && D.course.code) || '') + '_Week' + w + '_my_work');
     },
@@ -4736,21 +5124,21 @@
       if (!txt) { announce('Nothing to save yet.'); return; }
       state.cmpNotes = state.cmpNotes || {};
       state.cmpNotes['saved-synthesis'] = txt;
-      persist();
+      studentNotesChanged();
       renderKeepScroll();
       announce('Added to your notes. It may remain here when browser storage is available.');
     },
     clearCompare: function () { state.compareIds = []; state.showSynthesis = false; render(); },
     synthesize: function () { state.showSynthesis = true; render(); },
-    enterExperience: function (w) { w = cleanWeek(w); if (!w) { SOC.go('journey'); return; } walkOpen(w); },
-    playWalk: function (w) { w = cleanWeek(w); if (!w) { SOC.go('journey'); return; } walkOpen(w); },
+    enterExperience: function (w) { w = cleanWeek(w); if (!w) { SOC.go('journey'); return; } walkOpen(w); try { history.pushState(viewSnapshot(), '', canonicalRouteUrl(w)); } catch (e) {} },
+    playWalk: function (w) { w = cleanWeek(w); if (!w) { SOC.go('journey'); return; } walkOpen(w); try { history.pushState(viewSnapshot(), '', canonicalRouteUrl(w)); } catch (e) {} },
     walkEnter: function () { if (!_walk) return; _walk.entered = true; _walk.i = Math.min(1, _walk.slides.length - 1); _walk.focusSlide = true; walkMount(); announce('You entered the Week ' + _walk.week + ' experience.'); },
     walkRestart: function () { if (!_walk) return; walkSpeakStop(); _walk.i = 0; _walk.entered = false; _walk.panel = false; _walk.focusSlide = true; walkSaveResume(_walk.week, 0, false); persist(); walkMount(); announce('Week ' + _walk.week + ' experience restarted. Select Enter the experience to begin.'); },
     walkReveal: function (btn) { if (!btn) return; var panel = btn.nextElementSibling, open = btn.getAttribute('aria-expanded') === 'true'; btn.setAttribute('aria-expanded', String(!open)); if (panel) panel.hidden = open; },
     walkNote: function (value) { if (!_walk) return; var p = walkPrefs(); p.walkNotes = p.walkNotes || {}; p.walkNotes[String(_walk.week)] = String(value || '').slice(0, 4000); persist(); },
     walkNav: function (dir) { if (!_walk || (!_walk.entered && _walk.i === 0 && dir > 0)) return; var n = Math.max(0, Math.min(_walk.slides.length - 1, _walk.i + dir)); if (n === _walk.i) return; walkSpeakStop(); _walk.i = n; _walk.focusSlide = true; walkMount(); announce('Chapter ' + (n + 1) + ' of ' + _walk.slides.length + ': ' + walkSlideName(_walk.slides[n]) + '.'); },
     walkGoto: function (k) { if (!_walk || (!_walk.entered && k !== 0)) return; walkSpeakStop(); _walk.i = Math.max(0, Math.min(_walk.slides.length - 1, k)); _walk.focusSlide = true; walkMount(); announce('Chapter ' + (_walk.i + 1) + ' of ' + _walk.slides.length + ': ' + walkSlideName(_walk.slides[_walk.i]) + '.'); },
-    walkClose: function () { walkCloseDom(); _walk = null; refreshExperienceEntryLabels(); try { if (/[?&](?:walk|experience)=/i.test(location.search)) history.replaceState(viewSnapshot(), '', location.pathname); } catch (e) {} },
+    walkClose: function () { walkCloseDom(); _walk = null; refreshExperienceEntryLabels(); try { if (/[?&](?:walk|experience)=/i.test(location.search)) history.replaceState(viewSnapshot(), '', canonicalRouteUrl(null)); } catch (e) {} },
     walkGoWeek: function () { var w = _walk && _walk.week; walkCloseDom(); _walk = null; if (w) SOC.station(w); },
     walkPanel: function () { if (!_walk) return; _walk.panel = !_walk.panel; _walk.restoreFocusId = _walk.panel ? 'walk-panel-close' : 'walk-access-toggle'; walkMount(); announce(_walk.panel ? 'Accessibility settings opened.' : 'Accessibility settings closed.'); },
     walkSetting: function (key, value) { if (!_walk) return; _walk.restoreFocusId = (document.activeElement && document.activeElement.id) || 'walk-access-toggle'; var p = walkPrefs(); if (key === 'theme') p.walkTheme = String(value); else if (key === 'size') p.walkSize = Number(value); else if (key === 'font') p.walkFont = !!value; else if (key === 'motion') p.walkMotion = !!value; persist(); walkMount(); announce('Experience display updated.'); },
@@ -4774,21 +5162,21 @@
     setLens: function (l) { state.lens = cleanLens(l); render(); },
     rcPick: function (id) { id = cleanTextOrNull(id); if (!id || !rec(id)) return; state.rcReading = id; state.lens = 'thematic'; persist(); render(); topScroll(); },
     rcClear: function () { state.rcReading = null; render(); topScroll(); },
-    rcNote: function (k, v) { state.rcNotes[k] = cleanText(v, '', 10000); persist(); },
+    rcNote: function (k, v) { state.rcNotes[k] = cleanText(v, '', 10000); studentNotesChanged(); },
     ecoLayer: function (id) { id = cleanEcoLayer(id); var retainedFocus = captureFocus(); state.ecoLayer = id; var p = document.getElementById('psy-ecopanel'); if (p) p.innerHTML = ecoLayerPanel(id); var r = document.getElementById('psy-ecorings'); if (r) r.innerHTML = ecoRingsSVG(); var c = document.getElementById('psy-ecochips'); if (c) c.innerHTML = ecoChips(); restoreFocus(retainedFocus, 'soc-main'); },
-    ecoNote: function (id, v) { id = cleanEcoLayer(id); v = cleanText(v, '', 10000); state.ecoNotes[id] = v; persist(); var L = ecoById(id), done = v.trim().length > 0; var ring = document.getElementById('psy-ring-' + id); if (ring) ring.setAttribute('fill', done ? L.color : '#E8EBF0'); var c = document.getElementById('psy-ecochips'); if (c) c.innerHTML = ecoChips(); var cn = document.getElementById('psy-ecocount'); if (cn) cn.textContent = ecoCount() + ' of 5'; },
-    ecoChallenge: function (v) { state.ecoChallenge = cleanText(v, '', 5000); persist(); },
+    ecoNote: function (id, v) { id = cleanEcoLayer(id); v = cleanText(v, '', 10000); state.ecoNotes[id] = v; studentNotesChanged(); var L = ecoById(id), done = v.trim().length > 0; var ring = document.getElementById('psy-ring-' + id); if (ring) ring.setAttribute('fill', done ? L.color : '#E8EBF0'); var c = document.getElementById('psy-ecochips'); if (c) c.innerHTML = ecoChips(); var cn = document.getElementById('psy-ecocount'); if (cn) cn.textContent = ecoCount() + ' of 5'; },
+    ecoChallenge: function (v) { state.ecoChallenge = cleanText(v, '', 5000); studentNotesChanged(); },
     saveResiliencePlan: function () {
       var sections = [
-        { h: 'My academic challenge', t: (state.ecoChallenge || '').trim() || '(not named yet)' },
+        { h: 'My academic challenge', t: studentNotePresent(state.ecoChallenge) ? state.ecoChallenge : '(not named yet)' },
         { h: 'How to hold it', t: 'A hard stretch is a stage to move through, not a verdict (Richardson, 2011). Resilience builds across the whole ecology of resources, not from grit alone (Ungar, 2011 and 2013).' }
       ];
-      ECO_LAYERS.forEach(function (L) { sections.push({ h: 'Layer ' + L.n + ', ' + L.label + ' (' + L.anchor + ')', t: (((state.ecoNotes && state.ecoNotes[L.id]) || '') + '').trim() }); });
+      ECO_LAYERS.forEach(function (L) { sections.push({ h: 'Layer ' + L.n + ', ' + L.label + ' (' + L.anchor + ')', t: ((state.ecoNotes && state.ecoNotes[L.id]) || '') + '' }); });
       sections.push({ h: 'A note on support', t: 'This plan is an academic and mindset tool, not a clinical assessment. Seneca Counselling and Accessible Learning Services are available for well-being support; asking for help is a skill.' });
       senecaDoc('PSY355', 'Personal Resilience Plan', ['PSY355 Psychology of Learning: Mindset and Resilience', 'Built from your Resilience Ecology'], sections, 'PSY355_personal_resilience_plan');
     },
     rcReveal: function (k) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; state.revealed[k] = !state.revealed[k]; render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
-    sgNote: function (k, v) { state.sgNotes = state.sgNotes || {}; state.sgNotes[k] = cleanText(v, '', 10000); persist(); },
+    sgNote: function (k, v) { state.sgNotes = state.sgNotes || {}; state.sgNotes[k] = cleanText(v, '', 10000); studentNotesChanged(); },
     sgCompare: function (k, w) { state.sgShow = state.sgShow || {}; state.sgShow[k] = !state.sgShow[k]; replaceOuterKeepingFocus('wk-sg', sgSection(w).html, 'soc-main'); },
     sgFlip: function (k, w) { state.sgFlip = state.sgFlip || {}; state.sgFlip[k] = !state.sgFlip[k]; replaceOuterKeepingFocus('wk-sg', sgSection(w).html, 'soc-main'); },
     sgTickRung: function (k, w) { state.sgTick = state.sgTick || {}; state.sgTick[k] = true; persist(); replaceOuterKeepingFocus('wk-sg', sgSection(w).html, 'soc-main'); },
@@ -4809,7 +5197,7 @@
     mcConf: function (k, c, w) { state.mcConf = state.mcConf || {}; if (state.mcConf[k] === c) delete state.mcConf[k]; else state.mcConf[k] = c; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
     mcPickSel: function (k, v) { v = Number(v); if (isNaN(v) || v < 0) delete state.mcSel[k]; else state.mcSel[k] = v; persist(); var kcm = /^wk(\d+)\|kc/.exec(k); if (kcm && replaceOuterKeepingFocus('wk-kc', kcSection(Number(kcm[1])).html, 'soc-main')) return; render(); },
     kcShow: function (w) { var v = (state.kcVersion && state.kcVersion[w]) || 0; state.kcReveal = state.kcReveal || {}; state.kcReveal[w + '|' + v] = true; replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
-    kcShortText: function (k, v) { state.kcShort = state.kcShort || {}; state.kcShort[k] = cleanText(v, '', 10000); persist(); },
+    kcShortText: function (k, v) { state.kcShort = state.kcShort || {}; state.kcShort[k] = cleanText(v, '', 10000); studentNotesChanged(); },
     kcShortReveal: function (k, w) { state.kcShortShown = state.kcShortShown || {}; state.kcShortShown[k] = !state.kcShortShown[k]; replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
     kcShortRate: function (k, r, w) { state.kcShortRate = state.kcShortRate || {}; state.kcShortRate[k] = r; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
     mcReset: function (id) { var m = document.getElementById('soc-main'); var top = m ? m.scrollTop : 0; var keep = {}; Object.keys(state.mcSel).forEach(function (k) { if (k.indexOf(id + '|mc|') !== 0) keep[k] = state.mcSel[k]; }); state.mcSel = keep; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
@@ -4817,7 +5205,7 @@
       var r = state.rcReading && rec(state.rcReading); if (!r) { flash('Pick a reading first.'); return; }
       var cc = (D.course && D.course.code) || 'Course';
       var L = (LENSES[state.lens] || LENSES.thematic).label, qs = RC_QUESTIONS[state.lens] || RC_QUESTIONS.thematic;
-      var sections = qs.map(function (q, i) { return { h: q, t: (state.rcNotes[r.id + '|' + state.lens + '|' + i] || '').trim() }; });
+      var sections = qs.map(function (q, i) { return { h: q, t: state.rcNotes[r.id + '|' + state.lens + '|' + i] || '' }; });
       var mcItems = MC[r.id] || [];
       if (mcItems.length) {
         var ans = 0, cor = 0, miss = [];
@@ -4883,7 +5271,12 @@
   };
 
   state.wkOpen = {};
+  var restoredBackup0 = false;
+  try { restoredBackup0 = sessionStorage.getItem(STUDENT_NOTE_IMPORT_MARKER) === '1'; sessionStorage.removeItem(STUDENT_NOTE_IMPORT_MARKER); } catch (e) {}
+  if (!restoredBackup0) studentNoteRecoverSession();
+  if (restoredBackup0 || (!state.noteVaultUpdated && studentNoteHasContent())) studentNotesChanged();
   render();
+  studentNoteRecover().then(function (changed) { if (changed) renderKeepScroll(); });
   try {
     if (location.search) {
       if (route0 && route0.invalid) history.replaceState(viewSnapshot(), '', location.pathname);
@@ -4892,7 +5285,7 @@
   } catch (e) {}
   window.addEventListener('popstate', function (e) {
     var __ov = document.getElementById('walk-overlay');
-    if (__ov) { try { walkCloseDom(); _walk = null; } catch (er) {} try { history.pushState(viewSnapshot(), '', location.pathname); } catch (er) {} return; }
+    if (__ov) { try { walkCloseDom(); _walk = null; } catch (er) {} }
     __fromPop = true;
     try { restoreView(e.state && typeof e.state === 'object' && e.state.screen ? e.state : { screen: 'journey' }); } catch (er) {}
     __lastNavKey = navKey();
@@ -4901,7 +5294,10 @@
   });
   if (routePart0) scrollWeekPart(routePart0);
   if (route0 && route0.experience && route0.week) {
-    try { walkOpen(route0.week); } catch (e) {}
+    try {
+      walkOpen(route0.week);
+      history.replaceState(viewSnapshot(), '', canonicalRouteUrl(route0.week));
+    } catch (e) {}
   } else if (!route0) {
     try {
       var __wkRaw = sessionStorage.getItem(WKKEY);
