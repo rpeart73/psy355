@@ -18,102 +18,105 @@
   var PSY_ASSESSMENTS = [
     {
       id: 'weekly-reflections',
-      title: 'Weekly Reflections',
+      title: 'Private Learning Journal',
       weight: '10 percent',
-      schedule: 'Entries begin the week of September 14. The thread closes December 4.',
-      due: 'Closes Friday, December 4, 2026',
-      weeks: 'Weeks 2 to 12; best 10 of 11 entries count',
-      summary: 'Build a connected record of course moments, strategies tried, and honest observations about your own learning practice.',
+      schedule: 'Opens September 14. Six dated entries are due December 4.',
+      due: 'Friday, December 4, 2026',
+      weeks: 'Six entries across Weeks 2 to 12',
+      summary: 'Build a private, dated record of real learning moments and strategy attempts, then use psychological concepts to explain what happened and choose a next action.',
       steps: [
-        'Write one 150 to 250 word entry each week from Week 2 through Week 12.',
-        'Connect the entry to your own previous record and explain what has changed. In Week 2, use your first impression or state that this is your first entry.',
-        'Name one specific weekly learning or participation moment, whether the week is live or asynchronous.',
-        'Add one honest observation about what you tried, avoided, or noticed in your own practice.'
+        'Complete six entries across Weeks 2 to 12 as the matching prompts open.',
+        'Begin each entry with a specific learning moment, class artefact, or strategy attempt.',
+        'Explain one course concept accurately and identify evidence of change, no change, or uncertainty.',
+        'End with one realistic next action. Private or clinical disclosure is not required.'
       ],
-      submit: ['Eleven short Blackboard entries across Weeks 2 to 12.', 'Your best 10 entries count at 1 mark each, so one missed week costs nothing.'],
-      evidence: 'Your own dated reflection record and specific course participation moments'
+      submit: ['Six dated private Blackboard Journal entries.', 'Aim for 250 to 350 words or two to three minutes of audio per entry.'],
+      evidence: 'Six dated learning moments, class artefacts, or strategy attempts from your own course record'
     },
     {
       id: 'mindset-evidence-check-1',
-      title: 'Mindset Evidence Check 1',
+      title: 'Strategy Trial 1: Study, Test, Adjust',
       weight: '20 percent',
-      schedule: 'Due October 9 at the end of Week 5.',
+      schedule: 'Opens September 21. Due October 9 at 11:59 p.m. Eastern.',
       due: 'Friday, October 9, 2026',
-      weeks: 'Evidence from Weeks 3 and 4',
-      summary: 'Examine one real learning struggle through growth-mindset and self-efficacy evidence, including the limits of those ideas.',
+      weeks: 'A seven-day trial supported by the early course evidence',
+      summary: 'Choose one manageable learning task, test one evidence-informed strategy for at least seven days, and decide whether to keep, change, or stop it.',
       steps: [
-        'Choose one real, recent learning struggle and anchor it to a privacy-safe artifact of your own.',
-        'Use the Week 3 growth-mindset and Week 4 self-efficacy evidence, including where the evidence does not apply.',
-        'End with one concrete next move and name the evidence that supports it.'
+        'Record a clear baseline: the task, your current approach, and the evidence you have.',
+        'Choose one strategy and explain why the course evidence supports trying it.',
+        'Complete two dated check-ins and make one adjustment during the trial.',
+        'Finish with a keep, change, or stop decision and your reasons.'
       ],
-      submit: ['A 500 to 700 word analysis anchored to one real artifact.', 'At least two assigned sources from Weeks 3 and 4, cited in APA.', 'A document or structured voice recording; keep the citation list in text.'],
-      evidence: 'One real learning struggle, one privacy-safe artifact, and at least two assigned sources'
+      submit: ['A baseline, strategy rationale, two dated check-ins, one adjustment, and a final decision.', 'Simple evidence may include time, attempts, errors, confidence, or completion.'],
+      evidence: 'Your dated seven-day trial record and the course evidence supporting the strategy'
     },
     {
       id: 'midcourse-practice-synthesis',
-      title: 'Mid-course Practice Synthesis',
+      title: 'Mid-course Reflection: What the Evidence Changed',
       weight: '10 percent',
-      schedule: 'Due October 23 at the end of Week 7, before Study Week.',
+      schedule: 'Opens October 19. Due October 23 at 11:59 p.m. Eastern.',
       due: 'Friday, October 23, 2026',
-      weeks: 'Your Weekly Reflections from Weeks 2 to 7',
-      summary: 'Read your own first-half record as evidence, name a pattern, and set two testable changes for the second half of the term.',
+      weeks: 'At least three journal entries and one live-class artefact',
+      summary: 'Read your first-half course record closely, identify one learning pattern, interpret it with one course source, and set one specific back-half experiment.',
       steps: [
-        'Re-read your Weeks 2 to 7 Weekly Reflections from start to finish.',
-        'Quote at least three exact lines from your own entries.',
-        'Name where your practice holds, where it slips, and what tends to be true when it slips.',
-        'Set two specific changes that your later reflections can check.'
+        'Reread at least three Private Learning Journal entries and one live-class artefact.',
+        'Point to the dates of the evidence and identify one pattern in planning, monitoring, difficulty, or help-seeking.',
+        'Use one course source to interpret the pattern.',
+        'Set one specific experiment for the second half of the term.'
       ],
-      submit: ['A 600 to 800 word synthesis.', 'At least three exact, verifiable quotations from your own Weekly Reflections.', 'Two concrete changes for Weeks 8 to 12.'],
-      evidence: 'At least three verified lines from your own reflection record'
+      submit: ['A 600 to 800 word reflection or a four to five minute audio reflection.', 'Dated references to at least three journal entries and one live-class artefact.'],
+      evidence: 'Your dated first-half course record and one course source'
     },
     {
       id: 'srl-case-redesign',
-      title: 'Self-Regulated Learning Case Redesign',
+      title: 'Learning Case Redesign',
       weight: '20 percent',
-      schedule: 'Due November 6 at the end of Week 8.',
+      schedule: 'Cases open October 13. Due November 6 at 11:59 p.m. Eastern.',
       due: 'Friday, November 6, 2026',
-      weeks: 'Evidence from Weeks 2 and 5 to 7',
-      summary: 'Diagnose one real study routine, redesign it with the self-regulated learning cycle and resilience as process, then test it for seven days.',
+      weeks: 'A course-provided case interpreted through course evidence',
+      summary: 'Diagnose one course-provided learning case and redesign both the learner\'s strategy and the conditions around the learning.',
       steps: [
-        'Choose one real routine and describe honestly where it breaks down.',
-        'Redesign it through planning, monitoring, adjustment, and resilience-as-process thinking.',
-        'Run the redesigned routine for seven days and log what you planned, what happened, and what you adjusted.'
+        'Choose one case released in Blackboard and map its current learning loop.',
+        'Use self-regulated learning, self-efficacy, motivation, and social-context evidence to diagnose the loop.',
+        'Create a before-and-after model that includes one environmental or relational support.',
+        'Name one limit or uncertainty instead of blaming the learner or treating mindset as the only cause.'
       ],
-      submit: ['A 600 to 800 word diagnosis and redesign.', 'A real seven-day implementation log as an appendix; the log may use voice notes.', 'At least two assigned sources from Weeks 2, 5, 6, or 7, cited in APA.'],
-      evidence: 'One real routine, an honest seven-day log, and at least two assigned sources'
+      submit: ['A visual before-and-after learning loop.', 'A 500 to 700 word rationale using at least two course concepts and one course source.', 'One environmental or relational support and one limit or uncertainty.'],
+      evidence: 'The course-provided case, at least two course concepts, and one course source'
     },
     {
       id: 'mindset-evidence-check-2',
-      title: 'Mindset Evidence Check 2',
+      title: 'Strategy Trial 2: Recovery and Help-Seeking',
       weight: '20 percent',
-      schedule: 'Due November 27 at the end of Week 11.',
+      schedule: 'Opens November 9. Due November 27 at 11:59 p.m. Eastern.',
       due: 'Friday, November 27, 2026',
-      weeks: 'Evidence from Weeks 8 to 11',
-      summary: 'Examine one hard learning moment through self-compassion, psychological flexibility, perseverance, and help seeking without clinical disclosure.',
+      weeks: 'A second, low-risk trial using a different situation or strategy',
+      summary: 'Run a second trial focused on recovery, psychological flexibility, self-compassion, communication, or help-seeking.',
       steps: [
-        'Choose one real moment from this term when you considered quitting or scaling back, using only what you are comfortable sharing.',
-        'Apply the Week 8 to 11 evidence on self-compassion, flexibility, perseverance, and help seeking.',
-        'End with three sentences: what you did, what the research suggests, and what you take from the gap.'
+        'Choose a low-risk situation and a different strategy from Trial 1.',
+        'Create a starting plan linked to a course concept and record two dated evidence points.',
+        'Make one adjustment and explain how context helped or constrained the strategy.',
+        'Name a realistic next action and an appropriate support route.'
       ],
-      submit: ['A 500 to 700 word analysis of one real moment.', 'A closing three-sentence comparison.', 'At least two assigned sources from Weeks 8 to 11, cited in APA; a structured voice recording is an option with the citation list in text.'],
-      evidence: 'One real term experience and at least two assigned sources from Weeks 8 to 11'
+      submit: ['A starting plan, two dated evidence points, one adjustment, and a contextual reflection.', 'A realistic next action and an appropriate support route.'],
+      evidence: 'Your dated second trial record and the course concept guiding it'
     },
     {
       id: 'personal-resilience-plan',
       title: 'Personal Resilience Plan',
       weight: '20 percent',
-      schedule: 'Introduced in Week 13 and due December 11. Nothing is due in Week 14.',
+      schedule: 'Milestones open November 2, November 16, and November 30. Final plan due December 11.',
       due: 'Friday, December 11, 2026',
-      weeks: 'Final project drawing on the full course record',
-      summary: 'Build a forward plan from course evidence and your own Weekly Reflections so the term becomes a set of practices you can use next term.',
+      weeks: 'Final plan drawing on the full course record',
+      summary: 'Build a practical learning and well-being support plan from your journal, both strategy trials, the case redesign, feedback, and at least six dated pieces of your own evidence.',
       steps: [
-        'Set three to five concrete, scheduled commitments you could realistically keep next term.',
-        'Back each commitment with a course concept or source and exact evidence from your own Weekly Reflections.',
-        'Add a support map naming the people and resources you will use and what you will say to them.',
-        'Close with what should travel with you beyond school and why.'
+        'Name early signs that your learning is becoming stuck.',
+        'Plan specific actions before, during, and after a difficult period.',
+        'Map people, services, and environmental changes that can support you.',
+        'Build a planning, monitoring, adjusting, and reviewing loop from at least six dated pieces of course evidence.'
       ],
-      submit: ['A 1,000 to 1,300 word plan quoting at least six of your own Weekly Reflections, with each week named.', 'At least three assigned sources, cited in APA.', 'A document, or a structured question-and-answer version with a recorded walkthrough.'],
-      evidence: 'At least six verified Weekly Reflection quotations and at least three assigned sources'
+      submit: ['A 1,000 to 1,400 word plan or a seven to nine minute narrated visual plan.', 'At least six dated pieces of your own course evidence.', 'A practical support map and self-regulation loop.'],
+      evidence: 'Your journal, both strategy trials, case redesign, feedback, and at least six dated course artefacts'
     }
   ];
   function assessmentById(id) {
@@ -1618,31 +1621,37 @@
       + '</div></section>';
   }
   function keyDatesList() {
-    /* schema: [label, subtext, category, assignmentId?] */
     return [
-      { d: '2026-09-08', it: [['All six graded pieces visible', 'The full assessment path is available on this site from day one', 'open']] },
+      { d: '2026-09-08', it: [['All six assessment guides visible', 'Use the companion site to plan; Blackboard controls release and submission', 'open']] },
       { d: '2026-09-10', it: [['Week 1 live class', 'Course orientation and shared start', 'class']] },
-      { d: '2026-09-14', it: [['Weekly Reflections begin', 'Weeks 2 to 12; best 10 of 11 entries count', 'open', 'weekly-reflections']] },
+      { d: '2026-09-14', it: [['Private Learning Journal opens', 'six private entries across Weeks 2 to 12', 'open', 'weekly-reflections']] },
       { d: '2026-09-17', it: [['Week 2 live class', '', 'class']] },
+      { d: '2026-09-21', it: [['Strategy Trial 1: Study, Test, Adjust opens', 'begin a seven-day trial', 'open', 'mindset-evidence-check-1']] },
       { d: '2026-09-24', it: [['Week 3 live class', '', 'class']] },
       { d: '2026-10-01', it: [['Week 4 live class', '', 'class']] },
       { d: '2026-10-08', it: [['Week 5 live class', '', 'class']] },
-      { d: '2026-10-09', it: [['Mindset Evidence Check 1', 'due, end of Week 5; 20 percent', 'due', 'mindset-evidence-check-1']] },
+      { d: '2026-10-09', it: [['Strategy Trial 1: Study, Test, Adjust', 'due; 20 percent', 'due', 'mindset-evidence-check-1']] },
+      { d: '2026-10-13', it: [['Learning Case Redesign cases open', 'choose one course-provided case', 'open', 'srl-case-redesign']] },
       { d: '2026-10-15', it: [['Week 6 asynchronous learning', 'Independent extension of resilience into context and culture', 'async']] },
+      { d: '2026-10-19', it: [['Mid-course Reflection: What the Evidence Changed opens', 'reread the first-half record', 'open', 'midcourse-practice-synthesis']] },
       { d: '2026-10-22', it: [['Week 7 live class', '', 'class']] },
-      { d: '2026-10-23', it: [['Mid-course Practice Synthesis', 'due, end of Week 7; 10 percent', 'due', 'midcourse-practice-synthesis']] },
-      { d: '2026-10-26', it: [['Study Week', 'Oct 26 to 30. No class and no new module.', 'support']] },
+      { d: '2026-10-23', it: [['Mid-course Reflection: What the Evidence Changed', 'due; 10 percent', 'due', 'midcourse-practice-synthesis']] },
+      { d: '2026-10-26', it: [['Study Week', 'October 26 to 30. No class, new module, or graded deadline.', 'support']] },
+      { d: '2026-11-02', it: [['Personal Resilience Plan Milestone 1 opens', 'begin the evidence map', 'open', 'personal-resilience-plan']] },
       { d: '2026-11-05', it: [['Week 8 live class', '', 'class']] },
-      { d: '2026-11-06', it: [['Self-Regulated Learning Case Redesign', 'due, end of Week 8; 20 percent', 'due', 'srl-case-redesign']] },
+      { d: '2026-11-06', it: [['Learning Case Redesign', 'due; 20 percent', 'due', 'srl-case-redesign']] },
+      { d: '2026-11-09', it: [['Strategy Trial 2: Recovery and Help-Seeking opens', 'begin a different, low-risk trial', 'open', 'mindset-evidence-check-2']] },
       { d: '2026-11-12', it: [['Week 9 live class', '', 'class']] },
+      { d: '2026-11-16', it: [['Personal Resilience Plan Milestone 2 opens', 'develop the support and regulation loops', 'open', 'personal-resilience-plan']] },
       { d: '2026-11-19', it: [['Week 10 asynchronous learning', 'Independent reflective writing and journaling', 'async']] },
       { d: '2026-11-26', it: [['Week 11 live class', '', 'class']] },
-      { d: '2026-11-27', it: [['Mindset Evidence Check 2', 'due, end of Week 11; 20 percent', 'due', 'mindset-evidence-check-2']] },
+      { d: '2026-11-27', it: [['Strategy Trial 2: Recovery and Help-Seeking', 'due; 20 percent', 'due', 'mindset-evidence-check-2']] },
+      { d: '2026-11-30', it: [['Personal Resilience Plan Milestone 3 and final area open', 'complete the integrated plan', 'open', 'personal-resilience-plan']] },
       { d: '2026-12-03', it: [['Week 12 live class', 'Final substantive class meeting', 'class']] },
-      { d: '2026-12-04', it: [['Weekly Reflections close', 'best 10 of 11 entries count; 10 percent', 'due', 'weekly-reflections']] },
+      { d: '2026-12-04', it: [['Private Learning Journal', 'six-entry collection due; 10 percent', 'due', 'weekly-reflections']] },
       { d: '2026-12-10', it: [['Week 13 asynchronous office hours and supported completion', 'No lecture; focused work and consultation', 'async']] },
-      { d: '2026-12-11', it: [['Personal Resilience Plan', 'due, final project; 20 percent', 'due', 'personal-resilience-plan']] },
-      { d: '2026-12-14', it: [['Week 14 asynchronous office hours and course closure', 'No lecture; optional consultation, feedback, and final questions', 'async']] },
+      { d: '2026-12-11', it: [['Personal Resilience Plan', 'final plan due; 20 percent', 'due', 'personal-resilience-plan']] },
+      { d: '2026-12-14', it: [['Week 14 asynchronous office hours and course closure', 'No lecture; optional consultation and final questions', 'async']] },
       { d: '2026-12-16', it: [['Last day of the term', 'No graded work is due in Week 14', 'support']] }
     ];
   }
@@ -1749,10 +1758,10 @@
     return '<section class="node kd-cal" aria-label="Key dates for this course">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">DUE DATES</div>'
       + '<h2 class="wk-sec" style="margin:0 0 4px">What you hand in, and when</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Weekly Reflections run from Weeks 2 to 12 and your best 10 of 11 entries count. Mindset Evidence Check 1 is due October 9, the Mid-course Practice Synthesis is due October 23, the Case Redesign is due November 6, Mindset Evidence Check 2 is due November 27, the reflection thread closes December 4, and the Personal Resilience Plan final project is due December 11. Nothing is due in Study Week or Week 14. Blackboard confirms the exact submission time.'
+      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">The Private Learning Journal requires six dated entries and is due December 4. Strategy Trial 1 is due October 9, the Mid-course Reflection is due October 23, Learning Case Redesign is due November 6, Strategy Trial 2 is due November 27, and the Personal Resilience Plan is due December 11. Nothing is due in Study Week or Week 14. Blackboard confirms the exact submission time.'
       + '<div class="kd-list">' + keyDatesRows(['due']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">Assessment availability and start dates</h2>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">All six assessment guides are visible on this site from September 8. Weekly Reflections begin the week of September 14. These are not deadlines or claims about Blackboard submission-opening dates.</p>'
+      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">All six assessment guides are visible on this site from September 8. The Private Learning Journal opens September 14, and later assessment rooms open on the dates shown. Blackboard remains the official release and submission record.</p>'
       + '<div class="kd-list">' + keyDatesRows(['open']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">The class schedule</h2>'
       + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The shape of the term. Nothing here is due.</p>'
@@ -1847,12 +1856,12 @@
       return '<button type="button" class="pp-dot' + (done ? ' on' : '') + (cur ? ' cur' : '') + '" onclick="SOC.station(' + w + ')" title="Week ' + w + '" aria-label="Week ' + w + (done ? ', practised' : '') + '">' + (done ? '&#10003;' : w) + '</button>';
     }).join('');
     var line;
-    if (cw.phase === 'before') line = 'Your Weekly Reflections begin in Week 2. Together, they build the record used in your mid-course synthesis and final plan.';
+    if (cw.phase === 'before') line = 'Your Private Learning Journal opens in Week 2. Six dated entries build the record used in your mid-course reflection and final plan.';
     else if (entries === 0) line = 'No entries yet. One honest reflection this week starts the record used in your synthesis and final project.';
-    else line = 'You have practised in ' + entries + ' of 11 weeks. Your best 10 Weekly Reflection entries count, and the full record feeds later assessments.';
+    else line = 'You have used the reflection support in ' + entries + ' of 11 prompt weeks. The graded Private Learning Journal requires six dated entries, and the full course record feeds later assessments.';
     return '<section class="node practice-pulse"><div class="mono pp-kick">YOUR PRACTICE PULSE</div>'
       + '<h2 class="pp-h">This course works by practice, not cramming.</h2>'
-      + '<p class="pp-p">Weekly Reflections are worth 10 percent and run from Weeks 2 to 12; your best 10 of 11 entries count. Each one begins with a specific weekly learning or participation moment, whether the week is live or asynchronous. This pulse is optional planning support: a week lights up when you have written in this site or worked its page. It is not a Blackboard submission, and it uses temporary browser storage when that storage is available.</p>'
+      + '<p class="pp-p">The Private Learning Journal is worth 10 percent and requires six dated entries across Weeks 2 to 12. Each graded entry begins with a real learning moment, class artefact, or strategy attempt and uses one psychological concept. This pulse is optional planning support: a week lights up when you have written on this site or worked its page. It is not a Blackboard submission, and it uses temporary browser storage when available.</p>'
       + '<div class="pp-dots">' + dots + '</div>'
       + '<p class="pp-line">' + line + '</p>'
       + '</section>';
@@ -3593,15 +3602,15 @@
     var steps = [
       ['Prepare', 'Before class', 'Open the week, complete the readings, enter the weekly experience, and choose one question to bring with you.'],
       ['Meet or work independently', 'Follow the week label', 'Live weeks use discussion. Asynchronous weeks use the week page for independent application, synthesis, completion, or closure.'],
-      ['Reflect', 'Each week', 'Complete your graded Weekly Reflection in Blackboard while the week\'s learning and your own practice are still clear.'],
+      ['Reflect', 'Across six dated entries', 'Use the weekly reflection space to notice a learning moment, then complete the matching private Blackboard Journal prompt when it opens.'],
       ['Rehearse', 'Self-study', 'Use Source Practice, flashcards, the Study Guide, or the Knowledge Check only when they help you check your understanding.'],
-      ['Carry forward', 'Your learning record', 'Quote verified lines from your Weekly Reflections in the Mid-course Practice Synthesis and Personal Resilience Plan.']
+      ['Carry forward', 'Your learning record', 'Quote verified lines from your Private Learning Journal in the Mid-course Reflection: What the Evidence Changed and Personal Resilience Plan.']
     ];
     var route = '<section class="path-route path-sync"><div class="path-route-head"><div class="mono">BLENDED SYNCHRONOUS COURSE</div><h2>One rhythm, two ways of learning</h2><p>Most weeks meet live. Weeks 6 and 10 are independent asynchronous learning. Week 13 protects supported completion, and Week 14 provides low-pressure closure and optional consultation.</p></div><ol>'
       + steps.map(function (s, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(s[0]) + '</b><em>' + esc(s[1]) + '</em><p>' + esc(s[2]) + '</p></div></li>'; }).join('') + '</ol></section>';
     return '<div class="rise path-page">'
       + '<section class="path-hero"><div><div class="mono">COURSE RHYTHM</div><h1>Prepare, meet or work independently, reflect, and carry it forward</h1><p>PSY355 uses live discussion and four purposeful asynchronous weeks around a continuing reflection record. The week label tells you exactly how that week works.</p></div><div class="path-compass" aria-label="PSY355 weekly rhythm"><span>PREPARE</span><b>read and orient</b><i></i><span>REFLECT</span><b>connect and carry forward</b></div></section>'
-      + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 6 extends resilience into context and culture, Week 10 makes room for reflective practice, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your graded Weekly Reflections create the record used in the mid-course synthesis and final plan.</span></div></section>'
+      + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 6 extends resilience into context and culture, Week 10 makes room for reflective practice, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your six Private Learning Journal entries create evidence for the mid-course reflection and final plan.</span></div></section>'
       + '<div class="path-routes">' + route + '</div>'
       + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week, check its delivery label and purpose, then follow the route on that page. Submit graded work in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>See the mode and weekly route.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Experiences</b><small>Enter or revisit the week\'s immersive teaching experience.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Calendar and Due Dates</b><small>See delivery modes and deadlines.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Understand the graded work.</small></button></div></section>'
       + '</div>';
@@ -3623,7 +3632,7 @@
     var steps = PSY_ASSESSMENTS.map(function (a, i) {
       return '<li><span>' + (i + 1) + '</span><div><b>' + esc(a.title) + '</b><em>' + esc(a.weight + ' | ' + a.schedule) + '</em><p>' + esc(a.summary) + '</p><a class="wk-cta" style="display:inline-flex;margin:4px 0 0;text-decoration:none" href="' + assessmentHref(a.id) + '">Open assessment guide <span aria-hidden="true">&#8594;</span></a></div></li>';
     }).join('');
-    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Understanding Your Assignments</h1><p>All six graded pieces are visible here from day one. Use this site to understand the path and gather concepts and evidence, then use Blackboard for the official brief, rubric, submission, and grade.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Your record matters</b><span>Weekly Reflections are graded and become evidence for the mid-course synthesis and final plan.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section>' + assignmentIntegrityNotice() + assignmentStartLabLaunch() + '<section class="path-route"><div class="path-route-head"><div class="mono">THE SIX GRADED PIECES</div><h2>See the whole assessment path</h2><p>The guide for every piece is available here from September 8. This does not claim that every Blackboard dropbox is open; always check Blackboard for the official brief and submission status.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then return here when you are ready to plan the graded work.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Week 2</b><small>Begin the reflection record.</small></button><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Evidence Check 1.</small></button><button type="button" onclick="SOC.station(7)"><b>Week 7</b><small>Mid-course synthesis.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>Case redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Evidence Check 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Final project planning.</small></button></div></section></div>';
+    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Understanding Your Assignments</h1><p>All six graded pieces are visible here from day one. Use this site to understand the path and gather concepts and evidence, then use Blackboard for the official brief, rubric, submission, and grade.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Your record matters</b><span>The six Private Learning Journal entries become evidence for the mid-course reflection and final plan.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section>' + assignmentIntegrityNotice() + assignmentStartLabLaunch() + '<section class="path-route"><div class="path-route-head"><div class="mono">THE SIX GRADED PIECES</div><h2>See the whole assessment path</h2><p>The guide for every piece is available here from September 8. Blackboard releases each complete brief and submission area on the approved schedule.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then return here when you are ready to plan the graded work.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Week 2</b><small>Begin the six-entry journal record.</small></button><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Strategy Trial 1.</small></button><button type="button" onclick="SOC.station(7)"><b>Week 7</b><small>Mid-course reflection.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>Learning Case Redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Strategy Trial 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Final plan support.</small></button></div></section></div>';
   }
   function assignmentDetailsPage() {
     var a = assessmentById(state.assignmentId);
