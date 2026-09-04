@@ -39,3 +39,26 @@
 .walk-immersive.walk-contrast .walk-source-link{color:#FFEA00}.walk-immersive.walk-contrast .walk-source-access,.walk-immersive.walk-contrast .walk-source-apa,.walk-immersive.walk-contrast .walk-figdesc p{color:#fff!important}.walk-immersive.walk-contrast .walk-figdesc{background:#000;border-color:#fff}
 @media(max-width:760px){.walk-immersive .walk-reset{width:36px!important;min-width:36px!important;font-size:0!important}.walk-immersive .walk-reset::after{content:"\21BA";font-size:1rem}.walk-immersive .walk-dots{max-width:52vw;gap:0}.walk-immersive .walk-dot{flex-basis:28px}}
 #walk-overlay.walk-immersive.walk-contrast,#walk-overlay.walk-immersive.walk-contrast .walk-viewport,#walk-overlay.walk-immersive.walk-contrast .walk-track>.walk-slide{background:#000;color:#fff}#walk-overlay.walk-immersive.walk-contrast .walk-head,#walk-overlay.walk-immersive.walk-contrast .walk-bar,#walk-overlay.walk-immersive.walk-contrast .walk-access-panel{background:#000;color:#fff;border-color:#fff}.walk-immersive.walk-contrast .walk-brand,.walk-immersive.walk-contrast .walk-brand b,.walk-immersive.walk-contrast .walk-text-tools>span,.walk-immersive.walk-contrast .walk-text-tools output,.walk-immersive.walk-contrast .walk-title,.walk-immersive.walk-contrast .walk-h,.walk-immersive.walk-contrast .walk-lead,.walk-immersive.walk-contrast .walk-body,.walk-immersive.walk-contrast .walk-qlist li,.walk-immersive.walk-contrast .walk-can li,.walk-immersive.walk-contrast .walk-reflect p,.walk-immersive.walk-contrast .walk-term-h,.walk-immersive.walk-contrast .walk-term-d,.walk-immersive.walk-contrast .walk-figcap,.walk-immersive.walk-contrast .walk-access-panel,.walk-immersive.walk-contrast .walk-access-note{color:#fff!important;text-shadow:none!important}.walk-immersive.walk-contrast .walk-scene-copy,.walk-immersive.walk-contrast .walk-context-grid>div,.walk-immersive.walk-contrast .walk-program-grid>div,.walk-immersive.walk-contrast .walk-reading-card,.walk-immersive.walk-contrast .walk-evidence details,.walk-immersive.walk-contrast .walk-decision,.walk-immersive.walk-contrast .walk-decision>button{background:#000;color:#fff;border-color:#fff}.walk-immersive.walk-contrast .walk-q{background:#000;border:2px solid #FFEA00}.walk-immersive.walk-contrast .walk-q b,.walk-immersive.walk-contrast .walk-context-grid b,.walk-immersive.walk-contrast .walk-program-grid b,.walk-immersive.walk-contrast .walk-context-grid p,.walk-immersive.walk-contrast .walk-program-grid p,.walk-immersive.walk-contrast .walk-decision>div{color:#fff!important}.walk-immersive.walk-contrast .walk-theme,.walk-immersive.walk-contrast .walk-close,.walk-immersive.walk-contrast .walk-text-tools button,.walk-immersive.walk-contrast .walk-prev,.walk-immersive.walk-contrast .walk-next,.walk-immersive.walk-contrast .walk-access-panel button,.walk-immersive.walk-contrast .walk-access-panel select{background:#000!important;color:#fff!important;border:2px solid #fff!important}.walk-immersive.walk-contrast .walk-dot{background:#fff}.walk-immersive.walk-contrast .walk-dot.on{background:#FFEA00}
+
+/* Tactile micro-interactions and focus rings for walkthrough activities */
+.walk-immersive .walk-decision>button:active,
+.walk-immersive .walk-enter:active,
+.walk-immersive .walk-cta:active,
+.walk-immersive .walk-figctl button:active,
+.walk-immersive .walk-prev:active,
+.walk-immersive .walk-next:active {
+  transform: scale(0.985);
+  transition: transform .08s ease;
+}
+.walk-immersive .walk-decision>button:focus-visible,
+.walk-immersive .walk-enter:focus-visible,
+.walk-immersive .walk-cta:focus-visible,
+.walk-immersive .walk-figctl button:focus-visible,
+.walk-immersive .walk-prev:focus-visible,
+.walk-immersive .walk-next:focus-visible {
+  outline: 2.5px solid var(--walk-red) !important;
+  outline-offset: 2px !important;
+}
+.walk-immersive .walk-decision>button:hover {
+  border-color: var(--walk-red);
+}

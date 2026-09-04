@@ -20,10 +20,10 @@ window.PSY355_OUTCOMES = {
     14
    ],
    "assessments": [
-    "Weekly Reflections",
-    "Mindset Evidence Check 1",
-    "Self-Regulated Learning Case Redesign",
-    "Mindset Evidence Check 2",
+    "Private Learning Journal",
+    "Strategy Trial 1: Study, Test, Adjust",
+    "Learning Case Redesign",
+    "Strategy Trial 2: Recovery and Help-Seeking",
     "Personal Resilience Plan final project"
    ]
   },
@@ -41,7 +41,7 @@ window.PSY355_OUTCOMES = {
     14
    ],
    "assessments": [
-    "Self-Regulated Learning Case Redesign",
+    "Learning Case Redesign",
     "Personal Resilience Plan final project"
    ]
   },
@@ -62,11 +62,11 @@ window.PSY355_OUTCOMES = {
     14
    ],
    "assessments": [
-    "Weekly Reflections",
-    "Mindset Evidence Check 1",
-    "Mid-course Practice Synthesis",
-    "Self-Regulated Learning Case Redesign",
-    "Mindset Evidence Check 2",
+    "Private Learning Journal",
+    "Strategy Trial 1: Study, Test, Adjust",
+    "Mid-course Reflection: What the Evidence Changed",
+    "Learning Case Redesign",
+    "Strategy Trial 2: Recovery and Help-Seeking",
     "Personal Resilience Plan final project"
    ]
   },
@@ -89,11 +89,11 @@ window.PSY355_OUTCOMES = {
     14
    ],
    "assessments": [
-    "Weekly Reflections",
-    "Mindset Evidence Check 1",
-    "Mid-course Practice Synthesis",
-    "Self-Regulated Learning Case Redesign",
-    "Mindset Evidence Check 2",
+    "Private Learning Journal",
+    "Strategy Trial 1: Study, Test, Adjust",
+    "Mid-course Reflection: What the Evidence Changed",
+    "Learning Case Redesign",
+    "Strategy Trial 2: Recovery and Help-Seeking",
     "Personal Resilience Plan final project"
    ]
   },
@@ -117,11 +117,11 @@ window.PSY355_OUTCOMES = {
     14
    ],
    "assessments": [
-    "Weekly Reflections",
-    "Mindset Evidence Check 1",
-    "Mid-course Practice Synthesis",
-    "Self-Regulated Learning Case Redesign",
-    "Mindset Evidence Check 2",
+    "Private Learning Journal",
+    "Strategy Trial 1: Study, Test, Adjust",
+    "Mid-course Reflection: What the Evidence Changed",
+    "Learning Case Redesign",
+    "Strategy Trial 2: Recovery and Help-Seeking",
     "Personal Resilience Plan final project"
    ]
   }
