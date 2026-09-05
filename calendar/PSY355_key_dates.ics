@@ -120,13 +120,13 @@ SUMMARY:PSY355 Week 13: supported asynchronous completion
 DESCRIPTION:Follow the independent or supported route on the week page.
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
+DTSTAMP:20260905T063000Z
+SEQUENCE:4
 UID:psy355-w14@rpeart73.github.io
-DTSTART;VALUE=DATE:20261214
+DTSTART;VALUE=DATE:20261213
 DTEND;VALUE=DATE:20261217
 SUMMARY:PSY355 Week 14: asynchronous course closure
-DESCRIPTION:Follow the independent or supported route on the week page.
+DESCRIPTION:Final Learning Reflection due December 13 at 11:59 p.m. Eastern. No lecture.
 END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260902T160000Z

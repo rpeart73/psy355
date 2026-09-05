@@ -3280,7 +3280,7 @@
       route: ['Reflect', 'Save notes'],
       startPart: 'reflect',
       startLabel: 'Start reflection',
-      question: 'No new teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and close out the course. Nothing is due.' : '. Any assessment due this week is confirmed on Blackboard.') + ((d.readings && d.readings.length) ? ' The readings below are revisit anchors from earlier weeks, not new assignments.' : ''),
+      question: 'No new teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and complete the Final Learning Reflection in Blackboard by Sunday, December 13, at 11:59 p.m. Eastern.' : '. Any assessment due this week is confirmed on Blackboard.') + ((d.readings && d.readings.length) ? ' The readings below are revisit anchors from earlier weeks, not new assignments.' : ''),
       time: 'No new material'
     });
     var A = authoredWeekSections(w, d, { readingsTitle: 'Revisit readings', readingsIntro: '<p class="wk-hint">Nothing here is new. These are the anchors worth rereading as you finish your work; each one names why it earns the revisit.</p>' });
