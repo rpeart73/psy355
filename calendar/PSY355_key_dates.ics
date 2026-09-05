@@ -212,14 +212,28 @@ BEGIN:VEVENT
 UID:psy355-_27272594_1-release@seneca-assessments
 DTSTAMP:20260905T030000Z
 DTSTART:20261130T050100Z
-SUMMARY:PSY355: Personal Resilience Plan opens (20%)
+SUMMARY:PSY355: Personal Resilience Plan opens (15%)
 DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272594_1-due@seneca-assessments
 DTSTAMP:20260905T030000Z
 DTSTART:20261212T045900Z
-SUMMARY:PSY355: Personal Resilience Plan due (20%)
+SUMMARY:PSY355: Personal Resilience Plan due (15%)
 DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27380329_1-release@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261130T050000Z
+SUMMARY:PSY355: Final Learning Reflection opens (5%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27380329_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27380329_1-due@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261214T045900Z
+SUMMARY:PSY355: Final Learning Reflection due (5%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27380329_1
 END:VEVENT
 END:VCALENDAR

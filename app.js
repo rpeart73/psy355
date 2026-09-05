@@ -1743,9 +1743,20 @@
     "it": [
       [
         "Personal Resilience Plan opens",
-        "20%; submit in Blackboard",
+        "15%; submit in Blackboard",
         "open",
         "personal-resilience-plan"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-30",
+    "it": [
+      [
+        "Final Learning Reflection opens",
+        "5%; submit in Blackboard",
+        "open",
+        "final-reflection"
       ]
     ]
   },
@@ -1785,14 +1796,25 @@
     "it": [
       [
         "Personal Resilience Plan",
-        "due; 20%",
+        "due; 15%",
         "due",
         "personal-resilience-plan"
       ]
     ]
   },
   {
-    "d": "2026-12-14",
+    "d": "2026-12-13",
+    "it": [
+      [
+        "Final Learning Reflection",
+        "due; 5%",
+        "due",
+        "final-reflection"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-13",
     "it": [
       [
         "Week 14 asynchronous office hours and course closure",
@@ -1806,7 +1828,7 @@
     "it": [
       [
         "Last day of the term",
-        "No graded work is due in Week 14",
+        "The Final Learning Reflection is due Sunday, December 13, at 11:59 p.m. Eastern",
         "support"
       ]
     ]
@@ -1916,10 +1938,10 @@
     return '<section class="node kd-cal" aria-label="Key dates for this course">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">DUE DATES</div>'
       + '<h2 class="wk-sec" style="margin:0 0 4px">What you hand in, and when</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">The Private Learning Journal requires six dated entries and is due December 4. Strategy Trial 1 is due October 9, the Mid-course Reflection is due October 23, Learning Case Redesign is due November 6, Strategy Trial 2 is due November 27, and the Personal Resilience Plan is due December 11. Nothing is due in Study Week or Week 14. Blackboard confirms the exact submission time.'
+      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">The Private Learning Journal requires six dated entries and is due December 4. Strategy Trial 1 is due October 9, the Mid-course Reflection is due October 23, Learning Case Redesign is due November 6, Strategy Trial 2 is due November 27, and the Personal Resilience Plan is due December 11. Nothing is due in Study Week. The Final Learning Reflection is due Sunday, December 13, in Week 14. Blackboard confirms the exact submission time.'
       + '<div class="kd-list">' + keyDatesRows(['due']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">Assessment availability and start dates</h2>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">All six assessment guides are visible on this site from September 8. The Private Learning Journal opens September 14, and later assessment rooms open on the dates shown. Blackboard remains the official release and submission record.</p>'
+      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">All seven assessment guides are visible on this site from September 8. The Private Learning Journal opens September 14, and later assessment rooms open on the dates shown. Blackboard remains the official release and submission record.</p>'
       + '<div class="kd-list">' + keyDatesRows(['open']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">The class schedule</h2>'
       + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The shape of the term. Nothing here is due.</p>'
@@ -3218,7 +3240,7 @@
     if (w === 6) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Use the flexible class time to extend last week\'s view of resilience into context and culture at your own pace, and notice where your own supports actually sit.' };
     if (w === 10) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Reflective writing works best unhurried, so use the flexible class time to journal properly rather than fitting it around a class.' };
     if (w === 13) return { kind: 'async', label: 'OFFICE HOURS + SUPPORTED ASYNCHRONOUS COMPLETION', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes office hours for focused final-work support and consultation. Office hours are not recorded by default.' };
-    if (w === 14) return { kind: 'async', label: 'OFFICE HOURS + ASYNCHRONOUS COURSE CLOSURE', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes optional office hours for feedback and final questions. No graded work is due, and office hours are not recorded by default.' };
+    if (w === 14) return { kind: 'async', label: 'OFFICE HOURS + ASYNCHRONOUS COURSE CLOSURE', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes optional office hours for feedback and final questions. Submit your Final Learning Reflection by Sunday, December 13, at 11:59 p.m. Eastern. Office hours are optional and are not recorded by default.' };
     return { kind: 'live', label: 'SYNCHRONOUS LIVE CLASS', short: 'Live class', reason: w === 12 ? 'This is the final substantive live class. Bring the connections you drew in Week 11 and use the meeting to test and strengthen them.' : 'Our class meets live this week. Use the week page before class to prepare and return after class to reflect and save what matters.' };
   }
   function deliveryNotice(w) {
@@ -3305,7 +3327,7 @@
       time: 'Overview, no readings'
     });
     var how = '<section id="wk-how" class="node"><h2 class="wk-sec">How this course works</h2>'
-      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">This is a blended synchronous course. Weeks 1 to 5, 7 to 9, 11, and 12 meet live. Weeks 6 and 10 are independent asynchronous learning weeks. Week 13 is supported asynchronous completion with office hours, and Week 14 is asynchronous course closure with optional consultation and no graded deadline. Every week page names its mode and purpose. Live weeks include a class-recording space; asynchronous weeks may carry a short instructor update. Study Week, October 26 to 30, has no class and no new module. Blackboard remains the official Seneca course platform.</p>'
+      + '<p style="margin:0 0 10px;font-size:1rem;line-height:1.6">This is a blended synchronous course. Weeks 1 to 5, 7 to 9, 11, and 12 meet live. Weeks 6 and 10 are independent asynchronous learning weeks. Week 13 is supported asynchronous completion with office hours, and Week 14 is asynchronous course closure with optional consultation and the Final Learning Reflection due Sunday, December 13. Every week page names its mode and purpose. Live weeks include a class-recording space; asynchronous weeks may carry a short instructor update. Study Week, October 26 to 30, has no class and no new module. Blackboard remains the official Seneca course platform.</p>'
       + '<p style="margin:0;font-size:1rem;line-height:1.6">This week is your orientation. There are no readings and nothing to submit. When you are ready, begin with Week ' + (next != null ? next : 2) + '.</p></section>';
     var reflect = '<section id="wk-reflect" class="node"><h2 class="wk-sec">Starting reflection</h2>'
       + '<p style="margin:0 0 8px;font-size:.95rem">' + esc(d.reflectPrompt || 'What is one learning habit you already have that deserves to be strengthened rather than judged?') + '</p>'

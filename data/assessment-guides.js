@@ -391,12 +391,12 @@ window.COURSE_ASSESSMENTS = [
   },
   {
     "id": "personal-resilience-plan",
-    "title": "6. Personal Resilience Plan (20%)",
+    "title": "6. Personal Resilience Plan (15%)",
     "name": "Personal Resilience Plan",
     "summary": "Build a practical learning and well-being support plan from your journal, both strategy trials, the case redesign, and feedback.",
-    "html": "<p style=\"margin:0;line-height:1.6;\">Worth 20% of your final course grade. Maximum score: 20 points.</p><p style=\"margin:0;line-height:1.6;\"><strong>PSY355, Fall 2026. Weight: 20 percent.</strong></p><h3>Your task</h3><p style=\"margin:0;line-height:1.6;\">Build a practical learning and well-being support plan from your journal, both strategy trials, the case redesign, and feedback.</p><h3>Your plan includes</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\">Early signs that your learning is becoming stuck.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Specific actions you can take before, during, and after a difficult period.</li><li style=\"margin:0 0 8px;line-height:1.6;\">People, services, and environmental changes that can support you.</li><li style=\"margin:0 0 8px;line-height:1.6;\">A repeating process for planning, checking your progress, making changes, and reviewing the result.</li><li style=\"margin:0 0 8px;line-height:1.6;\">At least six dated examples from your own course work.</li></ul><h3>Format and boundary</h3><p style=\"margin:0;line-height:1.6;\">Choose a 1,000 to 1,400 word plan or a 7 to 9 minute narrated visual plan. This is not a diagnosis, crisis plan, or treatment plan. Private disclosure is not required.</p><h3>How your work will be graded</h3><p style=\"margin:0;line-height:1.6;\">Strong means 85 to 100 percent of a criterion, Clear means 70 to 84 percent, Developing means 50 to 69 percent, and Limited means 0 to 49 percent.</p><h3>Course-long evidence: 6 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> Six or more dated course items form a credible course-long evidence base.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> Required course items are present and connected.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Evidence is thin, clustered, or weakly connected.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> The plan lacks required course evidence.</li></ul><h3>Plan specificity: 6 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> Signs, actions, supports, environment, and review loop are concrete and usable.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> The main plan components are clear and practical.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Several components are generic or incomplete.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> The plan is too vague to use.</li></ul><h3>Concept integration: 5 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> Psychological concepts are accurate, balanced, and connected to context and limits.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> Concepts are accurate and relevant.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Concept use is partial or mostly labelled.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> Concepts are absent or substantially inaccurate.</li></ul><h3>Communication and boundaries: 3 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> The plan is coherent, accessible, and respects learning and health boundaries.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> Communication and boundaries are clear.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Clarity or boundaries are uneven.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> The work is difficult to follow or crosses clinical boundaries.</li></ul><p style=\"margin:0;line-height:1.6;\">Your grade is based on the evidence in your work. Personal disclosure, polished production, and technical effects do not replace course learning.</p><h3>How to submit in Blackboard</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\">Open this assignment and select <strong>Start attempt</strong>. Write or paste your written work into the <strong>Submission</strong> editor using the headings in these instructions. A Word upload is optional.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Insert your required visual into the editor with a text description, or attach it as an accessible file. If you choose an audio or video format, attach the recording and captions or a transcript. A working Seneca OneDrive or Microsoft Stream link is also acceptable.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Keep all required parts together in this assignment. Before submitting, check that your text, attachments, and links open correctly.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Select <strong>Submit</strong>, wait for Blackboard’s confirmation, and keep the receipt. If you save a draft instead, return to submit it before the deadline.</li></ul><h3>Your work and permitted tools</h3><p style=\"margin:0;line-height:1.6;\">Use your own observations, choices, explanations, and sources. Do not use generative AI to write or rewrite your submission, invent experiences or evidence, or create narration in your place. You may use spelling, dictation, screen-reader, captioning, and accessibility tools that do not generate the course content. Ask me before using a tool if you are unsure.</p><h3>Release and due dates</h3><p style=\"margin:0;line-height:1.6;\"><strong>Released:</strong> November 30, 2026 at 12:01 a.m. Eastern.</p><p style=\"margin:0;line-height:1.6;\"><strong>Due:</strong> December 11, 2026 at 11:59 p.m. Eastern.</p>",
-    "weight": "20 points (20%)",
-    "points": 20,
+    "html": "<p style=\"margin:0;line-height:1.6;\">Worth 15% of your final course grade. Maximum score: 15 points.</p><p style=\"margin:0;line-height:1.6;\"><strong>PSY355, Fall 2026. Weight: 15 percent.</strong></p><h3>Your task</h3><p style=\"margin:0;line-height:1.6;\">Build a practical learning and well-being support plan from your journal, both strategy trials, the case redesign, and feedback.</p><h3>Your plan includes</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\">Early signs that your learning is becoming stuck.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Specific actions you can take before, during, and after a difficult period.</li><li style=\"margin:0 0 8px;line-height:1.6;\">People, services, and environmental changes that can support you.</li><li style=\"margin:0 0 8px;line-height:1.6;\">A repeating process for planning, checking your progress, making changes, and reviewing the result.</li><li style=\"margin:0 0 8px;line-height:1.6;\">At least six dated examples from your own course work.</li></ul><h3>Format and boundary</h3><p style=\"margin:0;line-height:1.6;\">Choose a 1,000 to 1,400 word plan or a 7 to 9 minute narrated visual plan. This is not a diagnosis, crisis plan, or treatment plan. Private disclosure is not required.</p><h3>How your work will be graded</h3><p style=\"margin:0;line-height:1.6;\">Strong means 85 to 100 percent of a criterion, Clear means 70 to 84 percent, Developing means 50 to 69 percent, and Limited means 0 to 49 percent.</p><h3>Course-long evidence: 4.5 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> Six or more dated course items form a credible course-long evidence base.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> Required course items are present and connected.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Evidence is thin, clustered, or weakly connected.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> The plan lacks required course evidence.</li></ul><h3>Plan specificity: 4.5 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> Signs, actions, supports, environment, and review loop are concrete and usable.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> The main plan components are clear and practical.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Several components are generic or incomplete.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> The plan is too vague to use.</li></ul><h3>Concept integration: 3.75 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> Psychological concepts are accurate, balanced, and connected to context and limits.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> Concepts are accurate and relevant.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Concept use is partial or mostly labelled.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> Concepts are absent or substantially inaccurate.</li></ul><h3>Communication and boundaries: 2.25 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Strong:</strong> The plan is coherent, accessible, and respects learning and health boundaries.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Clear:</strong> Communication and boundaries are clear.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Developing:</strong> Clarity or boundaries are uneven.</li><li style=\"margin:0 0 8px;line-height:1.6;\"><strong>Limited:</strong> The work is difficult to follow or crosses clinical boundaries.</li></ul><p style=\"margin:0;line-height:1.6;\">Your grade is based on the evidence in your work. Personal disclosure, polished production, and technical effects do not replace course learning.</p><h3>How to submit in Blackboard</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\">Open this assignment and select <strong>Start attempt</strong>. Write or paste your written work into the <strong>Submission</strong> editor using the headings in these instructions. A Word upload is optional.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Insert your required visual into the editor with a text description, or attach it as an accessible file. If you choose an audio or video format, attach the recording and captions or a transcript. A working Seneca OneDrive or Microsoft Stream link is also acceptable.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Keep all required parts together in this assignment. Before submitting, check that your text, attachments, and links open correctly.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Select <strong>Submit</strong>, wait for Blackboard’s confirmation, and keep the receipt. If you save a draft instead, return to submit it before the deadline.</li></ul><h3>Your work and permitted tools</h3><p style=\"margin:0;line-height:1.6;\">Use your own observations, choices, explanations, and sources. Do not use generative AI to write or rewrite your submission, invent experiences or evidence, or create narration in your place. You may use spelling, dictation, screen-reader, captioning, and accessibility tools that do not generate the course content. Ask me before using a tool if you are unsure.</p><h3>Release and due dates</h3><p style=\"margin:0;line-height:1.6;\"><strong>Released:</strong> November 30, 2026 at 12:01 a.m. Eastern.</p><p style=\"margin:0;line-height:1.6;\"><strong>Due:</strong> December 11, 2026 at 11:59 p.m. Eastern.</p>",
+    "weight": "15 points (15%)",
+    "points": 15,
     "releaseLabel": "November 30, 2026 at 12:01 a.m. Eastern",
     "dueLabel": "December 11, 2026 at 11:59 p.m. Eastern",
     "releaseDate": "2026-11-30",
@@ -433,22 +433,22 @@ window.COURSE_ASSESSMENTS = [
     "criteria": [
       [
         "Course-long evidence",
-        6,
+        4.5,
         ""
       ],
       [
         "Plan specificity",
-        6,
+        4.5,
         ""
       ],
       [
         "Concept integration",
-        5,
+        3.75,
         ""
       ],
       [
         "Communication and boundaries",
-        3,
+        2.25,
         ""
       ]
     ],
@@ -466,5 +466,83 @@ window.COURSE_ASSESSMENTS = [
     "weeks": "See the weekly overview for course connections.",
     "evidence": "Use the course evidence requested in the complete instructions.",
     "blackboard": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1"
+  },
+  {
+    "id": "final-reflection",
+    "title": "7. Final Learning Reflection (5%)",
+    "name": "Final Learning Reflection",
+    "summary": "Look back at how your approach to learning developed. Use two pieces of your own course work to show what changed in a learning decision or strategy. This is a short reflection, not another Personal Resilience Plan.",
+    "html": "<p style=\"margin:0;line-height:1.6;\">Worth 5% of your final course grade. Maximum score: 5 points.</p><h3>Your task</h3><p style=\"margin:0;line-height:1.6;\">Look back at how your approach to learning developed. Use two pieces of your own course work to show what changed in a learning decision or strategy. This is a short reflection, not another Personal Resilience Plan.</p><h3>Choose your evidence</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\">Choose one earlier and one later dated piece of your own work. You can use journal entries, strategy trials, the case redesign, dated course notes, or your Personal Resilience Plan.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Identify each piece by title or description and date. Point to a specific action, observation, or sentence in each one.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Use work you already have. You do not need another strategy trial, a new plan, or feedback on your final assignments.</li></ul><h3>1. What did you think or do earlier?</h3><p style=\"margin:0;line-height:1.6;\">Use the earlier piece to describe a learning decision or strategy you tried. What did you expect, and what did you actually notice?</p><h3>2. What do you understand differently now?</h3><p style=\"margin:0;line-height:1.6;\">Compare the two pieces. Explain what changed, what did not improve, or what you are still unsure about. Use at least one concept from this course to explain the comparison. Explain the concept in your own words and identify the assigned source or week. You do not need to claim that a strategy succeeded.</p><h3>3. What will you carry forward?</h3><p style=\"margin:0;line-height:1.6;\">Name one learning practice you will keep, adjust, or stop. Explain one small next step and what you would look for to decide whether it helps.</p><h3>Length and format</h3><p style=\"margin:0;line-height:1.6;\">Aim for 250 to 400 words across the three responses, or a 2 to 3 minute audio response with a transcript. Include a short evidence list identifying the two pieces of your work and the course source or week you used. The evidence list is not part of the suggested word count.</p><h3>How your reflection is graded: 5 points</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\">Specific evidence from your own course work: 1 point.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Accurate use of a course concept: 2 points.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Reflection and a practical next step: 1 point.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Clear communication and privacy: 1 point.</li></ul><h3>How to submit in Blackboard</h3><ul style=\"margin:0;padding-left:28px;\"><li style=\"margin:0 0 8px;line-height:1.6;\">Open this assignment and select Start attempt. Write or paste your three responses into the Submission editor, using the three numbered headings above. No Word upload is required.</li><li style=\"margin:0 0 8px;line-height:1.6;\">If you choose audio, attach the recording and transcript in this assignment, or add a working Seneca OneDrive or Microsoft Stream link that I can open.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Check that all three responses and your evidence list are included. You do not need to re-upload your earlier assignments.</li><li style=\"margin:0 0 8px;line-height:1.6;\">Select Submit, wait for the confirmation, and keep the receipt. Saving a draft does not submit your work.</li></ul><h3>Privacy and accessibility</h3><p style=\"margin:0;line-height:1.6;\">You do not need to disclose trauma, health information, family circumstances, or another person's private information. You may discuss a public, course-based, or fictional example. Your grade is based on evidence and reasoning, not personal disclosure or a claim that you improved.</p><h3>Your work and permitted tools</h3><p style=\"margin:0;line-height:1.6;\">Use your own course work and explanations. Do not use generative AI to write or rewrite this reflection, invent a learning experience, or create narration in your place. Spelling, dictation, screen-reader, captioning, and other accessibility tools are welcome when they do not generate your course content. Ask me before using a tool if you are unsure.</p><h3>Release and due dates</h3><p style=\"margin:0;line-height:1.6;\">Released: November 30, 2026 at 12:00 a.m. Eastern.</p><p style=\"margin:0;line-height:1.6;\">Due: December 13, 2026 at 11:59 p.m. Eastern.</p>",
+    "weight": "5 points (5%)",
+    "points": 5,
+    "releaseLabel": "November 30, 2026 at 12:00 a.m. Eastern",
+    "dueLabel": "December 13, 2026 at 11:59 p.m. Eastern",
+    "releaseDate": "2026-11-30",
+    "dueDate": "2026-12-13",
+    "schedule": "Released November 30, 2026 at 12:00 a.m. Eastern. Due December 13, 2026 at 11:59 p.m. Eastern.",
+    "timing": "Released November 30, 2026 at 12:00 a.m. Eastern. Due December 13, 2026 at 11:59 p.m. Eastern.",
+    "opens": "November 30, 2026 at 12:00 a.m. Eastern",
+    "release": "2026-11-30",
+    "due": "Due December 13, 2026 at 11:59 p.m. Eastern.",
+    "short": "Look back at how your approach to learning developed. Use two pieces of your own course work to show what changed in a learning decision or strategy. This is a short reflection, not another Personal Resilience Plan.",
+    "purpose": "Look back at how your approach to learning developed. Use two pieces of your own course work to show what changed in a learning decision or strategy. This is a short reflection, not another Personal Resilience Plan.",
+    "role": "Use your own course evidence and reasoning. Submit in Blackboard.",
+    "really": [
+      "Choose one earlier and one later dated piece of your own work. You can use journal entries, strategy trials, the case redesign, dated course notes, or your Personal Resilience Plan.",
+      "Identify each piece by title or description and date. Point to a specific action, observation, or sentence in each one.",
+      "Use work you already have. You do not need another strategy trial, a new plan, or feedback on your final assignments.",
+      "Specific evidence from your own course work: 1 point.",
+      "Accurate use of a course concept: 2 points.",
+      "Reflection and a practical next step: 1 point.",
+      "Clear communication and privacy: 1 point."
+    ],
+    "steps": [
+      "Choose one earlier and one later dated piece of your own work. You can use journal entries, strategy trials, the case redesign, dated course notes, or your Personal Resilience Plan.",
+      "Identify each piece by title or description and date. Point to a specific action, observation, or sentence in each one.",
+      "Use work you already have. You do not need another strategy trial, a new plan, or feedback on your final assignments.",
+      "Specific evidence from your own course work: 1 point.",
+      "Accurate use of a course concept: 2 points.",
+      "Reflection and a practical next step: 1 point.",
+      "Clear communication and privacy: 1 point."
+    ],
+    "submit": [
+      "Follow the full instructions below. Submit in the named Blackboard assessment."
+    ],
+    "criteria": [
+      [
+        "Specific evidence from your own course work",
+        1,
+        ""
+      ],
+      [
+        "Accurate use of a course concept",
+        2,
+        ""
+      ],
+      [
+        "Reflection and a practical next step",
+        1,
+        ""
+      ],
+      [
+        "Clear communication and privacy",
+        1,
+        ""
+      ]
+    ],
+    "strong": [
+      "Use specific course evidence.",
+      "Explain your reasoning clearly."
+    ],
+    "misses": [
+      "Leaving required parts unanswered."
+    ],
+    "checks": [
+      "I included each required part.",
+      "I checked my sources, privacy, and submission receipt."
+    ],
+    "weeks": "See the weekly overview for course connections.",
+    "evidence": "Use the course evidence requested in the complete instructions.",
+    "blackboard": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27380329_1"
   }
 ];
