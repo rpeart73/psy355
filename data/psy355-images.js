@@ -19,7 +19,7 @@ window.PSY355_IMAGES = {
   },
   wk03: {
     src: 'images/wk03.jpg',
-    alt: 'Two students review feedback and compare revision strategies in a quiet study space.'
+    alt: 'A South Asian learner and a Black learner compare two revision paths using blank notes and arrows on a large whiteboard.'
   },
   wk04: {
     src: 'images/wk04.jpg',
@@ -39,11 +39,11 @@ window.PSY355_IMAGES = {
   },
   wk08: {
     src: 'images/wk08.jpg',
-    alt: 'A learner sets aside a difficult draft and begins again with a fresh notebook and a calmer approach.'
+    alt: 'A mature learner pauses on a quiet campus garden bench with a closed notebook beside her before returning to study.'
   },
   wk09: {
     src: 'images/wk09.jpg',
-    alt: 'A learner changes study resources and revises a plan when the first approach is not working.'
+    alt: 'A learner compares two approaches to an abstract building task and revises his plan at a campus makerspace workbench.'
   },
   wk10: {
     src: 'images/wk10.jpg',
@@ -59,7 +59,7 @@ window.PSY355_IMAGES = {
   },
   wk13: {
     src: 'images/wk13.jpg',
-    alt: 'A student organizes six blank cards into a personal resilience plan that includes actions, supports, and conditions.'
+    alt: 'A learner arranges six blank cards into a personal resilience plan on a wall-mounted planning board.'
   },
   wk14: {
     src: 'images/wk14.jpg',
