@@ -45,9 +45,20 @@
   section[aria-labelledby="new-supports-h"] h2{font-size:22px;line-height:1.1;margin:16px 0 10px;color:#15171C}
   section[aria-labelledby="new-supports-h"] p{margin:0 0 8px}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @media print{.no-print{display:none!important}}
 </style>
 </head>
 <body>
+<div class="print-toolbar no-print" style="position:sticky;top:0;z-index:999;background:#15171C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.25);font-family:'IBM Plex Sans',Arial,sans-serif">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <a href="index.html" style="color:#fff;text-decoration:none;font-weight:700;font-size:13px;padding:6px 12px;background:rgba(255,255,255,.15);border-radius:6px">&#8592; Return to Online Guide</a>
+    <a href="../index.html" style="color:#DEE3EA;text-decoration:none;font-size:13px;font-weight:500">Course Companion</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:12px;color:#DEE3EA">Tip: Select "Save as PDF" in print destination.</span>
+    <button onclick="window.print()" type="button" style="background:#DA291C;color:#fff;border:none;border-radius:6px;padding:8px 16px;font-weight:700;font-size:13px;cursor:pointer">Print Guide</button>
+  </div>
+</div>
 <div class="pgrule"></div>
 <div style="--sr:#DA291C;font-family:'IBM Plex Sans',Georgia,serif;color:#15171C">
 
