@@ -135,7 +135,7 @@ window.PSY355_MC = {
  ],
  "panadero2017": [
   {
-   "q": "How many models of self-regulated learning does Panadero analyze and compare?",
+   "q": "How many models of self-regulated learning does Panadero analyse and compare?",
    "options": [
     "Six",
     "Twelve",
@@ -143,7 +143,7 @@ window.PSY355_MC = {
     "Nine"
    ],
    "answer": 0,
-   "why": "The review analyzes and compares six models of self-regulated learning.",
+   "why": "The review analyses and compares six models of self-regulated learning.",
    "skill": "concepts",
    "diff": 1
   },

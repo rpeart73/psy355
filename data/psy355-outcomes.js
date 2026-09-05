@@ -29,7 +29,7 @@ window.PSY355_OUTCOMES = {
   },
   {
    "id": "CLO 2",
-   "text": "Compare different models of resilience and analyze how each one works well enough to apply it.",
+   "text": "Compare different models of resilience and analyse how each one works well enough to apply it.",
    "weeks": [
     1,
     5,
