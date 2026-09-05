@@ -6,7 +6,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#DA291C">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="build" content="20260905-015808">
+<meta name="build" content="20260905-042000">
 <script>
 (function(){try{var m=document.querySelector('meta[name="build"]');var L=m?(m.content||''):'';if(!L)return;function cleanMarker(t){try{var u=new URL(location.href);if(t===L&&u.searchParams.has('_bf_build')){u.searchParams.delete('_bf_build');history.replaceState(history.state,'',u.href);}}catch(e){}}function chk(){fetch('build.txt?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():null;}).then(function(t){if(!t)return;t=(t||'').trim();if(!t)return;if(t===L){cleanMarker(t);return;}var seen=false,storageOK=true;try{seen=sessionStorage.getItem('bf_reload_for')===t;if(!seen)sessionStorage.setItem('bf_reload_for',t);}catch(e){storageOK=false;}if(seen)return;if(storageOK){location.reload();return;}try{var u=new URL(location.href);if(u.searchParams.get('_bf_build')===t)return;u.searchParams.set('_bf_build',t);location.replace(u.href);}catch(e){}}).catch(function(){});}chk();document.addEventListener('visibilitychange',function(){if(!document.hidden)chk();});window.addEventListener('focus',chk);setInterval(function(){if(!document.hidden)chk();},60000);}catch(e){}})();
 </script>
@@ -539,7 +539,9 @@
 <script src="./data/psy355-walkfigs.js?v=20260905-015808"></script>
 <script src="./data/psy355-images.js?v=20260905-015808"></script>
 <script src="./data/psy355-recordings.js?v=20260905-015808"></script>
-<script src="./app.js?v=20260905-015808"></script>
+<script src="./data/assessment-guides.js?v=20260905-042000"></script>
+<script src="./assessment-guides-view.js?v=20260905-042000"></script>
+<script src="./app.js?v=20260905-042000"></script>
 <script defer src="assets/img-viewer.js?v=20260905-015808"></script>
 </body>
 </html>

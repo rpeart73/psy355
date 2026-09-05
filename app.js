@@ -15,110 +15,7 @@
   var VKEY = SKEY + '.view.v1';
   var HKEY = SKEY + '.hardResetNext';
   var WKKEY = SKEY + '.walk.v1';
-  var PSY_ASSESSMENTS = [
-    {
-      id: 'weekly-reflections',
-      title: 'Private Learning Journal',
-      weight: '10 percent',
-      schedule: 'Opens September 14. Six dated entries are due December 4.',
-      due: 'Friday, December 4, 2026',
-      weeks: 'Six entries across Weeks 2 to 12',
-      summary: 'Build a private, dated record of real learning moments and strategy attempts, then use psychological concepts to explain what happened and choose a next action.',
-      steps: [
-        'Complete six entries across Weeks 2 to 12 as the matching prompts open.',
-        'Begin each entry with a specific learning moment, class artefact, or strategy attempt.',
-        'Explain one course concept accurately and identify evidence of change, no change, or uncertainty.',
-        'End with one realistic next action. Private or clinical disclosure is not required.'
-      ],
-      submit: ['Six dated private Blackboard Journal entries.', 'Aim for 250 to 350 words or two to three minutes of audio per entry.'],
-      evidence: 'Six dated learning moments, class artefacts, or strategy attempts from your own course record'
-    },
-    {
-      id: 'mindset-evidence-check-1',
-      title: 'Strategy Trial 1: Study, Test, Adjust',
-      weight: '20 percent',
-      schedule: 'Opens September 21. Due October 9 at 11:59 p.m. Eastern.',
-      due: 'Friday, October 9, 2026',
-      weeks: 'A seven-day trial supported by the early course evidence',
-      summary: 'Choose one manageable learning task, test one evidence-informed strategy for at least seven days, and decide whether to keep, change, or stop it.',
-      steps: [
-        'Record a clear baseline: the task, your current approach, and the evidence you have.',
-        'Choose one strategy and explain why the course evidence supports trying it.',
-        'Complete two dated check-ins and make one adjustment during the trial.',
-        'Finish with a keep, change, or stop decision and your reasons.'
-      ],
-      submit: ['A baseline, strategy rationale, two dated check-ins, one adjustment, and a final decision.', 'Simple evidence may include time, attempts, errors, confidence, or completion.'],
-      evidence: 'Your dated seven-day trial record and the course evidence supporting the strategy'
-    },
-    {
-      id: 'midcourse-practice-synthesis',
-      title: 'Mid-course Reflection: What the Evidence Changed',
-      weight: '10 percent',
-      schedule: 'Opens October 19. Due October 23 at 11:59 p.m. Eastern.',
-      due: 'Friday, October 23, 2026',
-      weeks: 'At least three journal entries and one live-class artefact',
-      summary: 'Read your first-half course record closely, identify one learning pattern, interpret it with one course source, and set one specific back-half experiment.',
-      steps: [
-        'Reread at least three Private Learning Journal entries and one live-class artefact.',
-        'Point to the dates of the evidence and identify one pattern in planning, monitoring, difficulty, or help-seeking.',
-        'Use one course source to interpret the pattern.',
-        'Set one specific experiment for the second half of the term.'
-      ],
-      submit: ['A 600 to 800 word reflection or a four to five minute audio reflection.', 'Dated references to at least three journal entries and one live-class artefact.'],
-      evidence: 'Your dated first-half course record and one course source'
-    },
-    {
-      id: 'srl-case-redesign',
-      title: 'Learning Case Redesign',
-      weight: '20 percent',
-      schedule: 'Cases open October 13. Due November 6 at 11:59 p.m. Eastern.',
-      due: 'Friday, November 6, 2026',
-      weeks: 'A course-provided case interpreted through course evidence',
-      summary: 'Diagnose one course-provided learning case and redesign both the learner\'s strategy and the conditions around the learning.',
-      steps: [
-        'Choose one case released in Blackboard and map its current learning loop.',
-        'Use self-regulated learning, self-efficacy, motivation, and social-context evidence to diagnose the loop.',
-        'Create a before-and-after model that includes one environmental or relational support.',
-        'Name one limit or uncertainty instead of blaming the learner or treating mindset as the only cause.'
-      ],
-      submit: ['A visual before-and-after learning loop.', 'A 500 to 700 word rationale using at least two course concepts and one course source.', 'One environmental or relational support and one limit or uncertainty.'],
-      evidence: 'The course-provided case, at least two course concepts, and one course source'
-    },
-    {
-      id: 'mindset-evidence-check-2',
-      title: 'Strategy Trial 2: Recovery and Help-Seeking',
-      weight: '20 percent',
-      schedule: 'Opens November 9. Due November 27 at 11:59 p.m. Eastern.',
-      due: 'Friday, November 27, 2026',
-      weeks: 'A second, low-risk trial using a different situation or strategy',
-      summary: 'Run a second trial focused on recovery, psychological flexibility, self-compassion, communication, or help-seeking.',
-      steps: [
-        'Choose a low-risk situation and a different strategy from Trial 1.',
-        'Create a starting plan linked to a course concept and record two dated evidence points.',
-        'Make one adjustment and explain how context helped or constrained the strategy.',
-        'Name a realistic next action and an appropriate support route.'
-      ],
-      submit: ['A starting plan, two dated evidence points, one adjustment, and a contextual reflection.', 'A realistic next action and an appropriate support route.'],
-      evidence: 'Your dated second trial record and the course concept guiding it'
-    },
-    {
-      id: 'personal-resilience-plan',
-      title: 'Personal Resilience Plan',
-      weight: '20 percent',
-      schedule: 'Milestones open November 2, November 16, and November 30. Final plan due December 11.',
-      due: 'Friday, December 11, 2026',
-      weeks: 'Final plan drawing on the full course record',
-      summary: 'Build a practical learning and well-being support plan from your journal, both strategy trials, the case redesign, feedback, and at least six dated pieces of your own evidence.',
-      steps: [
-        'Name early signs that your learning is becoming stuck.',
-        'Plan specific actions before, during, and after a difficult period.',
-        'Map people, services, and environmental changes that can support you.',
-        'Build a planning, monitoring, adjusting, and reviewing loop from at least six dated pieces of course evidence.'
-      ],
-      submit: ['A 1,000 to 1,400 word plan or a seven to nine minute narrated visual plan.', 'At least six dated pieces of your own course evidence.', 'A practical support map and self-regulation loop.'],
-      evidence: 'Your journal, both strategy trials, case redesign, feedback, and at least six dated course artefacts'
-    }
-  ];
+  var PSY_ASSESSMENTS = window.COURSE_ASSESSMENTS;
   function assessmentById(id) {
     id = String(id || '');
     for (var i = 0; i < PSY_ASSESSMENTS.length; i++) if (PSY_ASSESSMENTS[i].id === id) return PSY_ASSESSMENTS[i];
@@ -1622,38 +1519,299 @@
   }
   function keyDatesList() {
     return [
-      { d: '2026-09-08', it: [['All six assessment guides visible', 'Use the companion site to plan; Blackboard controls release and submission', 'open']] },
-      { d: '2026-09-10', it: [['Week 1 live class', 'Course orientation and shared start', 'class']] },
-      { d: '2026-09-14', it: [['Private Learning Journal opens', 'six private entries across Weeks 2 to 12', 'open', 'weekly-reflections']] },
-      { d: '2026-09-17', it: [['Week 2 live class', '', 'class']] },
-      { d: '2026-09-21', it: [['Strategy Trial 1: Study, Test, Adjust opens', 'begin a seven-day trial', 'open', 'mindset-evidence-check-1']] },
-      { d: '2026-09-24', it: [['Week 3 live class', '', 'class']] },
-      { d: '2026-10-01', it: [['Week 4 live class', '', 'class']] },
-      { d: '2026-10-08', it: [['Week 5 live class', '', 'class']] },
-      { d: '2026-10-09', it: [['Strategy Trial 1: Study, Test, Adjust', 'due; 20 percent', 'due', 'mindset-evidence-check-1']] },
-      { d: '2026-10-13', it: [['Learning Case Redesign cases open', 'choose one course-provided case', 'open', 'srl-case-redesign']] },
-      { d: '2026-10-15', it: [['Week 6 asynchronous learning', 'Independent extension of resilience into context and culture', 'async']] },
-      { d: '2026-10-19', it: [['Mid-course Reflection: What the Evidence Changed opens', 'reread the first-half record', 'open', 'midcourse-practice-synthesis']] },
-      { d: '2026-10-22', it: [['Week 7 live class', '', 'class']] },
-      { d: '2026-10-23', it: [['Mid-course Reflection: What the Evidence Changed', 'due; 10 percent', 'due', 'midcourse-practice-synthesis']] },
-      { d: '2026-10-26', it: [['Study Week', 'October 26 to 30. No class, new module, or graded deadline.', 'support']] },
-      { d: '2026-11-02', it: [['Personal Resilience Plan Milestone 1 opens', 'begin the evidence map', 'open', 'personal-resilience-plan']] },
-      { d: '2026-11-05', it: [['Week 8 live class', '', 'class']] },
-      { d: '2026-11-06', it: [['Learning Case Redesign', 'due; 20 percent', 'due', 'srl-case-redesign']] },
-      { d: '2026-11-09', it: [['Strategy Trial 2: Recovery and Help-Seeking opens', 'begin a different, low-risk trial', 'open', 'mindset-evidence-check-2']] },
-      { d: '2026-11-12', it: [['Week 9 live class', '', 'class']] },
-      { d: '2026-11-16', it: [['Personal Resilience Plan Milestone 2 opens', 'develop the support and regulation loops', 'open', 'personal-resilience-plan']] },
-      { d: '2026-11-19', it: [['Week 10 asynchronous learning', 'Independent reflective writing and journaling', 'async']] },
-      { d: '2026-11-26', it: [['Week 11 live class', '', 'class']] },
-      { d: '2026-11-27', it: [['Strategy Trial 2: Recovery and Help-Seeking', 'due; 20 percent', 'due', 'mindset-evidence-check-2']] },
-      { d: '2026-11-30', it: [['Personal Resilience Plan Milestone 3 and final area open', 'complete the integrated plan', 'open', 'personal-resilience-plan']] },
-      { d: '2026-12-03', it: [['Week 12 live class', 'Final substantive class meeting', 'class']] },
-      { d: '2026-12-04', it: [['Private Learning Journal', 'six-entry collection due; 10 percent', 'due', 'weekly-reflections']] },
-      { d: '2026-12-10', it: [['Week 13 asynchronous office hours and supported completion', 'No lecture; focused work and consultation', 'async']] },
-      { d: '2026-12-11', it: [['Personal Resilience Plan', 'final plan due; 20 percent', 'due', 'personal-resilience-plan']] },
-      { d: '2026-12-14', it: [['Week 14 asynchronous office hours and course closure', 'No lecture; optional consultation and final questions', 'async']] },
-      { d: '2026-12-16', it: [['Last day of the term', 'No graded work is due in Week 14', 'support']] }
-    ];
+  {
+    "d": "2026-09-10",
+    "it": [
+      [
+        "Week 1 live class",
+        "Course orientation and shared start",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-09-14",
+    "it": [
+      [
+        "Private Learning Journal opens",
+        "10%; submit in Blackboard",
+        "open",
+        "weekly-reflections"
+      ]
+    ]
+  },
+  {
+    "d": "2026-09-17",
+    "it": [
+      [
+        "Week 2 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-09-21",
+    "it": [
+      [
+        "Strategy Trial 1: Study, Test, Adjust opens",
+        "20%; submit in Blackboard",
+        "open",
+        "mindset-evidence-check-1"
+      ]
+    ]
+  },
+  {
+    "d": "2026-09-24",
+    "it": [
+      [
+        "Week 3 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-01",
+    "it": [
+      [
+        "Week 4 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-08",
+    "it": [
+      [
+        "Week 5 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-09",
+    "it": [
+      [
+        "Strategy Trial 1: Study, Test, Adjust",
+        "due; 20%",
+        "due",
+        "mindset-evidence-check-1"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-13",
+    "it": [
+      [
+        "Learning Case Redesign opens",
+        "20%; submit in Blackboard",
+        "open",
+        "srl-case-redesign"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-15",
+    "it": [
+      [
+        "Week 6 asynchronous learning",
+        "Independent extension of resilience into context and culture",
+        "async"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-19",
+    "it": [
+      [
+        "Mid-course Reflection: What the Evidence Changed opens",
+        "10%; submit in Blackboard",
+        "open",
+        "midcourse-practice-synthesis"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-22",
+    "it": [
+      [
+        "Week 7 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-23",
+    "it": [
+      [
+        "Mid-course Reflection: What the Evidence Changed",
+        "due; 10%",
+        "due",
+        "midcourse-practice-synthesis"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-26",
+    "it": [
+      [
+        "Study Week",
+        "October 26 to 30. No class, new module, or graded deadline.",
+        "support"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-05",
+    "it": [
+      [
+        "Week 8 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-06",
+    "it": [
+      [
+        "Learning Case Redesign",
+        "due; 20%",
+        "due",
+        "srl-case-redesign"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-09",
+    "it": [
+      [
+        "Strategy Trial 2: Recovery and Help-Seeking opens",
+        "20%; submit in Blackboard",
+        "open",
+        "mindset-evidence-check-2"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-12",
+    "it": [
+      [
+        "Week 9 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-19",
+    "it": [
+      [
+        "Week 10 asynchronous learning",
+        "Independent reflective writing and journaling",
+        "async"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-26",
+    "it": [
+      [
+        "Week 11 live class",
+        "",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-27",
+    "it": [
+      [
+        "Strategy Trial 2: Recovery and Help-Seeking",
+        "due; 20%",
+        "due",
+        "mindset-evidence-check-2"
+      ]
+    ]
+  },
+  {
+    "d": "2026-11-30",
+    "it": [
+      [
+        "Personal Resilience Plan opens",
+        "20%; submit in Blackboard",
+        "open",
+        "personal-resilience-plan"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-03",
+    "it": [
+      [
+        "Week 12 live class",
+        "Final substantive class meeting",
+        "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-04",
+    "it": [
+      [
+        "Private Learning Journal",
+        "due; 10%",
+        "due",
+        "weekly-reflections"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-10",
+    "it": [
+      [
+        "Week 13 asynchronous office hours and supported completion",
+        "No lecture; focused work and consultation",
+        "async"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-11",
+    "it": [
+      [
+        "Personal Resilience Plan",
+        "due; 20%",
+        "due",
+        "personal-resilience-plan"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-14",
+    "it": [
+      [
+        "Week 14 asynchronous office hours and course closure",
+        "No lecture; optional consultation and final questions",
+        "async"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-16",
+    "it": [
+      [
+        "Last day of the term",
+        "No graded work is due in Week 14",
+        "support"
+      ]
+    ]
+  }
+];
   }
   var KD_MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   function kdDaysUntil(iso) {
@@ -3045,7 +3203,7 @@
       + (next != null ? '<button type="button" onclick="SOC.station(' + next + ')" style="flex:1;border:1px solid #DEE3EA;background:#fff;border-radius:7px;padding:5px 8px;font-size:.72rem;font-weight:600;color:var(--red);cursor:pointer;text-align:center" title="Week ' + next + ': ' + esc(weekTitle(next)) + '">Wk ' + next + ' &rarr;</button>' : '')
       + '</div></div></aside>';
     var collBar = '<div class="wk-coll-bar" role="group" aria-label="Section display controls"><button type="button" onclick="SOC.wkCollAll(' + w + ',1)">Collapse all sections</button><span>Weeks start folded so you can see the whole map. Up to two sections stay open at once; opening a third closes the earliest one. Sections fold again when you leave the week.</span></div>';
-    return '<div class="rise">' + hero + deliveryNotice(w) + interpersonalSection(w) + recordingSection(w) + '<div class="wk-grid"><div class="wk-primary">' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + coaching + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</div>' + rail + '</div></div>';
+    return CourseAssessmentGuides.week(w) + '<div class="rise">' + hero + deliveryNotice(w) + interpersonalSection(w) + recordingSection(w) + '<div class="wk-grid"><div class="wk-primary">' + collBar + pre + purpose + outcomes + guiding + programLens + concepts + coaching + terms + readings + watch + programCase + act + reflect + sg + kc + notes + navRow + '</div>' + rail + '</div></div>';
   }
   /* ---------- generic week activities: match / scenario / toggle / assemble / lab ---------- */
   function actCard(inner) { return '<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 12px">' + inner + '</div>'; }
@@ -3629,23 +3787,10 @@
     return '<section class="path-close" aria-label="Assignment Start Lab"><div class="mono">PERSONAL PLANNING SUPPORT</div><h2>Not sure how to begin?</h2><p>Add your assignment, progress, exact sticking point, and available time. Fixed course rules create a personal start plan without using AI. The site does not submit your answers; any browser-stored copy is temporary and device-specific.</p><div class="path-actions"><button type="button" onclick="location.href=\'assignment-start-lab.html\'"><b>Open Assignment Start Lab</b><small>Create a plan you can print or save as PDF.</small></button></div></section>';
   }
   function assignmentsPage() {
-    var steps = PSY_ASSESSMENTS.map(function (a, i) {
-      return '<li><span>' + (i + 1) + '</span><div><b>' + esc(a.title) + '</b><em>' + esc(a.weight + ' | ' + a.schedule) + '</em><p>' + esc(a.summary) + '</p><a class="wk-cta" style="display:inline-flex;margin:4px 0 0;text-decoration:none" href="' + assessmentHref(a.id) + '">Open assessment guide <span aria-hidden="true">&#8594;</span></a></div></li>';
-    }).join('');
-    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">STARTING YOUR ASSIGNMENT</div><h1>Understanding Your Assignments</h1><p>All six graded pieces are visible here from day one. Use this site to understand the path and gather concepts and evidence, then use Blackboard for the official brief, rubric, submission, and grade.</p></div><div class="path-compass"><span>SITE</span><b>practice, notes, evidence</b><i></i><span>BLACKBOARD</span><b>official brief, dropbox, grade</b></div></section><section class="path-summary"><div><b>Blackboard is official</b><span>Due dates, dropboxes, rubrics, feedback, and grades stay in Blackboard.</span></div><div><b>Your record matters</b><span>The six Private Learning Journal entries become evidence for the mid-course reflection and final plan.</span></div><div><b>Keep the course lens visible</b><span>Name the concept, the evidence, the limit, and the practical next move.</span></div></section>' + assignmentIntegrityNotice() + assignmentStartLabLaunch() + '<section class="path-route"><div class="path-route-head"><div class="mono">THE SIX GRADED PIECES</div><h2>See the whole assessment path</h2><p>The guide for every piece is available here from September 8. Blackboard releases each complete brief and submission area on the approved schedule.</p></div><ol>' + steps + '</ol></section><section class="path-close"><h2>Start with the week that feeds the work</h2><p>Open the relevant weekly room, generate your notes, then return here when you are ready to plan the graded work.</p><div class="path-actions"><button type="button" onclick="SOC.station(2)"><b>Week 2</b><small>Begin the six-entry journal record.</small></button><button type="button" onclick="SOC.station(5)"><b>Week 5</b><small>Strategy Trial 1.</small></button><button type="button" onclick="SOC.station(7)"><b>Week 7</b><small>Mid-course reflection.</small></button><button type="button" onclick="SOC.station(8)"><b>Week 8</b><small>Learning Case Redesign.</small></button><button type="button" onclick="SOC.station(11)"><b>Week 11</b><small>Strategy Trial 2.</small></button><button type="button" onclick="SOC.station(13)"><b>Week 13</b><small>Final plan support.</small></button></div></section></div>';
+    return CourseAssessmentGuides.directory();
   }
   function assignmentDetailsPage() {
-    var a = assessmentById(state.assignmentId);
-    if (!a) {
-      return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">ASSESSMENT GUIDE</div><h1>That assessment guide was not found</h1><p>The link may be incomplete or out of date. Open the full assessment path to choose one of the six graded pieces.</p></div></section><section class="path-close"><div class="path-actions"><a class="wk-cta" style="text-decoration:none" href="?screen=assignments">Open all assessments</a></div></section></div>';
-    }
-    var steps = a.steps.map(function (step, i) { return '<li><span>' + (i + 1) + '</span><div><b>Step ' + (i + 1) + '</b><p>' + esc(step) + '</p></div></li>'; }).join('');
-    var submit = a.submit.map(function (item) { return '<li>' + esc(item) + '</li>'; }).join('');
-    return '<div class="rise path-page"><section class="path-hero"><div><div class="mono">ASSESSMENT GUIDE</div><h1>' + esc(a.title) + '</h1><p>' + esc(a.summary) + '</p></div><div class="path-compass" aria-label="Assessment timing and weight"><span>WEIGHT</span><b>' + esc(a.weight) + '</b><i></i><span>DATE</span><b>' + esc(a.due) + '</b></div></section>'
-      + '<section class="path-summary"><div><b>When</b><span>' + esc(a.schedule) + '</span></div><div><b>Course record</b><span>' + esc(a.weeks) + '</span></div><div><b>Evidence anchor</b><span>' + esc(a.evidence) + '</span></div></section>'
-      + deadlineRule()
-      + '<section class="path-route"><div class="path-route-head"><div class="mono">A CONCRETE START PATH</div><h2>Move from evidence to a first draft</h2><p>This page is a planning guide. Read the official Blackboard brief and rubric before you begin, and follow Blackboard if any detail differs.</p></div><ol>' + steps + '</ol></section>'
-      + '<section class="path-close"><div class="mono">WHAT YOU SUBMIT</div><h2>Check the shape of the finished work</h2><ul style="margin:10px 0 18px;padding-left:22px;line-height:1.65">' + submit + '</ul><div class="path-actions"><a class="wk-cta" style="text-decoration:none" href="assignment-start-lab.html?assignment=' + encodeURIComponent(a.id) + '"><b>Open the Assignment Start Lab</b><small>Build a personal plan you can print or save.</small></a><a class="wk-cta" style="text-decoration:none" href="' + BB_URL + '" target="_blank" rel="noopener"><b>Open Blackboard</b><small>Use the official brief, rubric, and submission area.</small></a><a class="wk-cta" style="text-decoration:none" href="?screen=assignments"><b>View all six pieces</b><small>Return to the full assessment path.</small></a></div></section></div>';
+    return CourseAssessmentGuides.detail(state.assignmentId);
   }
   function scholarMedia() {
     var out = [];
@@ -4987,7 +5132,7 @@
       var ua = (navigator.userAgent || '').slice(0, 160);
       var course = (D.course && D.course.code) || 'Course';
       var subject = course + ' companion site: problem report';
-      var body = 'Hi Professor Peart,\n\nI ran into a problem on the ' + course + ' companion website.\n\nWhat happened (please describe):\n\n\n---- details that help fix it (please leave these) ----\nPage: ' + scr + wk + '\nAddress: ' + (location.href || '') + '\nScreen: ' + vp + '\nBrowser: ' + ua + '\n';
+      var body = 'Hi Raymond,\n\nI ran into a problem on the ' + course + ' companion website.\n\nWhat happened (please describe):\n\n\n---- details that help fix it (please leave these) ----\nPage: ' + scr + wk + '\nAddress: ' + (location.href || '') + '\nScreen: ' + vp + '\nBrowser: ' + ua + '\n';
       var href = 'mailto:raymond.peart@senecapolytechnic.ca?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       try { window.location.href = href; } catch (e) {}
       announce('Opening your email app with the page details filled in. Add what happened, then send.');

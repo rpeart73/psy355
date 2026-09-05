@@ -1,10 +1,7 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//PSY355//Companion//EN
+PRODID:-//Seneca//PSY355 Fall 2026//EN
 CALSCALE:GREGORIAN
-METHOD:PUBLISH
-X-WR-CALNAME:PSY355 Key Dates (Fall 2026)
-X-WR-TIMEZONE:America/Toronto
 BEGIN:VEVENT
 DTSTAMP:20260902T160000Z
 SEQUENCE:3
@@ -134,83 +131,6 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTAMP:20260902T160000Z
 SEQUENCE:3
-UID:psy355-journal-open@rpeart73.github.io
-DTSTART;VALUE=DATE:20260914
-DTEND;VALUE=DATE:20260915
-SUMMARY:PSY355: Private Learning Journal opens
-DESCRIPTION:Complete six private\, dated entries across Weeks 2 to 12.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=week
- ly-reflections
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-trial1-open@rpeart73.github.io
-DTSTART;VALUE=DATE:20260921
-DTEND;VALUE=DATE:20260922
-SUMMARY:PSY355: Strategy Trial 1 opens
-DESCRIPTION:Begin the seven-day Study\, Test\, Adjust trial.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=mind
- set-evidence-check-1
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-trial1-due@rpeart73.github.io
-DTSTART;VALUE=DATE:20261009
-DTEND;VALUE=DATE:20261010
-SUMMARY:PSY355: Strategy Trial 1 due (20 percent)
-DESCRIPTION:Due by 11:59 p.m. Eastern in Blackboard.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=mind
- set-evidence-check-1
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355: Strategy Trial 1 due (20 percent) in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-case-open@rpeart73.github.io
-DTSTART;VALUE=DATE:20261013
-DTEND;VALUE=DATE:20261014
-SUMMARY:PSY355: Learning Case Redesign cases open
-DESCRIPTION:Choose one course-provided case in Blackboard.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=srl-
- case-redesign
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-midcourse-open@rpeart73.github.io
-DTSTART;VALUE=DATE:20261019
-DTEND;VALUE=DATE:20261020
-SUMMARY:PSY355: Mid-course Reflection opens
-DESCRIPTION:Reread at least three journal entries and one live-class arte
- fact.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=midc
- ourse-practice-synthesis
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-midcourse-due@rpeart73.github.io
-DTSTART;VALUE=DATE:20261023
-DTEND;VALUE=DATE:20261024
-SUMMARY:PSY355: Mid-course Reflection due (10 percent)
-DESCRIPTION:Due by 11:59 p.m. Eastern in Blackboard.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=midc
- ourse-practice-synthesis
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355: Mid-course Reflection due (10 percent) in 2 days
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
 UID:psy355-study-week@rpeart73.github.io
 DTSTART;VALUE=DATE:20261026
 DTEND;VALUE=DATE:20261031
@@ -219,112 +139,87 @@ DESCRIPTION:Study Week runs October 26 to 30. No class\, new module\, or
  graded work is due.
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-plan-m1@rpeart73.github.io
-DTSTART;VALUE=DATE:20261102
-DTEND;VALUE=DATE:20261103
-SUMMARY:PSY355: Personal Resilience Plan Milestone 1 opens
-DESCRIPTION:Begin the evidence map in Blackboard.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=pers
- onal-resilience-plan
+UID:psy355-_27272590_1-release@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20260921T040100Z
+SUMMARY:PSY355: Strategy Trial 1: Study\, Test\, Adjust opens (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272590_1
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-case-due@rpeart73.github.io
-DTSTART;VALUE=DATE:20261106
-DTEND;VALUE=DATE:20261107
-SUMMARY:PSY355: Learning Case Redesign due (20 percent)
-DESCRIPTION:Due by 11:59 p.m. Eastern in Blackboard.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=srl-
- case-redesign
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355: Learning Case Redesign due (20 percent) in 2 days
-END:VALARM
+UID:psy355-_27272590_1-due@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261010T035900Z
+SUMMARY:PSY355: Strategy Trial 1: Study\, Test\, Adjust due (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272590_1
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-trial2-open@rpeart73.github.io
-DTSTART;VALUE=DATE:20261109
-DTEND;VALUE=DATE:20261110
-SUMMARY:PSY355: Strategy Trial 2 opens
-DESCRIPTION:Begin a different\, low-risk recovery or help-seeking trial.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=mind
- set-evidence-check-2
+UID:psy355-_27272591_1-release@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261019T040100Z
+SUMMARY:PSY355: Mid-course Reflection: What the Evidence Changed opens (10%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272591_1
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-plan-m2@rpeart73.github.io
-DTSTART;VALUE=DATE:20261116
-DTEND;VALUE=DATE:20261117
-SUMMARY:PSY355: Personal Resilience Plan Milestone 2 opens
-DESCRIPTION:Develop the support and self-regulation loops.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=pers
- onal-resilience-plan
+UID:psy355-_27272591_1-due@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261024T035900Z
+SUMMARY:PSY355: Mid-course Reflection: What the Evidence Changed due (10%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272591_1
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-trial2-due@rpeart73.github.io
-DTSTART;VALUE=DATE:20261127
-DTEND;VALUE=DATE:20261128
-SUMMARY:PSY355: Strategy Trial 2 due (20 percent)
-DESCRIPTION:Due by 11:59 p.m. Eastern in Blackboard.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=mind
- set-evidence-check-2
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355: Strategy Trial 2 due (20 percent) in 2 days
-END:VALARM
+UID:psy355-_27272592_1-release@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261013T040100Z
+SUMMARY:PSY355: Learning Case Redesign opens (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272592_1
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-plan-final@rpeart73.github.io
-DTSTART;VALUE=DATE:20261130
-DTEND;VALUE=DATE:20261201
-SUMMARY:PSY355: Personal Resilience Plan Milestone 3 and final area open
-DESCRIPTION:Complete the integrated plan in Blackboard.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=pers
- onal-resilience-plan
+UID:psy355-_27272592_1-due@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261107T045900Z
+SUMMARY:PSY355: Learning Case Redesign due (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272592_1
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-journal-due@rpeart73.github.io
-DTSTART;VALUE=DATE:20261204
-DTEND;VALUE=DATE:20261205
-SUMMARY:PSY355: Private Learning Journal due (10 percent)
-DESCRIPTION:The six-entry collection is due by 11:59 p.m. Eastern.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=week
- ly-reflections
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355: Private Learning Journal due (10 percent) in 2 days
-END:VALARM
+UID:psy355-_27272593_1-release@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261109T050100Z
+SUMMARY:PSY355: Strategy Trial 2: Recovery and Help-Seeking opens (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272593_1
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260902T160000Z
-SEQUENCE:3
-UID:psy355-plan-due@rpeart73.github.io
-DTSTART;VALUE=DATE:20261211
-DTEND;VALUE=DATE:20261212
-SUMMARY:PSY355: Personal Resilience Plan due (20 percent)
-DESCRIPTION:The final plan is due by 11:59 p.m. Eastern.
-URL:https://rpeart73.github.io/psy355/?screen=assignment-details&asg=pers
- onal-resilience-plan
-BEGIN:VALARM
-TRIGGER:-P2D
-ACTION:DISPLAY
-DESCRIPTION:PSY355: Personal Resilience Plan due (20 percent) in 2 days
-END:VALARM
+UID:psy355-_27272593_1-due@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261128T045900Z
+SUMMARY:PSY355: Strategy Trial 2: Recovery and Help-Seeking due (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272593_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272714_1-release@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20260914T040100Z
+SUMMARY:PSY355: Private Learning Journal opens (10%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/journal/_27272714_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272714_1-due@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261205T045931Z
+SUMMARY:PSY355: Private Learning Journal due (10%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/journal/_27272714_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272594_1-release@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261130T050100Z
+SUMMARY:PSY355: Personal Resilience Plan opens (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272594_1-due@seneca-assessments
+DTSTAMP:20260905T030000Z
+DTSTART:20261212T045900Z
+SUMMARY:PSY355: Personal Resilience Plan due (20%)
+DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
 END:VEVENT
 END:VCALENDAR
-
