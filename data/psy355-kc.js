@@ -943,7 +943,7 @@ window.PSY355_KC = {
       model: "A strong answer names a specific setback and the fixed-mindset interpretation (for example, I failed this so I am not capable), then reframes it in growth terms without pretending the difficulty was not real. The growth reading attends to what could be practised, what strategy or support was missing, and what the setback shows about the next step. It should also stay honest about limits: some barriers are contextual, so the reframing is about response and effort direction, not blaming oneself for obstacles outside one's control." }
   ]);
 
-  /* WEEK 4 : Motivation, Self-Efficacy, and Academic Confidence (Bandura 1997; Cassidy 2015; Yeager, Bryan, Gross et al 2022) */
+  /* WEEK 4 : Motivation, Self-Efficacy, and Academic Confidence (Bandura 1994; Cassidy 2015; Yeager, Bryan, Gross et al 2022) */
   add(4, [
     { kind: "scenario", diff: 3,
       q: "Priya feels she cannot write essays, so she avoids starting. A tutor suggests she draft just one paragraph today. Why might that small step raise her self-efficacy more than a pep talk?",
