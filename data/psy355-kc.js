@@ -1413,7 +1413,7 @@ window.PSY355_KC = {
       model: "A strong answer names a real setback and separates two things: the accurate information (what actually went wrong and what to do next) and the insult layered on top (the harsh verdict about oneself). Drawing on Stephenson and colleagues and Neff, it explains that harsh self-criticism tends to constrict learning, while a self-compassionate response keeps the useful feedback and treats the difficulty as shared and workable. The reflection should show the student keeping the lesson while dropping the attack, not lowering standards." }
   ]);
 
-  /* WEEK 9 : Psychological Flexibility and Perseverance (Nas, Taytas, and Vangolu 2025) */
+  /* WEEK 9 : Psychological Flexibility and Perseverance (Nas, Taytas, and Vangolu 2026) */
   add(9, [
     { kind: "scenario", diff: 3,
       q: "Sofia's flashcard method clearly is not working for organic chemistry, but she keeps at it because switching feels like quitting. Which idea names the smarter move?",
