@@ -3395,7 +3395,7 @@
     var rail = '<aside class="wk-rail"><div class="wk-railbox"><div class="wk-railh">IN THIS WEEK</div>'
       + [['ov', 'Overview'], ['mode', 'How this week works'], ['rec', 'Class recording'], ['how', 'How this course works'], ['reflect', 'Questions before we begin']].map(function (it) { return '<a href="#wk-' + it[0] + '"><span class="s"></span>' + it[1] + '</a>'; }).join('')
       + '<div class="wk-railt">' + ic('clock', 12) + ' Overview, no readings</div></div></aside>';
-    return '<div class="rise">' + hero + deliveryNotice(w) + recordingSection(w) + '<div class="wk-grid"><section>' + how + reflect + beginRow + '</section>' + rail + '</div></div>';
+    return CourseAssessmentGuides.week(w) + '<div class="rise">' + hero + deliveryNotice(w) + recordingSection(w) + '<div class="wk-grid"><section>' + how + reflect + beginRow + '</section>' + rail + '</div></div>';
   }
   function weekStation(w) {
     if (w === OVERVIEW_WEEK) return overviewPage(w);
