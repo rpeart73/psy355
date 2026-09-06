@@ -76,7 +76,7 @@ window.PSY355 = {
   "4": "Advanced (research article)"
  },
  "weeks": {
-  "1": "How Learning, Mindset, and Resilience Fit Together",
+  "1": "Introduction to the Course",
   "2": "Self-Regulated Learning and Study Strategy",
   "3": "Growth Mindset, Evidence, and Limits",
   "4": "Motivation, Self-Efficacy, and Academic Confidence",

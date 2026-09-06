@@ -5,20 +5,7 @@ window.PSY355_OUTCOMES = {
   {
    "id": "CLO 1",
    "text": "Explain the major psychological theories of learning, mindset, and resilience in plain terms.",
-   "weeks": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    8,
-    9,
-    10,
-    12,
-    13,
-    14
-   ],
+   "weeks": [2,3,4,5,6,8,9,10,12,13,14],
    "assessments": [
     "Private Learning Journal",
     "Strategy Trial 1: Study, Test, Adjust",
@@ -30,16 +17,7 @@ window.PSY355_OUTCOMES = {
   {
    "id": "CLO 2",
    "text": "Compare different models of resilience and analyse how each one works well enough to apply it.",
-   "weeks": [
-    1,
-    5,
-    6,
-    7,
-    9,
-    12,
-    13,
-    14
-   ],
+   "weeks": [5,6,7,9,12,13,14],
    "assessments": [
     "Learning Case Redesign",
     "Personal Resilience Plan final project"
@@ -48,19 +26,7 @@ window.PSY355_OUTCOMES = {
   {
    "id": "CLO 3",
    "text": "Identify the learning strategies and psychological mechanisms that build barriers to growth, and the strategies that dismantle them.",
-   "weeks": [
-    1,
-    2,
-    3,
-    4,
-    7,
-    8,
-    9,
-    10,
-    11,
-    13,
-    14
-   ],
+   "weeks": [2,3,4,7,8,9,10,11,13,14],
    "assessments": [
     "Private Learning Journal",
     "Strategy Trial 1: Study, Test, Adjust",
@@ -73,21 +39,7 @@ window.PSY355_OUTCOMES = {
   {
    "id": "CLO 4",
    "text": "Apply the principles and practices of personal well-being to your own decisions and actions, using the models not as abstractions but as routes toward a healthier state of mental health.",
-   "weeks": [
-    1,
-    2,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14
-   ],
+   "weeks": [2,4,5,6,7,8,9,10,11,12,13,14],
    "assessments": [
     "Private Learning Journal",
     "Strategy Trial 1: Study, Test, Adjust",
@@ -100,22 +52,7 @@ window.PSY355_OUTCOMES = {
   {
    "id": "CLO 5",
    "text": "Analyze how different theoretical models work in order to pursue healthier academic, professional, and personal states of mental health.",
-   "weeks": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14
-   ],
+   "weeks": [2,3,4,5,6,7,8,9,10,11,12,13,14],
    "assessments": [
     "Private Learning Journal",
     "Strategy Trial 1: Study, Test, Adjust",
