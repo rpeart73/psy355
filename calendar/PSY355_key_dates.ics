@@ -120,15 +120,6 @@ SUMMARY:PSY355 Week 13: supported asynchronous completion
 DESCRIPTION:Follow the independent or supported route on the week page.
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20260905T063000Z
-SEQUENCE:4
-UID:psy355-w14@rpeart73.github.io
-DTSTART;VALUE=DATE:20261213
-DTEND;VALUE=DATE:20261217
-SUMMARY:PSY355 Week 14: asynchronous course closure
-DESCRIPTION:Final Learning Reflection due December 13 at 11:59 p.m. Eastern. No lecture.
-END:VEVENT
-BEGIN:VEVENT
 DTSTAMP:20260902T160000Z
 SEQUENCE:3
 UID:psy355-study-week@rpeart73.github.io
@@ -140,100 +131,135 @@ DESCRIPTION:Study Week runs October 26 to 30. No class\, new module\, or
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272590_1-release@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20260921T040100Z
+DTSTAMP:20260906T030000Z
+DTSTART:20260918T040100Z
 SUMMARY:PSY355: Strategy Trial 1: Study\, Test\, Adjust opens (20%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272590_1
+DESCRIPTION:Released September 18\, 2026 at 12:01 a.m. Eastern. Due September 25\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends September 27\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272590_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272590_1-due@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261010T035900Z
+DTSTAMP:20260906T030000Z
+DTSTART:20260926T035900Z
 SUMMARY:PSY355: Strategy Trial 1: Study\, Test\, Adjust due (20%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272590_1
+DESCRIPTION:Released September 18\, 2026 at 12:01 a.m. Eastern. Due September 25\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends September 27\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272590_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272590_1-window-end@seneca-assessments
+DTSTAMP:20260906T030000Z
+DTSTART:20260928T035900Z
+SUMMARY:PSY355: Strategy Trial 1: Study\, Test\, Adjust 48-hour window ends\, 11:59 p.m. ET (20%)
+DESCRIPTION:Released September 18\, 2026 at 12:01 a.m. Eastern. Due September 25\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends September 27\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272590_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272591_1-release@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261019T040100Z
+DTSTAMP:20260906T030000Z
+DTSTART:20261008T040100Z
 SUMMARY:PSY355: Mid-course Reflection: What the Evidence Changed opens (10%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272591_1
+DESCRIPTION:Released October 8\, 2026 at 12:01 a.m. Eastern. Due October 13\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends October 15\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272591_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272591_1-due@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261024T035900Z
+DTSTAMP:20260906T030000Z
+DTSTART:20261014T035900Z
 SUMMARY:PSY355: Mid-course Reflection: What the Evidence Changed due (10%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272591_1
+DESCRIPTION:Released October 8\, 2026 at 12:01 a.m. Eastern. Due October 13\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends October 15\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272591_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272591_1-window-end@seneca-assessments
+DTSTAMP:20260906T030000Z
+DTSTART:20261016T035900Z
+SUMMARY:PSY355: Mid-course Reflection: What the Evidence Changed 48-hour window ends\, 11:59 p.m. ET (10%)
+DESCRIPTION:Released October 8\, 2026 at 12:01 a.m. Eastern. Due October 13\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends October 15\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272591_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272592_1-release@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261013T040100Z
+DTSTAMP:20260906T030000Z
+DTSTART:20261008T040100Z
 SUMMARY:PSY355: Learning Case Redesign opens (20%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272592_1
+DESCRIPTION:Released October 8\, 2026 at 12:01 a.m. Eastern. Due October 20\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends October 22\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272592_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272592_1-due@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261107T045900Z
+DTSTAMP:20260906T030000Z
+DTSTART:20261021T035900Z
 SUMMARY:PSY355: Learning Case Redesign due (20%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272592_1
+DESCRIPTION:Released October 8\, 2026 at 12:01 a.m. Eastern. Due October 20\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends October 22\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272592_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272592_1-window-end@seneca-assessments
+DTSTAMP:20260906T030000Z
+DTSTART:20261023T035900Z
+SUMMARY:PSY355: Learning Case Redesign 48-hour window ends\, 11:59 p.m. ET (20%)
+DESCRIPTION:Released October 8\, 2026 at 12:01 a.m. Eastern. Due October 20\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends October 22\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272592_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272593_1-release@seneca-assessments
-DTSTAMP:20260905T030000Z
+DTSTAMP:20260906T030000Z
 DTSTART:20261109T050100Z
 SUMMARY:PSY355: Strategy Trial 2: Recovery and Help-Seeking opens (20%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272593_1
+DESCRIPTION:Released November 9\, 2026 at 12:01 a.m. Eastern. Due November 27\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends November 29\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272593_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272593_1-due@seneca-assessments
-DTSTAMP:20260905T030000Z
+DTSTAMP:20260906T030000Z
 DTSTART:20261128T045900Z
 SUMMARY:PSY355: Strategy Trial 2: Recovery and Help-Seeking due (20%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272593_1
+DESCRIPTION:Released November 9\, 2026 at 12:01 a.m. Eastern. Due November 27\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends November 29\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272593_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272593_1-window-end@seneca-assessments
+DTSTAMP:20260906T030000Z
+DTSTART:20261130T045900Z
+SUMMARY:PSY355: Strategy Trial 2: Recovery and Help-Seeking 48-hour window ends\, 11:59 p.m. ET (20%)
+DESCRIPTION:Released November 9\, 2026 at 12:01 a.m. Eastern. Due November 27\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends November 29\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272593_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272714_1-release@seneca-assessments
-DTSTAMP:20260905T030000Z
+DTSTAMP:20260906T030000Z
 DTSTART:20260914T040100Z
 SUMMARY:PSY355: Private Learning Journal opens (10%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/journal/_27272714_1
+DESCRIPTION:Released September 14\, 2026 at 12:01 a.m. Eastern. Due December 2\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends December 4\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/journal/_27272714_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272714_1-due@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261205T045931Z
+DTSTAMP:20260906T030000Z
+DTSTART:20261203T045900Z
 SUMMARY:PSY355: Private Learning Journal due (10%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/journal/_27272714_1
+DESCRIPTION:Released September 14\, 2026 at 12:01 a.m. Eastern. Due December 2\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends December 4\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/journal/_27272714_1
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-_27272714_1-window-end@seneca-assessments
+DTSTAMP:20260906T030000Z
+DTSTART:20261205T045900Z
+SUMMARY:PSY355: Private Learning Journal 48-hour window ends\, 11:59 p.m. ET (10%)
+DESCRIPTION:Released September 14\, 2026 at 12:01 a.m. Eastern. Due December 2\, 2026 at 11:59 p.m. Eastern. 48-hour no-penalty window ends December 4\, 2026 at 11:59 p.m. Eastern Time (ET). Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/journal/_27272714_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272594_1-release@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261130T050100Z
+DTSTAMP:20260906T030000Z
+DTSTART:20261123T050100Z
 SUMMARY:PSY355: Personal Resilience Plan opens (15%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
+DESCRIPTION:Released November 23\, 2026 at 12:01 a.m. Eastern. Due December 11\, 2026 at 11:59 p.m. Eastern. No automatic 48-hour window. Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27272594_1-due@seneca-assessments
-DTSTAMP:20260905T030000Z
+DTSTAMP:20260906T030000Z
 DTSTART:20261212T045900Z
 SUMMARY:PSY355: Personal Resilience Plan due (15%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
+DESCRIPTION:Released November 23\, 2026 at 12:01 a.m. Eastern. Due December 11\, 2026 at 11:59 p.m. Eastern. No automatic 48-hour window. Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27272594_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27380329_1-release@seneca-assessments
-DTSTAMP:20260905T030000Z
-DTSTART:20261130T050000Z
+DTSTAMP:20260906T030000Z
+DTSTART:20261207T050100Z
 SUMMARY:PSY355: Final Learning Reflection opens (5%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27380329_1
+DESCRIPTION:Released December 7\, 2026 at 12:01 a.m. Eastern. Due December 13\, 2026 at 11:59 p.m. Eastern. No automatic 48-hour window. Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27380329_1
 END:VEVENT
 BEGIN:VEVENT
 UID:psy355-_27380329_1-due@seneca-assessments
-DTSTAMP:20260905T030000Z
+DTSTAMP:20260906T030000Z
 DTSTART:20261214T045900Z
 SUMMARY:PSY355: Final Learning Reflection due (5%)
-DESCRIPTION:Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27380329_1
+DESCRIPTION:Released December 7\, 2026 at 12:01 a.m. Eastern. Due December 13\, 2026 at 11:59 p.m. Eastern. No automatic 48-hour window. Routine extension requests must arrive before the posted deadline. Complete this assessment in Blackboard. https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/assessment/test/_27380329_1
 END:VEVENT
 END:VCALENDAR

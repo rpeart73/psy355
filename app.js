@@ -828,7 +828,7 @@
     var cal = '<button onclick="SOC.go(\'calendar\')" aria-current="' + (calActive ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (calActive ? '600' : '500') + ';background:' + (calActive ? '#EEF1F5' : 'transparent') + ';color:' + (calActive ? '#15171C' : '#474C57') + ';text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (calActive ? 'var(--red)' : '#6B7280') + '">' + ic('calendar', 19) + '</span><span style="flex:1;text-align:left">Calendar and Due Dates</span></button>';
     var wkActive = s.screen === 'walkthroughs';
     var walk = '<button onclick="SOC.go(\'walkthroughs\')" aria-current="' + (wkActive ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (wkActive ? '600' : '500') + ';background:' + (wkActive ? '#EEF1F5' : 'transparent') + ';color:' + (wkActive ? '#15171C' : '#474C57') + ';text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (wkActive ? 'var(--red)' : '#6B7280') + '">' + ic('layers', 19) + '</span><span style="flex:1;text-align:left">Weekly Experiences</span></button>';
-    var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a><a href="./guide/PSY355-Companion-Guide.pdf?v=20260905-035850" download style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">PDF <span aria-hidden="true">&#8595;</span></a></div></div>';
+    var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a><a href="./guide/PSY355-Companion-Guide.pdf?v=deadline-policy-20260906" download style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">PDF <span aria-hidden="true">&#8595;</span></a></div></div>';
     var repActive = s.screen === 'report';
     var report = '<button onclick="SOC.reportProblem()" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;background:transparent;color:#474C57;text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('help', 19) + '</span><span style="flex:1;text-align:left">Report a problem</span></button>';
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
@@ -1551,7 +1551,7 @@
     ]
   },
   {
-    "d": "2026-09-21",
+    "d": "2026-09-18",
     "it": [
       [
         "Strategy Trial 1: Study, Test, Adjust opens",
@@ -1568,6 +1568,28 @@
         "Week 3 live class",
         "",
         "class"
+      ]
+    ]
+  },
+  {
+    "d": "2026-09-25",
+    "it": [
+      [
+        "Strategy Trial 1: Study, Test, Adjust",
+        "due; 20%",
+        "due",
+        "mindset-evidence-check-1"
+      ]
+    ]
+  },
+  {
+    "d": "2026-09-27",
+    "it": [
+      [
+        "Strategy Trial 1: Study, Test, Adjust: 48-hour window ends",
+        "11:59 p.m. Eastern Time (ET); no penalty within this window",
+        "window-end",
+        "mindset-evidence-check-1"
       ]
     ]
   },
@@ -1592,13 +1614,24 @@
     ]
   },
   {
-    "d": "2026-10-09",
+    "d": "2026-10-08",
     "it": [
       [
-        "Strategy Trial 1: Study, Test, Adjust",
-        "due; 20%",
-        "due",
-        "mindset-evidence-check-1"
+        "Mid-course Reflection: What the Evidence Changed opens",
+        "10%; submit in Blackboard",
+        "open",
+        "midcourse-practice-synthesis"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-08",
+    "it": [
+      [
+        "Learning Case Redesign opens",
+        "20%; submit in Blackboard",
+        "open",
+        "srl-case-redesign"
       ]
     ]
   },
@@ -1606,10 +1639,10 @@
     "d": "2026-10-13",
     "it": [
       [
-        "Learning Case Redesign opens",
-        "20%; submit in Blackboard",
-        "open",
-        "srl-case-redesign"
+        "Mid-course Reflection: What the Evidence Changed",
+        "due; 10%",
+        "due",
+        "midcourse-practice-synthesis"
       ]
     ]
   },
@@ -1624,13 +1657,24 @@
     ]
   },
   {
-    "d": "2026-10-19",
+    "d": "2026-10-15",
     "it": [
       [
-        "Mid-course Reflection: What the Evidence Changed opens",
-        "10%; submit in Blackboard",
-        "open",
+        "Mid-course Reflection: What the Evidence Changed: 48-hour window ends",
+        "11:59 p.m. Eastern Time (ET); no penalty within this window",
+        "window-end",
         "midcourse-practice-synthesis"
+      ]
+    ]
+  },
+  {
+    "d": "2026-10-20",
+    "it": [
+      [
+        "Learning Case Redesign",
+        "due; 20%",
+        "due",
+        "srl-case-redesign"
       ]
     ]
   },
@@ -1645,13 +1689,13 @@
     ]
   },
   {
-    "d": "2026-10-23",
+    "d": "2026-10-22",
     "it": [
       [
-        "Mid-course Reflection: What the Evidence Changed",
-        "due; 10%",
-        "due",
-        "midcourse-practice-synthesis"
+        "Learning Case Redesign: 48-hour window ends",
+        "11:59 p.m. Eastern Time (ET); no penalty within this window",
+        "window-end",
+        "srl-case-redesign"
       ]
     ]
   },
@@ -1672,17 +1716,6 @@
         "Week 8 live class",
         "",
         "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-06",
-    "it": [
-      [
-        "Learning Case Redesign",
-        "due; 20%",
-        "due",
-        "srl-case-redesign"
       ]
     ]
   },
@@ -1718,6 +1751,17 @@
     ]
   },
   {
+    "d": "2026-11-23",
+    "it": [
+      [
+        "Personal Resilience Plan opens",
+        "15%; submit in Blackboard",
+        "open",
+        "personal-resilience-plan"
+      ]
+    ]
+  },
+  {
     "d": "2026-11-26",
     "it": [
       [
@@ -1739,24 +1783,24 @@
     ]
   },
   {
-    "d": "2026-11-30",
+    "d": "2026-11-29",
     "it": [
       [
-        "Personal Resilience Plan opens",
-        "15%; submit in Blackboard",
-        "open",
-        "personal-resilience-plan"
+        "Strategy Trial 2: Recovery and Help-Seeking: 48-hour window ends",
+        "11:59 p.m. Eastern Time (ET); no penalty within this window",
+        "window-end",
+        "mindset-evidence-check-2"
       ]
     ]
   },
   {
-    "d": "2026-11-30",
+    "d": "2026-12-02",
     "it": [
       [
-        "Final Learning Reflection opens",
-        "5%; submit in Blackboard",
-        "open",
-        "final-reflection"
+        "Private Learning Journal",
+        "due; 10%",
+        "due",
+        "weekly-reflections"
       ]
     ]
   },
@@ -1774,10 +1818,21 @@
     "d": "2026-12-04",
     "it": [
       [
-        "Private Learning Journal",
-        "due; 10%",
-        "due",
+        "Private Learning Journal: 48-hour window ends",
+        "11:59 p.m. Eastern Time (ET); no penalty within this window",
+        "window-end",
         "weekly-reflections"
+      ]
+    ]
+  },
+  {
+    "d": "2026-12-07",
+    "it": [
+      [
+        "Final Learning Reflection opens",
+        "5%; submit in Blackboard",
+        "open",
+        "final-reflection"
       ]
     ]
   },
@@ -1806,10 +1861,9 @@
     "d": "2026-12-13",
     "it": [
       [
-        "Final Learning Reflection",
-        "due; 5%",
-        "due",
-        "final-reflection"
+        "Week 14 asynchronous office hours and course closure",
+        "No lecture; optional consultation and final questions",
+        "async"
       ]
     ]
   },
@@ -1817,9 +1871,10 @@
     "d": "2026-12-13",
     "it": [
       [
-        "Week 14 asynchronous office hours and course closure",
-        "No lecture; optional consultation and final questions",
-        "async"
+        "Final Learning Reflection",
+        "due; 5%",
+        "due",
+        "final-reflection"
       ]
     ]
   },
