@@ -707,38 +707,42 @@ window.PSY355 = {
    "fulltext": true
   },
   {
-   "id": "neff2003",
-   "video": {
-    "yt": "IvtZBUSplr4",
-    "title": "The Space Between Self-Esteem and Self-Compassion: Kristin Neff at TEDxCentennialParkWomen",
-    "channel": "TEDx Talks",
-    "scholar": "Kristin Neff"
-   },
-   "eye": "western",
-   "type": "Article",
-   "access": "library",
-   "title": "Self-Compassion: An Alternative Conceptualization of a Healthy Attitude Toward Oneself",
-   "authors": "Kristin Neff",
-   "year": 2003,
-   "themes": [
-    "well-being"
-   ],
-   "origin": "United States",
-   "len": "~30 min read",
-   "diff": 2,
-   "week": 8,
-   "abstract": "Neff's conceptual article defines self-compassion through self-kindness, common humanity, and mindfulness, and proposes it as an alternative to self-esteem based on evaluation and comparison. The article discusses possible relationships with well-being and identifies questions for research. It does not test whether a self-compassionate sentence improves learning, help seeking, persistence, or performance.",
-   "coreIdea": "Neff proposes self-kindness, common humanity, and mindfulness as components of self-compassion. This 2003 article is conceptual, so course exercises using the model are applications rather than tested interventions.",
-   "evidenceType": "Conceptual construct article",
-   "sample": "No intervention sample; the article defines self-compassion and proposes research relationships.",
-   "evidenceLimit": "It does not test whether a compassionate sentence changes isolation, help seeking, persistence, learning, or performance.",
-   "related": [
-    "stephenson2018"
-   ],
-   "doi": "10.1080/15298860309032",
-   "url": "https://doi.org/10.1080/15298860309032",
-   "fulltext": true
-  },
+ "id": "neff2003",
+ "video": {
+  "yt": "IvtZBUSplr4",
+  "title": "The Space Between Self-Esteem and Self-Compassion: Kristin Neff at TEDxCentennialParkWomen",
+  "channel": "TEDx Talks",
+  "scholar": "Kristin Neff"
+ },
+ "eye": "western",
+ "type": "Article",
+ "access": "course",
+ "title": "Self-Compassion: An Alternative Conceptualization of a Healthy Attitude Toward Oneself",
+ "authors": "Kristin Neff",
+ "year": 2003,
+ "themes": [
+  "well-being"
+ ],
+ "origin": "United States",
+ "len": "~30 min read",
+ "diff": 2,
+ "week": 8,
+ "abstract": "Neff's conceptual article defines self-compassion through self-kindness, common humanity, and mindfulness, and proposes it as an alternative to self-esteem based on evaluation and comparison. The article discusses possible relationships with well-being and identifies questions for research. It does not test whether a self-compassionate sentence improves learning, help seeking, persistence, or performance.",
+ "coreIdea": "Neff proposes self-kindness, common humanity, and mindfulness as components of self-compassion. This 2003 article is conceptual, so course exercises using the model are applications rather than tested interventions.",
+ "evidenceType": "Conceptual construct article",
+ "sample": "No intervention sample; the article defines self-compassion and proposes research relationships.",
+ "evidenceLimit": "It does not test whether a compassionate sentence changes isolation, help seeking, persistence, learning, or performance.",
+ "related": [
+  "stephenson2018"
+ ],
+ "doi": "10.1080/15298860309032",
+ "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27412724-dt-content-rid-223976576_2/xid-223976576_2",
+ "fulltext": true,
+ "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27412724-dt-content-rid-223976576_2/xid-223976576_2",
+ "primaryLabel": "Open full article in Blackboard",
+ "blackboardFullText": true,
+ "sourceUrl": "https://doi.org/10.1080/15298860309032"
+},
   {
    "id": "stephenson2018",
    "eye": "western",

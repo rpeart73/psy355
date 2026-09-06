@@ -339,6 +339,7 @@
     return isPdfReading(r) ? 'Open the PDF' : 'Open the reading';
   }
   function accessNote(r) {
+    if (r.blackboardFullText) return "Full article PDF in Blackboard. Sign in with your Seneca account; no library search is needed.";
     if (r.access === 'openstax') return 'Free and open on OpenStax. Opens in a new tab.';
     if (r.access === 'open' || r.access === 'openaccess') return 'Open access. Opens in a new tab.';
     if (r.access === 'library') return 'A licensed reading. Read it through the Seneca Library, and in this week\'s Readings folder on Blackboard.';
