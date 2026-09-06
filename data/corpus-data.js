@@ -423,70 +423,76 @@ window.PSY355 = {
    "fulltext": true
   },
   {
-   "id": "panadero2017",
-   "eye": "western",
-   "type": "Article",
-   "access": "openaccess",
-   "title": "A Review of Self-regulated Learning: Six Models and Four Directions for Research",
-   "authors": "Ernesto Panadero",
-   "year": 2017,
-   "themes": [
-    "self-regulation"
-   ],
-   "origin": "Spain",
-   "len": "~40 min read",
-   "diff": 3,
-   "week": 2,
-   "abstract": "Panadero reviews and compares six major models of self-regulated learning: Zimmerman; Boekaerts; Winne and Hadwin; Pintrich; Efklides; and Hadwin, Järvelä, and Miller. The models overlap in treating learning as an active process that involves cognition, metacognition, behaviour, motivation, and emotion, but they organize phases and mechanisms differently. The review maps those similarities and differences, surveys evidence and measures, and identifies research needs, including development, emotion, and shared regulation.",
-   "coreIdea": "Major self-regulated-learning models share attention to planning, monitoring, and adjustment, but they are distinct models with different emphases and research uses.",
-   "evidenceType": "Review of six self-regulated-learning models",
-   "sample": "Reviews models and research traditions; it is not one trial of a single plan-monitor-adjust routine.",
-   "evidenceLimit": "The models share features but remain distinct, and the review does not show that this course's activity improves learning.",
-   "related": [
-    "owen2023",
-    "yeager-dweck2020",
-    "ungar2011"
-   ],
-   "doi": "10.3389/fpsyg.2017.00422",
-   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5408091/",
-   "pdfUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00422/pdf",
-   "fulltext": true
-  },
+ "id": "panadero2017",
+ "eye": "western",
+ "type": "Article",
+ "access": "course",
+ "title": "A Review of Self-regulated Learning: Six Models and Four Directions for Research",
+ "authors": "Ernesto Panadero",
+ "year": 2017,
+ "themes": [
+  "self-regulation"
+ ],
+ "origin": "Spain",
+ "len": "~40 min read",
+ "diff": 3,
+ "week": 2,
+ "abstract": "Panadero reviews and compares six major models of self-regulated learning: Zimmerman; Boekaerts; Winne and Hadwin; Pintrich; Efklides; and Hadwin, Järvelä, and Miller. The models overlap in treating learning as an active process that involves cognition, metacognition, behaviour, motivation, and emotion, but they organize phases and mechanisms differently. The review maps those similarities and differences, surveys evidence and measures, and identifies research needs, including development, emotion, and shared regulation. Reading focus for this week: Start with the overview on page 1 and the explanation of Zimmerman’s learning cycle on page 3, with Figure 2 on page 4. Focus on planning, checking your progress and reflecting on what to change. You do not need to compare all six models or analyse statistics. The complete article is available if you want to explore further.",
+ "coreIdea": "Major self-regulated-learning models share attention to planning, monitoring, and adjustment, but they are distinct models with different emphases and research uses.",
+ "evidenceType": "Review of six self-regulated-learning models",
+ "sample": "Reviews models and research traditions; it is not one trial of a single plan-monitor-adjust routine.",
+ "evidenceLimit": "The models share features but remain distinct, and the review does not show that this course's activity improves learning.",
+ "related": [
+  "owen2023",
+  "yeager-dweck2020",
+  "ungar2011"
+ ],
+ "doi": "10.3389/fpsyg.2017.00422",
+ "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27417266-dt-content-rid-223995616_2/xid-223995616_2",
+ "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27417266-dt-content-rid-223995616_2/xid-223995616_2",
+ "fulltext": true,
+ "primaryLabel": "Open full article in Blackboard",
+ "blackboardFullText": true,
+ "sourceUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00422/full"
+},
   {
-   "id": "yeager2019",
-   "video": {
-    "yt": "B9FMue4-tg8",
-    "title": "Can a \"growth mindset\" help students achieve goals? with David Yeager, PhD | Speaking of Psychology",
-    "channel": "American Psychological Association",
-    "scholar": "David S. Yeager"
-   },
-   "eye": "western",
-   "type": "Article",
-   "access": "library",
-   "title": "A national experiment reveals where a growth mindset improves achievement",
-   "authors": "David S. Yeager, Paul Hanselman, Gregory M. Walton, Jared S. Murray, Robert Crosnoe, Chandra Muller, Elizabeth Tipton, Barbara Schneider, and colleagues",
-   "year": 2019,
-   "themes": [
-    "mindset",
-    "context"
-   ],
-   "origin": "United States",
-   "len": "~30 min read",
-   "diff": 4,
-   "week": 3,
-   "abstract": "In a randomized national study of 12,490 ninth-grade students in 65 regular United States public high schools, a brief online growth-mindset intervention produced a small improvement in core-course GPA among lower-achieving students and increased advanced-mathematics enrolment overall. The grade effect varied with school peer norms. The study supports a bounded, context-dependent causal claim about this intervention in this population, not a promise that mindset improves every student's achievement.",
-   "coreIdea": "A brief intervention produced a small GPA benefit for lower-achieving ninth-grade students and increased advanced-mathematics enrolment overall in this United States sample; the grade effect depended on school peer norms.",
-   "evidenceType": "Individually randomized national field experiment",
-   "sample": "12,490 ninth-grade students in 65 regular United States public high schools.",
-   "evidenceLimit": "The effects were small and context-dependent; the study supports claims about this brief intervention and population, not every learner or mindset message.",
-   "related": [
-    "claro2016"
-   ],
-   "doi": "10.1038/s41586-019-1466-y",
-   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6786290/",
-   "pdfUrl": "https://www.nature.com/articles/s41586-019-1466-y.pdf",
-   "fulltext": true
-  },
+ "id": "yeager2019",
+ "video": {
+  "yt": "B9FMue4-tg8",
+  "title": "Can a \"growth mindset\" help students achieve goals? with David Yeager, PhD | Speaking of Psychology",
+  "channel": "American Psychological Association",
+  "scholar": "David S. Yeager"
+ },
+ "eye": "western",
+ "type": "Article",
+ "access": "course",
+ "title": "A national experiment reveals where a growth mindset improves achievement",
+ "authors": "David S. Yeager, Paul Hanselman, Gregory M. Walton, Jared S. Murray, Robert Crosnoe, Chandra Muller, Elizabeth Tipton, Barbara Schneider, and colleagues",
+ "year": 2019,
+ "themes": [
+  "mindset",
+  "context"
+ ],
+ "origin": "United States",
+ "len": "~30 min read",
+ "diff": 4,
+ "week": 3,
+ "abstract": "In a randomized national study of 12,490 ninth-grade students in 65 regular United States public high schools, a brief online growth-mindset intervention produced a small improvement in core-course GPA among lower-achieving students and increased advanced-mathematics enrolment overall. The grade effect varied with school peer norms. The study supports a bounded, context-dependent causal claim about this intervention in this population, not a promise that mindset improves every student's achievement. Reading focus for this week: Start with the opening summary on PDF page 1. In the main article, look for who took part, what the researchers changed and why the school setting mattered. Focus on the explanation of the findings and their limits. No calculations or interpretation of statistical tables are required. Methods, extended data and reporting forms after PDF page 6 are optional background.",
+ "coreIdea": "A brief intervention produced a small GPA benefit for lower-achieving ninth-grade students and increased advanced-mathematics enrolment overall in this United States sample; the grade effect depended on school peer norms.",
+ "evidenceType": "Individually randomized national field experiment",
+ "sample": "12,490 ninth-grade students in 65 regular United States public high schools.",
+ "evidenceLimit": "The effects were small and context-dependent; the study supports claims about this brief intervention and population, not every learner or mindset message.",
+ "related": [
+  "claro2016"
+ ],
+ "doi": "10.1038/s41586-019-1466-y",
+ "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27417267-dt-content-rid-223995620_2/xid-223995620_2",
+ "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27417267-dt-content-rid-223995620_2/xid-223995620_2",
+ "fulltext": true,
+ "primaryLabel": "Open full article in Blackboard",
+ "blackboardFullText": true,
+ "sourceUrl": "https://www.nature.com/articles/s41586-019-1466-y"
+},
   {
    "id": "claro2016",
    "eye": "western",
@@ -515,34 +521,37 @@ window.PSY355 = {
    "fulltext": true
   },
   {
-   "id": "cassidy2015",
-   "eye": "western",
-   "type": "Article",
-   "access": "openaccess",
-   "title": "Resilience Building in Students: The Role of Academic Self-Efficacy",
-   "authors": "Simon Cassidy",
-   "year": 2015,
-   "themes": [
-    "motivation",
-    "resilience"
-   ],
-   "origin": "United Kingdom",
-   "len": "~30 min read",
-   "diff": 2,
-   "week": 4,
-   "abstract": "Cassidy tests how academic self-efficacy, a person's perception of their own capabilities, relates to academic resilience by exposing 435 undergraduates to a case vignette of either personal or vicarious academic adversity. Self-efficacy was measured before exposure and resilience after, and self-efficacy was both correlated with and a significant predictor of academic resilience. Students also showed greater resilience when responding to vicarious adversity than to personal adversity, which points toward how interventions might be designed.",
-   "coreIdea": "In this vignette study, academic self-efficacy was associated with and statistically predicted students' academic-resilience responses; the design suggests, but does not itself test, an intervention.",
-   "evidenceType": "Cross-sectional, self-report vignette study",
-   "sample": "435 British undergraduate students responding at one time point to personal or vicarious academic-adversity vignettes.",
-   "evidenceLimit": "Regression prediction means statistical association here, not causal prediction; the study did not test an intervention that builds self-efficacy or resilience.",
-   "related": [
-    "yeager-bryan-gross"
-   ],
-   "doi": "10.3389/fpsyg.2015.01781",
-   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4661232/",
-   "pdfUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.01781/pdf",
-   "fulltext": true
-  },
+ "id": "cassidy2015",
+ "eye": "western",
+ "type": "Article",
+ "access": "course",
+ "title": "Resilience Building in Students: The Role of Academic Self-Efficacy",
+ "authors": "Simon Cassidy",
+ "year": 2015,
+ "themes": [
+  "motivation",
+  "resilience"
+ ],
+ "origin": "United Kingdom",
+ "len": "~30 min read",
+ "diff": 2,
+ "week": 4,
+ "abstract": "Cassidy tests how academic self-efficacy, a person's perception of their own capabilities, relates to academic resilience by exposing 435 undergraduates to a case vignette of either personal or vicarious academic adversity. Self-efficacy was measured before exposure and resilience after, and self-efficacy was both correlated with and a significant predictor of academic resilience. Students also showed greater resilience when responding to vicarious adversity than to personal adversity, which points toward how interventions might be designed. Reading focus for this week: Start with the summary on page 1 and the Conclusions section on page 13. Use the article to explore how confidence in a specific learning task relates to responding to a setback. You are not asked to complete a psychological scale, diagnose anyone or calculate statistics. The complete article is available for context.",
+ "coreIdea": "In this vignette study, academic self-efficacy was associated with and statistically predicted students' academic-resilience responses; the design suggests, but does not itself test, an intervention.",
+ "evidenceType": "Cross-sectional, self-report vignette study",
+ "sample": "435 British undergraduate students responding at one time point to personal or vicarious academic-adversity vignettes.",
+ "evidenceLimit": "Regression prediction means statistical association here, not causal prediction; the study did not test an intervention that builds self-efficacy or resilience.",
+ "related": [
+  "yeager-bryan-gross"
+ ],
+ "doi": "10.3389/fpsyg.2015.01781",
+ "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27417268-dt-content-rid-223995624_2/xid-223995624_2",
+ "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27417268-dt-content-rid-223995624_2/xid-223995624_2",
+ "fulltext": true,
+ "primaryLabel": "Open full article in Blackboard",
+ "blackboardFullText": true,
+ "sourceUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.01781/full"
+},
   {
    "id": "yeager-bryan-gross",
    "eye": "western",
