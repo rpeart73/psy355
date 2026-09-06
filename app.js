@@ -1993,10 +1993,10 @@
     return '<section class="node kd-cal" aria-label="Key dates for this course">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">DUE DATES</div>'
       + '<h2 class="wk-sec" style="margin:0 0 4px">What you hand in, and when</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">The Private Learning Journal requires six dated entries and is due December 4. Strategy Trial 1 is due October 9, the Mid-course Reflection is due October 23, Learning Case Redesign is due November 6, Strategy Trial 2 is due November 27, and the Personal Resilience Plan is due December 11. Nothing is due in Study Week. The Final Learning Reflection is due Sunday, December 13, in Week 14. Blackboard confirms the exact submission time.'
-      + '<div class="kd-list">' + keyDatesRows(['due']) + '</div>'
+      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Use the dated entries below for each assessment deadline and its separate no-penalty submission-window closing time. All times are Eastern. Final projects and final reflections have no automatic 48-hour window. Nothing is due in Study Week. Read the Deadlines and Extensions policy for extension requests and exceptions.</p>'
+      + '<div class="kd-list">' + keyDatesRows(['due', 'window-end']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">Assessment availability and start dates</h2>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">All seven assessment guides are visible on this site from September 8. The Private Learning Journal opens September 14, and later assessment rooms open on the dates shown. Blackboard remains the official release and submission record.</p>'
+      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The seven assessment guides on this website are available for preview. Blackboard opens submissions incrementally on the dates shown below. Viewing a guide does not mean its Blackboard submission is open.</p>'
       + '<div class="kd-list">' + keyDatesRows(['open']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">The class schedule</h2>'
       + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The shape of the term. Nothing here is due.</p>'
@@ -2019,7 +2019,7 @@
       else if (cls.length) map[row.d] = { kind: 'class', label: cls[0][0], idx: null };
       else if (ops.length) map[row.d] = { kind: 'open', label: ops[0][0], assignmentId: assignmentId };
     });
-    ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30'].forEach(function (d) { map[d] = { kind: 'study', label: 'Study Week' }; });
+    keyDatesList().forEach(function (row) { var windows = row.it.filter(function (x) { return x[2] === 'window-end'; }); if (!windows.length) return; var prior = map[row.d], label = windows.length > 1 ? windows.length + ' submission windows close' : windows[0][0]; map[row.d] = { kind: 'due', label: (prior && prior.kind === 'due' ? prior.label + '; ' : '') + label, assignmentId: prior ? prior.assignmentId : (windows.length === 1 ? windows[0][3] : null) }; }); ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30'].forEach(function (d) { map[d] = { kind: 'study', label: 'Study Week' }; });
     return map;
   }
   function calMonthGrid(year, m) {
@@ -2063,7 +2063,7 @@
     return '<div class="rise cal-page">' + (D.course.scheduleDetail ? '<div style="border:1px solid var(--border);border-left:4px solid var(--red);border-radius:10px;background:#fff;padding:12px 16px;margin:0 0 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:5px">CLASS TIME</div><p style="margin:0;font-size:.92rem;line-height:1.55;color:var(--ink)">' + esc(D.course.scheduleDetail) + '</p></div>' : '') + ''
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">CALENDAR</div>'
       + '<h1 style="font-size:1.9rem;line-height:1.15;font-weight:600;margin:0 0 8px;color:var(--ink)">Every date that matters</h1>'
-      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Seneca red marks due dates. Black marks live classes. Neutral grey marks every asynchronous week with no lecture, including the office-hour weeks. A light grey outline marks Study Week. Week 6 gives you room to extend resilience into context and culture independently. Week 10 creates space for unhurried reflective writing and journaling. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
+      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Seneca red marks due dates and submission-window closing dates. Black marks live classes. Neutral grey marks every asynchronous week with no lecture, including the office-hour weeks. A light grey outline marks Study Week. Week 6 gives you room to extend resilience into context and culture independently. Week 10 creates space for unhurried reflective writing and journaling. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
       + deadlineRule()
       + mobileCalendarSubscription()
       + calendarBody()
