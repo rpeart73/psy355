@@ -928,7 +928,7 @@ window.PSY355 = {
   },
   {
    "term": "Learning Map",
-   "def": "A learning map is a practical way to name the conditions that help or block learning. Drawn as two columns, what helps me learn and what makes learning harder, it turns vague frustration into specific, workable detail. The value is that conditions can be changed where character cannot, so the map gives a student a starting place to adjust the environment, the timing, or the strategy rather than judging their ability.",
+   "def": "In this course, a learning map is an optional way to list what helps your learning and what makes it harder. You can use two columns, then consider one change or source of support. This is a course planning tool inspired by self-regulated learning, not a method tested in Panadero's review or a claim that your character cannot change.",
    "cite": "Panadero, E. (2017). A review of self-regulated learning: Six models and four directions for research.",
    "week": 1
   },
@@ -982,19 +982,19 @@ window.PSY355 = {
   },
   {
    "term": "Self-Efficacy",
-   "def": "Self-efficacy is the belief that one can take the actions needed for a specific task, rather than a general sense of being capable. Cassidy (2015) connects academic self-efficacy to resilience, showing that task specific confidence shapes how students approach difficulty. Because it is tied to a particular task, self-efficacy can be built deliberately: a student raises it by accumulating evidence that they can do the next concrete step, not by waiting to feel confident in general.",
-   "cite": "Cassidy, S. (2015). Resilience building in students: The role of academic self-efficacy.",
+   "def": "Self-efficacy is your belief that you can carry out the actions needed for a particular task. Cassidy (2015) found an association between academic self-efficacy and responses to imagined academic setbacks. That study did not test whether our small-next-step exercise improves confidence or performance.",
+   "cite": "Bandura, A. (1994). Self-efficacy. Cassidy, S. (2015). Resilience building in students: The role of academic self-efficacy.",
    "week": 4
   },
   {
    "term": "Mastery Experience",
-   "def": "A mastery experience is evidence from actually doing something that builds confidence for the next attempt. It is one of the strongest sources of self-efficacy because it rests on what a student has done, not on encouragement alone. The practical move is to make the experience reachable: by defining the smallest next action that would count as real progress, a student can create proof of capability rather than waiting for confidence to arrive first.",
-   "cite": "Cassidy, S. (2015). Resilience building in students: The role of academic self-efficacy.",
+   "def": "A mastery experience is experience of successfully doing a task. Bandura (1994) describes it as an important source of self-efficacy, including learning to work through difficulties. In this course, you can identify a manageable next action and reflect on what happened. That suggestion is an application of the theory, not a guaranteed way to increase confidence.",
+   "cite": "Bandura, A. (1994). Self-efficacy.",
    "week": 4
   },
   {
    "term": "Motivation",
-   "def": "Motivation is the energy and the reason that move a person toward action. It is most useful when it is tied to a concrete next step rather than to performance or mood, because energy without direction tends to fade under pressure. For students, naming the reason a task matters and pairing it with a small, doable action helps motivation survive the moments when the work feels heavy and the immediate reward is unclear.",
+   "def": "Motivation concerns what starts an action, directs it and keeps it going. For course planning, you can name why a task matters to you and choose a manageable next step. This is a planning suggestion, not a finding that Cassidy tested or a promise that motivation will stay high.",
    "cite": "Cassidy, S. (2015). Resilience building in students: The role of academic self-efficacy.",
    "week": 4
   },
@@ -1006,13 +1006,13 @@ window.PSY355 = {
   },
   {
    "term": "Resilience Process",
-   "def": "The resilience process is a pattern of disruption, response, support, and adaptation, rather than a fixed trait that some people possess. Richardson (2011) describes resilience as movement through disruption toward reintegration, which can lead to growth. Treating resilience as a process is freeing for students: it means a hard period is a stage to move through with support and practice, not a verdict on whether they are a resilient kind of person.",
+   "def": "Richardson (2011) presents a model of disruption and possible forms of reintegration, or reorganizing afterwards. Growth is one possibility, not an outcome everyone must reach. In this course, use the model to consider possible responses and supports, not to judge yourself or another person against a fixed recovery timetable.",
    "cite": "Richardson, G. E. (2011). Applications of the metatheory of resilience and resiliency in rehabilitation and medicine.",
    "week": 5
   },
   {
    "term": "Reintegration",
-   "def": "Reintegration is the work of rebuilding after difficulty in a situation that has changed. In Richardson's (2011) account it is the phase where a person reorganizes after a disruption, and the form it takes can range from simply coping to genuine growth. For students, naming reintegration makes recovery active rather than passive: it points to the choices and supports that shape how a person comes back together, instead of waiting for things to return to how they were.",
+   "def": "In Richardson's (2011) model, reintegration means reorganizing after a disruption. Possibilities include growth, a return to a previous level of functioning, or continuing losses and difficulties. The model describes possible pathways; it does not show that naming a stage causes recovery.",
    "cite": "Richardson, G. E. (2011). Applications of the metatheory of resilience and resiliency in rehabilitation and medicine.",
    "week": 5
   },
@@ -1066,7 +1066,7 @@ window.PSY355 = {
   },
   {
    "term": "Recovery",
-   "def": "Recovery is the process of regaining footing after pressure or disruption. Weight and colleagues (2024) study how students in demanding settings move through adversity, showing that recovery is ordinary and gradual rather than dramatic. For students, defining recovery in realistic, everyday terms, a workable week, a resumed routine, one task back on track, keeps it reachable and prevents the trap of treating anything short of full restoration as failure.",
+   "def": "In this course, recovery means regaining some stability or ability to act after pressure or disruption. It can look different for different people and situations. Weight and colleagues (2024) report former college athletes' accounts of adversity and perceived outcomes; their study does not establish a recovery timetable. You can consider a manageable next step without treating partial progress as failure.",
    "cite": "Weight, E., Haroldson, J. M., Harry, M., and Rudd, E. (2024). Adversity and resiliency: Athlete experiences within U.S. college sport.",
    "week": 7
   },
@@ -1096,7 +1096,7 @@ window.PSY355 = {
   },
   {
    "term": "Common Humanity",
-   "def": "Common humanity is the recognition that difficulty is part of shared human experience, not a private flaw that sets a person apart. In Neff's (2003) account it is a core element of self-compassion, because seeing struggle as something people generally face reduces the isolation that intensifies it. For students, this recognition is steadying: a setback feels less like proof that they alone are failing and more like an ordinary part of learning that others meet too.",
+   "def": "In Neff's (2003) model, common humanity means recognizing that difficulty is part of human experience rather than seeing it as something that isolates you from everyone else. It is one component of self-compassion. The article explains the idea theoretically; it does not test whether our course exercise reduces isolation.",
    "cite": "Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself.",
    "week": 8
   },
@@ -1138,7 +1138,7 @@ window.PSY355 = {
   },
   {
    "term": "Critical Thinking Disposition",
-   "def": "A critical thinking disposition is a habit of questioning, checking, and revising one's own thinking. Kamarulzaman and Ibrahim (2026) study how reflective journaling can surface and strengthen this disposition in students. It is less about a single skill than about a standing willingness to ask whether a conclusion holds, to look for what one might be missing, and to change one's mind when the evidence calls for it, which is exactly what reflective practice trains.",
+   "def": "A critical thinking disposition is a willingness to question, check reasons and reconsider a conclusion. Kamarulzaman and Ibrahim (2026) identified signs of these dispositions in students' reflective journals. Their qualitative study describes patterns in the writing; it does not establish that journaling caused improvement. In this course, explain what you think and what evidence could change your mind.",
    "cite": "Kamarulzaman, W., and Ibrahim, H. (2026). Uncovering critical thinking dispositions through reflective journaling: A qualitative study of Malaysian undergraduates.",
    "week": 10
   },
@@ -1210,13 +1210,13 @@ window.PSY355 = {
   },
   {
    "term": "Support Match",
-   "def": "A support match is choosing supports that fit the real situation a person is in. Cassidy (2015) shows that supports work when they connect to a student's actual needs and build genuine self-efficacy, not when they are generic. For students planning their own resilience, the match matters more than the quantity of help: a well chosen support that fits the specific barrier does more than a long list of resources that do not address the real problem.",
-   "cite": "Cassidy, S. (2015). Resilience building in students: The role of academic self-efficacy.",
+   "def": "In this course, a support match means choosing help that fits a specific barrier and your circumstances. For example, unclear instructions might call for a question to your instructor, while unavailable study time calls for a different response. This is a course planning idea informed by Ungar's attention to context, not a support intervention tested by Cassidy.",
+   "cite": "Ungar, M. (2011). The social ecology of resilience: Addressing contextual and cultural ambiguity of a nascent construct.",
    "week": 13
   },
   {
    "term": "Evidence-Based Practice",
-   "def": "Evidence-based practice is a strategy connected to research or sound course reasoning, not just personal preference. It asks a student to support each part of a plan with a concept or finding rather than with a hunch. Neff's (2003) account of self-compassion is one example of the kind of grounded basis this calls for: building a plan on tested ideas makes it more trustworthy and gives a student a clear reason to rely on it when conditions get hard.",
+   "def": "In this course, this means explaining how research, a course concept and the situation inform your proposed action. Distinguish a theory from evidence that an action has been tested, and state any limits. For example, Neff's (2003) article proposes a self-compassion model; it does not test our course exercise. A well-reasoned plan is not a guarantee that a strategy will work.",
    "cite": "Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself.",
    "week": 13
   },
@@ -1270,7 +1270,7 @@ window.PSY355 = {
   },
   {
    "term": "Kristin Neff",
-   "def": "Researcher who defined self-compassion as a healthier and more accurate alternative to harsh self-criticism.",
+   "def": "Researcher whose 2003 conceptual article describes self-compassion through self-kindness, common humanity and mindfulness. The article develops a theory, not a test of our course exercises.",
    "cite": "Neff, K. D. (2003). Self-Compassion: An Alternative Conceptualization of a Healthy Attitude Toward Oneself.",
    "week": 8
   }

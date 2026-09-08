@@ -127,11 +127,11 @@ window.PSY355_KC = {
       "options": [
         "From mild to severe personality change",
         "From denial to permanent avoidance",
-        "From simply coping to genuine growth",
+        "Growth, a return to a previous level, or continuing losses and difficulties",
         "From failure to permanent damage"
       ],
       "answer": 2,
-      "why": "Reintegration can range from simply coping to genuine growth, depending on the choices and supports involved.",
+      "why": "Richardson describes several possible forms of reintegration, including growth, a return to a previous level, and reintegration with loss. Growth is not guaranteed.",
       "diff": 2
     },
     {
@@ -205,19 +205,19 @@ window.PSY355_KC = {
         "The complete removal of all adversity"
       ],
       "answer": 1,
-      "why": "Recovery is the process of regaining footing after pressure or disruption, treated as ordinary and gradual.",
+      "why": "In this course, recovery means regaining some stability or ability to act after pressure or disruption. Its pace and form can vary.",
       "diff": 1
     },
     {
-      "q": "How does the glossary describe healthy recovery?",
+      "q": "What does the course glossary say about the pace and form of recovery?",
       "options": [
         "Sudden and complete",
         "Rare and reserved for exceptional people",
-        "Ordinary and gradual rather than dramatic",
+        "Different for different people and situations",
         "Impossible without professional treatment"
       ],
       "answer": 2,
-      "why": "The glossary describes recovery as ordinary and gradual rather than dramatic, which keeps it reachable.",
+      "why": "The course does not set one recovery timetable. Partial progress can matter without promising a particular outcome.",
       "diff": 1
     },
     {
@@ -248,7 +248,7 @@ window.PSY355_KC = {
       "q": "Which statement best captures the central finding of Weight and colleagues' study of college athletes?",
       "options": [
         "Adversity in college sport only ever damages athletes",
-        "Common adversities such as injury and time demands can become sources of resilience and growth, not only harm",
+        "Some participants associated adversity with perceived growth as well as difficulties",
         "Only injury, and no other adversity, builds resilience",
         "Athletes avoid all adversity in order to stay resilient"
       ],
@@ -1069,11 +1069,11 @@ window.PSY355_KC = {
       q: "Two students go through the same disruption. One returns to just coping; the other comes back with new study habits and perspective. Richardson would say reintegration can range across what?",
       options: [
         "From denial to permanent avoidance",
-        "From simply coping to genuine growth, depending on choices and supports",
+        "Growth, a return to a previous level, or continuing losses and difficulties",
         "From failure to permanent damage only",
         "From one fixed personality type to another" ],
       answer: 1,
-      why: "In Richardson's account reintegration can range from simply coping to genuine growth, shaped by the choices and supports involved.",
+      why: "Richardson's model includes several possible outcomes, not just improvement. The two students illustrate only two possibilities; reintegration with loss is also part of the model.",
       whyWrong: {
         0: "Reintegration describes forms of rebuilding, not a slide from denial to avoidance.",
         2: "The model's range includes growth, so it is not limited to failure and damage.",
@@ -1228,29 +1228,29 @@ window.PSY355_KC = {
   /* WEEK 7 : Stress, Adversity, and Recovery (Weight et al 2024; corpus glossary on stress, adversity, recovery) */
   add(7, [
     { kind: "scenario", diff: 2,
-      q: "An athlete assumes that a season-ending injury can only set her back. Based on Weight and colleagues, what does their study of college athletes suggest is also possible?",
+      q: "A fictional athlete wonders what others have experienced after setbacks. What did former college athletes report in Weight and colleagues' study?",
       options: [
         "Adversity in sport only ever damages athletes",
-        "Common adversities such as injury and time demands can become sources of resilience and growth, not only harm",
+        "Some participants associated adversity with perceived growth as well as difficulties",
         "Injury is the only adversity that ever builds resilience",
         "Athletes should avoid all adversity to stay resilient" ],
       answer: 1,
-      why: "Weight and colleagues found that common adversities, including injury and time demands, promoted resiliency, grit, teamwork, and time management, so adversity can be generative, not only harmful.",
+      why: "Former athletes described adversity and outcomes they associated with it. Their accounts do not prove that injury or hardship caused growth, or that another athlete will have the same experience.",
       whyWrong: {
-        0: "The study's central finding is that adversity can become a source of growth, so only ever damages is too narrow.",
+        0: "Some participants reported perceived growth, so a claim of harm only would omit part of their accounts. This does not make hardship beneficial for everyone.",
         2: "The study names several adversities, injury, time demands, and coach-athlete tension, not injury alone.",
-        3: "The findings are about growth through adversity, not a recommendation to avoid all difficulty." } },
+        3: "The study reports participants' experiences. It does not prescribe seeking adversity or avoiding every difficulty." } },
     { kind: "scenario", diff: 3,
       q: "After a hard month, Leo feels like a failure because he is not instantly back to full form. How does the course's definition of recovery reframe this?",
       options: [
         "Recovery must be sudden and complete or it does not count",
-        "Recovery is ordinary and gradual, so a workable week or one task back on track counts as real progress",
+        "Partial progress, such as one task back on track, can matter; recovery has no single timetable",
         "Recovery proves a person needed no support",
         "Anything short of full restoration is failure" ],
       answer: 1,
-      why: "The glossary treats recovery as the ordinary, gradual process of regaining footing, which keeps it reachable and avoids treating anything short of full restoration as failure.",
+      why: "This is a fictional course example. Leo can notice partial progress without assuming he must return to full capacity on a fixed timetable.",
       whyWrong: {
-        0: "Recovery is described as gradual rather than sudden and complete, so partial progress still counts.",
+        0: "The course does not require recovery to be sudden or complete before partial progress can matter.",
         2: "Defining recovery realistically does not imply it needs no support; supports often make it possible.",
         3: "This is exactly the trap the realistic definition is meant to prevent." } },
     { kind: "scenario", diff: 3,
@@ -1284,7 +1284,7 @@ window.PSY355_KC = {
       options: [
         "The pressure a person feels when demands seem heavy or threatening",
         "A difficult condition or event that can disrupt learning and well-being",
-        "The gradual process of regaining footing after pressure or disruption",
+        "Regaining some stability or ability to act after pressure or disruption",
         "A condition that reduces harm or supports adaptation" ],
       why: "Stress is the pressure a person feels when demands seem heavy or threatening." },
     { kind: "match", mgroup: "w7m", diff: 2,
@@ -1292,7 +1292,7 @@ window.PSY355_KC = {
       options: [
         "The pressure a person feels when demands seem heavy or threatening",
         "A difficult condition or event that can disrupt learning and well-being",
-        "The gradual process of regaining footing after pressure or disruption",
+        "Regaining some stability or ability to act after pressure or disruption",
         "A condition that reduces harm or supports adaptation" ],
       why: "Adversity is a difficult condition or event that can disrupt learning and well-being." },
     { kind: "match", mgroup: "w7m", diff: 2,
@@ -1300,23 +1300,23 @@ window.PSY355_KC = {
       options: [
         "The pressure a person feels when demands seem heavy or threatening",
         "A difficult condition or event that can disrupt learning and well-being",
-        "The gradual process of regaining footing after pressure or disruption",
+        "Regaining some stability or ability to act after pressure or disruption",
         "A condition that reduces harm or supports adaptation" ],
-      why: "Recovery is the gradual process of regaining footing after pressure or disruption." },
+      why: "In this course, recovery means regaining some stability or ability to act after pressure or disruption; its pace can vary." },
     { kind: "match", mgroup: "w7m", diff: 2,
       q: "Protective factor", answer: 3,
       options: [
         "The pressure a person feels when demands seem heavy or threatening",
         "A difficult condition or event that can disrupt learning and well-being",
-        "The gradual process of regaining footing after pressure or disruption",
+        "Regaining some stability or ability to act after pressure or disruption",
         "A condition that reduces harm or supports adaptation" ],
       why: "A protective factor is a condition that reduces harm or supports adaptation." },
     { type: "short", diff: 3,
       q: "In two or three sentences, explain how Weight and colleagues' findings support the idea that adversity is not only damaging, without claiming that all hardship is good.",
-      model: "Weight and colleagues interviewed former college athletes and found that common adversities, injury, time demands, and coach-athlete tension, often promoted resiliency, grit, teamwork, and time management. That shows adversity can be generative rather than purely harmful when a person moves through it with resources. The careful version does not claim all hardship is good: it says difficulty met with support can become a source of growth, which is different from recommending or romanticizing adversity." },
+      model: "Weight and colleagues report accounts from 215 former United States college athletes. Participants described injury, time demands and coach-athlete tension, and some attributed perceived growth to those experiences. These retrospective accounts show how participants understood their experiences; they do not establish that hardship caused growth or that all athletes benefit from adversity." },
     { type: "short", diff: 2,
-      q: "Describe a recent stressful stretch and one realistic marker of recovery you could set for yourself. Explain why a realistic marker helps.",
-      model: "A strong answer names a specific stressful stretch and a modest, concrete marker of recovery, such as a resumed routine, a workable week, or one task back on track. It draws on the idea that recovery is ordinary and gradual, so a realistic marker keeps progress reachable and prevents treating anything short of full restoration as failure. The reflection should frame recovery as a process supported by conditions and supports rather than a sudden, complete return to how things were." }
+      q: "Choose an ordinary learning setback, real or fictional, and suggest one manageable sign of progress. Explain why it fits the situation. You do not need to share private or distressing experiences.",
+      model: "A possible answer describes an ordinary missed deadline and proposes asking for clarification or resuming one manageable task. Explain why the step fits the situation and what support might be needed. This is course reasoning about a real or fictional example, not a research finding or a required personal disclosure." }
   ]);
 
   /* WEEK 8 : Self-Compassion and Self-Acceptance (Neff 2003; Stephenson et al 2018) */
