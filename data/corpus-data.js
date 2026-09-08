@@ -757,32 +757,36 @@ window.PSY355 = {
  "sourceUrl": "https://doi.org/10.1080/15298860309032"
 },
   {
-   "id": "stephenson2018",
-   "eye": "western",
-   "type": "Article",
-   "access": "library",
-   "title": "Self-Compassion, Self-Esteem, and Irrational Beliefs",
-   "authors": "Erin Stephenson, P. J. Watson, Zhuo Job Chen, and Ronald J. Morris",
-   "year": 2018,
-   "themes": [
-    "well-being"
-   ],
-   "origin": "United States",
-   "len": "~25 min read",
-   "diff": 3,
-   "week": 8,
-   "abstract": "Drawing on Rational Emotive Behaviour Therapy, this cross-sectional study examined questionnaire responses from 184 university students. Greater self-compassion was associated with lower irrationality and with indicators of better mental health. Statistical models also linked low frustration tolerance with part of the association between self-compassion and anxiety. These results support the authors' proposed REBT interpretation, but the correlational design cannot establish that irrational beliefs cause distress or that self-compassion changes it.",
-   "coreIdea": "Among 184 students, self-compassion was associated with lower irrationality and better mental-health indicators; the study establishes relationships, not causal effects.",
-   "evidenceType": "Cross-sectional questionnaire study",
-   "sample": "184 university students measured at one time point.",
-   "evidenceLimit": "The study found associations among self-compassion, self-esteem, irrational beliefs, and mental-health indicators; it cannot establish causal direction or an intervention effect.",
-   "related": [
-    "neff2003"
-   ],
-   "url": "https://link.springer.com/article/10.1007/s12144-017-9563-2",
-   "doi": "10.1007/s12144-017-9563-2",
-   "fulltext": true
-  },
+ "id": "stephenson2018",
+ "eye": "western",
+ "type": "Article",
+ "access": "course",
+ "title": "Self-Compassion, Self-Esteem, and Irrational Beliefs",
+ "authors": "Erin Stephenson, P. J. Watson, Zhuo Job Chen, and Ronald J. Morris",
+ "year": 2018,
+ "themes": [
+  "well-being"
+ ],
+ "origin": "United States",
+ "len": "~25 min read",
+ "diff": 3,
+ "week": 8,
+ "abstract": "Drawing on Rational Emotive Behaviour Therapy, this cross-sectional study examined questionnaire responses from 184 university students. Greater self-compassion was associated with lower irrationality and with indicators of better mental health. Statistical models also linked low frustration tolerance with part of the association between self-compassion and anxiety. These results support the authors' proposed REBT interpretation, but the correlational design cannot establish that irrational beliefs cause distress or that self-compassion changes it. Reading focus for this week: Start with the summary on PDF page 1 and the Limitations section on page 6. Focus on the difference between self-compassion and judging your overall worth. The study found relationships between questionnaire responses; it cannot show that one factor caused another. You are not asked to diagnose anyone, practise therapy, complete a psychological scale or calculate statistics. The complete article is available for context.",
+ "coreIdea": "Among 184 students, self-compassion was associated with lower irrationality and better mental-health indicators; the study establishes relationships, not causal effects.",
+ "evidenceType": "Cross-sectional questionnaire study",
+ "sample": "184 university students measured at one time point.",
+ "evidenceLimit": "The study found associations among self-compassion, self-esteem, irrational beliefs, and mental-health indicators; it cannot establish causal direction or an intervention effect.",
+ "related": [
+  "neff2003"
+ ],
+ "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27482986-dt-content-rid-224232300_2/xid-224232300_2",
+ "doi": "10.1007/s12144-017-9563-2",
+ "fulltext": true,
+ "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27482986-dt-content-rid-224232300_2/xid-224232300_2",
+ "primaryLabel": "Open full article in Blackboard",
+ "blackboardFullText": true,
+ "sourceUrl": "https://link.springer.com/article/10.1007/s12144-017-9563-2"
+},
   {
  "id": "nas2025",
  "eye": "western",
@@ -842,32 +846,36 @@ window.PSY355 = {
    "fulltext": true
   },
   {
-   "id": "kamarulzaman2026",
-   "eye": "western",
-   "type": "Article",
-   "access": "library",
-   "title": "Uncovering critical thinking dispositions through reflective journaling: A qualitative study of Malaysian undergraduates",
-   "authors": "Wirawani Kamarulzaman and Hasniza Ibrahim",
-   "year": 2026,
-   "themes": [
-    "metacognition"
-   ],
-   "origin": "Malaysia",
-   "len": "~25 min read",
-   "diff": 3,
-   "week": 10,
-   "abstract": "This qualitative study analysed 135 reflective journals written at three points by 45 Malaysian undergraduates in an Educational Testing and Assessment course. The researchers identified seven critical-thinking dispositions in the writing: cognitive maturity, analyticity, self-confidence, systematicity, open-mindedness, truth-seeking, and inquisitiveness. They interpreted changes across the cycles as deeper engagement and metacognitive awareness. The analysis shows patterns in these students' journals; it does not by itself prove that journaling caused stronger critical thinking.",
-   "coreIdea": "Across three journal cycles, researchers observed seven critical-thinking dispositions and interpreted changes in the writing as deeper engagement; this was a qualitative pattern, not a causal test.",
-   "evidenceType": "Qualitative longitudinal journal analysis",
-   "sample": "135 journals from 45 Malaysian undergraduates across three collection points, using a convenience sample.",
-   "evidenceLimit": "The study identifies and interprets patterns in writing; it does not show that journaling caused stronger critical thinking or performance.",
-   "doi": "10.24200/jonus.vol11iss1pp291-310",
-   "related": [
-    "jadmiko2024"
-   ],
-   "url": "https://journal.unisza.edu.my/jonus/index.php/jonus/article/view/921",
-   "fulltext": true
-  },
+ "id": "kamarulzaman2026",
+ "eye": "western",
+ "type": "Article",
+ "access": "course",
+ "title": "Uncovering critical thinking dispositions through reflective journaling: A qualitative study of Malaysian undergraduates",
+ "authors": "Wirawani Kamarulzaman and Hasniza Ibrahim",
+ "year": 2026,
+ "themes": [
+  "metacognition"
+ ],
+ "origin": "Malaysia",
+ "len": "~25 min read",
+ "diff": 3,
+ "week": 10,
+ "abstract": "This qualitative study analysed 135 reflective journals written at three points by 45 Malaysian undergraduates in an Educational Testing and Assessment course. The researchers identified seven critical-thinking dispositions in the writing: cognitive maturity, analyticity, self-confidence, systematicity, open-mindedness, truth-seeking, and inquisitiveness. They interpreted changes across the cycles as deeper engagement and metacognitive awareness. The analysis shows patterns in these students' journals; it does not by itself prove that journaling caused stronger critical thinking. Reading focus for this week: Start with the summary on PDF page 1 and the Conclusion on page 16. Look for how the researchers interpreted changes in the students’ reflections and what they identify as limits. You do not need to memorise all seven categories or analyse data. This study describes patterns in one group’s writing; it does not prove that journalling caused the changes. The complete article is available for context.",
+ "coreIdea": "Across three journal cycles, researchers observed seven critical-thinking dispositions and interpreted changes in the writing as deeper engagement; this was a qualitative pattern, not a causal test.",
+ "evidenceType": "Qualitative longitudinal journal analysis",
+ "sample": "135 journals from 45 Malaysian undergraduates across three collection points, using a convenience sample.",
+ "evidenceLimit": "The study identifies and interprets patterns in writing; it does not show that journaling caused stronger critical thinking or performance.",
+ "doi": "10.24200/jonus.vol11iss1pp291-310",
+ "related": [
+  "jadmiko2024"
+ ],
+ "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27482987-dt-content-rid-224232305_2/xid-224232305_2",
+ "fulltext": true,
+ "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27482987-dt-content-rid-224232305_2/xid-224232305_2",
+ "primaryLabel": "Open full article in Blackboard",
+ "blackboardFullText": true,
+ "sourceUrl": "https://journal.unisza.edu.my/jonus/index.php/jonus/article/view/921"
+},
   {
    "id": "wrench2020",
    "assigned": "Interpersonal Communication, Ch9: Conflict in Relationships",
