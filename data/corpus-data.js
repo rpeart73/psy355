@@ -877,31 +877,35 @@ window.PSY355 = {
  "sourceUrl": "https://journal.unisza.edu.my/jonus/index.php/jonus/article/view/921"
 },
   {
-   "id": "wrench2020",
-   "assigned": "Interpersonal Communication, Ch9: Conflict in Relationships",
-   "eye": "western",
-   "type": "Book",
-   "access": "openaccess",
-   "title": "Interpersonal Communication: A Mindful Approach to Relationships",
-   "authors": "Jason S. Wrench, Narissra M. Punyanunt-Carter, and Katherine S. Thweatt",
-   "year": 2020,
-   "themes": [
-    "well-being",
-    "metacognition"
-   ],
-   "origin": "United States",
-   "len": "~40 min read",
-   "diff": 2,
-   "week": 11,
-   "abstract": "This open textbook frames interpersonal communication around purpose, audience, impact, mindfulness, and empathy. The course applies those ideas to drafting an academic request that names the issue, the step already tried, and the help needed. The textbook does not report a study showing that this message format obtains help or resolves conflict.",
-   "coreIdea": "The textbook offers concepts for purposeful, audience-aware communication; the course applies them to an academic request without claiming that a particular message will obtain help.",
-   "evidenceType": "Open educational textbook",
-   "sample": "No experimental sample in the assigned chapter; it explains communication concepts and examples.",
-   "evidenceLimit": "The course applies purpose, audience, impact, and empathy to an academic request; the source does not test whether one message obtains help or resolves conflict.",
-   "related": [],
-   "url": "https://milneopentextbooks.org/interpersonal-communication-a-mindful-approach-to-relationships/",
-   "fulltext": true
-  }
+ "id": "wrench2020",
+ "assigned": "Interpersonal Communication, Ch9: Conflict in Relationships",
+ "eye": "western",
+ "type": "Book",
+ "access": "course",
+ "title": "Interpersonal Communication: A Mindful Approach to Relationships",
+ "authors": "Jason S. Wrench, Narissra M. Punyanunt-Carter, and Katherine S. Thweatt",
+ "year": 2020,
+ "themes": [
+  "well-being",
+  "metacognition"
+ ],
+ "origin": "United States",
+ "len": "~40 min read",
+ "diff": 2,
+ "week": 11,
+ "abstract": "This open textbook frames interpersonal communication around purpose, audience, impact, mindfulness, and empathy. The course applies those ideas to drafting an academic request that names the issue, the step already tried, and the help needed. The textbook does not report a study showing that this message format obtains help or resolves conflict. Reading focus for this week: Read section 9.1, then the Stop, Think, Listen, Communicate model in section 9.4 (PDF pages 23 and 24 in this course copy). Use these ideas to think about a clear request for help. This is a course application, not a promise that a message will solve a problem. Context, safety and power matter. You do not need to complete the chapter's questionnaires, exercises or self-tests, or share a personal conflict. No clinical diagnosis or statistical work is required. The complete chapter is included for reference in the openly licensed LibreTexts format.",
+ "coreIdea": "The textbook offers concepts for purposeful, audience-aware communication; the course applies them to an academic request without claiming that a particular message will obtain help.",
+ "evidenceType": "Open educational textbook",
+ "sample": "No experimental sample in the assigned chapter; it explains communication concepts and examples.",
+ "evidenceLimit": "The course applies purpose, audience, impact, and empathy to an academic request; the source does not test whether one message obtains help or resolves conflict.",
+ "related": [],
+ "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27486817-dt-content-rid-224242815_2/xid-224242815_2",
+ "fulltext": true,
+ "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27486817-dt-content-rid-224242815_2/xid-224242815_2",
+ "primaryLabel": "Open full chapter in Blackboard",
+ "blackboardFullText": true,
+ "sourceUrl": "https://socialsci.libretexts.org/Bookshelves/Communication/Interpersonal_Communication/Interpersonal_Communication_-_A_Mindful_Approach_to_Relationships_(Wrench_et_al.)/09%3A_Conflict_in_Relationships"
+}
  ],
  "glossary": [
   {
