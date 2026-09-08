@@ -65,8 +65,8 @@ window.PSY355_HOWTO = {
      "detail": "Answer, mark how sure you were, then reveal. The report sorts ideas into mastered, fragile, and confident misses. Confident misses are the most valuable thing to review."
     },
     {
-     "do": "Close with the reflection and Generate Your Weekly Notes.",
-     "detail": "Type your reflection, then generate the Word file. It collects your week into one organized record on Seneca letterhead."
+     "do": "Carry the reflection question forward.",
+     "detail": "Carry the week's reflection question forward. A separate written response is not required. You may keep private notes and download them if useful."
     }
    ],
    "saves": "When browser storage is available, your ratings, quiz history, and reflections may remain in this browser on this device until site data is cleared. Open sections remain open only while you stay on that week.",
@@ -259,15 +259,15 @@ window.PSY355_HOWTO = {
   },
   "assignments": {
    "title": "How to use Starting Your Assignment",
-   "intro": "This page shows all six graded pieces from day one and turns each one into a concrete starting path.",
+   "intro": "This page explains the seven graded assignments and helps you plan a starting point. Preview the guides here; use Blackboard for the full instructions, release conditions and submission.",
    "steps": [
     {
-     "do": "Pick the assessment you are starting.",
-     "detail": "Open any assessment guide to see its weight, date, evidence anchor, submission shape, and first moves. Blackboard remains the official brief and submission area."
+     "do": "Pick the assignment you are starting.",
+     "detail": "Open an assignment guide to see its weighting, course connections, submission instructions and first steps. Blackboard has the full instructions and submission space."
     },
     {
      "do": "Follow the start path step by step.",
-     "detail": "The path breaks the assessment into first moves you can do today, with the course material each move draws on."
+     "detail": "The guide breaks the assignment into first steps and shows which course ideas you can use."
     },
     {
      "do": "Open the Assignment Start Lab when you want a working session.",
@@ -338,7 +338,7 @@ window.PSY355_HOWTO = {
    "steps": [
     {
      "do": "Scan the term at a glance.",
-     "detail": "Deadlines cluster at two points in the term. Seeing them early is the whole game."
+     "detail": "Check the calendar for each assignment's release date, due date and any no-penalty submission window. Blackboard controls when you can open and submit the assignment. The companion website remains available for preview."
     },
     {
      "do": "Download the calendar file.",
@@ -351,7 +351,7 @@ window.PSY355_HOWTO = {
    ],
    "saves": "This page does not collect or submit student work.",
    "graded": "Nothing here is graded.",
-   "next": "Put the two deadline clusters into your own planner now, before they are close."
+   "next": "Add assignment releases and deadlines to your planner. Leave time to read feedback before your next related assignment."
   },
   "review": {
    "title": "How to use Term Review",

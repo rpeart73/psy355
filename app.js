@@ -1391,7 +1391,7 @@
       'Start with the current week\'s learning pathway.',
       'Review the guiding questions and key concepts.',
       'Open the assigned readings and media.',
-      'Enter the weekly experiences and use the self-checks to prepare for class and assessments.',
+      "Enter the weekly experiences and use the self-checks to prepare for class and assignments.",
       'Use Blackboard for official announcements, assignment submission, discussions, grades, and course records.'
     ];
     return '<section class="node" aria-labelledby="how-site-title"><h2 id="how-site-title" class="wk-sec">How to Use This Site</h2><ol style="display:grid;gap:9px;margin:0;padding-left:22px">'
@@ -1408,7 +1408,7 @@
       'Start with the current week\'s learning pathway.',
       'Review the guiding questions and key concepts.',
       'Open the assigned readings and media.',
-      'Enter the weekly experiences and use the self-checks to prepare for class and assessments.',
+      "Enter the weekly experiences and use the self-checks to prepare for class and assignments.",
       'Use Blackboard for official announcements, assignment submission, discussions, grades, and course records.'
     ];
     return '<section class="node home-intro" aria-label="About this companion website" style="border-left:4px solid var(--red);border-radius:0 14px 14px 0;margin-bottom:16px">'
