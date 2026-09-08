@@ -1503,7 +1503,7 @@
     if (state.screen === 'glossary') return 'Glossary';
     if (state.screen === 'cards') return 'Concept Flashcards';
     if (state.screen === 'assignments') return 'Starting Your Assignment';
-    if (state.screen === 'assignment-details') { var a = assessmentById(state.assignmentId); return a ? a.title : 'Assessment Guide'; }
+    if (state.screen === 'assignment-details') { var a = assessmentById(state.assignmentId); return a ? a.title : 'Assignment Guide'; }
     if (state.screen === 'career') return 'Career Choices';
     if (state.screen === 'ecology') return 'Resilience Ecology';
     if (state.screen === 'detail') return 'Reading Details';
@@ -1994,10 +1994,10 @@
     return '<section class="node kd-cal" aria-label="Key dates for this course">'
       + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">DUE DATES</div>'
       + '<h2 class="wk-sec" style="margin:0 0 4px">What you hand in, and when</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Use the dated entries below for each assessment deadline and its separate no-penalty submission-window closing time. All times are Eastern. Final projects and final reflections have no automatic 48-hour window. Nothing is due in Study Week. Read the Deadlines and Extensions policy for extension requests and exceptions.</p>'
+      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Use the dated entries below for each assignment deadline and its separate no-penalty submission-window closing time. All times are Eastern. Final projects and final reflections have no automatic 48-hour window. Nothing is due in Study Week. Read the Deadlines and Extensions policy for extension requests and exceptions.</p>'
       + '<div class="kd-list">' + keyDatesRows(['due', 'window-end']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">Assessment availability and start dates</h2>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The seven assessment guides on this website are available for preview. Blackboard opens submissions incrementally on the dates shown below. Viewing a guide does not mean its Blackboard submission is open.</p>'
+      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The seven assignment guides on this website are available for preview. Blackboard opens submissions incrementally on the dates shown below. Viewing a guide does not mean its Blackboard submission is open.</p>'
       + '<div class="kd-list">' + keyDatesRows(['open']) + '</div>'
       + '<h2 class="wk-sec" style="margin:24px 0 4px">The class schedule</h2>'
       + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The shape of the term. Nothing here is due.</p>'
@@ -2039,7 +2039,7 @@
       if (iso === todayIso) cls += ' cal-today';
       var inner = '<span class="cal-num">' + d + '</span>' + tag;
       if (e && e.assignmentId) {
-        cells += '<a href="' + assessmentHref(e.assignmentId) + '" target="_blank" rel="noopener" class="' + cls + ' cal-link" aria-label="Open the assessment guide in a new tab">' + inner + '</a>';
+        cells += '<a href="' + assessmentHref(e.assignmentId) + '" target="_blank" rel="noopener" class="' + cls + ' cal-link" aria-label="Open the assignment guide in a new tab">' + inner + '</a>';
       } else {
         cells += '<div class="' + cls + '">' + inner + '</div>';
       }
