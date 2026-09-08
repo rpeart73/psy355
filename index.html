@@ -515,6 +515,14 @@
 </style>
 <link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260905-015808">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<style id="recording-layout">
+/* Keep recording controls on their own rows, including narrow screens. */
+.wk-rec-inner{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start}
+.wk-rec .wk-rec-inner>h2{margin-bottom:16px}
+.wk-rec-link{max-width:100%;min-height:44px;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere}
+.wk-rec-frame{width:100%}
+.wk-rec-meta{max-width:100%}
+</style>
 </head>
 <body>
 <aside id="deadline-policy-notice" aria-label="Assignment deadlines" style="position:relative;padding:14px 24px;background:#fff7e6;color:#222;border-bottom:2px solid #a51c30;font:16px/1.6 Arial,sans-serif"><strong>Assignment deadlines:</strong> Regular assignments have a 48-hour no-penalty window. Request extensions before the posted deadline, not during the window. Final assignments have no automatic window. <a href="deadline-policy.html" style="color:#861629;text-decoration:underline;font-weight:bold">Read the policy and exact closing dates and times</a>.</aside>
