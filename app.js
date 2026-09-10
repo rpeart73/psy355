@@ -34,6 +34,8 @@
     return !!(v && v.screen);
   }
   function cleanScreen(s) {
+    if (/^(assignments?|assessment|starter)/.test(String(s || ''))) return 'journey';
+
     return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'assignment-details', 'career', 'walkthroughs', 'ecology', 'calendar', 'review', 'activity', 'outcomes'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
@@ -815,7 +817,7 @@
   }
   function sidebar() {
     var s = state;
-    var navDefs = [['journey', 'Home', 'gauge'], ['site', 'How This Site Works', 'file'], ['pathways', 'Course Rhythm', 'map'], ['readings', 'Readings and Media', 'gallery'], ['compare', 'Compare Sources', 'columns'], ['reading', 'Source Practice', 'book'], ['videos', 'Videos and Podcasts', 'play'], ['glossary', 'Glossary', 'book'], ['cards', 'Concept Flashcards', 'clipboard'], ['review', 'Term Review', 'check'], ['outcomes', 'What This Course Builds', 'columns'], ['assignments', 'Starting Your Assignment', 'clipboard'], ['career', 'Career Choices', 'globe']];
+    var navDefs = [["journey","Home","gauge"],["site","How This Site Works","file"],["pathways","Course Rhythm","map"],["readings","Readings and Media","gallery"],["compare","Compare Sources","columns"],["reading","Source Practice","book"],["videos","Videos and Podcasts","play"],["glossary","Glossary","book"],["cards","Concept Flashcards","clipboard"],["review","Term Review","check"],["outcomes","What This Course Builds","columns"],["career","Career Choices","globe"]];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || (key === 'assignments' && s.screen === 'assignment-details') || s.screen === key;
@@ -826,10 +828,10 @@
         + '<span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (active ? 'var(--red)' : '#6B7280') + '">' + ic(d[2], 19) + '</span><span style="flex:1;text-align:left">' + d[1] + '</span>' + badge + '</button>';
     });
     var calActive = s.screen === 'calendar';
-    var cal = '<button onclick="SOC.go(\'calendar\')" aria-current="' + (calActive ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (calActive ? '600' : '500') + ';background:' + (calActive ? '#EEF1F5' : 'transparent') + ';color:' + (calActive ? '#15171C' : '#474C57') + ';text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (calActive ? 'var(--red)' : '#6B7280') + '">' + ic('calendar', 19) + '</span><span style="flex:1;text-align:left">Calendar and Due Dates</span></button>';
+    var cal = '<button onclick="SOC.go(\'calendar\')" aria-current="' + (calActive ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (calActive ? '600' : '500') + ';background:' + (calActive ? '#EEF1F5' : 'transparent') + ';color:' + (calActive ? '#15171C' : '#474C57') + ';text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (calActive ? 'var(--red)' : '#6B7280') + '">' + ic('calendar', 19) + '</span><span style="flex:1;text-align:left">Course Calendar</span></button>';
     var wkActive = s.screen === 'walkthroughs';
     var walk = '<button onclick="SOC.go(\'walkthroughs\')" aria-current="' + (wkActive ? 'page' : 'false') + '" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:' + (wkActive ? '600' : '500') + ';background:' + (wkActive ? '#EEF1F5' : 'transparent') + ';color:' + (wkActive ? '#15171C' : '#474C57') + ';text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:' + (wkActive ? 'var(--red)' : '#6B7280') + '">' + ic('layers', 19) + '</span><span style="flex:1;text-align:left">Weekly Experiences</span></button>';
-    var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a><a href="./guide/PSY355-Companion-Guide.pdf?v=deadline-policy-20260906" download style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">PDF <span aria-hidden="true">&#8595;</span></a></div></div>';
+    var guide = '<div style="border-radius:10px;padding:10px 12px;color:#474C57"><div style="display:flex;align-items:flex-start;gap:11px;font-size:.9375rem;font-weight:500;line-height:1.25"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('file', 19) + '</span><span style="flex:1;min-width:0">Course Website Instructions</span></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0 33px"><a href="./guide/" target="_blank" rel="noopener" style="font-size:.75rem;font-weight:600;color:#1B2A4A;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:999px;padding:4px 9px;text-decoration:none">Online guide <span aria-hidden="true">&#8599;</span></a></div></div>';
     var repActive = s.screen === 'report';
     var report = '<button onclick="SOC.reportProblem()" style="display:flex;align-items:center;gap:11px;width:100%;border:none;border-radius:10px;padding:10px 12px;font-size:.9375rem;font-weight:500;background:transparent;color:#474C57;text-align:left"><span style="display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:none;color:#6B7280">' + ic('help', 19) + '</span><span style="flex:1;text-align:left">Report a problem</span></button>';
     var counts = {}; D.records.forEach(function (r) { counts[r.week] = (counts[r.week] || 0) + 1; });
@@ -842,7 +844,7 @@
         + '<span style="flex:1;text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(weekTitle(w)) + '</span>'
         + '<span class="mono" style="font-size:.6875rem;color:#6B7280">' + (counts[w] || 0) + '</span></button>';
     }).join('');
-    var byKey = {}; navDefs.forEach(function (d, i) { byKey[d[0]] = btns[i]; });
+    var byKey = {assignments: ''}; navDefs.forEach(function (d, i) { byKey[d[0]] = btns[i]; });
     function group(label, html) { return '<section class="soc-nav-group"><div class="soc-nav-label">' + label + '</div>' + html + '</section>'; }
     var weekOpen = s.screen === 'library' || s.screen === 'station' || s.screen === 'detail';
     var weekGroup = '<details class="soc-nav-weekgroup"' + (weekOpen ? ' open' : '') + '><summary><span>WEEKLY JOURNEY</span><b>' + (s.stationWeek ? 'Week ' + s.stationWeek : 'Weeks 1-14') + '</b></summary><div>' + weekNav + '</div></details>';
@@ -1492,7 +1494,7 @@
     if (state.screen === 'review') return 'Term Review';
     if (state.screen === 'outcomes') return 'What This Course Builds';
     if (state.screen === 'activity') return 'Weekly Activity';
-    if (state.screen === 'calendar') return 'Calendar and Due Dates';
+    if (state.screen === 'calendar') return 'Course Calendar';
     if (state.screen === 'site') return 'How This Site Works';
     if (state.screen === 'pathways') return 'Course Rhythm';
     if (state.screen === 'readings') return 'Readings and Media';
@@ -1518,385 +1520,13 @@
       + '<span style="font-size:.85rem;color:var(--ink-dim)">Use Seneca email or Blackboard messages for course support.</span>'
       + '</div></section>';
   }
-  function keyDatesList() {
-    return [
-  {
-    "d": "2026-09-10",
-    "it": [
-      [
-        "Week 1 live class",
-        "Course orientation and shared start",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-09-14",
-    "it": [
-      [
-        "Private Learning Journal opens",
-        "10%; submit in Blackboard",
-        "open",
-        "weekly-reflections"
-      ]
-    ]
-  },
-  {
-    "d": "2026-09-17",
-    "it": [
-      [
-        "Week 2 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-09-18",
-    "it": [
-      [
-        "Strategy Trial 1: Study, Test, Adjust opens",
-        "20%; submit in Blackboard",
-        "open",
-        "mindset-evidence-check-1"
-      ]
-    ]
-  },
-  {
-    "d": "2026-09-24",
-    "it": [
-      [
-        "Week 3 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-09-25",
-    "it": [
-      [
-        "Strategy Trial 1: Study, Test, Adjust",
-        "due; 20%",
-        "due",
-        "mindset-evidence-check-1"
-      ]
-    ]
-  },
-  {
-    "d": "2026-09-27",
-    "it": [
-      [
-        "Strategy Trial 1: Study, Test, Adjust: 48-hour window ends",
-        "11:59 p.m. Eastern Time (ET); no penalty within this window",
-        "window-end",
-        "mindset-evidence-check-1"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-01",
-    "it": [
-      [
-        "Week 4 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-08",
-    "it": [
-      [
-        "Week 5 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-08",
-    "it": [
-      [
-        "Mid-course Reflection: What the Evidence Changed opens",
-        "10%; submit in Blackboard",
-        "open",
-        "midcourse-practice-synthesis"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-08",
-    "it": [
-      [
-        "Learning Case Redesign opens",
-        "20%; submit in Blackboard",
-        "open",
-        "srl-case-redesign"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-13",
-    "it": [
-      [
-        "Mid-course Reflection: What the Evidence Changed",
-        "due; 10%",
-        "due",
-        "midcourse-practice-synthesis"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-15",
-    "it": [
-      [
-        "Week 6 asynchronous learning",
-        "Independent extension of resilience into context and culture",
-        "async"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-15",
-    "it": [
-      [
-        "Mid-course Reflection: What the Evidence Changed: 48-hour window ends",
-        "11:59 p.m. Eastern Time (ET); no penalty within this window",
-        "window-end",
-        "midcourse-practice-synthesis"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-20",
-    "it": [
-      [
-        "Learning Case Redesign",
-        "due; 20%",
-        "due",
-        "srl-case-redesign"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-22",
-    "it": [
-      [
-        "Week 7 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-22",
-    "it": [
-      [
-        "Learning Case Redesign: 48-hour window ends",
-        "11:59 p.m. Eastern Time (ET); no penalty within this window",
-        "window-end",
-        "srl-case-redesign"
-      ]
-    ]
-  },
-  {
-    "d": "2026-10-26",
-    "it": [
-      [
-        "Study Week",
-        "October 26 to 30. No class, new module, or graded deadline.",
-        "support"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-05",
-    "it": [
-      [
-        "Week 8 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-09",
-    "it": [
-      [
-        "Strategy Trial 2: Recovery and Help-Seeking opens",
-        "20%; submit in Blackboard",
-        "open",
-        "mindset-evidence-check-2"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-12",
-    "it": [
-      [
-        "Week 9 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-19",
-    "it": [
-      [
-        "Week 10 asynchronous learning",
-        "Independent reflective writing and journaling",
-        "async"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-23",
-    "it": [
-      [
-        "Personal Resilience Plan opens",
-        "15%; submit in Blackboard",
-        "open",
-        "personal-resilience-plan"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-26",
-    "it": [
-      [
-        "Week 11 live class",
-        "",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-27",
-    "it": [
-      [
-        "Strategy Trial 2: Recovery and Help-Seeking",
-        "due; 20%",
-        "due",
-        "mindset-evidence-check-2"
-      ]
-    ]
-  },
-  {
-    "d": "2026-11-29",
-    "it": [
-      [
-        "Strategy Trial 2: Recovery and Help-Seeking: 48-hour window ends",
-        "11:59 p.m. Eastern Time (ET); no penalty within this window",
-        "window-end",
-        "mindset-evidence-check-2"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-02",
-    "it": [
-      [
-        "Private Learning Journal",
-        "due; 10%",
-        "due",
-        "weekly-reflections"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-03",
-    "it": [
-      [
-        "Week 12 live class",
-        "Final substantive class meeting",
-        "class"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-04",
-    "it": [
-      [
-        "Private Learning Journal: 48-hour window ends",
-        "11:59 p.m. Eastern Time (ET); no penalty within this window",
-        "window-end",
-        "weekly-reflections"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-07",
-    "it": [
-      [
-        "Final Learning Reflection opens",
-        "5%; submit in Blackboard",
-        "open",
-        "final-reflection"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-10",
-    "it": [
-      [
-        "Week 13 asynchronous office hours and supported completion",
-        "No lecture; focused work and consultation",
-        "async"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-11",
-    "it": [
-      [
-        "Personal Resilience Plan",
-        "due; 15%",
-        "due",
-        "personal-resilience-plan"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-13",
-    "it": [
-      [
-        "Week 14 asynchronous office hours and course closure",
-        "No lecture; optional consultation and final questions",
-        "async"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-13",
-    "it": [
-      [
-        "Final Learning Reflection",
-        "due; 5%",
-        "due",
-        "final-reflection"
-      ]
-    ]
-  },
-  {
-    "d": "2026-12-16",
-    "it": [
-      [
-        "Last day of the term",
-        "The Final Learning Reflection is due Sunday, December 13, at 11:59 p.m. Eastern",
-        "support"
-      ]
-    ]
-  }
-];
-  }
+  function keyDatesList() { return [{"d":"2026-09-10","it":[["Week 1 live class","Course orientation and shared start","class"]]},{"d":"2026-09-17","it":[["Week 2 live class","","class"]]},{"d":"2026-09-24","it":[["Week 3 live class","","class"]]},{"d":"2026-10-01","it":[["Week 4 live class","","class"]]},{"d":"2026-10-08","it":[["Week 5 live class","","class"]]},{"d":"2026-10-15","it":[["Week 6 asynchronous learning","Independent extension of resilience into context and culture","async"]]},{"d":"2026-10-22","it":[["Week 7 live class","","class"]]},{"d":"2026-10-26","it":[["Study Week","","support"]]},{"d":"2026-11-05","it":[["Week 8 live class","","class"]]},{"d":"2026-11-12","it":[["Week 9 live class","","class"]]},{"d":"2026-11-19","it":[["Week 10 asynchronous learning","","async"]]},{"d":"2026-11-26","it":[["Week 11 live class","","class"]]},{"d":"2026-12-03","it":[["Week 12 live class","Final substantive class meeting","class"]]},{"d":"2026-12-10","it":[["Week 13 asynchronous office hours and supported completion","No lecture; focused work and consultation","async"]]},{"d":"2026-12-13","it":[["Week 14 asynchronous office hours and course closure","No lecture; optional consultation and final questions","async"]]},{"d":"2026-12-16","it":[["Last day of the term","","support"]]}]; }
   var KD_MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   function kdDaysUntil(iso) {
     try { var t = new Date(); var a0 = Date.UTC(t.getFullYear(), t.getMonth(), t.getDate()); var p = iso.split('-'); var b0 = Date.UTC(+p[0], +p[1] - 1, +p[2]); return Math.round((b0 - a0) / 86400000); } catch (e) { return 999; }
   }
   function kdMonthDay(iso) { var p = iso.split('-'); return KD_MON[+p[1] - 1] + ' ' + (+p[2]); }
-  function deadlineRule() { return '<aside class="deadline-rule" role="note" style="border:1px solid #E7C3BF;border-left:5px solid #DA291C;border-radius:0 11px 11px 0;background:#fff;padding:12px 14px;margin:0 0 16px;color:#15171C"><strong style="color:#961A13">Submission time:</strong> All assignments are due by 11:59 p.m. Eastern Time, EDT or EST as applicable, on the date shown. Blackboard remains the official submission record.</aside>'; }
+  function deadlineRule() { return ''; }
   function mobileCalendarSubscription() { var code = courseCode(), base = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, ''), feed = (base + 'calendar/' + code + '_key_dates.ics').replace(/^https?:/i, 'webcal:'); return '<section class="mobile-cal-sub" aria-labelledby="mobile-cal-title"><div class="mono">MOBILE CALENDAR</div><h2 id="mobile-cal-title">Keep these dates on your phone</h2><p>This is a live calendar subscription, not a downloaded copy. Your calendar app can refresh it when the course schedule changes. Blackboard remains the official source.</p><a href="' + esc(feed) + '">Subscribe on this phone <span aria-hidden="true">&#8594;</span></a></section>'; }
   function mobileAccessPanel() { var url = location.origin + canonicalRouteUrl(_walk && _walk.week); return '<section class="mobile-access-panel" aria-labelledby="mobile-access-title"><div class="mono">PHONE OR TABLET</div><h2 id="mobile-access-title">Use the same site on any device</h2><p>There is no separate app. This responsive site is the mobile version too. Share or copy this page link, then open it on your phone or tablet.</p><div><a href="' + esc(url) + '">Open this page link</a><button type="button" onclick="SOC.shareMobileSite()">Share or copy this page</button></div><small>Notes do not sync automatically. Each browser keeps its own temporary copy when storage is available.</small></section>'; }
   function upcomingParts(e) {
@@ -2060,16 +1690,7 @@
     var grids = [8, 9, 10, 11].map(function (m) { return calMonthGrid(2026, m); }).join('');
     return calendarLegend() + '<div class="cal-grids">' + grids + '</div>' + keyDatesCalendar();
   }
-  function calendarPage() {
-    return '<div class="rise cal-page">' + (D.course.scheduleDetail ? '<div style="border:1px solid var(--border);border-left:4px solid var(--red);border-radius:10px;background:#fff;padding:12px 16px;margin:0 0 16px"><div class="mono" style="font-size:.66rem;letter-spacing:.07em;color:var(--red);font-weight:700;margin-bottom:5px">CLASS TIME</div><p style="margin:0;font-size:.92rem;line-height:1.55;color:var(--ink)">' + esc(D.course.scheduleDetail) + '</p></div>' : '') + ''
-      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">CALENDAR</div>'
-      + '<h1 style="font-size:1.9rem;line-height:1.15;font-weight:600;margin:0 0 8px;color:var(--ink)">Every date that matters</h1>'
-      + '<p style="font-size:1rem;line-height:1.6;color:var(--ink-dim);margin:0 0 20px">This calendar keeps due dates and delivery modes clearly apart. Seneca red marks due dates and submission-window closing dates. Black marks live classes. Neutral grey marks every asynchronous week with no lecture, including the office-hour weeks. A light grey outline marks Study Week. Week 6 gives you room to extend resilience into context and culture independently. Week 10 creates space for unhurried reflective writing and journaling. Weeks 13 and 14 protect focused completion, consultation, feedback, and closure. Blackboard remains the official word on dates.</p>'
-      + deadlineRule()
-      + mobileCalendarSubscription()
-      + calendarBody()
-      + '</div>';
-  }
+  function calendarPage() { return '<div class="rise cal-page"><h1>Course schedule</h1><p>Class dates and delivery modes are listed below. Open Blackboard for assignment information.</p>' + mobileCalendarSubscription() + '<section class="node">' + keyDatesRows(['class','async','support']) + '</section></div>'; }
   var WEEK_START = { 1: '2026-09-08', 2: '2026-09-14', 3: '2026-09-21', 4: '2026-09-28', 5: '2026-10-05', 6: '2026-10-13', 7: '2026-10-19', 8: '2026-11-02', 9: '2026-11-09', 10: '2026-11-16', 11: '2026-11-23', 12: '2026-11-30', 13: '2026-12-07', 14: '2026-12-14' };
   function courseWeekByDate() {
     try {
@@ -3849,28 +3470,13 @@
       + '<section class="path-hero"><div><div class="mono">COURSE RHYTHM</div><h1>Prepare, meet or work independently, reflect, and carry it forward</h1><p>PSY355 uses live discussion and four purposeful asynchronous weeks around a continuing reflection record. The week label tells you exactly how that week works.</p></div><div class="path-compass" aria-label="PSY355 weekly rhythm"><span>PREPARE</span><b>read and orient</b><i></i><span>REFLECT</span><b>connect and carry forward</b></div></section>'
       + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 6 extends resilience into context and culture, Week 10 makes room for reflective practice, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your six Private Learning Journal entries create evidence for the mid-course reflection and final plan.</span></div></section>'
       + '<div class="path-routes">' + route + '</div>'
-      + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week, check its delivery label and purpose, then follow the route on that page. Submit graded work in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>See the mode and weekly route.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Experiences</b><small>Enter or revisit the week\'s immersive teaching experience.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Calendar and Due Dates</b><small>See delivery modes and deadlines.</small></button><button type="button" onclick="SOC.go(\'assignments\')"><b>Starting Your Assignment</b><small>Understand the graded work.</small></button></div></section>'
+      + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week, check its delivery label and purpose, then follow the route on that page. Submit graded work in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>See the mode and weekly route.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Experiences</b><small>Enter or revisit the week\'s immersive teaching experience.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Course Calendar</b><small>See delivery modes and deadlines.</small></button></div></section>'
       + '</div>';
   }
-  function assignmentIntegrityNotice() {
-    var rows = [
-      ['Instructor contact first', 'If there is an academic-integrity concern, the instructor contacts you and names the specific issue before any formal report is submitted.'],
-      ['Your response matters', 'The first step is information gathering. You have a chance to explain your process, disclosure, sources, and assignment choices.'],
-      ['Blackboard records', 'Blackboard Activity Log evidence may be reviewed. A Progress report is not enough by itself and needs the Activity Log with it.']
-    ];
-    return deadlineRule() + '<section class="path-summary integrity-note" aria-label="Academic integrity process">' + rows.map(function (r) {
-      return '<div><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + '</span></div>';
-    }).join('') + '</section>';
-  }
-  function assignmentStartLabLaunch() {
-    return '<section class="path-close" aria-label="Assignment Start Lab"><div class="mono">PERSONAL PLANNING SUPPORT</div><h2>Not sure how to begin?</h2><p>Add your assignment, progress, exact sticking point, and available time. Fixed course rules create a personal start plan without using AI. The site does not submit your answers; any browser-stored copy is temporary and device-specific.</p><div class="path-actions"><button type="button" onclick="location.href=\'assignment-start-lab.html\'"><b>Open Assignment Start Lab</b><small>Create a plan you can print or save as PDF.</small></button></div></section>';
-  }
-  function assignmentsPage() {
-    return CourseAssessmentGuides.directory();
-  }
-  function assignmentDetailsPage() {
-    return CourseAssessmentGuides.detail(state.assignmentId);
-  }
+  function assignmentIntegrityNotice() { return ''; }
+  function assignmentStartLabLaunch() { return ''; }
+  function assignmentsPage() { return '<section class="node"><h1>Course assignments</h1><p>Open Blackboard for course assignments.</p></section>'; }
+  function assignmentDetailsPage() { return '<section class="node"><h1>Course assignments</h1><p>Open Blackboard for course assignments.</p></section>'; }
   function scholarMedia() {
     var out = [];
     function add(r, source, kind) {
