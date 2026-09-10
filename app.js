@@ -1520,7 +1520,7 @@
       + '<span style="font-size:.85rem;color:var(--ink-dim)">Use Seneca email or Blackboard messages for course support.</span>'
       + '</div></section>';
   }
-  function keyDatesList() { return [{"d":"2026-09-10","it":[["Week 1 live class","Course orientation and shared start","class"]]},{"d":"2026-09-17","it":[["Week 2 live class","","class"]]},{"d":"2026-09-24","it":[["Week 3 live class","","class"]]},{"d":"2026-10-01","it":[["Week 4 live class","","class"]]},{"d":"2026-10-08","it":[["Week 5 live class","","class"]]},{"d":"2026-10-15","it":[["Week 6 asynchronous learning","Independent extension of resilience into context and culture","async"]]},{"d":"2026-10-22","it":[["Week 7 live class","","class"]]},{"d":"2026-10-26","it":[["Study Week","","support"]]},{"d":"2026-11-05","it":[["Week 8 live class","","class"]]},{"d":"2026-11-12","it":[["Week 9 live class","","class"]]},{"d":"2026-11-19","it":[["Week 10 asynchronous learning","","async"]]},{"d":"2026-11-26","it":[["Week 11 live class","","class"]]},{"d":"2026-12-03","it":[["Week 12 live class","Final substantive class meeting","class"]]},{"d":"2026-12-10","it":[["Week 13 asynchronous office hours and supported completion","No lecture; focused work and consultation","async"]]},{"d":"2026-12-13","it":[["Week 14 asynchronous office hours and course closure","No lecture; optional consultation and final questions","async"]]},{"d":"2026-12-16","it":[["Last day of the term","","support"]]}]; }
+  function keyDatesList() { return [{"d":"2026-09-10","it":[["Week 1 live class","Course orientation and shared start","class"]]},{"d":"2026-09-17","it":[["Week 2 live class","","class"]]},{"d":"2026-09-21","it":[["Journal 1 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-09-24","it":[["Week 3 live class","","class"]]},{"d":"2026-09-27","it":[["Journal 1 due","11:59 p.m. Eastern","due"]]},{"d":"2026-09-28","it":[["Journal 2 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-09-29","it":[["Journal 1: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-10-01","it":[["Week 4 live class","","class"]]},{"d":"2026-10-04","it":[["Journal 2 due","11:59 p.m. Eastern","due"]]},{"d":"2026-10-05","it":[["Journal 3 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-10-06","it":[["Journal 2: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-10-08","it":[["Week 5 live class","","class"]]},{"d":"2026-10-11","it":[["Journal 3 due","11:59 p.m. Eastern","due"]]},{"d":"2026-10-12","it":[["Journal 4 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-10-13","it":[["Journal 3: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-10-15","it":[["Week 6 asynchronous learning","Independent extension of resilience into context and culture","async"]]},{"d":"2026-10-18","it":[["Journal 4 due","11:59 p.m. Eastern","due"]]},{"d":"2026-10-19","it":[["Journal 5 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-10-20","it":[["Journal 4: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-10-22","it":[["Week 7 live class","","class"]]},{"d":"2026-10-25","it":[["Journal 5 due","11:59 p.m. Eastern","due"]]},{"d":"2026-10-26","it":[["Study Week","","support"]]},{"d":"2026-10-27","it":[["Journal 5: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-11-02","it":[["Journal 6 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-11-05","it":[["Week 8 live class","","class"]]},{"d":"2026-11-08","it":[["Journal 6 due","11:59 p.m. Eastern","due"]]},{"d":"2026-11-09","it":[["Journal 7 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-11-10","it":[["Journal 6: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-11-12","it":[["Week 9 live class","","class"]]},{"d":"2026-11-15","it":[["Journal 7 due","11:59 p.m. Eastern","due"]]},{"d":"2026-11-16","it":[["Journal 8 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-11-17","it":[["Journal 7: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-11-19","it":[["Week 10 asynchronous learning","","async"]]},{"d":"2026-11-22","it":[["Journal 8 due","11:59 p.m. Eastern","due"]]},{"d":"2026-11-23","it":[["Journal 9 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-11-24","it":[["Journal 8: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-11-26","it":[["Week 11 live class","","class"]]},{"d":"2026-11-29","it":[["Journal 9 due","11:59 p.m. Eastern","due"]]},{"d":"2026-11-30","it":[["Journal 10 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-12-01","it":[["Journal 9: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-12-03","it":[["Week 12 live class","Final substantive class meeting","class"]]},{"d":"2026-12-06","it":[["Journal 10 due","11:59 p.m. Eastern","due"]]},{"d":"2026-12-07","it":[["Journal 11 opens","12:01 a.m. Eastern","open"],["Journal 12 opens","12:01 a.m. Eastern","open"]]},{"d":"2026-12-08","it":[["Journal 10: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-12-10","it":[["Week 13 asynchronous office hours and supported completion","No lecture; focused work and consultation","async"]]},{"d":"2026-12-13","it":[["Week 14 asynchronous office hours and course closure","No lecture; optional consultation and final questions","async"],["Journal 11 due","11:59 p.m. Eastern","due"]]},{"d":"2026-12-15","it":[["Journal 11: no-penalty window ends","11:59 p.m. Eastern","window-end"]]},{"d":"2026-12-16","it":[["Last day of the term","","support"],["Journal 12 due","11:59 p.m. Eastern","due"]]}]; }
   var KD_MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   function kdDaysUntil(iso) {
     try { var t = new Date(); var a0 = Date.UTC(t.getFullYear(), t.getMonth(), t.getDate()); var p = iso.split('-'); var b0 = Date.UTC(+p[0], +p[1] - 1, +p[2]); return Math.round((b0 - a0) / 86400000); } catch (e) { return 999; }
@@ -1531,7 +1531,7 @@
   function mobileAccessPanel() { var url = location.origin + canonicalRouteUrl(_walk && _walk.week); return '<section class="mobile-access-panel" aria-labelledby="mobile-access-title"><div class="mono">PHONE OR TABLET</div><h2 id="mobile-access-title">Use the same site on any device</h2><p>There is no separate app. This responsive site is the mobile version too. Share or copy this page link, then open it on your phone or tablet.</p><div><a href="' + esc(url) + '">Open this page link</a><button type="button" onclick="SOC.shareMobileSite()">Share or copy this page</button></div><small>Notes do not sync automatically. Each browser keeps its own temporary copy when storage is available.</small></section>'; }
   function upcomingParts(e) {
     var title = String(e.title || ''), note = String(e.note || ''), label = 'Course date', name = title, m;
-    if (e.kind === 'open') { label = /visible/i.test(title) ? 'Assessment path available' : 'Assessment begins'; m = title.match(/^(.*?)\s+(?:opens|begins)(?:\s+(.*))?$/i); if (m) { name = m[1]; if (!note && m[2]) note = m[2]; } }
+    if (e.kind === 'open') { label = 'Journal opens'; m = title.match(/^(.*?)\s+(?:opens|begins)(?:\s+(.*))?$/i); if (m) { name = m[1]; if (!note && m[2]) note = m[2]; } }
     else if (e.kind === 'due') { label = 'Assignment due'; name = title.replace(/\s+(?:due|close|closes)$/i, ''); note = note.replace(/^due,?\s*/i, ''); }
     else if (/study week/i.test(title)) label = 'Study Week';
     else if (e.kind === 'class') label = /^(?:(?:First|Last) day of classes|Course opens)$/i.test(title) ? 'Term marker' : 'Live class';
@@ -1572,7 +1572,7 @@
     try { var now = new Date(); todayIso = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2); } catch (e2) {}
     rows.forEach(function (row) {
       if (todayIso && row.d < todayIso) return;
-      (row.it || []).forEach(function (it) { if (entries.length < 4) entries.push({ date: row.d, title: it[0], note: it[1] || '' }); });
+      (row.it || []).forEach(function (it) { if (entries.length < 4) entries.push({ date: row.d, title: it[0], note: it[1] || '', kind: it[2] || 'event' }); });
     });
     if (!entries.length) return;
     upcomingReminderFocus = document.activeElement;
@@ -1622,35 +1622,28 @@
   function keyDatesCompact() { return '<div class="kd-list">' + keyDatesRows() + '</div>'; }
   function keyDatesCalendar() {
     return '<section class="node kd-cal" aria-label="Key dates for this course">'
-      + '<div class="mono" style="font-size:.7rem;letter-spacing:.08em;color:var(--red);font-weight:700;margin-bottom:4px">DUE DATES</div>'
-      + '<h2 class="wk-sec" style="margin:0 0 4px">What you hand in, and when</h2>'
-      + '<p style="font-size:.9rem;line-height:1.55;color:var(--ink-dim);margin:0 0 12px">Use the dated entries below for each assignment deadline and its separate no-penalty submission-window closing time. All times are Eastern. Final projects and final reflections have no automatic 48-hour window. Nothing is due in Study Week. Read the Deadlines and Extensions policy for extension requests and exceptions.</p>'
+      + '<h2 class="wk-sec">Journal due dates</h2>'
+      + '<p>All times are Eastern. Journals 1 to 11 have a 48-hour no-penalty window after the due date. Journal 12 is due December 16 and has no automatic window. Check Blackboard for instructions, submission details and approved changes.</p>'
+      + '<p>No new journal opens or is due during Study Week, October 26 to 30. The optional window for Journal 5 ends October 27.</p>'
       + '<div class="kd-list">' + keyDatesRows(['due', 'window-end']) + '</div>'
-      + '<h2 class="wk-sec" style="margin:24px 0 4px">Assessment availability and start dates</h2>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The seven assignment guides on this website are available for preview. Blackboard opens submissions incrementally on the dates shown below. Viewing a guide does not mean its Blackboard submission is open.</p>'
+      + '<h2 class="wk-sec" style="margin-top:28px">Journal release dates</h2>'
+      + '<p>Each journal opens in Blackboard at 12:01 a.m. Eastern. Journals 11 and 12 both open December 7, so you can begin the final journal early.</p>'
       + '<div class="kd-list">' + keyDatesRows(['open']) + '</div>'
-      + '<h2 class="wk-sec" style="margin:24px 0 4px">The class schedule</h2>'
-      + '<p style="font-size:.85rem;line-height:1.5;color:var(--ink-faint);margin:0 0 10px">The shape of the term. Nothing here is due.</p>'
+      + '<h2 class="wk-sec" style="margin-top:28px">Class dates and delivery modes</h2>'
       + '<div class="kd-list">' + keyDatesRows(['class', 'async', 'support']) + '</div>'
       + '</section>';
   }
   function calEventsByIso() {
-    var K = keyDatesList(), map = {};
-    K.forEach(function (row) {
-      var dues = row.it.filter(function (x) { return x[2] === 'due'; });
-      var cls = row.it.filter(function (x) { return x[2] === 'class'; });
-      var asyncs = row.it.filter(function (x) { return x[2] === 'async'; });
-      var support = row.it.filter(function (x) { return x[2] === 'support'; });
-      var ops = row.it.filter(function (x) { return x[2] === 'open'; });
-      var asg = row.it.filter(function (x) { return x[3] != null; }).map(function (x) { return x[3]; });
-      var assignmentId = asg.length === 1 ? asg[0] : null;
-      if (dues.length) map[row.d] = { kind: 'due', label: dues.length > 1 ? (dues.length + ' assignments due') : dues[0][0] + ' due', assignmentId: assignmentId };
-      else if (asyncs.length) map[row.d] = { kind: 'async', label: asyncs[0][0], idx: null };
-      else if (support.length) map[row.d] = { kind: 'support', label: support[0][0], idx: null };
-      else if (cls.length) map[row.d] = { kind: 'class', label: cls[0][0], idx: null };
-      else if (ops.length) map[row.d] = { kind: 'open', label: ops[0][0], assignmentId: assignmentId };
+    var map = {}, priority = ['due', 'window-end', 'open', 'async', 'class', 'support'];
+    keyDatesList().forEach(function (row) {
+      var kind = priority.filter(function (k) { return row.it.some(function (it) { return it[2] === k; }); })[0] || 'support';
+      map[row.d] = { kind: kind === 'window-end' ? 'due' : kind, label: row.it.map(function (it) { return it[0]; }).join('; '), assignmentId: null };
     });
-    keyDatesList().forEach(function (row) { var windows = row.it.filter(function (x) { return x[2] === 'window-end'; }); if (!windows.length) return; var prior = map[row.d], label = windows.length > 1 ? windows.length + ' submission windows close' : windows[0][0]; map[row.d] = { kind: 'due', label: (prior && prior.kind === 'due' ? prior.label + '; ' : '') + label, assignmentId: prior ? prior.assignmentId : (windows.length === 1 ? windows[0][3] : null) }; }); ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30'].forEach(function (d) { map[d] = { kind: 'study', label: 'Study Week' }; });
+    ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30'].forEach(function (d) {
+      var prior = map[d];
+      if (prior && prior.label !== 'Study Week') prior.label = 'Study Week; ' + prior.label;
+      else map[d] = { kind: 'study', label: 'Study Week' };
+    });
     return map;
   }
   function calMonthGrid(year, m) {
@@ -1678,8 +1671,8 @@
   }
   function calendarLegend() {
     return '<div class="cal-legend">'
-      + '<span class="cal-lg"><span class="cal-sw cal-sw-due"></span>Due date</span>'
-      + '<span class="cal-lg"><span class="cal-sw cal-sw-open"></span>Assessment available or begins</span>'
+      + '<span class="cal-lg"><span class="cal-sw cal-sw-due"></span>Due date or window ends</span>'
+      + '<span class="cal-lg"><span class="cal-sw cal-sw-open"></span>Journal opens</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-class"></span>Class schedule</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-async"></span>Asynchronous learning</span>'
       + '<span class="cal-lg"><span class="cal-sw cal-sw-support"></span>Term marker</span>'
@@ -1690,8 +1683,8 @@
     var grids = [8, 9, 10, 11].map(function (m) { return calMonthGrid(2026, m); }).join('');
     return calendarLegend() + '<div class="cal-grids">' + grids + '</div>' + keyDatesCalendar();
   }
-  function calendarPage() { return '<div class="rise cal-page"><h1>Course schedule</h1><p>Class dates and delivery modes are listed below. Open Blackboard for assignment information.</p>' + mobileCalendarSubscription() + '<section class="node">' + keyDatesRows(['class','async','support']) + '</section></div>'; }
-  var WEEK_START = { 1: '2026-09-08', 2: '2026-09-14', 3: '2026-09-21', 4: '2026-09-28', 5: '2026-10-05', 6: '2026-10-13', 7: '2026-10-19', 8: '2026-11-02', 9: '2026-11-09', 10: '2026-11-16', 11: '2026-11-23', 12: '2026-11-30', 13: '2026-12-07', 14: '2026-12-14' };
+  function calendarPage() { return '<div class="rise cal-page"><h1>Course calendar</h1><p>Class dates, journal release dates and due dates. All times are Eastern. Open Blackboard for assignment instructions and submissions.</p>' + mobileCalendarSubscription() + '<p><a href="calendar/PSY355_key_dates.ics">Download the course calendar</a></p>' + calendarBody() + '</div>'; }
+  var WEEK_START = { 1: '2026-09-08', 2: '2026-09-14', 3: '2026-09-21', 4: '2026-09-28', 5: '2026-10-05', 6: '2026-10-13', 7: '2026-10-19', 8: '2026-11-02', 9: '2026-11-09', 10: '2026-11-16', 11: '2026-11-23', 12: '2026-11-30', 13: '2026-12-07', 14: '2026-12-13' };
   function courseWeekByDate() {
     try {
       var today = new Date(); today.setHours(0, 0, 0, 0);

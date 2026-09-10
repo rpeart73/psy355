@@ -1,9 +1,10 @@
 {
   "public_assignments": false,
   "authority": "Raymond Peart, September 10, 2026",
-  "scope": "Assignment instructions, rubrics, schedules and downloadable assignment guides belong in Blackboard. Do not restore public assignment content without an explicit new request.",
+  "scope": "Journal release dates, due dates and submission-window dates may appear in the course calendar, as requested September 10, 2026. Assignment instructions, rubrics and downloadable assignment guides remain in Blackboard.",
   "site_use_guides_allowed": true,
   "approved_guide_downloads": {
-    "PSY355-Course-Website-Guide.docx": "b0474e4e1b47cb78ec8ad401f6ec6f2a092832a0fe79cbff763dd591ee527ee2"
-  }
+    "PSY355-Course-Website-Guide.docx": "d4fc4d6ce2c020d8b07e43c3d6834ee659f206bb168ba7acd9c362c3a12a02f4"
+  },
+  "public_calendar_dates": true
 }

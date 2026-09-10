@@ -128,4 +128,319 @@ DTEND;VALUE=DATE:20261031
 SUMMARY:PSY355 Study Week
 DESCRIPTION:See Blackboard for official course information.
 END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-01-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20260921T040100Z
+DTEND:20260921T040200Z
+SUMMARY:PSY355 Journal 1 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-01-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20260928T035900Z
+DTEND:20260928T040000Z
+SUMMARY:PSY355 Journal 1 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-01-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20260930T035900Z
+DTEND:20260930T040000Z
+SUMMARY:PSY355 Journal 1: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-02-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20260928T040100Z
+DTEND:20260928T040200Z
+SUMMARY:PSY355 Journal 2 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-02-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261005T035900Z
+DTEND:20261005T040000Z
+SUMMARY:PSY355 Journal 2 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-02-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261007T035900Z
+DTEND:20261007T040000Z
+SUMMARY:PSY355 Journal 2: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-03-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261005T040100Z
+DTEND:20261005T040200Z
+SUMMARY:PSY355 Journal 3 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-03-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261012T035900Z
+DTEND:20261012T040000Z
+SUMMARY:PSY355 Journal 3 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-03-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261014T035900Z
+DTEND:20261014T040000Z
+SUMMARY:PSY355 Journal 3: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-04-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261012T040100Z
+DTEND:20261012T040200Z
+SUMMARY:PSY355 Journal 4 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-04-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261019T035900Z
+DTEND:20261019T040000Z
+SUMMARY:PSY355 Journal 4 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-04-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261021T035900Z
+DTEND:20261021T040000Z
+SUMMARY:PSY355 Journal 4: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-05-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261019T040100Z
+DTEND:20261019T040200Z
+SUMMARY:PSY355 Journal 5 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-05-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261026T035900Z
+DTEND:20261026T040000Z
+SUMMARY:PSY355 Journal 5 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-05-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261028T035900Z
+DTEND:20261028T040000Z
+SUMMARY:PSY355 Journal 5: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-06-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261102T050100Z
+DTEND:20261102T050200Z
+SUMMARY:PSY355 Journal 6 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-06-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261109T045900Z
+DTEND:20261109T050000Z
+SUMMARY:PSY355 Journal 6 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-06-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261111T045900Z
+DTEND:20261111T050000Z
+SUMMARY:PSY355 Journal 6: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-07-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261109T050100Z
+DTEND:20261109T050200Z
+SUMMARY:PSY355 Journal 7 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-07-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261116T045900Z
+DTEND:20261116T050000Z
+SUMMARY:PSY355 Journal 7 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-07-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261118T045900Z
+DTEND:20261118T050000Z
+SUMMARY:PSY355 Journal 7: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-08-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261116T050100Z
+DTEND:20261116T050200Z
+SUMMARY:PSY355 Journal 8 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-08-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261123T045900Z
+DTEND:20261123T050000Z
+SUMMARY:PSY355 Journal 8 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-08-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261125T045900Z
+DTEND:20261125T050000Z
+SUMMARY:PSY355 Journal 8: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-09-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261123T050100Z
+DTEND:20261123T050200Z
+SUMMARY:PSY355 Journal 9 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-09-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261130T045900Z
+DTEND:20261130T050000Z
+SUMMARY:PSY355 Journal 9 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-09-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261202T045900Z
+DTEND:20261202T050000Z
+SUMMARY:PSY355 Journal 9: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-10-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261130T050100Z
+DTEND:20261130T050200Z
+SUMMARY:PSY355 Journal 10 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-10-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261207T045900Z
+DTEND:20261207T050000Z
+SUMMARY:PSY355 Journal 10 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-10-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261209T045900Z
+DTEND:20261209T050000Z
+SUMMARY:PSY355 Journal 10: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-11-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261207T050100Z
+DTEND:20261207T050200Z
+SUMMARY:PSY355 Journal 11 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-11-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261214T045900Z
+DTEND:20261214T050000Z
+SUMMARY:PSY355 Journal 11 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-11-window-end@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261216T045900Z
+DTEND:20261216T050000Z
+SUMMARY:PSY355 Journal 11: no-penalty window ends
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-12-open@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261207T050100Z
+DTEND:20261207T050200Z
+SUMMARY:PSY355 Journal 12 opens
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
+BEGIN:VEVENT
+UID:psy355-journal-12-due@rpeart73.github.io
+DTSTAMP:20260910T171455Z
+SEQUENCE:1
+DTSTART:20261217T045900Z
+DTEND:20261217T050000Z
+SUMMARY:PSY355 Journal 12 due
+DESCRIPTION:All assignment instructions and submissions are in Blackboard.
+END:VEVENT
 END:VCALENDAR
