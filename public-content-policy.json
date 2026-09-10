@@ -1,5 +1,9 @@
 {
   "public_assignments": false,
   "authority": "Raymond Peart, September 10, 2026",
-  "scope": "Assignment instructions, rubrics, schedules and downloadable assignment guides belong in Blackboard. Do not restore public assignment content without an explicit new request."
+  "scope": "Assignment instructions, rubrics, schedules and downloadable assignment guides belong in Blackboard. Do not restore public assignment content without an explicit new request.",
+  "site_use_guides_allowed": true,
+  "approved_guide_downloads": {
+    "PSY355-Course-Website-Guide.docx": "b0474e4e1b47cb78ec8ad401f6ec6f2a092832a0fe79cbff763dd591ee527ee2"
+  }
 }
