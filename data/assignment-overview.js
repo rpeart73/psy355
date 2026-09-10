@@ -1,0 +1,147 @@
+/* Public assignment overview authorised by Raymond, September 10, 2026. Full instructions and rubrics are in Blackboard. */
+window.PSY355_ASSIGNMENT_OVERVIEW = [
+  {
+    "number": 1,
+    "name": "Journal 1: Starting Point: A Learning Setback",
+    "points": 5,
+    "releaseDate": "2026-09-21",
+    "dueDate": "2026-09-27",
+    "release": "2026-09-21T04:01:00.000Z",
+    "due": "2026-09-28T03:59:00.000Z",
+    "windowClosesAt": "2026-09-30T03:59:00.000Z",
+    "summary": "Explore a learning challenge through growth mindset, starting with a strength, strategy or support already available. This opening journal establishes an initial interpretation and a realistic next step that you will revisit later in the course.",
+    "windowEndDate": "2026-09-29"
+  },
+  {
+    "number": 2,
+    "name": "Journal 2: Confidence, Strategy and Self-Efficacy",
+    "points": 9,
+    "releaseDate": "2026-09-28",
+    "dueDate": "2026-10-04",
+    "release": "2026-09-28T04:01:00.000Z",
+    "due": "2026-10-05T03:59:00.000Z",
+    "windowClosesAt": "2026-10-07T03:59:00.000Z",
+    "summary": "Use the Austin's Butterfly video or its written case to examine feedback, learning strategies and one source of self-efficacy. Connect the example to Journal 1 and consider what can, and cannot, be inferred about a learner's confidence.",
+    "windowEndDate": "2026-10-06"
+  },
+  {
+    "number": 3,
+    "name": "Journal 3: Resilience as an Unfinished Process",
+    "points": 9,
+    "releaseDate": "2026-10-05",
+    "dueDate": "2026-10-11",
+    "release": "2026-10-05T04:01:00.000Z",
+    "due": "2026-10-12T03:59:00.000Z",
+    "windowClosesAt": "2026-10-14T03:59:00.000Z",
+    "summary": "Examine an ordinary interruption to learning through Richardson's model of disruption and reintegration. Revisit an earlier journal to consider how recovery unfolds over time and which adjustments or supports fit, without assuming every setback produces growth.",
+    "windowEndDate": "2026-10-13"
+  },
+  {
+    "number": 4,
+    "name": "Journal 4: What the Environment Changes",
+    "points": 9,
+    "releaseDate": "2026-10-12",
+    "dueDate": "2026-10-18",
+    "release": "2026-10-12T04:01:00.000Z",
+    "due": "2026-10-19T03:59:00.000Z",
+    "windowClosesAt": "2026-10-21T03:59:00.000Z",
+    "summary": "Explore how resources, barriers and context shape a learner's options through Ungar's social-ecological approach. Revisit an earlier explanation of belief or effort and consider what an appropriate change to the environment or available support could make possible.",
+    "windowEndDate": "2026-10-20"
+  },
+  {
+    "number": 5,
+    "name": "Journal 5: Stress, Recovery and the Limits of a Story",
+    "points": 9,
+    "releaseDate": "2026-10-19",
+    "dueDate": "2026-10-25",
+    "release": "2026-10-19T04:01:00.000Z",
+    "due": "2026-10-26T03:59:00.000Z",
+    "windowClosesAt": "2026-10-28T03:59:00.000Z",
+    "summary": "Examine academic pressure and recovery alongside research based on former athletes' accounts. Connect stress, resilience and social context while distinguishing the sequence of events from evidence that adversity caused growth.",
+    "windowEndDate": "2026-10-27"
+  },
+  {
+    "number": 6,
+    "name": "Journal 6: Self-Compassion with Accountability",
+    "points": 9,
+    "releaseDate": "2026-11-02",
+    "dueDate": "2026-11-08",
+    "release": "2026-11-02T05:01:00.000Z",
+    "due": "2026-11-09T04:59:00.000Z",
+    "windowClosesAt": "2026-11-11T04:59:00.000Z",
+    "summary": "Apply Neff's three components of self-compassion to an ordinary learning mistake or unmet practice goal. Consider how a kinder response can retain responsibility and a specific next action, connecting the idea with earlier course concepts.",
+    "windowEndDate": "2026-11-10"
+  },
+  {
+    "number": 7,
+    "name": "Journal 7: When to Persist and When to Adjust",
+    "points": 9,
+    "releaseDate": "2026-11-09",
+    "dueDate": "2026-11-15",
+    "release": "2026-11-09T05:01:00.000Z",
+    "due": "2026-11-16T04:59:00.000Z",
+    "windowClosesAt": "2026-11-18T04:59:00.000Z",
+    "summary": "Explore a decision about continuing or adjusting a learning strategy using psychological flexibility and perseverance. Connect these ideas with self-compassion and earlier journals, and consider what evidence would justify continuing, changing approach or seeking support.",
+    "windowEndDate": "2026-11-17"
+  },
+  {
+    "number": 8,
+    "name": "Journal 8: What My Earlier Journals Actually Show",
+    "points": 9,
+    "releaseDate": "2026-11-16",
+    "dueDate": "2026-11-22",
+    "release": "2026-11-16T05:01:00.000Z",
+    "due": "2026-11-23T04:59:00.000Z",
+    "windowClosesAt": "2026-11-25T04:59:00.000Z",
+    "summary": "Return to Austin's Butterfly or its written case and compare your Journal 2 interpretation with a later journal. Use reflective learning and earlier course concepts to examine how your use of evidence has developed or stayed consistent, then identify a precise next improvement.",
+    "windowEndDate": "2026-11-24"
+  },
+  {
+    "number": 9,
+    "name": "Journal 9: A Request for Help That Fits the Situation",
+    "points": 9,
+    "releaseDate": "2026-11-23",
+    "dueDate": "2026-11-29",
+    "release": "2026-11-23T05:01:00.000Z",
+    "due": "2026-11-30T04:59:00.000Z",
+    "windowClosesAt": "2026-12-02T04:59:00.000Z",
+    "summary": "Examine a short, unsent request for academic help or clarification using a concept from the assigned communication chapter. Connect the wording and timing of the request with social context and earlier learning goals, while recognising that a thoughtful request cannot guarantee support.",
+    "windowEndDate": "2026-12-01"
+  },
+  {
+    "number": 10,
+    "name": "Journal 10: Well-Being and a Practical Trade-Off",
+    "points": 9,
+    "releaseDate": "2026-11-30",
+    "dueDate": "2026-12-06",
+    "release": "2026-11-30T05:01:00.000Z",
+    "due": "2026-12-07T04:59:00.000Z",
+    "windowClosesAt": "2026-12-09T04:59:00.000Z",
+    "summary": "Consider an ordinary trade-off involving study, rest, other commitments or support through Owen's discussion of resilience and practical philosophy. Compare realistic options using earlier course concepts and explain the evidence or circumstances that could change your choice.",
+    "windowEndDate": "2026-12-08"
+  },
+  {
+    "number": 11,
+    "name": "Journal 11: My Resilience Plan: Evidence and Limits",
+    "points": 9,
+    "releaseDate": "2026-12-07",
+    "dueDate": "2026-12-13",
+    "release": "2026-12-07T05:01:00.000Z",
+    "due": "2026-12-14T04:59:00.000Z",
+    "windowClosesAt": "2026-12-16T04:59:00.000Z",
+    "summary": "Bring course concepts and evidence from two earlier journals together in a practical plan for one future learning challenge. The plan connects existing strengths with an action, a support and a way to recognise when adjustment is needed, while acknowledging its limits.",
+    "windowEndDate": "2026-12-15"
+  },
+  {
+    "number": 12,
+    "name": "Journal 12: Returning to My Starting Point",
+    "points": 5,
+    "releaseDate": "2026-12-07",
+    "dueDate": "2026-12-16",
+    "release": "2026-12-07T05:01:00.000Z",
+    "due": "2026-12-17T04:59:00.000Z",
+    "windowClosesAt": "2026-12-17T04:59:00.000Z",
+    "summary": "Return to your original Journal 1 interpretation and compare it with a later journal. This shorter closing reflection uses two course concepts to explain what you now understand differently or more precisely, what remains uncertain and where the learning could be useful next.",
+    "windowEndDate": null
+  }
+];

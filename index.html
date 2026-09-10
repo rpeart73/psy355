@@ -12,7 +12,7 @@
 </script>
 <title>PSY355 Companion: weekly learning pathway</title>
 <meta name="description" content="Instructor-created PSY355 companion website for weekly learning pathways, readings, concepts, immersive experiences, and study supports. Blackboard remains the official Seneca course platform.">
-<link rel="stylesheet" href="./fonts/fonts.css?v=20260910-journal-calendar">
+<link rel="stylesheet" href="./fonts/fonts.css?v=20260910-reading-filter">
 <style>
   :root{
     --navy:#1B2A4A; --red:#DA291C; --red-dark:#961A13; --amber:#F2A900; --page:#F7F8FA; --surface:#fff;
@@ -512,8 +512,23 @@
   @supports (height:100dvh){#soc-main{height:calc(100dvh - 62px)!important}.soc-sidebar{height:calc(100dvh - 62px)!important}.walk-access-panel,.rl-panel{max-height:calc(100dvh - 100px)!important}}
   @media (max-width:760px){.act-sequence-layout{grid-template-columns:1fr}.act-decision-grid{grid-template-columns:1fr}.act-fields{grid-template-columns:1fr}.act-map-layer,.act-trace-node{grid-template-columns:34px minmax(0,1fr)}}
   @media (pointer:coarse){button,.act-choice-row button,.act-option-bank button,.act-sequence-choice,.act-reset,a{min-height:44px}}
+
+.assignment-overview {margin:24px 0 32px;padding:24px;background:#fff;border:1px solid var(--border);border-top:4px solid var(--red);border-radius:12px}
+.assignment-overview h2 {margin:0 0 10px;font-size:1.55rem}
+.assignment-overview p {max-width:100ch;line-height:1.6}
+.assignment-table-scroll {overflow-x:auto;margin:20px 0;border:1px solid var(--border);border-radius:8px}
+.assignment-table-scroll:focus-visible {outline:3px solid var(--red);outline-offset:3px}
+.assignment-table {border-collapse:collapse;width:100%;min-width:850px;text-align:left;font-size:.94rem;line-height:1.55}
+.assignment-table caption {text-align:left;font-weight:600;padding:12px 16px;background:#f6f7f9}
+.assignment-table th,.assignment-table td {padding:16px;vertical-align:top;border-bottom:1px solid #DEE3EA}
+.assignment-table thead th {background:#1B2A4A;color:white}
+.assignment-table tbody th {width:24%;font-weight:600}
+.assignment-table tbody td:nth-child(2),.assignment-table tbody td:nth-child(3) {width:15%;white-space:nowrap}
+.assignment-table tbody tr:nth-child(even) {background:#f6f7f9}
+.assignment-weight {display:block;margin-top:6px;font-size:.84rem;font-weight:400;color:#474C57}
+@media(max-width:640px){.assignment-overview{padding:16px}.assignment-table{font-size:.9rem}}
 </style>
-<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260910-journal-calendar">
+<link rel="stylesheet" href="./assets/walkthrough-immersive.css?v=20260910-reading-filter">
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <style id="recording-layout">
 /* Keep recording controls on their own rows, including narrow screens. */
@@ -536,23 +551,24 @@
 </noscript>
 <div id="app"></div>
 <div id="soc-live" role="status" aria-live="polite" class="skip"></div>
-<script src="./data/corpus-data.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-mc.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-kc.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-kc-additions.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-career.js?v=20260910-journal-calendar"></script>
-<script src="./data/seneca-programs.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-lens.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-howto.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-interpersonal.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-outcomes.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-field-examples.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-walkfigs.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-images.js?v=20260910-journal-calendar"></script>
-<script src="./data/psy355-recordings.js?v=20260910-journal-calendar"></script>
-<script src="./data/assessment-guides.js?v=20260910-journal-calendar"></script>
-<script src="./assessment-guides-view.js?v=20260910-journal-calendar"></script>
-<script src="./app.js?v=20260910-journal-calendar"></script>
-<script defer src="assets/img-viewer.js?v=20260910-journal-calendar"></script>
+<script src="./data/corpus-data.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-mc.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-kc.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-kc-additions.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-career.js?v=20260910-reading-filter"></script>
+<script src="./data/seneca-programs.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-lens.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-howto.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-interpersonal.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-outcomes.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-field-examples.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-walkfigs.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-images.js?v=20260910-reading-filter"></script>
+<script src="./data/psy355-recordings.js?v=20260910-reading-filter"></script>
+<script src="./data/assignment-overview.js?v=20260910-reading-filter"></script>
+<script src="./data/assessment-guides.js?v=20260910-reading-filter"></script>
+<script src="./assessment-guides-view.js?v=20260910-reading-filter"></script>
+<script src="./app.js?v=20260910-reading-filter"></script>
+<script defer src="assets/img-viewer.js?v=20260910-reading-filter"></script>
 </body>
 </html>

@@ -1,10 +1,11 @@
 {
   "public_assignments": false,
   "authority": "Raymond Peart, September 10, 2026",
-  "scope": "Journal release dates, due dates and submission-window dates may appear in the course calendar, as requested September 10, 2026. Assignment instructions, rubrics and downloadable assignment guides remain in Blackboard.",
+  "scope": "Raymond explicitly requested an assignment overview table with assignment names, release dates, due dates and concise abstracts on September 10, 2026. These summaries and calendar dates are public. Full assignment instructions, rubrics and submission links remain in Blackboard.",
   "site_use_guides_allowed": true,
   "approved_guide_downloads": {
     "PSY355-Course-Website-Guide.docx": "d4fc4d6ce2c020d8b07e43c3d6834ee659f206bb168ba7acd9c362c3a12a02f4"
   },
-  "public_calendar_dates": true
+  "public_calendar_dates": true,
+  "public_assignment_overviews": true
 }
