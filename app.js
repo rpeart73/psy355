@@ -2934,7 +2934,7 @@
     if (w === 6) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Use the flexible class time to extend last week\'s view of resilience into context and culture at your own pace, and notice where your own supports actually sit.' };
     if (w === 10) return { kind: 'async', label: 'ASYNCHRONOUS INDEPENDENT LEARNING', short: 'Asynchronous learning; no lecture', reason: 'There is no lecture this week. Reflective writing works best unhurried, so use the flexible class time to journal properly rather than fitting it around a class.' };
     if (w === 13) return { kind: 'async', label: 'OFFICE HOURS + SUPPORTED ASYNCHRONOUS COMPLETION', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes office hours for focused final-work support and consultation. Office hours are not recorded by default.' };
-    if (w === 14) return { kind: 'async', label: 'OFFICE HOURS + ASYNCHRONOUS COURSE CLOSURE', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes optional office hours for feedback and final questions. Submit your Final Learning Reflection by Sunday, December 13, at 11:59 p.m. Eastern. Office hours are optional and are not recorded by default.' };
+    if (w === 14) return { kind: 'async', label: 'OFFICE HOURS + ASYNCHRONOUS COURSE CLOSURE', short: 'Office hours; no lecture', reason: 'There is no lecture this week. The usual class window becomes optional office hours for feedback and final questions. Submit Journal 12: Returning to My Starting Point by December 16 at 11:59 pm Eastern. Office hours are optional and are not recorded by default.' };
     return { kind: 'live', label: 'SYNCHRONOUS LIVE CLASS', short: 'Live class', reason: w === 12 ? 'This is the final substantive live class. Bring the connections you drew in Week 11 and use the meeting to test and strengthen them.' : 'Our class meets live this week. Use the week page before class to prepare and return after class to reflect and save what matters.' };
   }
   function deliveryNotice(w) {
@@ -2945,6 +2945,9 @@
   function recordingEntry(w) { return RECORDINGS[String(w)] || RECORDINGS[w] || null; }
   function safeZoomRecordingUrl(raw) {
     try { var u = new URL(String(raw || '')); if (u.protocol !== 'https:' || !/(^|\.)zoom\.us$/i.test(u.hostname) || /(?:^|[?&])(pwd|passcode)=/i.test(u.search)) return ''; return u.href; } catch (e) { return ''; }
+  }
+  function safeBlackboardRecordingUrl(raw) {
+    try { var u = new URL(String(raw || '')); if (u.origin !== 'https://learn.senecapolytechnic.ca' || !/^\/ultra\/courses\/_787839_1\/document\/_\d+_1$/.test(u.pathname) || u.username || u.password) return ''; return u.origin + u.pathname + '?view=content&state=view'; } catch (e) { return ''; }
   }
   function recordingSection(w) {
     var m = deliveryMode(w), e = recordingEntry(w), live = m.kind === 'live';
@@ -2959,9 +2962,11 @@
         body = '<div class="wk-rec-frame"><button type="button" class="wk-rec-play" onclick="SOC.playVideo(this,\'' + esc(id) + '\',\'' + esc(title) + '\')" aria-label="Load ' + esc(title) + '"><b>Play ' + esc(title) + '</b><small>YouTube loads only after you choose to play.</small></button></div>';
       } else if (e.platform === 'zoom' && safeZoomRecordingUrl(e.url)) {
         body = '<a class="wk-rec-link" href="' + esc(safeZoomRecordingUrl(e.url)) + '" target="_blank" rel="noopener">Open ' + esc(title) + ' on Zoom <span aria-hidden="true">&#8599;</span></a>';
+      } else if (e.platform === 'blackboard' && safeBlackboardRecordingUrl(e.url)) {
+        body = '<a class="wk-rec-link" href="' + esc(safeBlackboardRecordingUrl(e.url)) + '" target="_blank" rel="noopener">Open ' + esc(title) + ' in Blackboard <span aria-hidden="true">&#8599;</span></a>';
       }
       if (body) body += '<div class="wk-rec-meta">' + (e.date ? '<span>Posted ' + esc(e.date) + '</span>' : '') + '<span>' + esc(access) + '</span>' + (e.transcriptUrl ? '<a href="' + esc(e.transcriptUrl) + '" target="_blank" rel="noopener">Open transcript</a>' : '') + '</div>';
-      else empty = 'The recording entry needs attention before it can be shown safely. Use a valid YouTube video ID or a Zoom recording link without an embedded passcode.';
+      else empty = 'Use Blackboard to find this week\'s recording. The website link needs attention.';
     }
     return '<section id="wk-rec" class="wk-rec" aria-labelledby="wk-rec-h"><div class="wk-rec-inner"><div class="wk-rec-kick">' + esc(live ? 'AFTER CLASS' : 'THIS WEEK') + '</div><h2 id="wk-rec-h">' + esc(heading) + '</h2>' + (body || '<p>' + esc(empty) + '</p>') + '</div></section>';
   }
@@ -2974,7 +2979,7 @@
       route: ['Reflect', 'Save notes'],
       startPart: 'reflect',
       startLabel: 'Start reflection',
-      question: 'No new teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and complete the Final Learning Reflection in Blackboard by Sunday, December 13, at 11:59 p.m. Eastern.' : '. Any assessment due this week is confirmed on Blackboard.') + ((d.readings && d.readings.length) ? ' The readings below are revisit anchors from earlier weeks, not new assignments.' : ''),
+      question: 'No new teaching material this week. This time is yours: focus on your work' + (isFinal ? ' and complete Journal 12: Returning to My Starting Point in Blackboard by December 16 at 11:59 pm Eastern.' : '. Any assessment due this week is confirmed on Blackboard.') + ((d.readings && d.readings.length) ? ' The readings below are revisit anchors from earlier weeks, not new assignments.' : ''),
       time: 'No new material'
     });
     var A = authoredWeekSections(w, d, { readingsTitle: 'Revisit readings', readingsIntro: '<p class="wk-hint">Nothing here is new. These are the anchors worth rereading as you finish your work; each one names why it earns the revisit.</p>' });
