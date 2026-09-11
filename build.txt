@@ -1,1 +1,1 @@
-20260910-reading-libraries
+20260911-resizable-navigation
