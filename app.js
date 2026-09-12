@@ -24,7 +24,19 @@
   function cleanAssessmentId(id) { var a = assessmentById(id); return a ? a.id : null; }
   function assessmentHref(id) { return '?screen=assignment-details&asg=' + encodeURIComponent(id); }
   function load() { try { var o = JSON.parse(localStorage.getItem(SKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
-  function persist() { try { localStorage.setItem(SKEY, JSON.stringify({ saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, noteVaultUpdated: state.noteVaultUpdated, rl: state.rl, studentName: state.studentName, visits: state.visits })); } catch (e) {} }
+  var studentSave = { local: null, idb: false, session: false, pending: false, when: 0 };
+  function studentPersistPayload() { return { saved: state.saved, cmpNotes: state.cmpNotes, rcNotes: state.rcNotes, sgNotes: state.sgNotes, sgTick: state.sgTick, ecoChallenge: state.ecoChallenge, ecoNotes: state.ecoNotes, wkCheck: state.wkCheck, wkReflect: state.wkReflect, actResult: state.actResult, mcSel: state.mcSel, mcConf: state.mcConf, kcShort: state.kcShort, kcShortRate: state.kcShortRate, kcHist: state.kcHist, mediaNotes: state.mediaNotes, careerReflect: state.careerReflect, noteVaultUpdated: state.noteVaultUpdated, rl: state.rl, studentName: state.studentName, visits: state.visits , notebookNotes: state.notebookNotes, noteRevisions: state.noteRevisions, noteVersions: state.noteVersions , kcVersion: state.kcVersion }; }
+  function persist() {
+    if (studentNoteClearing) return false;
+    studentNoteMergeLatest();
+    studentSave.when = Number(state.noteVaultUpdated) || 0;
+    try { var serialized = JSON.stringify(studentPersistPayload()); localStorage.setItem(SKEY, serialized); studentSave.local = localStorage.getItem(SKEY) === serialized; }
+    catch (e) { studentSave.local = false; }
+    if (studentSave.local) studentNoteMergeBase = studentNoteEntries(state);
+    else if (!studentNoteClearing) studentNoteBroadcast(SKEY, JSON.stringify(studentPersistPayload()));
+    studentSavePaint();
+    return studentSave.local;
+  }
   function loadView() { try { var o = JSON.parse(sessionStorage.getItem(VKEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function clearView() { try { sessionStorage.removeItem(VKEY); sessionStorage.removeItem(HKEY); } catch (e) {} }
   function shouldResumeView(v) {
@@ -36,7 +48,7 @@
   function cleanScreen(s) {
     if (/^(assignments?|assessment|starter)/.test(String(s || ''))) return 'journey';
 
-    return ['journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'assignment-details', 'career', 'walkthroughs', 'ecology', 'calendar', 'review', 'activity', 'outcomes'].indexOf(s) >= 0 ? s : 'journey';
+    return ['notes', 'journey', 'site', 'library', 'station', 'detail', 'pathways', 'videos', 'readings', 'compare', 'reading', 'glossary', 'cards', 'assignments', 'assignment-details', 'career', 'walkthroughs', 'ecology', 'calendar', 'review', 'activity', 'outcomes'].indexOf(s) >= 0 ? s : 'journey';
   }
   function cleanWeek(w) {
     w = Number(w);
@@ -110,6 +122,11 @@
   var routePart0 = route0 && route0.part;
 
   var state = {
+    noteRevisions: studentNoteMeta(saved0.noteRevisions),
+    noteVersions: studentNoteMeta(saved0.noteVersions),
+    notebookNotes: cleanTextMap(saved0.notebookNotes),
+    kcVersion: studentCheckVersions(saved0.kcVersion),
+
     screen: route0 ? route0.screen : (resumeView0 ? cleanScreen(view0.screen) : 'journey'),
     prevView: (resumeView0 && view0.prevView && typeof view0.prevView === 'object') ? view0.prevView : null,
     navOpen: false,
@@ -239,10 +256,16 @@
   var STUDENT_NOTE_IMPORT_MARKER = SKEY + '.restoredBackupNext.v1';
   var STUDENT_NOTE_DB = 'seneca-student-notes-v1';
   var STUDENT_NOTE_STORE = 'student-note-vault';
-  var STUDENT_NOTE_FIELDS = ['cmpNotes', 'rcNotes', 'sgNotes', 'ecoChallenge', 'ecoNotes', 'wkReflect', 'actResult', 'kcShort', 'careerReflect', 'mediaNotes'];
+  var STUDENT_NOTE_FIELDS = ['notebookNotes', 'cmpNotes', 'rcNotes', 'sgNotes', 'ecoChallenge', 'ecoNotes', 'wkReflect', 'actResult', 'kcShort', 'careerReflect', 'mediaNotes'];
   var studentNoteBackupTimer = null;
+  var studentNoteClient = Math.random().toString(36).slice(2), studentNoteSequence = 0, studentNoteInitialTime = 0, studentNoteMergeBase = null, studentNoteClearing = false;
+  studentNoteSyncStart();
+  var studentNoteChannel = null;
+  try { studentNoteChannel = new BroadcastChannel(SKEY + '.noteChanges'); studentNoteChannel.onmessage = function (event) { if (event.data && (event.data.key === SKEY || event.data.key === SKEY + '.clearRequest')) studentNoteReceive(event.data); }; } catch (e) {}
+  function studentNoteBroadcast(key, value) { try { if (studentNoteChannel) studentNoteChannel.postMessage({ key:key, newValue:value }); } catch (e) {} }
+
   function studentNoteClone(value) { try { return JSON.parse(JSON.stringify(value)); } catch (e) { return null; } }
-  function studentNoteSnapshot() {
+  function studentNoteSnapshotBase() {
     var values = {};
     STUDENT_NOTE_FIELDS.forEach(function (field) { values[field] = studentNoteClone(state[field]); });
     return { version: 1, savedAt: Number(state.noteVaultUpdated) || 0, values: values };
@@ -250,7 +273,7 @@
   function studentNoteHasContent() {
     return STUDENT_NOTE_FIELDS.some(function (field) { var value = state[field]; return typeof value === 'string' ? value !== '' : !!(value && typeof value === 'object' && Object.keys(value).length); });
   }
-  function studentNoteApplySnapshot(snapshot) {
+  function studentNoteApplySnapshotBase(snapshot) {
     if (!snapshot || snapshot.version !== 1 || !snapshot.values || typeof snapshot.values !== 'object') return false;
     var savedAt = Number(snapshot.savedAt) || 0;
     if (!savedAt || savedAt <= (Number(state.noteVaultUpdated) || 0)) return false;
@@ -272,7 +295,14 @@
     });
   }
   function studentNoteIdbWrite(snapshot) {
-    return studentNoteDbOpen().then(function (db) { return new Promise(function (resolve, reject) { var tx = db.transaction(STUDENT_NOTE_STORE, 'readwrite'); tx.objectStore(STUDENT_NOTE_STORE).put({ id: SKEY, snapshot: snapshot }); tx.oncomplete = function () { db.close(); resolve(true); }; tx.onerror = function () { db.close(); reject(tx.error || new Error('Note backup failed')); }; tx.onabort = tx.onerror; }); });
+    if (studentNoteClearing) return Promise.resolve(null);
+    return studentNoteDbOpen().then(function (db) { return new Promise(function (resolve, reject) {
+      var tx = db.transaction(STUDENT_NOTE_STORE, 'readwrite'), store = tx.objectStore(STUDENT_NOTE_STORE), request = store.get(SKEY), merged = snapshot;
+      request.onsuccess = function () { try { merged = studentNoteMergeSnapshots(request.result && request.result.snapshot, snapshot); store.put({ id:SKEY, snapshot:merged }); } catch (error) { tx.abort(); } };
+      tx.oncomplete = function () { db.close(); resolve(merged); };
+      tx.onerror = function () { db.close(); reject(tx.error || new Error('Note backup failed')); };
+      tx.onabort = tx.onerror;
+    }); });
   }
   function studentNoteIdbRead() {
     return studentNoteDbOpen().then(function (db) { return new Promise(function (resolve) { var tx = db.transaction(STUDENT_NOTE_STORE, 'readonly'), request = tx.objectStore(STUDENT_NOTE_STORE).get(SKEY); request.onsuccess = function () { var result = request.result; db.close(); resolve(result && result.snapshot ? result.snapshot : null); }; request.onerror = function () { db.close(); resolve(null); }; }); }).catch(function () { return null; });
@@ -282,11 +312,15 @@
   }
   function studentNotesChanged() {
     state.noteVaultUpdated = Math.max(Date.now(), (Number(state.noteVaultUpdated) || 0) + 1);
+    studentSave.when = state.noteVaultUpdated;
+    studentSave.idb = false;
+    studentSave.pending = true;
     persist();
-    var snapshot = studentNoteSnapshot();
-    try { sessionStorage.setItem(STUDENT_NOTE_SESSION_KEY, JSON.stringify(snapshot)); } catch (e) {}
+    try { sessionStorage.setItem(STUDENT_NOTE_SESSION_KEY, JSON.stringify(studentNoteSnapshot())); studentSave.session = true; } catch (e) { studentSave.session = false; }
     if (studentNoteBackupTimer) clearTimeout(studentNoteBackupTimer);
-    studentNoteBackupTimer = setTimeout(function () { studentNoteIdbWrite(studentNoteSnapshot()).catch(function () {}); }, 180);
+    studentNoteBackupTimer = setTimeout(studentSaveFlush, 180);
+    if (state.screen === 'notes') { clearTimeout(studentNotebookRenderTimer); studentNotebookRenderTimer = setTimeout(studentNotebookRefresh, 240); }
+    studentSavePaint();
   }
   function studentNoteRecoverSession() {
     var snapshot = null;
@@ -676,8 +710,8 @@
       }
     } catch (e) {}
     u.onend = function () { setTimeout(rlSpeakNext, 120); };
-    u.onerror = function () { rlSpeakStop(); };
-    try { window.speechSynthesis.speak(u); } catch (e) { rlSpeakStop(); }
+    u.onerror = function (event) { var stopped = !rlSpeaking || (event && /^(canceled|interrupted)$/.test(event.error)); rlSpeakStop(); if (!stopped) flash('Read aloud could not start. Choose another voice in Listen, then try again.', 8000); };
+    try { window.speechSynthesis.speak(u); } catch (e) { rlSpeakStop(); flash('Read aloud could not start. Choose another voice in Listen, then try again.', 8000); }
   }
   function rlSpeakToggle() {
     if (!('speechSynthesis' in window)) { announce('Read aloud is not available in this browser.'); return; }
@@ -806,7 +840,7 @@
 
   /* ---------- chrome ---------- */
   function header() {
-    return '<header style="position:sticky;top:0;z-index:40;height:62px;background:#fff;border-bottom:2px solid var(--red);display:flex;align-items:center;padding:0 22px;gap:14px;flex:none">'
+    return '<header class="soc-course-header" style="position:sticky;top:0;z-index:40;height:62px;background:#fff;border-bottom:2px solid var(--red);display:flex;align-items:center;padding:0 22px;gap:14px;flex:none">'
       + '<button class="soc-mobile-menu" onclick="SOC.toggleNav()" aria-label="' + (state.navOpen ? 'Close course navigation' : 'Open course navigation') + '" aria-expanded="' + (state.navOpen ? 'true' : 'false') + '" style="align-items:center;justify-content:center;width:38px;height:38px;border:1px solid #DEE3EA;border-radius:10px;background:#fff;color:#474C57;flex:none">' + ic(state.navOpen ? 'x' : 'list', 18) + '</button>'
       + '<div class="soc-head-brand" style="display:flex;align-items:center;gap:10px;flex:none;min-width:0"><img src="./seneca-logo.png" alt="Seneca Polytechnic" style="height:34px;width:auto;display:block"><span class="soc-head-title" style="font-weight:600;font-size:1.0625rem;color:var(--ink);letter-spacing:0;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">PSY355 Companion</span></div>'
       + readerLensButton()
@@ -817,7 +851,7 @@
   }
   function sidebar() {
     var s = state;
-    var navDefs = [["journey","Home","gauge"],["site","How This Site Works","file"],["pathways","Course Rhythm","map"],["readings","Readings and Media","gallery"],["compare","Compare Sources","columns"],["reading","Source Practice","book"],["videos","Videos and Podcasts","play"],["glossary","Glossary","book"],["cards","Concept Flashcards","clipboard"],["review","Term Review","check"],["outcomes","What This Course Builds","columns"],["career","Career Choices","globe"]];
+    var navDefs = [["notes","My notes","book"],["journey","Home","gauge"],["site","How This Site Works","file"],["pathways","Course Rhythm","map"],["readings","Readings and Media","gallery"],["compare","Compare Sources","columns"],["reading","Source Practice","book"],["videos","Videos and Podcasts","play"],["glossary","Glossary","book"],["cards","Concept Flashcards","clipboard"],["review","Term Review","check"],["outcomes","What This Course Builds","columns"],["career","Career Choices","globe"]];
     if (D.course && D.course.code === 'PSY355') navDefs.push(['ecology', 'Resilience Ecology', 'layers']);
     var btns = navDefs.map(function (d) {
       var key = d[0], active = (key === 'journey' && (s.screen === 'journey' || s.screen === 'library' || s.screen === 'station' || s.screen === 'detail')) || (key === 'assignments' && s.screen === 'assignment-details') || s.screen === key;
@@ -848,7 +882,7 @@
     function group(label, html) { return '<section class="soc-nav-group"><div class="soc-nav-label">' + label + '</div>' + html + '</section>'; }
     var weekOpen = s.screen === 'library' || s.screen === 'station' || s.screen === 'detail';
     var weekGroup = '<details class="soc-nav-weekgroup"' + (weekOpen ? ' open' : '') + '><summary><span>WEEKLY JOURNEY</span><b>' + (s.stationWeek ? 'Week ' + s.stationWeek : 'Weeks 1-14') + '</b></summary><div>' + weekNav + '</div></details>';
-    var nav = group('ORIENT', byKey.site + byKey.journey + byKey.pathways + cal)
+    var nav = group('ORIENT', byKey.site + byKey.journey + byKey.notes + byKey.pathways + cal)
       + weekGroup
       + group('LEARN EACH WEEK', walk + (byKey.ecology || ''))
       + group('STUDY THE SOURCES', byKey.readings + byKey.videos + byKey.reading + byKey.compare)
@@ -1181,11 +1215,23 @@
   function lcFirst(s) { s = String(s == null ? '' : s); return s.charAt(0).toLowerCase() + s.slice(1); }
   function ucFirst(s) { s = String(s == null ? '' : s); return s.charAt(0).toUpperCase() + s.slice(1); }
   function rcBand(correct, total) {
-    if (correct === total) return { label: 'Strong grasp', color: '#2c6b3f', bg: '#E9EFE7', icon: 'check', msg: 'You have a strong hold on this reading across every kind of question. The read-out below shows what came through.' };
-    var pct = correct / total;
-    if (pct >= 0.6) return { label: 'On your way', color: '#1552D8', bg: '#E7EEFB', icon: 'book', msg: 'You have the core of this reading. The read-out below shows where you are strong and where to look again.' };
-    if (pct >= 0.4) return { label: 'Building', color: '#8F5E0F', bg: '#F3ECE0', icon: 'book', msg: 'You are part way into this reading. The read-out below shows what is landing and what to firm up.' };
-    return { label: 'Worth another read', color: '#b23121', bg: '#FBE9E7', icon: 'book', msg: 'This reading has not fully landed yet. The read-out below shows exactly where to focus your next pass.' };
+    var all = correct === total;
+    return { label: all ? 'All answers matched on this set' : 'Your next reading step', color: all ? '#2c6b3f' : '#961A13', bg: all ? '#E9EFE7' : '#FBF4F3', icon: all ? 'check' : 'book', msg: all ? 'Use a fresh example to explain one of these ideas in your own words. These choices check recognition of selected ideas from the source.' : 'Start with an unmatched answer below. Compare the explanation with the source, then explain what changes your answer.' };
+  }
+  function rcNextStep(m, matched) {
+    var focus = RC_SKILLS[m.skill] || 'the idea in this question';
+    return matched ? 'Explain ' + focus + ' using a new example, then identify one limit the source places on that explanation.' : 'Find the passage about ' + focus + '. Compare your choice with the answer and explanation, then write one sentence explaining the difference.';
+  }
+  function rcFeedback(r, items) {
+    var pending = [], matched = [];
+    items.forEach(function (m, i) {
+      var choice = state.mcSel[r.id + '|mc|' + i];
+      if (choice === undefined || choice === null) return;
+      var ok = choice === m.answer;
+      var row = '<li><a href="#rcq-' + esc(r.id) + '-' + i + '">Question ' + (i + 1) + ': ' + esc(m.q) + '</a><p><b>Your choice:</b> ' + esc((m.options || [])[choice] || '') + '</p><p><b>Answer:</b> ' + esc((m.options || [])[m.answer] || '') + '</p>' + (m.why ? '<p>' + esc(m.why) + '</p>' : '') + '<p><b>Next step:</b> ' + esc(rcNextStep(m, ok)) + '</p></li>';
+      (ok ? matched : pending).push(row);
+    });
+    return (pending.length ? '<h3>Revisit these questions</h3><ol class="student-feedback-list">' + pending.join('') + '</ol>' : '') + (matched.length ? '<details><summary>Practise explaining the answers you matched (' + matched.length + ')</summary><ol class="student-feedback-list">' + matched.join('') + '</ol></details>' : '');
   }
   function readingComp() {
     var practiceNote = '<div style="display:flex;align-items:flex-start;gap:9px;background:#EEF1F5;border:1px solid #DEE3EA;border-radius:10px;padding:11px 14px;margin:0 0 16px;font-size:.85rem;line-height:1.5;color:#474C57"><span style="display:flex;color:#6B7280;flex:none;margin-top:1px">' + ic('book', 16) + '</span><span>This is a companion-site space for practice and self-study. The site does not submit this work for grading or count it toward a mark. It is here to help you check your own understanding and see where to focus.</span></div>';
@@ -1229,7 +1275,7 @@
         }).join('');
         var ok = (sel === m.answer);
         var why = done ? '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (ok ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (ok ? '#9CC4A8' : '#E5A9A2') + '"><span style="display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.9rem;color:' + (ok ? '#2c6b3f' : '#b23121') + '">' + (ok ? ic('check', 15, 2.4) + 'Correct' : ic('x', 15, 2.4) + 'Not quite') + '</span><div style="margin-top:4px;font-size:.85rem;line-height:1.5;color:#474C57">' + esc(m.why || '') + '</div></div>' : '';
-        return '<div style="background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600;color:#15171C">' + (mi + 1) + '. ' + esc(m.q) + '</p>' + opts + why + '</div>';
+        return '<div id="rcq-' + esc(r.id) + '-' + mi + '" tabindex="-1" style="scroll-margin-top:20px;background:#fff;border:1px solid #DEE3EA;border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600;color:#15171C">' + (mi + 1) + '. ' + esc(m.q) + '</p>' + opts + why + '</div>';
       }).join('');
       var total = mcItems.length, pct = Math.round(100 * correct / total);
       var score = '<div style="margin:2px 0 16px;max-width:460px">'
@@ -1238,19 +1284,9 @@
         + (answered ? '' : '<p style="font-size:.8rem;color:#6B7280;margin:8px 0 0">Pick an answer to check it right away. You can change your choice.</p>') + '</div>';
       var band = (answered === total && total) ? rcBand(correct, total) : null;
       var pctLabel = band ? Math.round(100 * correct / total) + '%' : '';
-      var diagLine = '';
-      if (band) {
-        var prof = rcSkillProfile(r.id, mcItems);
-        if (prof.has) {
-          if (prof.strengths.length) { var coreBit = (prof.strengths.indexOf(RC_SKILLS.argument) >= 0 && r.coreIdea) ? ' You have the central point, that ' + lcFirst(esc(String(r.coreIdea).replace(/\s*\.?\s*$/, ''))) + '.' : ''; diagLine += '<div style="margin-top:12px"><span class="mono" style="font-size:.66rem;letter-spacing:.05em;color:#2c6b3f">YOUR STRENGTHS</span><div style="font-size:.9rem;line-height:1.5;color:#15171C;margin-top:3px">Your answers show you read ' + listJoin(prof.strengths) + ' well.' + coreBit + '</div></div>'; }
-          if (prof.opps.length) { var oppRows = prof.opps.map(function (o) { return '<div style="margin-top:7px"><span style="font-weight:600;color:#15171C">' + ucFirst(o.label) + '.</span> <span style="color:#474C57">' + (o.whys.length ? esc(o.whys.join(' ')) : 'Go back to this in the reading and read for it directly.') + '</span></div>'; }).join(''); diagLine += '<div style="margin-top:12px"><span class="mono" style="font-size:.66rem;letter-spacing:.05em;color:#8F5E0F">AREAS OF OPPORTUNITY</span><div style="font-size:.875rem;line-height:1.5;color:#15171C;margin-top:1px">' + oppRows + '</div></div>'; }
-          else diagLine += '<div style="margin-top:10px;font-size:.85rem;color:#2c6b3f">No gaps stood out. You handled the argument, the concepts, the context, and the significance, all of it.</div>';
-        } else {
-          diagLine = (missed.length) ? '<p style="margin:7px 0 0;font-size:.9rem;line-height:1.5;color:#15171C"><span style="font-weight:600">Look again at ' + numList(missed) + '.</span> Those are the ideas to firm up before you move on.</p>' : '<p style="margin:7px 0 0;font-size:.9rem;color:#15171C"><span style="font-weight:600">You answered every question correctly.</span> Nothing to revisit here.</p>';
-        }
-      }
+      var diagLine = band ? rcFeedback(r, mcItems) : '';
       var bandHtml = band ? '<div style="margin:18px 0 4px;background:' + band.bg + ';border:1.5px solid ' + band.color + ';border-radius:13px;padding:17px 19px">'
-        + '<div class="mono" style="font-size:.68rem;letter-spacing:.06em;color:' + band.color + ';margin-bottom:7px">WHERE YOU ARE IN THIS READING</div>'
+        + '<div class="mono" style="font-size:.68rem;letter-spacing:.06em;color:' + band.color + ';margin-bottom:7px">YOUR READING PRACTICE PLAN</div>'
         + '<div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap"><span style="display:flex;color:' + band.color + '">' + ic(band.icon, 24, 2.2) + '</span><span style="font-size:1.35rem;font-weight:700;color:' + band.color + '">' + band.label + '</span><span style="margin-left:auto;text-align:right"><span style="display:block;font-size:1.05rem;font-weight:700;color:' + band.color + '">' + correct + ' of ' + total + '</span><span style="font-size:.72rem;color:#474C57">correct (' + pctLabel + ')</span></span></div>'
         + '<div style="height:8px;background:#fff;border-radius:999px;overflow:hidden;margin:11px 0 2px"><div style="height:100%;width:' + Math.round(100 * correct / total) + '%;background:' + band.color + ';border-radius:999px"></div></div>'
         + '<p style="margin:11px 0 0;font-size:.92rem;line-height:1.55;color:#15171C">' + band.msg + '</p>'
@@ -1490,6 +1526,7 @@
       + '</div>';
   }
   function screenAnnounceText() {
+    if (state.screen === 'notes') return 'My notes';
     if (state.screen === 'station') return 'Week ' + state.stationWeek + ': ' + weekTitle(state.stationWeek);
     if (state.screen === 'review') return 'Term Review';
     if (state.screen === 'outcomes') return 'What This Course Builds';
@@ -2511,24 +2548,21 @@
     }).join('') + '</div>';
   }
   function checkMeter(w, phase, d) {
-    var s = checkStat(w, phase, d), L = ['New to me', 'Getting it', 'I can'];
-    if (s.answered < s.total) return '<div style="margin-top:12px;font-size:.82rem;color:var(--ink-faint)">Rate all ' + s.total + ' to see where your understanding sits (' + s.answered + ' of ' + s.total + ' done). No grade, just your own read.</div>';
-    var b = checkBand(s.g, s.total);
-    var head = '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap"><div style="font-size:1.05rem;font-weight:700;color:' + b.color + '">' + b.label + '</div><div style="font-family:var(--mono);font-size:.78rem;color:' + b.color + '">' + (phase === 'pre' ? 'your starting read' : 'where you are now') + '</div></div>';
-    if (phase === 'pre') {
-      var profile = 'You can already speak to <b>' + s.g.can + ' of ' + s.total + '</b>, getting there on ' + s.g.getting + ', new to ' + s.g.newto + '. You will rate these again at the end, to see how far your understanding moves.';
-      return '<div style="margin-top:14px;background:' + b.bg + ';border:1px solid ' + b.color + '40;border-radius:12px;padding:14px 16px">' + head + checkBars(s.items) + '<div style="font-size:.85rem;color:var(--ink-dim)">' + profile + '</div></div>';
-    }
-    var pre = checkStat(w, 'pre', d), moved = 0;
-    var detail = s.items.map(function (x, i) {
-      var pr = pre.items[i] ? pre.items[i].r : null, up = (pr != null && x.r != null && x.r > pr); if (up) moved++;
-      var arrow = (pr == null) ? '' : (x.r > pr ? ' (moved up)' : (x.r < pr ? ' (moved back)' : ' (steady)'));
-      var from = (pr == null ? 'not rated before' : L[pr]);
-      var still = (x.r < 2) ? '<div style="font-size:.8rem;color:#8F5E0F;margin-top:2px">Still building. ' + esc(x.look || 'Revisit the readings and the activity for this idea.') + '</div>' : '';
-      return '<div style="border-top:1px solid var(--border);padding:9px 0"><div style="font-size:.86rem;font-weight:600;color:var(--ink)">' + esc(x.t) + '</div><div style="font-size:.8rem;color:var(--ink-dim);margin-top:3px">' + from + ' &#8594; ' + L[x.r] + arrow + '</div>' + still + '</div>';
+    var s = checkStat(w, phase, d), labels = ['New to me', 'Getting it', 'I can'];
+    var rated = s.items.filter(function (item) { return item.r !== null; });
+    if (!rated.length) return '<div class="study-feedback"><h3>' + (phase === 'pre' ? 'Choose your starting point' : 'Check in with the same ideas') + '</h3><p>Rate an idea to get a specific next step. These are your own ratings, not a score or a test of what you know.</p></div>';
+    var ordered = rated.slice().sort(function (a, b) { return a.r - b.r; });
+    var previous = phase === 'post' ? checkStat(w, 'pre', d) : null;
+    var rows = ordered.map(function (item) {
+      var action = item.r === 0 ? 'Start with this idea. Read its explanation, then find one example you can describe.' : item.r === 1 ? 'Try explaining this idea in your own words. Use one example, then check the part you were unsure about.' : 'Try it without your notes: explain this idea with a different example and say why it fits.';
+      var change = '';
+      if (previous) {
+        var prior = previous.items[s.items.indexOf(item)];
+        if (prior && prior.r !== null) change = '<p class="study-rating-change">Your rating: ' + labels[prior.r] + ' to ' + labels[item.r] + '. ' + (item.r < prior.r ? 'Noticing more complexity can change a rating. Use the next step to identify what needs a closer look.' : item.r === prior.r ? 'A steady rating is useful too. Notice whether your example or explanation is more precise.' : 'Your confidence increased. Check it by explaining an example without prompts.') + '</p>';
+      }
+      return '<li><h4>' + esc(item.t) + '</h4><span class="study-rating">You selected: ' + labels[item.r] + '</span><p>' + action + '</p>' + (item.look ? '<p><b>Where to look:</b> ' + esc(item.look) + '</p>' : '') + change + '</li>';
     }).join('');
-    var movedLine = (pre.answered === pre.total) ? '<div style="font-size:.86rem;color:var(--ink-dim);margin:2px 0 6px">Your understanding moved forward on <b>' + moved + ' of ' + s.total + '</b> since the start.</div>' : '<div style="font-size:.82rem;color:var(--ink-faint);margin:2px 0 6px">Rate the same ideas under Before you begin to see your movement.</div>';
-    return '<div style="margin-top:14px;background:' + b.bg + ';border:1px solid ' + b.color + '40;border-radius:12px;padding:14px 16px">' + head + checkBars(s.items) + movedLine + '<div style="margin-top:4px">' + detail + '</div></div>';
+    return '<div class="study-feedback" aria-label="Personal study plan"><h3>' + (phase === 'pre' ? 'Your starting plan for Week ' + w : 'Your next steps for Week ' + w) + '</h3><p>' + s.answered + ' of ' + s.total + ' ideas rated. ' + (s.answered < s.total ? 'Unrated ideas are left out of this plan.' : 'This plan follows your self-ratings; it does not measure mastery.') + '</p><ol>' + rows + '</ol><div class="study-actions"><button type="button" onclick="SOC.jumpWeek(' + w + ',\'con\')">Open Week ' + w + ' concepts</button><button type="button" onclick="SOC.jumpWeek(' + w + ',\'read\')">Open Week ' + w + ' readings</button></div></div>';
   }
   function refreshWeekChecks(w, d) {
     if (!d) return;
@@ -2664,7 +2698,13 @@
       for (var ri = 0; ri < reviewPool.length && kcItems.length < 15; ri++) { if (!kcSeen[reviewPool[ri].q]) { kcSeen[reviewPool[ri].q] = 1; kcItems.push(reviewPool[ri]); } }
     }
 
-    if (!kcItems.length && !shortItems.length) return { html: '', items: [] };
+    if (!kcItems.length && !shortItems.length) {
+      var available = [];
+      if (mcPool(w).length) available = [0, 1];
+      if (scoredCPool(w).length || shortCPool(w).length) available.push(2);
+      if (!available.length) return { html: '', items: [] };
+      return { html: '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check</h2><p>This week has no Set ' + ['A','B','C'][kcVer] + '. Choose one of the available practice sets.</p>' + available.map(function (v) { return '<button type="button" class="wk-scope" onclick="SOC.kcVer(' + w + ',' + v + ')">Set ' + ['A','B','C'][v] + '</button>'; }).join(' ') + '</section>', items: [] };
+    }
 
     /* score + calibration pass */
     var kAns = 0, kCor = 0, nT = 0, nC = 0, rT = 0, rC = 0, missWk = {};
@@ -2715,7 +2755,7 @@
         var rowMark = '', bd = 'var(--border)';
         if (reveal) { if (sel === m.answer) { rowMark = '<span style="color:#2c6b3f;font-weight:700;margin-left:8px">✓</span>'; bd = '#50694C'; } else { rowMark = '<span style="color:var(--red);font-weight:600;margin-left:8px;font-size:.85rem">✗ ' + esc(m.options[m.answer] || '') + '</span>'; bd = 'var(--red)'; } }
         var whyM = (reveal && sel !== m.answer && m.why) ? '<div style="margin:7px 0 0;font-size:.83rem;color:var(--ink-dim);line-height:1.5">' + esc(m.why) + '</div>' : '';
-        return groupHead + '<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 15px;margin-bottom:9px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:.92rem;font-weight:600;flex:1;min-width:130px">' + esc(m.q) + '</span><select onchange="SOC.mcPickSel(\'' + mkey + '\',this.value)" aria-label="Match for ' + esc(m.q) + '" style="font:inherit;font-size:.88rem;padding:7px 10px;border:1.5px solid ' + bd + ';border-radius:8px;background:#fff;color:var(--ink);max-width:100%">' + optHtml + '</select>' + rowMark + '</div>' + whyM + '</div>';
+        return groupHead + '<div id="kcq-' + mkey.replace(/[^a-zA-Z0-9]/g, '-') + '" style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 15px;margin-bottom:9px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:.92rem;font-weight:600;flex:1;min-width:130px">' + esc(m.q) + '</span><select onchange="SOC.mcPickSel(\'' + mkey + '\',this.value)" aria-label="Match for ' + esc(m.q) + '" style="font:inherit;font-size:.88rem;padding:7px 10px;border:1.5px solid ' + bd + ';border-radius:8px;background:#fff;color:var(--ink);max-width:100%">' + optHtml + '</select>' + rowMark + '</div>' + whyM + '</div>';
       }
 
       /* standard / scenario multiple choice */
@@ -2734,7 +2774,7 @@
       if (reveal) {
         var wrongNote = (sel !== m.answer && m.whyWrong && m.whyWrong[sel]) ? m.whyWrong[sel] : '';
         var body = wrongNote || m.why;
-        if (body) { var okBg = (sel === m.answer); var confTag = (conf === 'sure' && sel !== m.answer) ? '<div style="font-size:.72rem;font-weight:700;letter-spacing:.03em;color:#8f1b12;margin-bottom:5px">A CONFIDENT MISS, WORTH UNLEARNING</div>' : ''; diag = '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (okBg ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (okBg ? '#9CC4A8' : '#E5B8B0') + ';font-size:.875rem;line-height:1.55">' + confTag + esc(body) + '</div>'; }
+        if (body) { var okBg = (sel === m.answer); var confTag = (conf === 'sure' && sel !== m.answer) ? '<div style="font-size:.72rem;font-weight:700;letter-spacing:.03em;color:#8f1b12;margin-bottom:5px">YOU MARKED THIS SURE. COMPARE THE REASONING BELOW.</div>' : ''; diag = '<div style="margin:9px 0 0;padding:10px 13px;border-radius:9px;background:' + (okBg ? '#E9EFE7' : '#FBE9E7') + ';border:1px solid ' + (okBg ? '#9CC4A8' : '#E5B8B0') + ';font-size:.875rem;line-height:1.55">' + confTag + esc(body) + '</div>'; }
       }
       var revTag = m.rw ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#6B7280;background:#EEF1F5;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">REVIEW · WEEK ' + m.rw + '</span>' : (isScenario(m) ? '<span class="mono" style="font-size:.62rem;letter-spacing:.05em;color:#8a5a1a;background:#FBEFD9;border-radius:999px;padding:2px 8px;margin-left:8px;vertical-align:middle">SCENARIO</span>' : '');
       return groupHead + '<div id="kcq-' + mkey.replace(/[^a-zA-Z0-9]/g, '-') + '" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:11px"><p style="margin:0 0 9px;font-size:.95rem;font-weight:600">' + (mi + 1) + '. ' + esc(m.q) + revTag + '</p>' + opts + confRow + diag + '</div>';
@@ -2765,45 +2805,11 @@
     var progress = (kcItems.length && !allAns) ? '<p class="wk-hint" style="margin:0 0 12px">' + kAns + ' of ' + kcItems.length + ' answered. Mark how sure you were as you go.</p>' : '';
     var revealCta = (allAns && !reveal) ? '<button onclick="SOC.kcShow(' + w + ')" class="wk-cta" style="margin:2px 0 14px">See how I did →</button>' : '';
 
-    var summary = '';
-    if (reveal && kcItems.length) {
-      var pct = Math.round(100 * kCor / kcItems.length);
-      var head, body;
-      if (pct >= 93) { head = 'Command'; body = 'You are not just recognising these ideas, you can tell them apart under pressure, which is exactly what the course asks of you.'; }
-      else if (pct >= 80) { head = 'Solid'; body = 'You have the spine of this material. The few you missed are explained below; read those once more and you are at full strength.'; }
-      else if (pct >= 60) { head = 'Developing'; body = 'A real start. You are recognising the ideas but some are still blurring together. Read the explanations below, then take another set fresh.'; }
-      else { head = 'Starting point'; body = 'This tells you where you are starting from, and that is useful information, not a judgment. Work back through this week\'s key concepts and readings, then take another set and watch the difference.'; }
-      /* calibration read-out leads with confident misses */
-      var calib = '';
-      if (confSet) {
-        var mlist = misc.map(function (x) { return '<li style="margin:3px 0;font-size:.88rem;line-height:1.5;color:#f3d3ce">' + esc(x.q) + (x.rw ? ' <span style="color:#9aa3b2">(review, Week ' + x.rw + ')</span>' : '') + '</li>'; }).join('');
-        calib = '<div style="margin:12px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.16)">'
-          + '<div class="mono" style="font-size:.64rem;letter-spacing:.06em;color:#9aa3af;margin-bottom:7px">HOW SURE YOU WERE vs HOW IT WENT</div>'
-          + '<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem">'
-          + '<span style="color:#bfe3c8">● Mastered ' + mastered + '</span>'
-          + '<span style="color:#e7dca6">● Right but unsure ' + fragile + '</span>'
-          + '<span style="color:#f3b1a8">● Confident miss ' + misc.length + '</span>'
-          + '<span style="color:#c8cdd6">● Still finding it ' + edge + '</span></div>'
-          + (misc.length ? '<p style="margin:10px 0 4px;font-size:.88rem;line-height:1.55;color:#f3d3ce">Start here. You were sure on these and they did not land, a confident wrong belief is the one that costs you later:</p><ul style="margin:0;padding-left:18px">' + mlist + '</ul>' : (mastered ? '<p style="margin:9px 0 0;font-size:.88rem;color:#bfe3c8">No confident misses, what you are sure of, you have right. That is the calibration you want.</p>' : ''))
-          + (fragile ? '<p style="margin:9px 0 0;font-size:.85rem;color:#e7dca6">' + fragile + ' you got right but were not sure about. You know more than you trust; name why the answer is right and it becomes solid.</p>' : '')
-          + '</div>';
-      }
-      var split = '';
-      if (nT && rT) split = '<p style="margin:8px 0 0;font-size:.9rem;line-height:1.55">On this week\'s new ideas you got ' + nC + ' of ' + nT + '. On review from earlier weeks you got ' + rC + ' of ' + rT + '.' + (rC < rT ? ' Earlier material fades fastest; a short revisit brings it back.' : ' Your earlier weeks are holding, which is the whole point of the review.') + '</p>';
-      var revisit = Object.keys(missWk).map(function (n) { return '<button onclick="SOC.station(' + n + ')" style="border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;border-radius:8px;padding:7px 13px;font-size:.85rem;margin:10px 8px 0 0;cursor:pointer">Revisit Week ' + n + ' →</button>'; }).join('');
-      var refLine = shortItems.length ? '<p style="margin:8px 0 0;font-size:.88rem;color:#e5e7eb">Then there ' + (shortItems.length === 1 ? 'is 1 short reflection' : 'are ' + shortItems.length + ' short reflections') + ' below to compare against a model, not scored.</p>' : '';
-      summary = '<div style="margin:6px 0 14px;background:#15171C;color:#fff;border-radius:12px;padding:17px 20px">'
-        + '<div class="mono" style="font-size:.66rem;letter-spacing:.08em;color:#9aa3af">WHERE YOU STAND · ' + kCor + ' OF ' + kcItems.length + '</div>'
-        + '<div style="font-size:1.05rem;font-weight:700;margin:6px 0 4px">' + head + '</div>'
-        + '<p style="margin:0;font-size:.9rem;line-height:1.6;color:#e5e7eb">' + body + '</p>'
-        + (split ? '<div style="color:#e5e7eb">' + split + '</div>' : '')
-        + calib + refLine + (revisit ? '<div>' + revisit + '</div>' : '')
-        + '</div>';
-    }
+    var summary = reveal ? knowledgeFeedback(w, kcVer, kcItems) : '';
 
     var badge = '<span class="mono" style="font-size:.62rem;letter-spacing:.06em;color:#2c6b3f;background:#E9EFE7;border:1px solid #F0C8C3;border-radius:999px;padding:3px 10px;margin-left:10px;vertical-align:middle">NOT GRADED</span>';
     var kc = '<section id="wk-kc" class="node"><h2 class="wk-sec">Knowledge Check ' + badge + '</h2>'
-      + '<p class="wk-hint">Nothing here is submitted or counts toward your grade. When browser storage is available, responses may remain only in this browser until you clear them. Three sets: Set A and Set B are multiple choice; Set C brings scenarios, matching, and short written reflections. Answer, say how sure you were, and the check shows you not just what you got right but where a confident answer was actually wrong, the thing most worth fixing.</p>'
+      + '<p class="wk-hint">Nothing here is submitted or counts toward your grade. When browser storage is available, responses may remain only in this browser until you clear them. Three sets: Set A and Set B are multiple choice; Set C brings scenarios, matching, and short written reflections. Answer, say how sure you were, and the check shows you not just what you got right but which explanations to revisit and what to try next.</p>'
       + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px">' + vers + retake + '</div>'
       + setNote + progress + revealCta + summary + kRows + shortHtml + '</section>';
     return { html: kc, items: kcItems.concat(shortItems) };
@@ -3629,8 +3635,8 @@
       for (var i = 0; i < voices.length; i++) if (voices[i].voiceURI === p.voice) { u.voice = voices[i]; break; }
     } catch (e) {}
     u.onend = function () { walkSpeaking = false; walkPaused = false; walkControlSync(); announce('Finished reading this chapter.'); };
-    u.onerror = function () { walkSpeaking = false; walkPaused = false; walkControlSync(); };
-    walkSpeaking = true; walkPaused = false; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); walkControlSync(); announce('Reading this chapter aloud.');
+    u.onerror = function (event) { var stopped = !walkSpeaking || (event && /^(canceled|interrupted)$/.test(event.error)); walkSpeaking = false; walkPaused = false; walkControlSync(); if (!stopped) flash('Voice narration could not start. Open the reading supports, choose another voice, then try again.', 8000); };
+    walkSpeaking = true; walkPaused = false; try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); } catch (error) { walkSpeaking = false; walkPaused = false; walkControlSync(); flash('Voice narration could not start. Open the reading supports, choose another voice, then try again.', 8000); return; } walkControlSync(); announce('Reading this chapter aloud.');
   }
   function walkVoiceOptions() {
     var p = walkPrefs(), voices = [];
@@ -4161,24 +4167,18 @@
     state.trs = { items: items, i: 0, sel: null, conf: null, revealed: false, log: [] };
   }
   function trReport() {
-    var S = state.trs, b = { mastered: [], fragile: [], confmiss: [], growing: [] };
-    S.log.forEach(function (e) {
-      if (e.right && e.conf === 2) b.mastered.push(e);
-      else if (e.right) b.fragile.push(e);
-      else if (e.conf === 2) b.confmiss.push(e);
-      else b.growing.push(e);
-    });
-    var block = function (title, hint, list, accent) {
-      if (!list.length) return '';
-      return '<div style="border:1px solid var(--border);border-left:4px solid ' + accent + ';border-radius:0 10px 10px 0;background:#fff;padding:12px 16px;margin:0 0 10px"><div style="font-weight:700;font-size:.95rem;color:var(--ink)">' + title + ' (' + list.length + ')</div><p style="font-size:.82rem;color:var(--ink-dim);margin:4px 0 8px">' + hint + '</p>'
-        + list.map(function (e) { return '<div style="display:flex;gap:10px;align-items:flex-start;font-size:.86rem;color:var(--ink);padding:5px 0;border-top:1px dashed var(--border)"><span style="flex:1">' + esc(e.q) + '</span><button type="button" onclick="SOC.station(' + e.w + ')" class="wk-scope" style="flex:none">Revisit Week ' + e.w + '</button></div>'; }).join('') + '</div>';
-    };
-    return '<section class="node"><h2 class="wk-sec">Your calibration report</h2><p class="wk-hint">Where confidence and accuracy disagree is where your next study block can help the most.</p>'
-      + block('Start here: confident misses', 'You were sure and the answer says otherwise. These ideas feel settled but are not yet; they are worth unlearning first.', b.confmiss, '#B11722')
-      + block('Fragile: right but unsure', 'You got these right without trusting yourself. One more pass turns them solid.', b.fragile, '#B77400')
-      + block('Growing edge', 'Missed while unsure. Normal learning territory; revisit the weeks and try again.', b.growing, '#6B7280')
-      + block('Mastered this round', 'Right and sure. Let these rest and spend your time above.', b.mastered, '#1E7B34')
-      + '<div style="display:flex;gap:10px;margin-top:12px"><button type="button" class="wk-save" onclick="SOC.trAgain()">Practise another set</button></div></section>';
+    var S = state.trs, right = S.log.filter(function (row) { return row.right; }).length;
+    var rows = S.log.map(function (row, index) { return { result: row, item: S.items[index] && S.items[index].m, index: index }; });
+    rows.sort(function (a, b) { return Number(a.result.right) - Number(b.result.right) || Number(b.result.conf === 2) - Number(a.result.conf === 2) || a.index - b.index; });
+    var cards = rows.map(function (entry) {
+      var row = entry.result, item = entry.item || {}, options = item.options || [], chosen = row.choice;
+      var why = !row.right && item.whyWrong && item.whyWrong[chosen] || item.why || '';
+      var step = row.right ? 'Explain why this answer fits, then test the idea with a different example.' : 'Compare the two answers. Name the evidence or distinction that makes the supported answer stronger, then try the question again.';
+      return '<article class="student-note-card"><h3>' + (entry.index + 1) + '. ' + esc(row.q) + '</h3><p><b>' + (row.right ? 'Answer matched' : 'Answer to revisit') + '</b>. Your confidence: ' + ['Guessing', 'Think so', 'Sure'][row.conf] + '.</p>'
+        + (chosen !== undefined ? '<p><b>Your answer:</b> ' + esc(options[chosen] || '') + '</p>' : '')
+        + '<p><b>Best-supported answer:</b> ' + esc(options[item.answer] || '') + '</p><p><b>Why:</b> ' + esc(why) + '</p><p><b>Try next:</b> ' + step + '</p><button type="button" class="wk-scope" onclick="SOC.jumpWeek(' + row.w + ',\'read\')">Open Week ' + row.w + ' readings</button></article>';
+    }).join('');
+    return '<section class="node"><h2 class="wk-sec">Your practice plan</h2><p>' + right + ' of ' + S.log.length + ' answers matched on this set. Review the explanations below, starting with any unmatched answers you marked Sure. Confidence is your self-rating, and this practice does not establish mastery or predict a course grade.</p>' + cards + '<button type="button" class="wk-save" onclick="SOC.trAgain()">Practise another set</button></section>';
   }
   function reviewPage() {
     if (!state.trs) trStart();
@@ -4216,10 +4216,10 @@
   function dataPortSection() {
     return '<section class="node" id="wk-dataport" style="background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);border-radius:0 12px 12px 0;padding:16px 18px;margin:18px 0 0">'
       + '<h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Take your saved work with you</h2>'
-      + '<p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0 0 10px">Your note fields are saved as you type in a primary browser copy, a session mirror, and a local recovery vault when those features are available. The site preserves your exact wording and only adds context headings when it organizes an export. Download the Seneca document for a readable copy, and download the backup file to move all saved work to another browser or device. Nothing is uploaded by this site.</p>'
+      + '<p style="font-size:.88rem;line-height:1.55;color:var(--ink-dim);margin:0 0 10px">Your note fields are saved as you type in a browser when saving is available; the status above tells you whether the current copy was saved. The site preserves your exact wording and only adds context headings when it organizes an export. Download the Seneca document for a readable copy, and download the backup file to move all saved work to another browser or device. Nothing is uploaded by this site.</p>'
       + '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
       + '<button type="button" class="wk-save" onclick="SOC.exportAllNotes()">Download all organized notes (.docx)</button>'
-      + '<button type="button" class="wk-save" onclick="SOC.exportWork()">Download my saved work</button>'
+      + '<button type="button" class="wk-save" onclick="SOC.exportWork()">Download backup for another device (.json)</button>'
       + '<label class="wk-scope" style="cursor:pointer;display:inline-block">Restore from a backup file<input type="file" accept="application/json,.json" style="display:none" onchange="SOC.importWork(this)"></label>'
       + '</div><p id="dataport-msg" role="status" style="font-size:.8rem;color:var(--ink-faint);margin:8px 0 0"></p></section>';
   }
@@ -4264,6 +4264,7 @@
     } catch (e) { return ''; }
   }
   function body() {
+    if (state.screen === 'notes') return homeBar() + studentNotebookPage();
     if (state.screen === 'journey' || state.screen === 'library') return journeyHome();
     if (state.screen === 'station') { var _sw = state.stationWeek || currentJourneyWeek(); return homeBar() + mobileWeekActions(_sw, weekData(_sw)) + lensHook(_sw) + weekStation(_sw); }
     if (state.screen === 'detail') return homeBar() + detail();
@@ -4426,6 +4427,7 @@
     if (!el) return false;
     el.outerHTML = html;
     wkEnhanceSections();
+    studentSupportMount();
     restoreFocus(snap, fallbackId || 'soc-main');
     return true;
   }
@@ -4436,12 +4438,12 @@
     render._stationWeek = nextStationWeek;
     if (state.screen !== 'compare' && render._prev !== undefined && render._prev !== state.screen && (state.compareIds.length || state.showSynthesis)) { state.compareIds = []; state.showSynthesis = false; }
     render._prev = state.screen;
-    var toast = state.toast ? '<div role="status" style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:80;background:#15171C;color:#fff;font-size:.9375rem;font-weight:500;padding:12px 20px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.24);display:flex;align-items:center;gap:10px"><span style="display:flex;color:#F2A900">' + ic('check', 16, 2.2) + '</span>' + esc(state.toast) + '</div>' : '';
+    var toast = state.toast ? '<div class="student-toast" role="status" aria-atomic="true" style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:220;background:#15171C;color:#fff;font-size:.9375rem;font-weight:500;padding:12px 20px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.24);width:max-content;max-width:calc(100vw - 32px);line-height:1.5">' + esc(state.toast) + '</div>' : '';
     document.getElementById('app').innerHTML =
       '<div style="min-height:100vh;display:flex;flex-direction:column;background:#F7F8FA">' + header()
       + (state.navOpen ? '<button class="soc-mobile-scrim" onclick="SOC.closeNav()" aria-label="Close course navigation"></button>' : '')
       + '<div style="display:flex;flex:1;min-height:0">' + sidebar()
-      + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + upcomingBanner() + howtoSection() + body() + siteFooter() + '</div></main>'
+      + '<main id="soc-main" tabindex="-1" class="scrollarea" style="flex:1;min-width:0;overflow:auto;height:calc(100vh - 62px)"><div style="margin:0 auto;padding:30px 30px 110px">' + (['journey','library','station','videos'].indexOf(state.screen) >= 0 ? lensChip() : '') + upcomingBanner() + howtoSection() + studentSaveBar() + body() + siteFooter() + '</div></main>'
       + '</div>' + readerLensOverlay() + rlPanelOverlay() + listenOverlay() + toast + '</div>';
     if (refocusSearch) {
       var el = document.getElementById('soc-search');
@@ -4463,6 +4465,7 @@
     }
     saveView();
     wkEnhanceSections();
+    studentSupportMount();
     navHistorySync();
   }
   function topScroll() { var m = document.getElementById('soc-main'); if (m) m.scrollTop = 0; }
@@ -4577,7 +4580,7 @@
   }
 
   /* ---------- actions ---------- */
-  function flash(msg) { clearTimeout(toastTimer); var lr = document.getElementById('soc-live'); if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = msg; }, 30); } state.toast = msg; render(); toastTimer = setTimeout(function () { state.toast = null; render(); }, 2200); }
+  function flash(msg, duration) { clearTimeout(toastTimer); var lr = document.getElementById('soc-live'); if (lr) { lr.textContent = ''; setTimeout(function () { lr.textContent = msg; }, 30); } state.toast = msg; render(); toastTimer = setTimeout(function () { state.toast = null; render(); }, duration || 2200); }
   /* ---- real .docx (OOXML, dependency-free) ---- */
   var DX_FONT = 'IBM Plex Sans';
   var DX_BODY_SIZE = 22;
@@ -4633,7 +4636,7 @@
   }
   function studentNotePresent(value) { return typeof value === 'string' && value !== ''; }
   function studentExactBlock(label, value) { return label + '\nStudent-authored note, preserved exactly:\n' + value; }
-  function studentMasterNoteSections() {
+  function studentMasterNoteSectionsBase() {
     var sections = [];
     for (var w = 1; w <= 14; w++) {
       var blocks = [];
@@ -4671,7 +4674,338 @@
     if (career.length) sections.push({ h: 'Program and Career Reflections', t: career.join('\n\n----------------------------------------\n\n') });
     return sections;
   }
+  function studentCheckVersions(value) { var result = {}; for (var w = 1; w <= 14; w++) if (value && [0,1,2].indexOf(value[w]) >= 0) result[w] = value[w]; return result; }
+  var studentNotebookRenderTimer = null;
+  function studentNotebookRefresh() {
+    var target = document.getElementById('notebook-entries'); if (!target) return;
+    var open = Array.from(target.querySelectorAll('details[open]')).map(function (el) { return el.querySelector('summary').textContent; });
+    var sections = studentMasterNoteSections();
+    target.innerHTML = sections.length ? sections.map(function (section, i) { return '<details class="student-note-group" data-note-group' + (open.indexOf(section.h) >= 0 || (!open.length && i === 0) ? ' open' : '') + '><summary>' + esc(section.h) + '</summary><pre>' + esc(section.t || '') + '</pre></details>'; }).join('') : '<p id="notebook-empty">Your notebook is ready. Write a note above to start.</p>';
+    var filter = document.getElementById('notebook-search'); if (filter) SOC.notebookFilter(filter.value);
+  }
+  function studentSaveMessage() {
+    var saved = studentSave.local === true || studentSave.idb === true;
+    if (saved) return (studentSave.when ? 'Saved in this browser at ' + new Date(studentSave.when).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '.' : 'Ready to save notes in this browser.');
+    if (studentSave.pending) return 'Saving your notes...';
+    if (studentSave.local === null) return 'Checking whether this browser can save notes...';
+    return studentSave.session ? 'Kept in this tab only. Download a copy before closing it.' : 'Not saved on this device. Download a copy before leaving this page.';
+  }
+
+  function studentSavePaint() {
+    var message = studentSaveMessage();
+    document.querySelectorAll('[data-note-save-status]').forEach(function (el) {
+      if (el.textContent !== message) el.textContent = message;
+      el.dataset.saveState = studentSave.local || studentSave.idb ? 'saved' : studentSave.pending || studentSave.local === null ? 'pending' : 'unsaved';
+    });
+  }
+
+  function studentSaveBar() {
+    return '<aside class="student-save-bar" aria-label="Your course notes"><span data-note-save-status role="status">' + esc(studentSaveMessage()) + '</span><button type="button" onclick="SOC.go(\'notes\')">My notes</button></aside>';
+  }
+
+  function studentSupportMount() {
+    var notice = document.querySelector('#app .student-toast'), lesson = document.getElementById('walk-overlay');
+    if (lesson) {
+      if (notice || !state.toast) lesson.querySelectorAll('.student-toast').forEach(function (old) { old.remove(); });
+      if (notice) lesson.appendChild(notice);
+    }
+    document.querySelectorAll('textarea[oninput]').forEach(function (field) {
+      if (!/Note|Reflect|kcShortText|actText|notebookNote/.test(field.getAttribute('oninput') || '') || field.dataset.saveHint) return;
+      field.dataset.saveHint = 'true';
+      var hint = document.createElement('small');
+      hint.className = 'student-save-hint';
+      hint.innerHTML = '<span data-note-save-status></span> <button type="button" onclick="SOC.go(\'notes\')">Find my notes</button>';
+      field.insertAdjacentElement('afterend', hint);
+    });
+    studentSavePaint();
+  }
+
+  function studentSaveFlush() {
+    if (studentNoteBackupTimer) clearTimeout(studentNoteBackupTimer);
+    studentNoteBackupTimer = null;
+    var snapshot = studentNoteSnapshot(), stamp = snapshot.savedAt;
+    return studentNoteIdbWrite(snapshot).then(function (merged) {
+      if (merged && !studentNoteClearing && studentNoteRestoreMerged(merged)) {
+        persist();
+        try { sessionStorage.setItem(STUDENT_NOTE_SESSION_KEY, JSON.stringify(studentNoteSnapshot())); } catch (e) {}
+        studentNotebookRefresh();
+      }
+      if (stamp === state.noteVaultUpdated) { studentSave.idb = true; studentSave.pending = false; studentSavePaint(); }
+      return true;
+    }).catch(function () {
+      if (stamp === state.noteVaultUpdated) { studentSave.idb = false; studentSave.pending = false; studentSavePaint(); }
+      return false;
+    });
+  }
+
+  function studentNotebookPage() {
+    var week = cleanWeek(state.notebookWeek) || cleanWeek(state.stationWeek) || 1;
+    var sections = studentMasterNoteSections();
+    var options = [];
+    for (var w = 1; w <= 14; w++) options.push('<option value="' + w + '"' + (w === week ? ' selected' : '') + '>Week ' + w + ': ' + esc(weekTitle(w)) + '</option>');
+    return '<div class="student-notebook"><h1>My notes</h1><p>Your ' + esc(courseCode()) + ' notes, grouped by week and activity. Your wording stays exactly as you wrote it.</p>'
+      + '<p class="student-note-location">Saved here means this browser on this device. Download a backup to move your work to another device. Clearing site data removes the browser copy.</p>'
+      + '<section class="student-note-card"><h2>Write or continue a weekly note</h2><label for="notebook-week">Choose a week</label><select id="notebook-week" onchange="SOC.notebookWeek(this.value)">' + options.join('') + '</select>'
+      + '<label for="notebook-text">Week ' + week + ' notes</label><textarea id="notebook-text" maxlength="10000" oninput="SOC.notebookNote(' + week + ',this.value)" placeholder="An idea, an example, a question, or something to revisit">' + esc(state.notebookNotes && state.notebookNotes[week] || '') + '</textarea><p class="student-note-caption">Filed under Week ' + week + ': ' + esc(weekTitle(week)) + '. Saves as you type.</p></section>'
+      + dataPortSection()
+      + '<section class="student-note-collection"><h2>Browse your notes</h2><p>Notes from the study guides, readings and other activities appear here too.</p><label for="notebook-search">Find a word, week or activity</label><input id="notebook-search" type="search" oninput="SOC.notebookFilter(this.value)"><div id="notebook-entries">'
+      + (sections.length ? sections.map(function (section, i) { return '<details class="student-note-group" data-note-group' + (i === 0 ? ' open' : '') + '><summary>' + esc(section.h) + '</summary><pre>' + esc(section.t || (section.items || []).join('\n')) + '</pre></details>'; }).join('') : '<p id="notebook-empty">Your notebook is ready. Write your first weekly note above, or add notes while working through the course.</p>')
+      + '</div><p id="notebook-filter-result" role="status"></p></section></div>';
+  }
+
+  function knowledgeFeedback(w, version, items) {
+    var rows = items.map(function (item, i) { var key = 'wk' + w + '|kc' + version + '|' + i; return { item: item, i: i, key: key, choice: state.mcSel[key], confidence: state.mcConf[key], correct: state.mcSel[key] === item.answer }; });
+    var correct = rows.filter(function (row) { return row.correct; });
+    var missed = rows.filter(function (row) { return !row.correct; });
+    var priorities = missed.slice().sort(function (a, b) { return Number(b.confidence === 'sure') - Number(a.confidence === 'sure') || a.i - b.i; }).slice(0, 3);
+    var next = priorities.length ? priorities.map(function (row) {
+      var explanation = row.item.whyWrong && row.item.whyWrong[row.choice] || row.item.why || '';
+      return '<li><a href="#kcq-' + row.key.replace(/[^a-zA-Z0-9]/g, '-') + '" onclick="SOC.knowledgeJump(\'' + row.key.replace(/[^a-zA-Z0-9]/g, '-') + '\');return false">Question ' + (row.i + 1) + ': ' + esc(row.item.q) + '</a><p><b>You chose:</b> ' + esc(row.item.options[row.choice]) + '</p>' + (explanation ? '<p>' + esc(explanation) + '</p>' : '') + '<p><b>Try next:</b> Compare your choice with the highlighted answer below. Explain the difference using one example from Week ' + (row.item.rw || w) + '.</p></li>';
+    }).join('') : '<li><b>Try a new example:</b> ' + esc(items[0] && items[0].q || 'Choose one idea from this set.') + '<p>Explain your answer without looking at the options, then use a different example. Correct choices show recognition on this set, not mastery of the whole module.</p></li>';
+    var sureWrong = missed.filter(function (row) { return row.confidence === 'sure'; }).length;
+    var unsureRight = correct.filter(function (row) { return row.confidence && row.confidence !== 'sure'; }).length;
+    return '<section class="study-feedback knowledge-result" aria-label="Knowledge check feedback"><h3>' + correct.length + ' of ' + items.length + ' answers matched</h3><p>' + (missed.length ? 'Start with ' + (priorities.length === 1 ? 'this question' : 'these ' + priorities.length + ' questions') + '. Each explanation is tied to the answer you selected.' : 'Every answer matched on this set. Use the next step to practise explaining, as well as recognising, the ideas.') + '</p><ol>' + next + '</ol>'
+      + (sureWrong ? '<p><b>Confidence check:</b> You marked ' + sureWrong + ' unmatched answer' + (sureWrong === 1 ? '' : 's') + ' as Sure. These appear first so you can compare your reasoning with the explanation.</p>' : '')
+      + (unsureRight ? '<p>You matched ' + unsureRight + ' answer' + (unsureRight === 1 ? '' : 's') + ' while unsure. Read why each answer fits before trying another example.</p>' : '')
+      + '<p class="student-note-caption">This is ungraded practice. It does not predict a course grade. Your written answers are for you to compare with the model, not automatically marked.</p><button type="button" onclick="SOC.jumpWeek(' + w + ',\'read\')">Open Week ' + w + ' readings</button></section>';
+  }
+  function studentMasterNoteSections() {
+    var sections = studentMasterNoteSectionsBase();
+    for (var w = 1; w <= 14; w++) {
+      var extras = [], note = state.notebookNotes && state.notebookNotes[w];
+      if (typeof note === 'string' && note !== '') extras.push('Weekly notebook\nStudent-authored note, preserved exactly:\n' + note);
+      Object.keys(state.actResult || {}).sort().forEach(function (key) {
+        var value = state.actResult[key];
+        if (key.indexOf('a|' + w + '|') === 0 && typeof value === 'string' && value !== '') extras.push('Activity notes: ' + key.split('|').slice(2).join(' / ') + '\nStudent-authored note, preserved exactly:\n' + value);
+      });
+      if (!extras.length) continue;
+      var prefix = 'Week ' + w + ':', existing = sections.find(function (section) { return section.h.indexOf(prefix) === 0; });
+      if (existing) existing.t = extras.join('\n\n') + '\n\n----------------------------------------\n\n' + existing.t;
+      else sections.push({ h: prefix + ' ' + weekTitle(w), t: extras.join('\n\n') });
+    }
+    var versions = Object.keys(state.noteVersions || {}).map(function (key) { var version = state.noteVersions[key]; return studentNoteVersionLabel(version.field) + '\nSaved ' + new Date(version.savedAt).toLocaleString() + '\n' + version.text; });
+    if (versions.length) sections.push({ h: 'Other saved versions', t: 'These notes were preserved when another tab or a restored backup contained different wording. Compare them and keep the wording you want.\n\n' + versions.join('\n\n----------------------------------------\n\n') });
+    sections.sort(function (a, b) { var aw = /^Week (\d+):/.exec(a.h), bw = /^Week (\d+):/.exec(b.h); return (aw ? Number(aw[1]) : 100) - (bw ? Number(bw[1]) : 100); });
+    return sections;
+  }
+  function studentSupportInitialize() {
+    studentSave.when = Number(state.noteVaultUpdated) || 0;
+    try { var key = SKEY + '.storageCheck'; localStorage.setItem(key, 'ok'); studentSave.local = localStorage.getItem(key) === 'ok'; localStorage.removeItem(key); } catch (e) { studentSave.local = false; }
+    studentSavePaint();
+    studentNoteIdbRead().then(function (snapshot) { if (snapshot && snapshot.savedAt === state.noteVaultUpdated) { studentSave.idb = true; studentSavePaint(); } });
+  }
+  window.addEventListener('pagehide', function () { if (studentNoteBackupTimer) studentSaveFlush(); });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden' && studentNoteBackupTimer) studentSaveFlush(); });
+
+  /* Merge individual note entries so another tab cannot replace an entire notebook. */
+  function studentNoteEntries(source) {
+    var entries = {};
+    function walk(value, path) {
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        Object.keys(value).sort().forEach(function (key) { if (key !== '__proto__' && key !== 'constructor' && key !== 'prototype') walk(value[key], path.concat(key)); });
+      } else if (value !== undefined) entries[JSON.stringify(path)] = value;
+    }
+    STUDENT_NOTE_FIELDS.forEach(function (field) { walk(source[field], [field]); });
+    return entries;
+  }
+  function studentNoteSame(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+  function studentNoteRevision(time) { return String(Math.max(0, Number(time) || 0)).padStart(16, '0') + ':' + studentNoteClient + ':' + String(++studentNoteSequence).padStart(8, '0'); }
+  function studentNoteLegacy(time) { return String(Math.max(0, Number(time) || 0)).padStart(16, '0') + ':legacy'; }
+  function studentNoteSetEntry(key, value) {
+    var path; try { path = JSON.parse(key); } catch (e) { return; }
+    if (!Array.isArray(path) || !path.length || path.length > 12 || STUDENT_NOTE_FIELDS.indexOf(path[0]) < 0 || path.some(function (part) { return typeof part !== 'string' || part === '__proto__' || part === 'constructor' || part === 'prototype'; })) return;
+    var target = state;
+    for (var i = 0; i < path.length - 1; i++) {
+      if (!target[path[i]] || typeof target[path[i]] !== 'object' || Array.isArray(target[path[i]])) target[path[i]] = {};
+      target = target[path[i]];
+    }
+    if (value === undefined) delete target[path[path.length - 1]];
+    else target[path[path.length - 1]] = studentNoteClone(value);
+  }
+  function studentNoteKeepVersion(key, revision, value) {
+    if (typeof value !== 'string' || !value) return;
+    var id = JSON.stringify([key, revision]);
+    state.noteVersions = state.noteVersions || {};
+    if (!state.noteVersions[id]) state.noteVersions[id] = { field: key, text: value, savedAt: Number(String(revision).split(':')[0]) || Date.now() };
+  }
+  function studentNoteMergeLatest(remoteValue) {
+    if (!studentNoteMergeBase || studentNoteClearing) return false;
+    var local = studentNoteEntries(state), changed = false, revisions = state.noteRevisions || (state.noteRevisions = {});
+    var stamp = studentNoteRevision(Math.max(Date.now(), Number(state.noteVaultUpdated) || 0));
+    var localKeys = Array.from(new Set(Object.keys(local).concat(Object.keys(studentNoteMergeBase))));
+    localKeys.forEach(function (key) { if (!studentNoteSame(local[key], studentNoteMergeBase[key])) { if (revisions[key] && revisions[key].indexOf(':legacy') < 0 && revisions[key].indexOf(':' + studentNoteClient + ':') < 0) studentNoteKeepVersion(key, revisions[key], studentNoteMergeBase[key]); revisions[key] = stamp; } });
+    var remote = remoteValue;
+    if (remote === undefined) { try { remote = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) {} }
+    if (!remote || typeof remote !== 'object') return false;
+    var incoming = studentNoteEntries(remote), incomingRevisions = studentNoteMeta(remote.noteRevisions);
+    var keys = Array.from(new Set(Object.keys(local).concat(Object.keys(incoming), Object.keys(incomingRevisions))));
+    keys.forEach(function (key) {
+      var localRevision = revisions[key] || (Object.prototype.hasOwnProperty.call(local, key) ? studentNoteLegacy(studentNoteInitialTime) : '');
+      var remoteRevision = incomingRevisions[key] || (Object.prototype.hasOwnProperty.call(incoming, key) ? studentNoteLegacy(remote.noteVaultUpdated) : '');
+      if (!remoteRevision) return;
+      if (!studentNoteSame(local[key], incoming[key]) && localRevision && remoteRevision && !studentNoteSame(incoming[key], studentNoteMergeBase[key]) && (localRevision.indexOf(':' + studentNoteClient + ':') >= 0 || !studentNoteSame(local[key], studentNoteMergeBase[key]))) {
+        studentNoteKeepVersion(key, localRevision > remoteRevision ? remoteRevision : localRevision, localRevision > remoteRevision ? incoming[key] : local[key]);
+      }
+      if (remoteRevision > localRevision) { studentNoteSetEntry(key, incoming[key]); revisions[key] = remoteRevision; changed = true; }
+    });
+    Object.keys(remote.noteVersions || {}).forEach(function (key) {
+      var version = remote.noteVersions[key];
+      if (version && typeof version.text === 'string' && typeof version.field === 'string' && !Object.prototype.hasOwnProperty.call(state.noteVersions, key)) { state.noteVersions[key] = studentNoteClone(version); changed = true; }
+    });
+    if (changed) state.noteVaultUpdated = Math.max(Number(state.noteVaultUpdated) || 0, Number(remote.noteVaultUpdated) || 0);
+    return changed;
+  }
+  function studentNoteSyncStart() {
+    studentNoteInitialTime = Number(state.noteVaultUpdated) || 0;
+    studentNoteMergeBase = studentNoteEntries(state);
+    Object.keys(studentNoteMergeBase).forEach(function (key) { if (!state.noteRevisions[key]) state.noteRevisions[key] = studentNoteLegacy(studentNoteInitialTime); });
+  }
+  function studentNoteReceive(event) {
+    if (event.key === SKEY + '.clearRequest' && event.newValue) {
+      if (studentNoteClearing) return;
+      studentNoteClearing = true;
+      clearTimeout(studentNoteBackupTimer); studentNoteBackupTimer = null;
+      try { Object.keys(sessionStorage).forEach(function (key) { if (key === SKEY || key.indexOf(SKEY + '.') === 0) sessionStorage.removeItem(key); }); sessionStorage.setItem(HKEY, '1'); } catch (e) {}
+      studentNoteIdbClear().then(function () { location.reload(); });
+      return;
+    }
+    if (event.key !== SKEY || !event.newValue || studentNoteClearing) return;
+    var incoming; try { incoming = JSON.parse(event.newValue); } catch (e) { return; }
+    if (!studentNoteMergeLatest(incoming)) return;
+    studentNoteMergeBase = studentNoteEntries(state);
+    persist();
+    try { sessionStorage.setItem(STUDENT_NOTE_SESSION_KEY, JSON.stringify(studentNoteSnapshot())); } catch (e) {}
+    if (studentNoteBackupTimer) clearTimeout(studentNoteBackupTimer);
+    studentNoteBackupTimer = setTimeout(studentSaveFlush, 180);
+    studentNotebookRefresh();
+    var field = document.getElementById('notebook-text');
+    var week = cleanWeek(state.notebookWeek) || cleanWeek(state.stationWeek) || 1;
+    if (field && field !== document.activeElement) field.value = state.notebookNotes[week] || '';
+  }
+  window.addEventListener('storage', studentNoteReceive);
+  function studentNoteMeta(value) { var result = {}; if (value && typeof value === 'object' && !Array.isArray(value)) Object.keys(value).forEach(function (key) { var item = value[key]; if (key === '__proto__' || key === 'constructor' || key === 'prototype') return; if (typeof item === 'string' && /^\d{16}:[a-z0-9]+(?::\d{8})?$/.test(item)) result[key] = item; else if (item && typeof item === 'object' && typeof item.field === 'string' && typeof item.text === 'string' && Number.isFinite(item.savedAt)) result[key] = { field:item.field, text:item.text, savedAt:item.savedAt }; }); return result; }
+  function studentNoteSnapshot() { var snapshot = studentNoteSnapshotBase(); snapshot.revisions = studentNoteClone(state.noteRevisions); snapshot.savedVersions = studentNoteClone(state.noteVersions); return snapshot; }
+  function studentNoteApplySnapshot(snapshot) { return studentNoteRestoreMerged(snapshot); }
+  function studentNoteVersionLabel(key) {
+    var path; try { path = JSON.parse(key); } catch (e) { path = []; }
+    var names = { notebookNotes:'Weekly note', wkReflect:'Weekly reflection', wkNotes:'Weekly activity note', sgNotes:'Study guide note', rcNotes:'Reading note', cmpNotes:'Source comparison note', kcShort:'Knowledge check response', mediaNotes:'Media note', careerReflect:'Career reflection', contextNotes:'Context comparison', synthesisNotes:'Synthesis note', walkChapterNotes:'Lesson note', actResult:'Activity note' };
+    var match = /^(?:wk|sg)?(\d+)(?:\||$)/.exec(path[1] || '');
+    return (names[path[0]] || 'Course note') + (match ? ' (Week ' + Number(match[1]) + ')' : '');
+  }
+
+  function studentBackupObject(value) { return value && typeof value === 'object' && !Array.isArray(value); }
+  function studentBackupValidate(value, depth) {
+    if (depth > 20) throw new Error('The backup contains an unsupported nested record.');
+    if (value === null || typeof value === 'string' || typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value))) return;
+    if (!value || typeof value !== 'object') throw new Error('The backup contains an unsupported value.');
+    Object.keys(value).forEach(function (key) {
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') throw new Error('The backup contains an unsupported record key.');
+      studentBackupValidate(value[key], depth + 1);
+    });
+  }
+  function studentBackupCombine(current, incoming) {
+    if (Array.isArray(current) && Array.isArray(incoming)) return current.concat(incoming.filter(function (item) { return !current.some(function (old) { return studentNoteSame(old, item); }); }));
+    if (studentBackupObject(current) && studentBackupObject(incoming)) {
+      var result = studentNoteClone(current);
+      Object.keys(incoming).forEach(function (key) { result[key] = Object.prototype.hasOwnProperty.call(result, key) ? studentBackupCombine(result[key], incoming[key]) : studentNoteClone(incoming[key]); });
+      return result;
+    }
+    return studentNoteClone(incoming);
+  }
+  function studentImportBackup(inp) {
+    var file = inp.files && inp.files[0]; if (!file) return;
+    var message = function (text) { var node = document.getElementById('dataport-msg'); if (node) node.textContent = text; };
+    if (file.size > 20 * 1024 * 1024) { message('This backup is too large to open here. Your current work is unchanged.'); inp.value = ''; return; }
+    var reader = new FileReader();
+    reader.onerror = function () { message('This file could not be read. Your current work is unchanged.'); inp.value = ''; };
+    reader.onload = function () {
+      var data, incoming, extra = [], current = studentPersistPayload();
+      try {
+        data = JSON.parse(String(reader.result));
+        if (!studentBackupObject(data) || data.site !== SKEY || !studentBackupObject(data.keys) || Object.keys(data.keys).length > 64 || typeof data.keys[SKEY] !== 'string') throw new Error('Choose a saved-work backup for this course.');
+        incoming = JSON.parse(data.keys[SKEY]);
+        if (!studentBackupObject(incoming)) throw new Error('The main saved-work record is invalid.');
+        studentBackupValidate(incoming, 0);
+        Object.keys(current).forEach(function (key) {
+          if (!Object.prototype.hasOwnProperty.call(incoming, key)) return;
+          var a = current[key], b = incoming[key];
+          if (a === null || a === undefined) return;
+          if (Array.isArray(a) ? !Array.isArray(b) : studentBackupObject(a) ? !studentBackupObject(b) : typeof a !== typeof b) throw new Error('A saved-work field has an unsupported format.');
+        });
+        Object.keys(data.keys).forEach(function (key) {
+          if (key === SKEY || !isPortableWorkKey(key) || /(?:clearRequest|hardResetNext|restoredBackupNext)/.test(key)) return;
+          if (typeof data.keys[key] !== 'string') throw new Error('A saved record has an unsupported format.');
+          var parsed = JSON.parse(data.keys[key]); studentBackupValidate(parsed, 0); extra.push([key, data.keys[key]]);
+        });
+      } catch (error) { message(error.message + ' Your current work is unchanged.'); inp.value = ''; return; }
+      studentNoteMergeLatest();
+      var localEntries = studentNoteEntries(state), importedEntries = studentNoteEntries(incoming), versions = studentNoteMeta(incoming.noteVersions), recovered = 0;
+      Object.keys(versions).forEach(function (key) { if (!state.noteVersions[key]) state.noteVersions[key] = versions[key]; });
+      Object.keys(importedEntries).forEach(function (key) {
+        if (studentNoteSame(localEntries[key], importedEntries[key])) return;
+        if (localEntries[key] !== undefined) { studentNoteKeepVersion(key, state.noteRevisions[key] || studentNoteLegacy(state.noteVaultUpdated), localEntries[key]); recovered++; }
+        studentNoteSetEntry(key, importedEntries[key]);
+      });
+      Object.keys(current).forEach(function (key) {
+        if (STUDENT_NOTE_FIELDS.indexOf(key) >= 0 || /^(noteRevisions|noteVersions|noteVaultUpdated)$/.test(key) || !Object.prototype.hasOwnProperty.call(incoming, key)) return;
+        state[key] = studentBackupCombine(state[key], incoming[key]);
+      });
+      state.act = studentNoteClone(state.actResult || {});
+      var extraBlocked = false;
+      extra.forEach(function (entry) { try { if (localStorage.getItem(entry[0]) === null) localStorage.setItem(entry[0], entry[1]); } catch (error) { extraBlocked = true; } });
+      studentNotesChanged();
+      state.screen = 'notes'; render();
+      message('Backup opened. Notes absent from the backup were kept.' + (recovered ? ' Different existing wording is in Other saved versions below.' : '') + (extraBlocked ? ' Some browser settings could not be restored.' : '') + ' ' + studentSaveMessage());
+      studentSaveFlush().then(function () { message('Backup opened. Notes absent from the backup were kept.' + (recovered ? ' Different existing wording is in Other saved versions below.' : '') + (extraBlocked ? ' Some browser settings could not be restored.' : '') + ' ' + studentSaveMessage()); });
+      inp.value = '';
+    };
+    reader.readAsText(file);
+  }
+
+  function studentNoteMergeSnapshots(older, incoming) {
+    if (!older || older.version !== 1) return studentNoteClone(incoming);
+    var result = studentNoteClone(incoming), field = incoming.maps ? 'maps' : 'values';
+    var before = studentNoteEntries(older[field] || {}), after = studentNoteEntries(result[field] || {});
+    var oldRevs = studentNoteMeta(older.revisions), nextRevs = studentNoteMeta(result.revisions);
+    result.revisions = nextRevs;
+    result.savedVersions = Object.assign({}, studentNoteMeta(older.savedVersions), studentNoteMeta(result.savedVersions));
+    var keys = Array.from(new Set(Object.keys(before).concat(Object.keys(after), Object.keys(oldRevs), Object.keys(nextRevs))));
+    keys.forEach(function (key) {
+      var oldRev = oldRevs[key] || (Object.prototype.hasOwnProperty.call(before, key) ? studentNoteLegacy(older.savedAt) : '');
+      var nextRev = nextRevs[key] || (Object.prototype.hasOwnProperty.call(after, key) ? studentNoteLegacy(incoming.savedAt) : '');
+      if (oldRev && nextRev && !studentNoteSame(before[key], after[key])) {
+        var losing = oldRev > nextRev ? after[key] : before[key], revision = oldRev > nextRev ? nextRev : oldRev;
+        if (typeof losing === 'string' && losing && String(oldRev).split(':')[1] !== String(nextRev).split(':')[1]) result.savedVersions[JSON.stringify([key, revision])] = { field:key, text:losing, savedAt:Number(String(revision).split(':')[0]) || 0 };
+      }
+      if (oldRev <= nextRev) return;
+      var path; try { path = JSON.parse(key); } catch (e) { return; }
+      if (!Array.isArray(path) || !path.length || path.length > 12 || STUDENT_NOTE_FIELDS.indexOf(path[0]) < 0 || path.some(function (part) { return typeof part !== 'string' || part === '__proto__' || part === 'constructor' || part === 'prototype'; })) return;
+      var target = result[field];
+      for (var i = 0; i < path.length - 1; i++) { if (!target[path[i]] || typeof target[path[i]] !== 'object' || Array.isArray(target[path[i]])) target[path[i]] = {}; target = target[path[i]]; }
+      if (before[key] === undefined) delete target[path[path.length - 1]];
+      else target[path[path.length - 1]] = studentNoteClone(before[key]);
+      result.revisions[key] = oldRev;
+    });
+    result.savedAt = Math.max(Number(older.savedAt) || 0, Number(incoming.savedAt) || 0);
+    return result;
+  }
+  function studentNoteRestoreMerged(snapshot) {
+    if (!snapshot || snapshot.version !== 1 || !(snapshot.values || snapshot.maps)) return false;
+    var remote = studentNoteClone(snapshot.values || snapshot.maps);
+    remote.noteVaultUpdated = snapshot.savedAt;
+    remote.noteRevisions = studentNoteMeta(snapshot.revisions);
+    remote.noteVersions = studentNoteMeta(snapshot.savedVersions);
+    var changed = studentNoteMergeLatest(remote);
+    if (changed) { studentNoteMergeBase = studentNoteEntries(state); state.act = studentNoteClone(state.actResult || {}); }
+    return changed;
+  }
+
   window.SOC = {
+    notebookWeek: function (w) { state.notebookWeek = cleanWeek(w) || 1; renderKeepScroll(); },
+    notebookNote: function (w, value) { w = cleanWeek(w); if (!w) return; state.notebookNotes = state.notebookNotes || {}; state.notebookNotes[w] = String(value == null ? '' : value); studentNotesChanged(); },
+    notebookFilter: function (value) { var query = String(value || '').toLocaleLowerCase(), count = 0; document.querySelectorAll('[data-note-group]').forEach(function (el) { var match = el.textContent.toLocaleLowerCase().indexOf(query) >= 0; el.hidden = !match; if (query && match) el.open = true; if (match) count++; }); var result = document.getElementById('notebook-filter-result'); if (result) result.textContent = query ? count + ' note groups match.' : ''; },
+    knowledgeJump: function (id) { var el = document.getElementById('kcq-' + id); if (el) { el.tabIndex = -1; el.focus(); el.scrollIntoView({ block: 'center' }); } },
+
     openNav: function () { state.navOpen = true; renderKeepScroll(); },
     toggleNav: function () { state.navOpen = !state.navOpen; renderKeepScroll(); },
     closeNav: function () { state.navOpen = false; renderKeepScroll(); },
@@ -4728,6 +5062,9 @@
     },
     clearMyWork: function () {
       if (!window.confirm('Remove all notes, check answers, and settings saved by this site in this browser? Downloaded files are not affected.')) return;
+      studentNoteClearing = true;
+      try { localStorage.setItem(SKEY + '.clearRequest', String(Date.now())); } catch (e) {}
+      studentNoteBroadcast(SKEY + '.clearRequest', String(Date.now()));
       if (studentNoteBackupTimer) { clearTimeout(studentNoteBackupTimer); studentNoteBackupTimer = null; }
       var cleared = true;
       try {
@@ -4861,7 +5198,8 @@
       try {
         var pre = SKEY.split('corpus')[0];
         var out = { site: SKEY, savedAt: new Date().toISOString(), keys: {} };
-        for (var xi = 0; xi < localStorage.length; xi++) { var xk = localStorage.key(xi); if (isPortableWorkKey(xk)) out.keys[xk] = localStorage.getItem(xk); }
+        try { for (var xi = 0; xi < localStorage.length; xi++) { var xk = localStorage.key(xi); if (isPortableWorkKey(xk)) out.keys[xk] = localStorage.getItem(xk); } } catch (storageError) {}
+        out.keys[SKEY] = JSON.stringify(studentPersistPayload());
         var blob = new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' });
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -4870,25 +5208,7 @@
         var xm = document.getElementById('dataport-msg'); if (xm) xm.textContent = 'Backup file downloaded. Keep it somewhere you can find it again.';
       } catch (e) { var xe = document.getElementById('dataport-msg'); if (xe) xe.textContent = 'The download did not work in this browser.'; }
     },
-    importWork: function (inp) {
-      try {
-        var f = inp.files && inp.files[0]; if (!f) return;
-        var rd = new FileReader();
-        rd.onload = function () {
-          try {
-            var data = JSON.parse(String(rd.result));
-            var xm = document.getElementById('dataport-msg');
-            if (!data || data.site !== SKEY || !data.keys || typeof data.keys !== 'object' || Array.isArray(data.keys)) { if (xm) xm.textContent = 'That file is not a saved-work backup for this site.'; return; }
-            var n = 0;
-            Object.keys(data.keys).forEach(function (xk) { if (isPortableWorkKey(xk) && typeof data.keys[xk] === 'string') { localStorage.setItem(xk, data.keys[xk]); n++; } });
-            if (xm) xm.textContent = 'Restored ' + n + ' saved records. Reloading the site with your work in place.';
-            try { sessionStorage.setItem(STUDENT_NOTE_IMPORT_MARKER, '1'); sessionStorage.removeItem(STUDENT_NOTE_SESSION_KEY); } catch (e3) {}
-            studentNoteIdbClear().then(function () { setTimeout(function () { location.reload(); }, 450); });
-          } catch (e2) { var xe2 = document.getElementById('dataport-msg'); if (xe2) xe2.textContent = 'That file could not be read.'; }
-        };
-        rd.readAsText(f);
-      } catch (e) {}
-    },
+    importWork: studentImportBackup,
     startActivity: function (sc, w) { w = cleanWeek(w); if (!w || !weekData(w)) { SOC.go('journey'); return; } rememberPrevious(); state.activityReturn = w; state.screen = 'activity'; focusTarget = 'soc-main'; persist(); render(); topScroll(); },
     actPick: function (key, idx) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; state.act[key] = idx; state.actResult = state.actResult || {}; state.actResult[key] = idx; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
     actToggle: function (key) { var m = document.getElementById('soc-main'), top = m ? m.scrollTop : 0; var val = !state.act[key]; state.act[key] = val; state.actResult = state.actResult || {}; state.actResult[key] = val; persist(); render(); var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top; },
@@ -4900,7 +5220,7 @@
       var S = state.trs; if (!S || S.sel == null || S.conf == null || S.revealed) return;
       S.revealed = true;
       var it = S.items[S.i], right = (S.sel === it.m.answer);
-      S.log.push({ q: it.m.q, w: it.w, right: right, conf: S.conf });
+      S.log.push({ q: it.m.q, w: it.w, right: right, conf: S.conf, choice: S.sel });
       state.kcHist = state.kcHist || {};
       var hk = kcHashKey(it.m.q), h = state.kcHist[hk] || { n: 0, right: 0 };
       h.n = (h.n || 0) + 1; if (right) h.right = (h.right || 0) + 1;
@@ -4956,7 +5276,7 @@
         if (pr != null && po != null && po > pr) moved++;
         return (i + 1) + '. ' + checkText(q) + '\n   Before: ' + rate('pre|' + w + '|' + i) + '   After: ' + rate('post|' + w + '|' + i);
       }).join('\n\n');
-      var scoreLine = 'Where your understanding sits: after the week you can speak to ' + postStat.g.can + ' of ' + postStat.total + ' of these ideas (getting there on ' + postStat.g.getting + ', new to ' + postStat.g.newto + '), and your read moved forward on ' + moved + ' of ' + postStat.total + ' since the start.';
+      var scoreLine = 'Your self-ratings after this week: I can, ' + postStat.g.can + '; Getting it, ' + postStat.g.getting + '; New to me, ' + postStat.g.newto + '. You selected a higher rating on ' + moved + ' ideas with both a before and an after rating. These ratings describe your confidence; they do not measure learning or mastery.';
       var auditText = activitySummary(w, d);
       var sections = [
         { h: 'Week ' + w + ': ' + weekTitle(w), t: d.purpose },
@@ -5071,7 +5391,7 @@
       var m2 = document.getElementById('soc-main'); if (m2) m2.scrollTop = top;
       window.scrollTo(0, wy);
     },
-    kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
+    kcVer: function (w, v) { state.kcVersion = state.kcVersion || {}; state.kcVersion[w] = v; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
     kcClear: function (w, v) { var pre = 'wk' + w + '|kc' + v + '|'; [state.mcSel, state.mcConf].forEach(function (map) { if (!map) return; Object.keys(map).forEach(function (k) { if (k.indexOf(pre) === 0) delete map[k]; }); }); if (state.kcReveal) delete state.kcReveal[w + '|' + v]; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
     mcConf: function (k, c, w) { state.mcConf = state.mcConf || {}; if (state.mcConf[k] === c) delete state.mcConf[k]; else state.mcConf[k] = c; persist(); replaceOuterKeepingFocus('wk-kc', kcSection(w).html, 'soc-main'); },
     mcPickSel: function (k, v) { v = Number(v); if (isNaN(v) || v < 0) delete state.mcSel[k]; else state.mcSel[k] = v; persist(); var kcm = /^wk(\d+)\|kc/.exec(k); if (kcm && replaceOuterKeepingFocus('wk-kc', kcSection(Number(kcm[1])).html, 'soc-main')) return; render(); },
@@ -5092,11 +5412,7 @@
         var head = 'Score: ' + cor + ' of ' + mcItems.length + ' correct' + (ans < mcItems.length ? ' (' + ans + ' of ' + mcItems.length + ' answered).' : '.');
         if (ans === mcItems.length) {
           var b = rcBand(cor, mcItems.length); head += '\nWhere you are: ' + b.label + '. ' + b.msg;
-          var prof = rcSkillProfile(r.id, mcItems);
-          if (prof.has) {
-            if (prof.strengths.length) { var cb = (prof.strengths.indexOf(RC_SKILLS.argument) >= 0 && r.coreIdea) ? ' You have the central point, that ' + lcFirst(String(r.coreIdea).replace(/\s*\.?\s*$/, '')) + '.' : ''; head += '\nYour strengths: you read ' + listJoin(prof.strengths) + ' well.' + cb; }
-            if (prof.opps.length) { head += '\nAreas of opportunity:'; prof.opps.forEach(function (o) { head += '\n  ' + ucFirst(o.label) + '. ' + (o.whys.length ? o.whys.join(' ') : 'Go back to this in the reading and read for it directly.'); }); }
-          } else if (miss.length) head += '\nLook again at ' + numList(miss) + '.';
+          if (miss.length) head += '\nStart with ' + numList(miss) + '. Use the question-specific explanations and next steps below.';
         }
         sections.push({ h: 'Check your understanding', t: head });
         mcItems.forEach(function (m, mi) {
@@ -5107,6 +5423,7 @@
           var t = 'Your answer: ' + chosen + '\n' + verdict;
           if (done && sel !== m.answer) t += ' The correct answer is: ' + (m.options[m.answer] || '') + '.';
           if (m.why) t += '\n' + m.why;
+          if (done) t += '\nNext step: ' + rcNextStep(m, sel === m.answer);
           sections.push({ h: (mi + 1) + '. ' + m.q, t: t });
         });
       }
@@ -5155,6 +5472,7 @@
   if (!restoredBackup0) studentNoteRecoverSession();
   if (restoredBackup0 || (!state.noteVaultUpdated && studentNoteHasContent())) studentNotesChanged();
   render();
+  studentSupportInitialize();
   studentNoteRecover().then(function (changed) { if (changed) renderKeepScroll(); });
   try {
     if (location.search) {
