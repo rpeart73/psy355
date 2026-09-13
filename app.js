@@ -984,6 +984,11 @@
   }
   function rgVideoCover(r) {
     var v = r.video;
+    if (!v.yt || v.embed === false) {
+      var url = v.url || (v.yt ? 'https://www.youtube.com/watch?v=' + v.yt : readUrl(r));
+      var label = v.yt ? 'Watch on YouTube' : 'Open video on source site';
+      return '<div class="rgvideo" style="position:relative;width:100%;aspect-ratio:16/9;background:#15171C;overflow:hidden"><a class="vid-linkout" href="' + esc(url) + '" target="_blank" rel="noopener"><span>' + esc(v.kind || 'Video') + '</span><b>' + label + '</b><small>' + esc(v.title || r.title) + '</small></a></div>';
+    }
     return '<div class="rgvideo" style="position:relative;width:100%;aspect-ratio:16/9;background:#15171C;overflow:hidden">'
       + '<button onclick="SOC.playVideo(this,\'' + v.yt + '\')" aria-label="Play a talk by ' + esc(v.scholar || r.authors) + '" style="position:absolute;inset:0;width:100%;height:100%;border:none;padding:0;cursor:pointer;background:none">'
       + '<div class="vid-cover" aria-hidden="true"><span class="vid-cover-play"></span><span class="vid-cover-note">Loads only when you choose</span></div>'
@@ -3533,6 +3538,7 @@
     return '<div class="vid-tabs vid-kind-tabs" role="group" aria-label="Filter scholar media by type"><button type="button" onclick="SOC.mediaKind(\'all\')" class="' + (state.mediaKind === 'all' ? 'on' : '') + '">All media</button>' + kinds.map(function (k) { return '<button type="button" onclick="SOC.mediaKind(\'' + esc(k) + '\')" class="' + (String(state.mediaKind) === k ? 'on' : '') + '">' + esc(k) + '</button>'; }).join('') + '</div>';
   }
   function videoEmbed(v) {
+    if (v.platform === 'youtube' && v.embed === false) return '<a class="vid-linkout" href="' + esc(v.url) + '" target="_blank" rel="noopener"><span>Video</span><b>Watch on YouTube</b><small>This video plays on YouTube.</small></a>';
     if (v.platform === 'youtube' && v.embed) return '<button type="button" class="vid-load" onclick="SOC.playVideo(this,\'' + esc(v.id) + '\')" aria-label="Load video: ' + esc(v.title + ' - ' + v.scholar) + '"><span>' + esc(v.kind || 'Video') + '</span><b>Load official player</b><small>Loads YouTube only after you choose to play it.</small></button>';
     return '<a class="vid-linkout" href="' + esc(v.url) + '" target="_blank" rel="noopener"><span>' + esc(v.kind || 'Media') + '</span><b>Open on source site</b><small>Playback stays with the official source. Nothing is downloaded or rehosted here.</small></a>';
   }
