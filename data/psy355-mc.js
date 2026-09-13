@@ -960,7 +960,7 @@ window.PSY355_MC = {
     "There was no relationship between journaling and resilience"
    ],
    "answer": 0,
-   "why": "Results revealed a significant increase in both reflective journal writing and resilience and a significant strong relationship between them.",
+   "why": "The authors report higher reflective-writing and resilience scores after the workshop and a strong association between the measures. The one-group design does not establish that the workshop caused the changes.",
    "skill": "argument",
    "diff": 2
   },
@@ -970,10 +970,10 @@ window.PSY355_MC = {
     "Because journaling is required for nursing licensure in Indonesia",
     "Because reflection replaces clinical training",
     "Because the students had no clinical experience to reflect on",
-    "Because most nursing students in Indonesia experience moderate stress in clinical settings"
+    "To examine reflective learning for nursing students facing challenges in clinical settings"
    ],
    "answer": 3,
-   "why": "The study notes that about 79.8 percent of nursing students in Indonesia experience moderate stress in the clinical environment.",
+   "why": "The authors describe clinical-learning stress as a reason to study reflective practice. Their 57-student workshop study does not establish a national stress rate; the percentage in its introduction comes from earlier cited research.",
    "skill": "context",
    "diff": 2
   },
@@ -1019,7 +1019,7 @@ window.PSY355_MC = {
    "diff": 1
   },
   {
-   "q": "What happened to students' reflections across the three journaling cycles?",
+   "q": "What change did the researchers report in students' reflections across the three journaling cycles?",
    "options": [
     "They became shorter and less thoughtful",
     "They became increasingly meaningful and analytical",
@@ -1027,7 +1027,7 @@ window.PSY355_MC = {
     "They improved at first and then declined sharply"
    ],
    "answer": 1,
-   "why": "Students demonstrated increasingly meaningful and analytical reflections across the three cycles, indicating deeper engagement.",
+   "why": "The researchers interpreted the journal entries as increasingly meaningful and analytical across three cycles. This is a qualitative interpretation of these students' writing, not a controlled test of a journaling effect.",
    "skill": "argument",
    "diff": 1
   },
