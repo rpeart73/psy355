@@ -1771,12 +1771,12 @@
       return '<button type="button" class="pp-dot' + (done ? ' on' : '') + (cur ? ' cur' : '') + '" onclick="SOC.station(' + w + ')" title="Week ' + w + '" aria-label="Week ' + w + (done ? ', practised' : '') + '">' + (done ? '&#10003;' : w) + '</button>';
     }).join('');
     var line;
-    if (cw.phase === 'before') line = 'Your Private Learning Journal opens in Week 2. Six dated entries build the record used in your mid-course reflection and final plan.';
-    else if (entries === 0) line = 'No entries yet. One honest reflection this week starts the record used in your synthesis and final project.';
-    else line = 'You have used the reflection support in ' + entries + ' of 11 prompt weeks. The graded Private Learning Journal requires six dated entries, and the full course record feeds later assessments.';
+    if (cw.phase === 'before') line = 'Use these weekly practice spaces to keep notes as the term begins. Check Assignments and Calendar for the current journal schedule.';
+    else if (entries === 0) line = 'No practice notes yet. Start with one observation from this week’s reading or activity.';
+    else line = 'You have used the reflection support in ' + entries + ' of 11 practice weeks. These indicators record work on this site; check Blackboard for submitted journals and grades.';
     return '<section class="node practice-pulse"><div class="mono pp-kick">YOUR PRACTICE PULSE</div>'
       + '<h2 class="pp-h">This course works by practice, not cramming.</h2>'
-      + '<p class="pp-p">The Private Learning Journal is worth 10 percent and requires six dated entries across Weeks 2 to 12. Each graded entry begins with a real learning moment, class artefact, or strategy attempt and uses one psychological concept. This pulse is optional planning support: a week lights up when you have written on this site or worked its page. It is not a Blackboard submission, and it uses temporary browser storage when available.</p>'
+      + '<p class="pp-p">Use this optional practice record to connect course ideas with what you notice in your learning. A week lights up when you write on this site or work its page. Your twelve graded journals have their own schedule in Assignments and Calendar, with instructions and submission in Blackboard. These practice indicators do not show whether a journal was submitted. Download your notes regularly to keep a copy.</p>'
       + '<div class="pp-dots">' + dots + '</div>'
       + '<p class="pp-line">' + line + '</p>'
       + '</section>';
@@ -3492,15 +3492,15 @@
     var steps = [
       ['Prepare', 'Before class', 'Open the week, complete the readings, enter the weekly experience, and choose one question to bring with you.'],
       ['Meet or work independently', 'Follow the week label', 'Live weeks use discussion. Asynchronous weeks use the week page for independent application, synthesis, completion, or closure.'],
-      ['Reflect', 'Across six dated entries', 'Use the weekly reflection space to notice a learning moment, then complete the matching private Blackboard Journal prompt when it opens.'],
+      ['Reflect', 'During the term', 'Use the weekly reflection space to notice a learning moment. Open Blackboard for the current journal instructions and submission.'],
       ['Rehearse', 'Self-study', 'Use Source Practice, flashcards, the Study Guide, or the Knowledge Check only when they help you check your understanding.'],
-      ['Carry forward', 'Your learning record', 'Quote verified lines from your Private Learning Journal in the Mid-course Reflection: What the Evidence Changed and Personal Resilience Plan.']
+      ['Carry forward', 'Your learning record', 'Return to your earlier notes and feedback. Notice where a course idea changes your first interpretation, and keep the source or example that supports the change.']
     ];
     var route = '<section class="path-route path-sync"><div class="path-route-head"><div class="mono">BLENDED SYNCHRONOUS COURSE</div><h2>One rhythm, two ways of learning</h2><p>Most weeks meet live. Weeks 6 and 10 are independent asynchronous learning. Week 13 protects supported completion, and Week 14 provides low-pressure closure and optional consultation.</p></div><ol>'
       + steps.map(function (s, i) { return '<li><span>' + (i + 1) + '</span><div><b>' + esc(s[0]) + '</b><em>' + esc(s[1]) + '</em><p>' + esc(s[2]) + '</p></div></li>'; }).join('') + '</ol></section>';
     return '<div class="rise path-page">'
       + '<section class="path-hero"><div><div class="mono">COURSE RHYTHM</div><h1>Prepare, meet or work independently, reflect, and carry it forward</h1><p>PSY355 uses live discussion and four purposeful asynchronous weeks around a continuing reflection record. The week label tells you exactly how that week works.</p></div><div class="path-compass" aria-label="PSY355 weekly rhythm"><span>PREPARE</span><b>read and orient</b><i></i><span>REFLECT</span><b>connect and carry forward</b></div></section>'
-      + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 6 extends resilience into context and culture, Week 10 makes room for reflective practice, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your six Private Learning Journal entries create evidence for the mid-course reflection and final plan.</span></div></section>'
+      + '<section class="path-summary"><div><b>Live weeks build shared meaning</b><span>Bring one question and leave with one specific moment worth thinking about.</span></div><div><b>Async weeks have a purpose</b><span>Week 6 extends resilience into context and culture, Week 10 makes room for reflective practice, Week 13 supports completion, and Week 14 closes the course.</span></div><div><b>Reflection is the spine</b><span>Your twelve course journals connect ideas and learning examples across the term. Keep optional practice notes here and submit graded work in Blackboard.</span></div></section>'
       + '<div class="path-routes">' + route + '</div>'
       + '<section class="path-close"><h2>Start with the current week</h2><p>Open the week, check its delivery label and purpose, then follow the route on that page. Submit graded work in Blackboard.</p><div class="path-actions"><button type="button" onclick="SOC.station(' + courseWeekByDate().week + ')"><b>Open the current week</b><small>See the mode and weekly route.</small></button><button type="button" onclick="SOC.go(\'walkthroughs\')"><b>Weekly Experiences</b><small>Enter or revisit the week\'s immersive teaching experience.</small></button><button type="button" onclick="SOC.go(\'calendar\')"><b>Course Calendar</b><small>See delivery modes and deadlines.</small></button></div></section>'
       + '</div>';
