@@ -734,8 +734,8 @@
   function listenOverlay() {
     if (!state.listenOpen) return '';
     var r = rlState();
-    return '<div class="rl-panel listen-pop" role="dialog" aria-label="Listen to this page">'
-      + '<div class="rl-head"><strong>Listen</strong><button type="button" class="rl-btn rl-close" onclick="SOC.listenMenu()" aria-label="Close listen controls">' + ic('x', 16, 2) + '</button></div>'
+    return '<div class="rl-panel listen-pop" role="dialog" aria-label="Listen to this page" onkeydown="SOC.listenKey(event)">'
+      + '<div class="rl-head"><strong>Listen</strong><button type="button" class="rl-btn rl-close" onclick="SOC.listenClose()" aria-label="Close listen controls">' + ic('x', 16, 2) + '</button></div>'
       + '<div class="rl-row"><b>Voice and language</b>' + rlVoiceSelect(r) + '</div>'
       + '<div class="rl-row"><b>Speed</b>' + [50, 75, 100, 125, 150, 200].map(function (v) { return rlBtn('', v === 100 ? '1x' : (v / 100) + 'x', r.rate === v, 'SOC.rlRate(' + v + ')'); }).join('') + '</div>'
       + '<button type="button" id="listen-play" class="wk-cta" style="margin:12px 0 0;width:100%" onclick="SOC.listenGo()">Read this page aloud</button>'
@@ -5006,15 +5006,37 @@
     return changed;
   }
 
+  function setCourseNav(open) {
+    state.navOpen = !!open;
+    if (state.navOpen) { state.rlPanelOpen = false; state.listenOpen = false; }
+    renderKeepScroll();
+    var toggle = document.querySelector('.soc-mobile-menu');
+    if (!toggle || !toggle.getClientRects().length) return;
+    var target = state.navOpen ? document.querySelector('.soc-sidebar button, .soc-sidebar a[href]') : toggle;
+    if (target) target.focus();
+  }
+  document.addEventListener('keydown', function (e) {
+    var toggle = document.querySelector('.soc-mobile-menu');
+    if (!state.navOpen || !toggle || !toggle.getClientRects().length || e.defaultPrevented) return;
+    if (e.key === 'Escape') { e.preventDefault(); SOC.closeNav(); return; }
+    if (e.key !== 'Tab') return;
+    var nav = document.querySelector('.soc-sidebar-open');
+    if (!nav) return;
+    var items = [toggle].concat(Array.prototype.slice.call(nav.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), [tabindex="0"]')).filter(function (el) { return el.getClientRects().length; }));
+    var index = items.indexOf(document.activeElement);
+    e.preventDefault();
+    items[(index + (e.shiftKey ? -1 : 1) + items.length) % items.length].focus();
+  });
+
   window.SOC = {
     notebookWeek: function (w) { state.notebookWeek = cleanWeek(w) || 1; renderKeepScroll(); },
     notebookNote: function (w, value) { w = cleanWeek(w); if (!w) return; state.notebookNotes = state.notebookNotes || {}; state.notebookNotes[w] = String(value == null ? '' : value); studentNotesChanged(); },
     notebookFilter: function (value) { var query = String(value || '').toLocaleLowerCase(), count = 0; document.querySelectorAll('[data-note-group]').forEach(function (el) { var match = el.textContent.toLocaleLowerCase().indexOf(query) >= 0; el.hidden = !match; if (query && match) el.open = true; if (match) count++; }); var result = document.getElementById('notebook-filter-result'); if (result) result.textContent = query ? count + ' note groups match.' : ''; },
     knowledgeJump: function (id) { var el = document.getElementById('kcq-' + id); if (el) { el.tabIndex = -1; el.focus(); el.scrollIntoView({ block: 'center' }); } },
 
-    openNav: function () { state.navOpen = true; renderKeepScroll(); },
-    toggleNav: function () { state.navOpen = !state.navOpen; renderKeepScroll(); },
-    closeNav: function () { state.navOpen = false; renderKeepScroll(); },
+    openNav: function () { setCourseNav(true); },
+    toggleNav: function () { setCourseNav(!state.navOpen); },
+    closeNav: function () { setCourseNav(false); },
     wkColl: function (id) {
       var nowColl = wkOpenHas(id);
       wkOpenSet(id, nowColl ? false : true);
@@ -5129,6 +5151,14 @@
     rlRulerPin: function () { var r = rlState(); r.rulerPin = !r.rulerPin; persist(); rlRulerPosition(); renderKeepScroll(); rlRefocus(); announce(r.rulerPin ? 'Ruler pinned. Drag the band by hand, or use Alt with the arrow keys.' : 'Ruler released. It follows your pointer again.'); },
     rlRuler: function () { var r = rlState(); r.ruler = !r.ruler; persist(); rlApply(); renderKeepScroll(); rlRefocus(); announce(r.ruler ? 'Reading ruler on. Move your pointer, or hold Alt and press the up or down arrows.' : 'Reading ruler off.'); },
     rlSpeak: function () { rlSpeakToggle(); },
+    listenClose: function () {
+      state.listenOpen = false;
+      renderKeepScroll();
+      var button = document.querySelector('.listen-btn');
+      if (button) button.focus();
+      announce('Listen controls closed.');
+    },
+    listenKey: function (e) { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); SOC.listenClose(); } },
     listenMenu: function () {
       if (rlSpeaking) { rlSpeakToggle(); return; }
       state.listenOpen = !state.listenOpen;
@@ -5136,7 +5166,7 @@
       if (state.listenOpen) {
         setTimeout(function () { var b = document.getElementById('listen-play'); if (b) b.focus(); }, 60);
         announce('Listen controls open. Pick a voice and speed if you like, then press Read this page aloud.');
-      } else { announce('Listen controls closed.'); }
+      } else { SOC.listenClose(); }
     },
     listenGo: function () {
       state.listenOpen = false;
