@@ -2955,7 +2955,7 @@
   function deliveryLegend() { return '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 14px;font-size:.8rem;color:var(--ink-dim)"><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#15171C"></i> Live class</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:2px;background:#6B7280"></i> Asynchronous; no lecture</span><span style="display:inline-flex;align-items:center;gap:6px"><i style="width:12px;height:12px;border-radius:4px;background:#fff;border:2px solid #6B7280"></i> Study Week</span></div>'; }
   function recordingEntry(w) { return RECORDINGS[String(w)] || RECORDINGS[w] || null; }
   function safeZoomRecordingUrl(raw) {
-    try { var u = new URL(String(raw || '')); if (u.protocol !== 'https:' || !/(^|\.)zoom\.us$/i.test(u.hostname) || /(?:^|[?&])(pwd|passcode)=/i.test(u.search)) return ''; return u.href; } catch (e) { return ''; }
+    try { var u = new URL(String(raw || '')); if (u.protocol !== 'https:' || u.username || u.password || !/(^|\.)zoom\.us$/i.test(u.hostname) || !/^\/rec\/(?:share|play)\//i.test(u.pathname) || Array.from(u.searchParams.keys()).some(function (key) { return /^(?:passcode|password)$/i.test(key); })) return ''; return u.href; } catch (e) { return ''; }
   }
   function safeBlackboardRecordingUrl(raw) {
     try { var u = new URL(String(raw || '')); if (u.origin !== 'https://learn.senecapolytechnic.ca' || !/^\/ultra\/courses\/_787839_1\/document\/_\d+_1$/.test(u.pathname) || u.username || u.password) return ''; return u.origin + u.pathname + '?view=content&state=view'; } catch (e) { return ''; }
