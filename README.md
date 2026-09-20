@@ -1,3 +1,7 @@
+# Blackboard is the course home
+
+Weekly teaching materials are in Blackboard. GitHub Pages now publishes only transition pages and a browser-only saved-notes download. The original source files remain in this repository for maintenance and provenance; they are excluded from the Pages artifact.
+
 # Course companion website
 
 ## Public assignment boundary, September 10, 2026

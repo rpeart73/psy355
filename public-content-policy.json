@@ -7,5 +7,8 @@
     "PSY355-Course-Website-Guide.docx": "33eef88591f78fcb7f725a23db3fd87f86970f1d2cd054ad6997f88d082b9e7c"
   },
   "public_calendar_dates": true,
-  "public_assignment_overviews": true
+  "public_assignment_overviews": true,
+  "weekly_companion_status": "retired_blackboard_canonical",
+  "weekly_companion_retirement_date": "2026-09-20",
+  "deployment_scope": "Transition entry pages and browser-only saved-notes recovery. Course content stays in Blackboard."
 }
