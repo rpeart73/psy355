@@ -293,7 +293,7 @@ window.PSY355 = {
  "records": [
   {
    "id": "bandura1997",
-   "assigned": "Read the opening definition and Section I, Sources of Self-Efficacy, on PDF pages 2 to 4. Stop before Section II. The rest of the full entry is optional background.",
+   "assigned": "Read the assigned three-page excerpt: the opening definition and Section I, Sources of Self-Efficacy. It stops before Section II.",
    "eye": "western",
    "type": "Encyclopedia entry",
    "access": "course",
@@ -304,7 +304,7 @@ window.PSY355 = {
     "motivation"
    ],
    "origin": "United States",
-   "len": "Required focus: PDF pages 2 to 4; complete 15-page entry available",
+   "len": "Assigned excerpt: 3 pages",
    "diff": 2,
    "week": 4,
    "abstract": "Bandura defines self-efficacy as belief in one's capabilities to produce effects. The required section explains four sources: mastery experience, vicarious experience, social persuasion, and physiological and emotional states. Bandura describes mastery experience as the most effective source. This is a theoretical explanation, not a test of our course's small-next-action exercise.",
@@ -313,13 +313,14 @@ window.PSY355 = {
    "sample": "No single study sample; the assigned reading is a theoretical synthesis.",
    "evidenceLimit": "It describes sources and proposed effects of self-efficacy; it does not test the course's small-next-action exercise.",
    "related": [],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223984798_2/xid-223984798_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362038_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223984798_2/xid-223984798_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362038_1?view=content&state=view",
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
+   "primaryLabel": "Open Week 4 in Blackboard",
    "sourceUrl": "https://albertbandura.com/albert-bandura-self-efficacy.html",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 4 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "owen2023",
@@ -347,14 +348,15 @@ window.PSY355 = {
     "ungar2011",
     "panadero2017"
    ],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551626_2/xid-224551626_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362054_1?view=content&state=view",
    "doi": "10.1177/09593543231153820",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551626_2/xid-224551626_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362054_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.1177/09593543231153820"
+   "primaryLabel": "Open Week 12 in Blackboard",
+   "sourceUrl": "https://doi.org/10.1177/09593543231153820",
+   "accessMessage": "Select Readings in the Week 12 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "yeager-dweck2020",
@@ -389,13 +391,14 @@ window.PSY355 = {
     "panadero2017"
    ],
    "doi": "10.1037/amp0000794",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551630_2/xid-224551630_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362036_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551630_2/xid-224551630_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362036_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.1037/amp0000794"
+   "primaryLabel": "Open Week 3 in Blackboard",
+   "sourceUrl": "https://doi.org/10.1037/amp0000794",
+   "accessMessage": "Select Readings in the Week 3 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "ungar2011",
@@ -430,13 +433,14 @@ window.PSY355 = {
     "yeager-dweck2020",
     "panadero2017"
    ],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551633_2/xid-224551633_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362040_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551633_2/xid-224551633_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362040_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.1111/j.1939-0025.2010.01067.x"
+   "primaryLabel": "Open Week 5 in Blackboard",
+   "sourceUrl": "https://doi.org/10.1111/j.1939-0025.2010.01067.x",
+   "accessMessage": "Select Readings in the Week 5 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "panadero2017",
@@ -464,13 +468,14 @@ window.PSY355 = {
     "ungar2011"
    ],
    "doi": "10.3389/fpsyg.2017.00422",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995616_2/xid-223995616_2",
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995616_2/xid-223995616_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362034_1?view=content&state=view",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362034_1?view=content&state=view",
    "fulltext": true,
-   "primaryLabel": "Open PDF in Blackboard",
+   "primaryLabel": "Open Week 2 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2017.00422/full",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 2 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "yeager2019",
@@ -503,13 +508,14 @@ window.PSY355 = {
     "claro2016"
    ],
    "doi": "10.1038/s41586-019-1466-y",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995620_2/xid-223995620_2",
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995620_2/xid-223995620_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362036_1?view=content&state=view",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362036_1?view=content&state=view",
    "fulltext": true,
-   "primaryLabel": "Open PDF in Blackboard",
+   "primaryLabel": "Open Week 3 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://www.nature.com/articles/s41586-019-1466-y",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 3 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "claro2016",
@@ -563,13 +569,14 @@ window.PSY355 = {
     "yeager-bryan-gross"
    ],
    "doi": "10.3389/fpsyg.2015.01781",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995624_2/xid-223995624_2",
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995624_2/xid-223995624_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362038_1?view=content&state=view",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362038_1?view=content&state=view",
    "fulltext": true,
-   "primaryLabel": "Open PDF in Blackboard",
+   "primaryLabel": "Open Week 4 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2015.01781/full",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 4 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "yeager-bryan-gross",
@@ -596,13 +603,15 @@ window.PSY355 = {
     "cassidy2015"
    ],
    "doi": "10.1038/s41586-022-04907-7",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551636_2/xid-224551636_2",
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551636_2/xid-224551636_2",
-   "fulltext": true,
+   "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9258473/",
+   "pdfUrl": "",
+   "fulltext": false,
    "senecaLib": false,
-   "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9258473/"
+   "blackboardFullText": false,
+   "primaryLabel": "Source information, not assigned",
+   "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9258473/",
+   "assigned": "Not assigned. Use the weekly Readings folders in Blackboard for required materials.",
+   "accessMessage": "Reference information only. This source is not an additional assigned reading."
   },
   {
    "id": "richardson2011",
@@ -626,13 +635,14 @@ window.PSY355 = {
    "evidenceLimit": "It maps several possible forms of reintegration and does not show that disruption necessarily causes growth or follows one sequence for every person.",
    "related": [],
    "doi": "10.7202/1087261ar",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551639_2/xid-224551639_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362040_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551639_2/xid-224551639_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362040_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.7202/1087261ar"
+   "primaryLabel": "Open Week 5 in Blackboard",
+   "sourceUrl": "https://doi.org/10.7202/1087261ar",
+   "accessMessage": "Select Readings in the Week 5 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "ungar2013",
@@ -660,13 +670,14 @@ window.PSY355 = {
     "antony2023"
    ],
    "doi": "10.1177/1524838013487805",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551642_2/xid-224551642_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362042_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551642_2/xid-224551642_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362042_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.1177/1524838013487805"
+   "primaryLabel": "Open Week 6 in Blackboard",
+   "sourceUrl": "https://doi.org/10.1177/1524838013487805",
+   "accessMessage": "Select Readings in the Week 6 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "lopez2021",
@@ -693,14 +704,15 @@ window.PSY355 = {
     "ungar2013",
     "antony2023"
    ],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551645_2/xid-224551645_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362042_1?view=content&state=view",
    "doi": "10.1038/s41390-020-01264-x",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551645_2/xid-224551645_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362042_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.1038/s41390-020-01264-x"
+   "primaryLabel": "Open Week 6 in Blackboard",
+   "sourceUrl": "https://doi.org/10.1038/s41390-020-01264-x",
+   "accessMessage": "Select Readings in the Week 6 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "antony2023",
@@ -727,13 +739,14 @@ window.PSY355 = {
     "lopez2021"
    ],
    "doi": "10.17863/CAM.90564",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551648_2/xid-224551648_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362042_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551648_2/xid-224551648_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362042_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.17863/CAM.90564"
+   "primaryLabel": "Open Week 6 in Blackboard",
+   "sourceUrl": "https://doi.org/10.17863/CAM.90564",
+   "accessMessage": "Select Readings in the Week 6 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "weight2024",
@@ -758,13 +771,14 @@ window.PSY355 = {
    "evidenceLimit": "It documents participants' memories and interpretations; it cannot show that adversity caused growth or that all athletes share those experiences.",
    "related": [],
    "doi": "10.17161/2fndtf13",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551651_2/xid-224551651_2",
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551651_2/xid-224551651_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362044_1?view=content&state=view",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362044_1?view=content&state=view",
    "fulltext": true,
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://journals.ku.edu/jis/article/view/21465"
+   "primaryLabel": "Open Week 7 in Blackboard",
+   "sourceUrl": "https://journals.ku.edu/jis/article/view/21465",
+   "accessMessage": "Select Readings in the Week 7 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "neff2003",
@@ -796,13 +810,14 @@ window.PSY355 = {
     "stephenson2018"
    ],
    "doi": "10.1080/15298860309032",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223976576_2/xid-223976576_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362046_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223976576_2/xid-223976576_2",
-   "primaryLabel": "Open PDF in Blackboard",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362046_1?view=content&state=view",
+   "primaryLabel": "Open Week 8 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://doi.org/10.1080/15298860309032",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 8 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "stephenson2018",
@@ -827,14 +842,15 @@ window.PSY355 = {
    "related": [
     "neff2003"
    ],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224232300_2/xid-224232300_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362046_1?view=content&state=view",
    "doi": "10.1007/s12144-017-9563-2",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224232300_2/xid-224232300_2",
-   "primaryLabel": "Open PDF in Blackboard",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362046_1?view=content&state=view",
+   "primaryLabel": "Open Week 8 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://link.springer.com/article/10.1007/s12144-017-9563-2",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 8 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "nas2025",
@@ -859,13 +875,14 @@ window.PSY355 = {
    "evidenceLimit": "The paths are consistent with the authors' model but remain associations; the study cannot establish mediation over time or causal effects.",
    "related": [],
    "doi": "10.1186/s40359-025-03757-y",
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995641_2/xid-223995641_2",
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-223995641_2/xid-223995641_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362048_1?view=content&state=view",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362048_1?view=content&state=view",
    "fulltext": true,
-   "primaryLabel": "Open PDF in Blackboard",
+   "primaryLabel": "Open Week 9 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://link.springer.com/article/10.1186/s40359-025-03757-y",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 9 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "jadmiko2024",
@@ -892,13 +909,14 @@ window.PSY355 = {
    "related": [
     "kamarulzaman2026"
    ],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551654_2/xid-224551654_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362050_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224551654_2/xid-224551654_2",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362050_1?view=content&state=view",
    "senecaLib": false,
    "blackboardFullText": true,
-   "primaryLabel": "Open PDF in Blackboard",
-   "sourceUrl": "https://doi.org/10.21315/eimj2024.16.4.9"
+   "primaryLabel": "Open Week 10 in Blackboard",
+   "sourceUrl": "https://doi.org/10.21315/eimj2024.16.4.9",
+   "accessMessage": "Select Readings in the Week 10 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "kamarulzaman2026",
@@ -924,13 +942,14 @@ window.PSY355 = {
    "related": [
     "jadmiko2024"
    ],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224232305_2/xid-224232305_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362050_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224232305_2/xid-224232305_2",
-   "primaryLabel": "Open PDF in Blackboard",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362050_1?view=content&state=view",
+   "primaryLabel": "Open Week 10 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://journal.unisza.edu.my/jonus/index.php/jonus/article/view/921",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 10 module for the assigned file and scope. This week follows its Blackboard release schedule."
   },
   {
    "id": "wrench2020",
@@ -955,13 +974,14 @@ window.PSY355 = {
    "sample": "No experimental sample in the assigned chapter; it explains communication concepts and examples.",
    "evidenceLimit": "The course applies purpose, audience, impact, and empathy to an academic request; the source does not test whether one message obtains help or resolves conflict.",
    "related": [],
-   "url": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224242815_2/xid-224242815_2",
+   "url": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362052_1?view=content&state=view",
    "fulltext": true,
-   "pdfUrl": "https://learn.senecapolytechnic.ca/bbcswebdav/pid-27544800-dt-content-rid-224242815_2/xid-224242815_2",
-   "primaryLabel": "Open PDF in Blackboard",
+   "pdfUrl": "https://learn.senecapolytechnic.ca/ultra/courses/_787839_1/document/_27362052_1?view=content&state=view",
+   "primaryLabel": "Open Week 11 in Blackboard",
    "blackboardFullText": true,
    "sourceUrl": "https://socialsci.libretexts.org/Bookshelves/Communication/Interpersonal_Communication/Interpersonal_Communication_-_A_Mindful_Approach_to_Relationships_(Wrench_et_al.)/09%3A_Conflict_in_Relationships",
-   "senecaLib": false
+   "senecaLib": false,
+   "accessMessage": "Select Readings in the Week 11 module for the assigned file and scope. This week follows its Blackboard release schedule."
   }
  ],
  "glossary": [
